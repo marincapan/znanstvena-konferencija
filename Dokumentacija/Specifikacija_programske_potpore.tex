@@ -30,13 +30,13 @@
 					
 				\end{packed_enum}
 			
-				\item  \underbar{Prijavljeni korisnik (sudionik) može:}
+				\item  \underbar{Sudionik (inicijator) može:}
 				
 				\begin{packed_enum}
 					
-					\item pregledavati i mijenjati osobne podatke (osim email-a i lozinke)
+					\item pregledavati i mijenjati osobne podatke (osim e-maila i lozinke)
 					\item učitati rad u .pdf formatu (do kraja roka za predaju)
-					\item po potrebi priložiti ispravljenu verziju rada i pri tome obavijestiti recenzenta u učinjenome
+					\item po potrebi priložiti izmijenjenu verziju rada i pri tome obavijestiti recenzenta u učinjenome
 					
 					
 				\end{packed_enum}
@@ -45,22 +45,23 @@
 				
 				\begin{packed_enum}
 					
-					\item pregledavati i mijenjati osobne podatke (osim email-a i lozinke)
-					\item dohvačati pristigle radove
+					\item pregledavati i mijenjati osobne podatke (osim e-maila i lozinke)
+					\item dohvaćati pristigle radove
 					\item preuzeti radove na lokalno računalo
-					\item prihvatiti rad bez ili uz manje izmjene bez naknadnih provjera
-					\item odobriti rad uz veče izmjene pri čemu mora obavijestiti autora i ponovno pregledati izmnjenjeni rad
-					\item u potpunosti odbiti rad zbog razloga koje treba navesti i objasniti ocjenu
+					\item prihvatiti rad bez izmjena
+					\item prihvatiti rad uz manje izmjene, bez naknadnih provjera
+					\item odobriti rad uz veće izmjene, pri čemu mora obavijestiti autora te ponovno pregledati izmijenjeni rad
+					\item u potpunosti odbiti rad, pri čemu je potrebno navesti razloge i objasniti ocjenu
 					
 					
 				\end{packed_enum}
 				
-				\item  \underbar{Recenzent (inicijator) može:}
+				\item  \underbar{Predsjedavajući konferencije (inicijator) može:}
 				
 				\begin{packed_enum}
 				
 					\item vidjeti sve podatke o sudionicima, mijenjati ih i dodavati sadržaj
-					\item preuzeti radove na lokalno računalo sve pristigle radove	
+					\item preuzeti sve pristigle radove na lokalno računalo
 					\item dati odobrenje za obavljanje recenzije radova recenzentima
 					\item svima ili samo odabranim korisnicima slati obavijesti na e-mail
 				
@@ -72,6 +73,15 @@
 				
 					\item upisati podatke o konferenciji
 					\item odrediti predsjedavajuče članove konferencije
+				\end{packed_enum}
+
+				\item \underbar{Baza podataka (sudionik):}
+
+				\begin{packed_enum}
+
+					\item pohranjuje podatke o korisnicima te njihovim ulogama i ovlastima u sustavu
+					\item pohranjuje podatke o radovima, njihovim autorima i recenzijama tih radova
+
 				\end{packed_enum}
 					
 			\end{packed_enum}
@@ -85,27 +95,23 @@
 				\textbf{\textit{dio 1. revizije}}
 				
 				\subsubsection{Opis obrazaca uporabe}
-					\textit{Funkcionalne zahtjeve razraditi u obliku obrazaca uporabe. Svaki obrazac je potrebno razraditi prema donjem predlošku. Ukoliko u nekom koraku može doći do odstupanja, potrebno je to odstupanje opisati i po mogućnosti ponuditi rješenje kojim bi se tijek obrasca vratio na osnovni tijek.}\\
 					
-
-					\noindent \underbar{\textbf{UC$<$broj obrasca$>$ -$<$ime obrasca$>$}}
+					\noindent \underbar{\textbf{UC1 - Pregled naslovnice}}
 					\begin{packed_item}
 	
-						\item \textbf{Glavni sudionik: }$<$sudionik$>$
-						\item  \textbf{Cilj:} $<$cilj$>$
-						\item  \textbf{Sudionici:} $<$sudionici$>$
-						\item  \textbf{Preduvjet:} $<$preduvjet$>$
+						\item \textbf{Glavni sudionik: } Neprijavljeni korisnik, sudionik, recenzent
+						\item  \textbf{Cilj:} Pregledavanje statičnog sadržaja naslovnice
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} -
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
 	
-							\item $<$opis korak jedan$>$
-							\item $<$opis korak dva$>$
-							\item $<$opis korak tri$>$
-							\item $<$opis korak četiri$>$
-							\item $<$opis korak pet$>$
+							\item Na naslovnici se prikazuje statičan sadržaj, odnosno činjenice i informacije o konferenciji i sl.
+							\item Neprijavljeni korisnici te prijavljeni sudionici i recenzenti mogu pregledavati spomenute sadržaje
 						\end{packed_enum}
 						
+%ovaj dio je ostavljen iz razloga da ga se moze prekopirat za ostale obrasce uporabe
 						\item  \textbf{Opis mogućih odstupanja:}
 						
 						\item[] \begin{packed_item}
@@ -121,6 +127,39 @@
 							\item[3.a] $<$opis mogućeg scenarija odstupanja  u koraku 3$>$
 							
 						\end{packed_item}
+					\end{packed_item}
+
+					\noindent \underbar{\textbf{UC2 - Registracija}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: } Neprijavljeni korisnik
+						\item  \textbf{Cilj:} Stvaranje novog korisničkog računa za pristup aplikaciji
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Korisnik odabire opciju za registraciju
+							\item Korisnik unosi osobne podatke potrebne za registraciju
+							\item Nakon upisanih osobnih podataka, korisnik odabire kreira li račun kao sudionik ili recenzent, te ukoliko odabere opciju sudionik pojavljuje se još jedan dio obrasca gdje je potrebno unijeti naziv rada koji želi predati i autore istog
+							\item Nakon registracije i nakon što administrator odobri prijavu, korisnik prima obavijest (putem e-maila) o uspješnoj registraciji u kojoj se nalazi lozinka s kojom se prijavljuje u sustav
+						\end{packed_enum}
+
+						\item  \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_item}
+	
+							\item[2.a]  Odabir već zauzetog korisničkog imena i/ili e-maila, unos jednog ili više korisničkih podataka u nedozvoljenom formatu
+							\item[] \begin{packed_enum}
+								
+								\item Sustav korisniku daje obavijest o tome gdje je nastala greška pri registraciji
+								\item Korisnik sukladno mijenja unesene podatke sve dok nisu svi potrebni podaci ispravno upisani, odnosno u odgovarajućem formatu
+								
+							\end{packed_enum}
+							
+						\end{packed_item}
+			
 					\end{packed_item}
 				
 					
