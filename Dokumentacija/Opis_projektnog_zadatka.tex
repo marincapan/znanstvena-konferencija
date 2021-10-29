@@ -2,28 +2,69 @@
 		
 		\textbf{\textit{dio 1. revizije}}\\
 
-		Znanstvena udruga “Pametna ekipa” organizira konferenciju na kojoj će sudionici prezentirati svoje radove. Cilj ovog projekta je razviti učinkovit informacijski sustav koji će omogućiti sudionicima i recenzentima da obavljaju svoju funkciju (predaja i prezentacija te recenziranje radova), a administratoru upravljanje upitnicima i sadržajem na samoj web aplikaciji. Dodatno, web aplikacija sadrži informacije o trenutnoj epidemiološkoj situaciji te ukoliko se konferencija bude morala držati online svi sudionici će biti obaviješteni putem mail-a te će isto pisati na stranici.
-
-		Prilikom pokretanja, neregistriranom, odnosno neprijavljenom korisniku prikazuje se naslovnica na kojoj se nalazi statičan sadržaj (informacije o konferenciji, nekoliko članaka o konferenciji/radovima i sl.) te gumb koji vodi do stranice za registraciju/prijavu.
-
-		Na stranici za prijavu već registrirani korisnici prijavljuju se mail-om i lozinkom, dok korisnici koji nisu izvršili registraciju imaju dvije opcije: Registriraj se kao sudionik i Registriraj se kao recenzent. Administrator(i) i predsjedavajući konferencije nisu potrebni vršiti registraciju, kako ima jedan ustanovljen („hardkodiran“) administrator koji zatim dodjeljuje uloge drugima (imenuje predsjedavajućeg konferencije te ako želi – još jednog administratora).
-
+		Znanstvena udruga “Pametna ekipa” organizira konferenciju na kojoj će sudionici prezentirati svoje radove. Cilj ovog projekta je razviti učinkovit informacijski sustav koji će omogućiti sudionicima konferencije predaju rada s kojim žele sudjelovati na konferenciji, recenzentima da recenziraju zaprimljene radove sudionika, administratoru upravljanje upitnicima i sadržajem na samoj web aplikaciji, a predsjedavajućem konferencije da odobrava recenzente te općenito nadgleda podatke sudionika te njihove radove. Dodatno, web aplikacija sadrži informacije o trenutnoj epidemiološkoj situaciji te ukoliko se konferencija bude morala držati \textit{online}, svi sudionici će biti obaviješteni e-poštom te će isto biti jasno naglašeno na stranici.
+		\newline
+		\newline
+		Prilikom pokretanja sustava, neregistriranom odnosno neprijavljenom korisniku prikazuje se naslovnica na kojoj se nalazi statičan sadržaj te gumb koji vodi do stranice za registraciju/prijavu. Na vrhu svake stranice, bez obzira je li korisnik prijavljen u sustav ili ne, fiksno je postavljena traka koja korisniku omogućuje brzo preusmjeravanje na određene stranice: naslovnica, informacije o konferenciji, pristup radovima, stranica s kontaktima, te stranica za prijavu u sustav ili profil korisnika ako je korisnik već prijavljen. Statični sadržaj na početnoj stranici odnosi se na informacije o konferenciji te članke i radove vezane uz konferenciju. Članci nisu cjelovito prikazani, stoga se ispod svakog nalazi gumb "Saznaj više" koji korisnika preusmjerava na stranicu koja sadrži cjelovit članak. Na naslovnici se nalazi i dinamičan okvir koji prikazuje sliku sa poveznicom na istaknuti članak. Okvir može mijenjati sliku i poveznicu korisnikovim gumbom na strelicu. Pri ulasku na samu naslovnicu, ukoliko korisnik nije prijavljen, u dinamičnom se okviru pojavljuje veliki gumb "\textit{Registracija}" koji korisnika preusmjerava na registraciju u sustav. 
+		\newline
+		\newline
+		Na stranici za prijavu nalazi se okvir u koji već registrirani korisnici unose e-mail adresu i lozinku, a ispod se nalazi gumb koji preusmjerava neregeistrirane korisnike na formu za registraciju. Također se ispod okvira nalazi i gumb "\textit{Zaboravljena lozinka}" koji omogućava korisniku slanje nove lozinke na e-mail adresu koju unese. Na stranici za registraciju, odnosno za kreiranje korisničkog računa, postoje dvije opcije: \textit{Registriraj se kao sudionik} i \textit{Registriraj se kao recenzent}. Administrator(i) i predsjedavajući konferencije ne vrše registraciju, nego postoji jedan unaprijed definiran administrator koji zatim dodjeljuje uloge drugima (imenuje predsjedavajućeg konferencije te ako želi – još jednog administratora).
+		\newline
+		\newline
 		Za kreiranje korisničkog računa potrebni su sljedeći podaci:
 
 		\begin{packed_item}
 
-			\item ime i prezime
-			\item korisnička oznaka
-			\item email adresa
-			\item matična ustanova i adresa iste - ulica i kućni broj, grad i država
-			\item sekcija na kojoj žele sudjelovati/recenzirati radove
-			\item potrebno je odabrati prijavljujen li se osoba kao sudionik, recenzent ili oboje
+			\item ime
+			\item prezime
+			\item korisničko ime
+			\item e-mail adresa
+			\item matična ustanova i adresa iste - ulica i kućni broj, grad, država
+			\item sekcija na kojoj žele sudjelovati/recenzirati radove koju korisnik odabire iz ponuđene liste
+			\item potrebno je odabrati prijavljuje li se osoba kao sudionik ili recenzent
 			\item imena autora rada (samo za sudionike)
+			\item e-mail adresa autora koji je osoba za kontakt
 		
 		\end{packed_item}
-
-		Nakon izvršene registracije, ovisno o tome koju ulogu je korisnik odabrao (sudionik, recenzent ili oboje) dobit će određena prava koja su objašnjena u nastavku.
+	
+		U slučaju da neki od podataka nije upisan, sustav javlja kako nisu svi podaci uneseni i traži od korisnika da ih unese ukoliko se želi registrirati. Nakon izvršene registracije, ovisno o tome koju ulogu je korisnik odabrao (sudionik ili recenzent) dobit će određena prava koja su objašnjena u nastavku. Korisnik na unesenu e-mail adresu prima poruku o uspješnoj prijavi, te se u poruci nalazi lozinka koja je potrebna za prijavu korisnika u sustav te link na koji mora kliknuti kako bi potvrdio uspješnu registraciju.
+		\newline
+		\newline
+		Svaki registrirani korisnik, bez obzira na ulogu i razinu ovlasti, može pregledavati vlastite korisničke podatke i mijenjati ih po potrebi, osim e-mail adrese. 
+		\newline
+		\newline
+		Postoje četiri vrste registriranih korisnika:
 		
+		\begin{packed_item}
+			
+			\item administrator
+			\item predsjedavajući konferencije
+			\item recenzent
+			\item sudionik konferencije
+			
+		\end{packed_item}
+	
+		\underline{\textit{Administrator}} sustava ima najveću razinu ovlasti. Prilikom samog pokretanja sustava, postoji jedan unaprijed definiran administrator koji dodjeluje uloge drugim administratorima, ako želi, te odabire predsjedavajućeg konferencije. Administrator može mijenjati statički sadržaj na naslovnici - može odabrati koji će članci biti prikazani, uređivati članke, birati koji će članci biti naglašeni u dinamičnom okviru. Njegova je najvažnija zadaća odabir predsjedavajućeg konferencije. \textit{na koji način?}
+		
+		
+		\underline{\textit{Predsjedavajući konferencije}} ima glavnu ulogu odobravanja recenzenata. \textit{(na koji način?)} Osim svojih podataka, on također ima uvid u osobne podatke svih sudionika, te ih po potrebi može mijenjati. Također ima mogućnost preuzimanja radova svih sudionika, te ih može pregledavati na svome računalu. Isto tako, ukoliko se pokaže potreba, može poslati pojedinačnim sudionicima e-mail, no isto tako može poslati odjednom e-mail svim sudionicima konferencije. 
+		
+		
+		\underline{\textit{Recenzent}} je osoba koja recenzira odnosno kontrolira radove sudionika. Svaki rad pregledava samo jedan recenzent, odnosno svaki recenzent ima svoj opus radova koji mora pregledati. Pregledavanjem i recenziranjem radova recenzent odobrava sudjelovanje sudionika na konferenciji. Radove može pregledavati \textit{online} ili ih može preuzeti na računalo i pregledavati. 
+		
+		Nakon pregleda pojedinog rada, recenzent ima sljedeće mogućnosti:
+		
+		\begin{enumerate}
+			
+			\item prihvaćanje rada bez potrebnih izmjena i/ili dopuna rada
+			\item prihvaćanje rada, ali sudionik prije finalne predaje mora napraviti manje dorade koje recenzent ne mora provjeriti
+			\item prihvaćanje rada, ali uz potrebne značajne izmjene rada o kojima, nakon izvršenja, sudionik mora obavijestiti recenzenta radi njihove provjere
+			\item potpuno odbijanje rada uz obrazloženje
+			
+		\end{enumerate}
+	
+		\underline{\textit{Sudionik}} ima najmanju razinu ovlasti - on jedino ima mogućnost pregledavanja i izmjene osobnih podataka te učitavanje radova u sustav. 
+	
 		\eject
 		
 	
