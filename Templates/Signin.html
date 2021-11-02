@@ -10,5 +10,15 @@
         </head>
         <body>
             <h3> SignIn Template</h3>
+            <form action="/signin" method="post">
+            {% csrf_token %}
+                <label for="">Username</label>
+                <input type="text" id="Username" name="Username" placeholder="Enter User" Required>
+                <br>
+                <label for="">Confirm Password</label>
+                <input type="password" id="pass1" name="pass1" placeholder="Enter Password" Required>
+                <br>
+                <button type="submit">Sign Up </button>
+            </form> 
         </body>
     </html>

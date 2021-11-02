@@ -26,6 +26,13 @@ def signup(request):
     return render(request, 'Signup.html')
     
 def signin(request):
+    if request.method == "POST":
+        Username = request.POST['Username']
+        pass1 = request.POST['pass1']
+
+        #Authentikacija usera
+
+        return redirect('home')
     return render(request, 'Signin.html')
 
 def signout(request):
