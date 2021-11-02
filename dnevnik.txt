@@ -10,7 +10,7 @@
 
 		- Razgovorali smo koje bismo tehnologije i alate koristili pri razvoju aplikacije, a koje za komunikaciju unutar tima. Inicijalni je dogovor da ćemo koristiti Python,
  		Bootstrap i PostgreSQL, a komunicirat ćemo preko WhatsAppa i Discorda.
-		 
+
 
 2.sastanak
 	Datum: 13. listopada 2021.
@@ -19,3 +19,14 @@
 		- Na ovom incijalnom sastanku s asistentom Miljenkom Krhenom bili su prisutni svi članovi tima i demonstrator zadužen za našu grupu, kolega Vedran Kolka.
 		Asistent nam je dao osnovne informacije o načinu provedbe i kolokviranju projekta. Pozvani smo dolaziti na fakultet u terminima laboratorijskih vježbi kako bismo
  		diskutirali projektno rješenje i nedoumice, a također pitanja možemo postavljati i preko platforme MS Teams.
+
+
+3. sastanak
+	Datum: 25.listopada 2021.
+	Prisustovali: J.Gavran, L.Mujagić, M.Capan, P.D.Grujić Ostojić, R.Pintar, F.Mesić, A.Sambolek
+	Teme sastanka:
+		- Na ovom smo se online sastanku bavili izlučivanjem i analizom funkcionalnih zahtjeva. Dogovorili smo tko će raspisati funkcionalne zahtjeve, tko će napraviti
+		tekstualni, a tko grafički prikaz (UML dijagrame) obrazaca uporabe.
+		- Raspravljali smo u o dizajnu korisničkog sučelja web-aplikacije, komentirali što nam se (ne) sviđa na nekim javno dostupnim web-stranicama za prijavu na konferencije. 
+
+
