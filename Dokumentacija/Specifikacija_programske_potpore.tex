@@ -13,7 +13,7 @@
 				\item Sudionici konferencije
 				\item Recenzenti
 				\item Predsjedavajući konferencije				
-				\item Administrator(i) sustava
+				\item Administrator sustava
 				\item Razvojni tim
 				
 			\end{packed_enum}
@@ -208,7 +208,7 @@
 					\item \textbf{Glavni sudionik: } Registrirani korisnik
 					\item  \textbf{Cilj:} Dobiti novu lozinku
 					\item  \textbf{Sudionici:} Baza podataka
-					\item  \textbf{Preduvjet:} Korisnik je registriran
+					\item  \textbf{Preduvjet:} Korisnik je registriran, ali nije prijavljen u sustav
 					\item  \textbf{Opis osnovnog tijeka:}
 					
 					\item[] \begin{packed_enum}
@@ -310,7 +310,7 @@
 							\item Na stranici "Moji radovi" korisnik odabire opciju "Predaj rad" kraj željenog rada
 							\item Pojavljuju se već ispunjena polja s nazivom rada i skupom autora koje je korisnik pri registraciji naveo, korisnik odabire opciju "Učitaj rad".
 							\item Korisnik učitava rad u .pdf formatu
-							\item Korisnik odabire opciju "Zaključaj predaju"
+							\item Korisnik odabire opciju "Predaj"
 							\item Rad se pohranjuje i baza podataka se ažurira
 
 					
@@ -327,7 +327,7 @@
 								
 							\end{packed_enum}
 
-							\item[3.b]  Korisnik prenese datoteku, ali ne odabere opciju „Zaključaj predaju“
+							\item[3.b]  Korisnik prenese datoteku, ali ne odabere opciju "Predaj"
 							\item[] \begin{packed_enum}
 								
 								\item Sustav javlja korisniku kako nije pohranio rad prije izlaska iz prozora
@@ -338,11 +338,11 @@
 			
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC7 - Zahtjev za predaju dodatnog rada}}
+					\noindent \underbar{\textbf{UC7 - Predaja dodatnog rada}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Sudionik konferencije
-						\item  \textbf{Cilj:} Predati zahtjev kako bi korisnik mogao predati još jedan rad
+						\item  \textbf{Cilj:} Predaja dodatnog rada
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav, prethodno je predao minimalno jedan rad
 						\item  \textbf{Opis osnovnog tijeka:}
@@ -350,12 +350,32 @@
 						\item[] \begin{packed_enum}
 							\item Korisnik bira gumb "Moji radovi" iz glavnog izbornika
 							\item Na stranici "Moji radovi" korisnik odabire opciju "Želim predati još jedan rad"
-							\item Korisnik ispunjava formu za predaju zahtjeva
-							\item Korisnik odabire opciju "Predaj zahtjev"
-							\item Korisnik dobiva odgovor na zahtjev putem e-maila, a nakon što se prijavi u sustav (ukoliko mu je zahtjev bio odobren) na stranici "Moji radovi" vidi još jedan rad na popisu, odnosno naziv onog rada za koji je predao zahtjev
+							\item Korisnik ispunjava formu za predaju dodatnog rada (autori, naziv, .pdf)
+							\item Korisnik odabire opciju "Predaj rad"
+							\item Korisniku se ponovno učitava stranica "Moji radovi" na kojoj je sada vidljiv novi rad (koji je moguće mijenjati do roka za izmjenu)
 
 					
 						\end{packed_enum}
+
+						\item  \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_item}
+	
+							\item[3.a]  Korisnik je učitao datoteku koja nije u *.pdf obliku
+							\item[] \begin{packed_enum}
+								
+								\item Sustav javlja da je dozvoljeno učitavati isključivo .pdf dokumente i ne pohranjuje ono što je korisnik pokušao prenijeti
+								
+							\end{packed_enum}
+
+							\item[3.b]  Korisnik prenese datoteku, ali ne odabere opciju "Predaj rad"
+							\item[] \begin{packed_enum}
+								
+								\item Sustav javlja korisniku kako nije pohranio rad prije izlaska iz prozora
+								
+							\end{packed_enum}
+							
+						\end{packed_item}
 			
 					\end{packed_item}
 
@@ -699,10 +719,10 @@
 						
 						\item \textbf{Opis osnovnog tijeka:} 
 						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Naslovnica" iz izbornika pri čemu pristupa sučelju za uređivanje naslovnice
-							\item Korisnik na željenom odsječku bira opciju „Uredi“
+							\item Korisnik bira gumb "Naslovnica" iz glavnog izbornika pri čemu pristupa sučelju za uređivanje naslovnice
+							\item Korisnik na željenom odsječku bira opciju "Uredi"
 							\item Korisnik unosi promjene (uređuje tekst)
-							\item Korisnik bira opciju „Spremi“
+							\item Korisnik bira opciju "Spremi"
 						\end{packed_enum}
 					
 						\item \textbf{Opis mogućih odstupanja:}
@@ -831,11 +851,11 @@
 						\end{packed_enum}
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC25 - Zahtjev za recenziju dodatnog rada}}
+					\noindent \underbar{\textbf{UC25 - Recenzija dodatnog rada nakon inicijalnog}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Recenzent
-						\item  \textbf{Cilj:} Predati zahtjev kako bi korisnik mogao recenzirati još jedan rad
+						\item  \textbf{Cilj:} Recenzirati još jedan rad osim prethodno ocijenjenih
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav, korisnik je prethodno recenzirao minimalno jedan rad
 						\item  \textbf{Opis osnovnog tijeka:}
@@ -843,62 +863,25 @@
 						\item[] \begin{packed_enum}
 							\item Korisnik bira gumb "Moji radovi" iz glavnog izbornika te se učitava stranica s radovima koje je korisnik prijavio i/ili predao
 							\item Korisnik odabire opciju "Želim recenzirati još jedan rad" na dnu stranice
-							\item Korisnik ispunjava formu za predaju zahtjeva
-							\item Korisnik odabire opciju "Predaj zahtjev"
-							\item Korisnik dobiva odgovor na zahtjev putem e-maila
+							\item Korisniku se prikazuje prozor s pitanjem "Molimo potvrdite da želite recenzirati dodatan rad klikom na gumb "Ok"." s opcijama "Ok" i "Odustani"
+							\item Korisnik bira opciju "Ok"
+							\item Korisniku se ponovno učitava stranica "Moji radovi" na kojoj se pojavljuje još jedan, nasumično izabran rad za recenziju (iz sekcije koju je naveo pri prijavi)
 
 					
 						\end{packed_enum}
-					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC26 - Odobravanje zahtjeva za recenziju dodatnog rada}}
-					\begin{packed_item}
-	
-						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
-						\item  \textbf{Cilj:} Odobriti recenziju dodatnog rada
-						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						\item  \textbf{Opis osnovnog tijeka:}
-						
+						\item \textbf{Opis mogućih odstupanja:}
 						\item[] \begin{packed_enum}
-	
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire opciju "Zahtjeva recenzenata koji čekaju odobrenje" te mu se učita stranica popisa zahtjeva
-							\item Korisnik odabire zahtjev s popisa
-							\item Korisniku se prikazuju podaci koje je recenzent unio pri predaji zahtjeva
-							\item Korisnik odabire opciju "Odobri zahtjev i pošalji potvrdu"
-							\item Šalje se automatska poruka putem mail-a odabranom recenzentu
-							\item Ažurira se baza podataka
-					
+
+							\item[3.a] Korisnik odabere opciju "Odustani"
+							\item[] \begin{packed_enum}
+								\item[1.] Uklanja se prozor i korisnik se vraća na stranicu "Moji radovi"
+							\end{packed_enum}
 						\end{packed_enum}
-			
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC27 - Odbijanje zahtjeva za recenziranje dodatnog rada }}
-					\begin{packed_item}
-	
-						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
-						\item  \textbf{Cilj:} Odbiti recenziju dodatnog rada
-						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						\item  \textbf{Opis osnovnog tijeka:}
-						
-						\item[] \begin{packed_enum}
-	
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire opciju "Zahtjeva recenzenata koji čekaju odobrenje" te mu se učita stranica popisa zahtjeva
-							\item Korisnik odabire zahtjev s popisa
-							\item Korisniku se prikazuju podaci koje je recenzent unio pri predaji zahtjeva
-							\item Korisnik odabire opciju "Odbij prijavu"
-							\item Otvara se polje za unos obrazloženja odbijanja prijave
-							\item Korisnik navodi razlog/e i odabire opciju "Pošalji odbijenicu"
-							\item Šalje se personalizirana poruka putem mail-a odabranom recenzentu
-							\item Ažurira se baza podataka
 
-					
-						\end{packed_enum}
-			
-					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC28 - Pregled statistike prijava}}
+					\noindent \underbar{\textbf{UC26 - Pregled statistike prijava}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Administrator
@@ -915,7 +898,7 @@
 			
 					\end{packed_item}
 				
-					\noindent \underbar{\textbf{UC29 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
+					\noindent \underbar{\textbf{UC27 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator
@@ -933,7 +916,7 @@
 						\end{packed_enum}
 						
 					\end{packed_item}
-						\noindent \underbar{\textbf{UC30 - Pregled trenutno aktivnih registriranih korisnika}}
+					\noindent \underbar{\textbf{UC28 - Pregled trenutno aktivnih registriranih korisnika}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator
@@ -944,11 +927,103 @@
 						
 						\item[] \begin{packed_enum}
 							
-							\item Korisnik odabire gumb "Trenutno aktivni korisnici" koji je fiksno postavljen na nu svake stranice te mu se prikazuje broj trenutno aktivnih korisnika i njihova imena 
+							\item Korisniku je na desnoj strani svake stranice plutajući prozor s gumbom "Korisnici" te informacijom \textit{koliko} je trenutačno aktivnih korisnika
+							\item Korisnik bira gumb "Korisnici" te mu se učitava stranicama na kojoj vidi popis trenutačno aktivnih korisnika
 							
 						\end{packed_enum}
 						
 					\end{packed_item}
+
+					\noindent \underbar{\textbf{UC29 - Odjava iz sustava}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije, registrirani korisnik
+						\item  \textbf{Cilj:} Odjaviti korisnika iz sustava
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik bira opciju "Odjava" iz plutajućeg izbornika koji se prikazuje prelaskom miša preko gumba "Moj profil", čime je pokrenut proces odjave iz sustava
+							\item Korisniku se prikazuje prozor s pitanjem "Jeste li sigurni da se želite odjaviti?" s opcijama "Da" i "Ne"
+							\item Korisnik bira opciju "Da"
+							\item Korisnik je uspješno odjavljen iz sustava, učitava se stranica za prijavu
+							
+						\end{packed_enum}
+
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+
+							\item[3.a] Korisnik odabere opciju "Ne"
+							\item[] \begin{packed_enum}
+								\item[1.] Uklanja se prozor i korisnik ostaje na stranici na kojoj je bio prije klika na opciju "Odjava"
+							\end{packed_enum}
+						\end{packed_enum}
+						
+					\end{packed_item}
+
+					\noindent \underbar{\textbf{UC30 - Upravljanje informacijama o konferenciji}}
+					\begin{packed_item}
+						\item \textbf{Glavni sudionik:} Administrator
+						\item \textbf{Cilj:} Ažurirati podatke o konferenciji i stranicu s informacijama
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							\item Korisnik bira opciju "Informacije o konferenciji" iz glavnog izbornika
+							\item Korisnik, ukoliko to želi, postavlja predsjedavajućeg konferencije (UC30.1)
+							\item Učitava se stranica za upravljanje informacijama o konferenciji
+							\item Korisnik na željenom odsječku bira opciju "Uredi"
+							\item Korisnik unosi promjene
+							\item Korisnik bira opciju "Spremi"
+							\item Ažurira se baza podataka
+						\end{packed_enum}
+					
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+
+							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Spremi"
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
+							\end{packed_enum}
+							
+						\end{packed_enum}
+					\end{packed_item}
+
+					\noindent \underbar{\textbf{UC30.1 - Odabir predsjedavajućeg konferencije}}
+					\begin{packed_item}
+						\item \textbf{Glavni sudionik:} Administrator
+						\item \textbf{Cilj:} Unijeti podatke o predsjedavajućem konferencije
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							\item Korisniku je učitana stranica "Informacije o konferenciji" na kojoj on kraj informacija o predsjedavajućem konferencije bira opciju "Uredi"
+							\item Korisnik unosi prvi put ili mijenja podatke o predsjedavajućem konferencije
+							\item Ukoliko je korisnik promijenio e-mail adresu predsjedavajućeg, pojavljuje se poruka o navedenoj izmjeni te se navodi da će nova lozinka biti generirana i poslana na \textit{novu} e-mail adresu predsjedavajućeg
+							\item Nakon navedenih izmjena, korisnik bira opciju "Ažuriraj podatke"
+							\item Ažurira se baza podataka
+							\item Ukoliko je e-mail adresa predsjedavajućeg mijenjana, šalje se mail na novu adresu s novom lozinkom za prijavu u sustav
+						\end{packed_enum}
+					
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+
+							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Ažuriraj podatke"
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
+							\end{packed_enum}
+							\item[3.b] Korisnik unese podatak u krivom formatu
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako je određeni podatak naveden u krivom formatu i nije moguće pohraniti promjene dok svi podaci nisu u ispravnom formatu
+							\end{packed_enum}
+							
+						\end{packed_enum}
+					\end{packed_item}
+
 					
 					
 					
@@ -957,7 +1032,14 @@
 				\subsubsection{Dijagrami obrazaca uporabe}
 					
 					\textit{Prikazati odnos aktora i obrazaca uporabe odgovarajućim UML dijagramom. Nije nužno nacrtati sve na jednom dijagramu. Modelirati po razinama apstrakcije i skupovima srodnih funkcionalnosti.}
+					\begin{figure}[H]
+						\includegraphics[scale=0.4]{dijagrami/preglednajvaznijihfunkcionalnosti.png} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+						\centering
+						\caption{Dijagram obrasca uporabe, pregled najvažnijih funkcionalnosti}
+						\label{fig:dijagramobrascauporabe1}
+					\end{figure}
 				\eject		
+	
 				
 			\subsection{Sekvencijski dijagrami}
 				
