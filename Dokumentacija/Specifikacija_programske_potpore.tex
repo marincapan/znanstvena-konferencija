@@ -151,7 +151,7 @@
 						
 						\item[] \begin{packed_item}
 	
-							\item[2.a]  Odabir već zauzetog e-maila, unos jednog ili više korisničkih podataka u nedozvoljenom formatu
+							\item[2.a]  Odabir već zauzetog e-maila, unos jednog ili više korisničkih podataka u nedozvoljenom formatu, postoji već rad s tim naslovom
 							\item[] \begin{packed_enum}
 								
 								\item Sustav korisniku daje obavijest o tome gdje je nastala greška pri registraciji
@@ -196,7 +196,7 @@
 						\end{packed_item}
 			
 					\end{packed_item}
-				\noindent \underbar{\textbf{UC3.1 - Generiranje nove lozinke}}
+				\noindent \underbar{\textbf{UC3.1 - Zahtjev za generiranjem nove lozinke}}
 				\begin{packed_item}
 					
 					\item \textbf{Glavni sudionik: } Registrirani korisnik
@@ -710,38 +710,8 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC20 - Izmjena rada prije isteka roka za prijavu}}
-					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Sudionik
-						\item \textbf{Cilj:} Napraviti izmjene na radu prije nego što je rad zaključan za predaju
-						\item \textbf{Sudionici:} Baza podataka
-						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						
-						\item \textbf{Opis osnovnog tijeka:} 
-						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Moji radovi" iz glavnog izbornika te se učitava stranica s radovima koje je korisnik prijavio i/ili predao
-							\item Korisnik na stranici bira opciju "Izmijeni" na željenom radu
-							\item Korisniku se otvara stranica za izmjenu podataka
-							\item Korisnik unosi željene promjene, mijenja naslov ili učitava novi .pdf
-							\item Korisnik bira opciju "Spremi promjene"
-						\end{packed_enum}
 					
-						\item \textbf{Opis mogućih odstupanja:}
-						\item[] \begin{packed_enum}
-
-							\item[4.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
-							\end{packed_enum}
-							\item[4.b] Korisnik je učitao datoteku koja nije u .pdf obliku
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja kako je dozvoljeno učitavati isključivo .pdf dokumente i u sustavu ostaje još uvijek stari .pdf
-							\end{packed_enum}
-							
-						\end{packed_enum}
-					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC21 - Uređivanje podataka o sudioniku}}
+					\noindent \underbar{\textbf{UC20 - Uređivanje podataka o sudioniku}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator, Predsjedavajući konferencije
 						\item \textbf{Cilj:} Uređivanje osobnih podataka o sudioniku, ispravljanje grešaka
@@ -767,7 +737,7 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC22 - Uređivanje podataka o recenzentu}}
+					\noindent \underbar{\textbf{UC21 - Uređivanje podataka o recenzentu}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator, Predsjedavajući konferencije
 						\item \textbf{Cilj:} Uređivanje osobnih podataka o recenzentu, ispravljanje grešaka
@@ -793,7 +763,7 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC23 - Ukloni javni pristup radova}}
+					\noindent \underbar{\textbf{UC22 - Ukloni javni pristup radova}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Ukloniti javni pristup radovima
@@ -826,7 +796,7 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC24 - Uređivanje podataka o radu}}
+					\noindent \underbar{\textbf{UC23 - Uređivanje podataka o radu}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Uređivanje podataka o predanom radu
@@ -855,7 +825,7 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC25 - Odobravanje zahtjeva za predaju dodatnog rada}}
+					\noindent \underbar{\textbf{UC24 - Odobravanje zahtjeva za predaju dodatnog rada}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Administrator
@@ -878,32 +848,8 @@
 			
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC26 - Odbijanje zahtjeva za predaju dodatnog rada }}
-					\begin{packed_item}
-	
-						\item \textbf{Glavni sudionik: } Administrator
-						\item  \textbf{Cilj:} Odbiti predaju dodatnog rada
-						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						\item  \textbf{Opis osnovnog tijeka:}
-						
-						\item[] \begin{packed_enum}
-	
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire opciju "Zahtjeva sudionika koji čekaju odobrenje" te mu se učita stranica popisa zahtjeva
-							\item Korisnik odabire zahtjev s popisa
-							\item Korisniku se prikazuju podaci koje je sudionik unio pri predaji zahtjeva
-							\item Korisnik odabire opciju "Odbij prijavu"
-							\item Otvara se polje za unos obrazloženja odbijanja prijave
-							\item Korisnik navodi razlog/e i odabire opciju "Pošalji odbijenicu"
-							\item Šalje se personalizirana poruka putem mail-a odabranom sudioniku
-							\item Ažurira se baza podataka
-
 					
-						\end{packed_enum}
-			
-					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC27 - Zahtjev za recenziju dodatnog rada}}
+					\noindent \underbar{\textbf{UC25 - Zahtjev za recenziju dodatnog rada}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Recenzent
@@ -923,7 +869,7 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC28 - Odobravanje zahtjeva za recenziju dodatnog rada}}
+					\noindent \underbar{\textbf{UC26 - Odobravanje zahtjeva za recenziju dodatnog rada}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
@@ -945,7 +891,7 @@
 			
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC29 - Odbijanje zahtjeva za recenziranje dodatnog rada }}
+					\noindent \underbar{\textbf{UC27 - Odbijanje zahtjeva za recenziranje dodatnog rada }}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
@@ -970,7 +916,7 @@
 			
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC30 - Pregled statistike prijava}}
+					\noindent \underbar{\textbf{UC28 - Pregled statistike prijava}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Administrator
@@ -986,7 +932,8 @@
 						\end{packed_enum}
 			
 					\end{packed_item}
-					\noindent \underbar{\textbf{UC31 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
+				
+					\noindent \underbar{\textbf{UC29 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator
@@ -1004,7 +951,7 @@
 						\end{packed_enum}
 						
 					\end{packed_item}
-						\noindent \underbar{\textbf{UC32 - Pregled trenutno aktivnih registriranih korisnika}}
+						\noindent \underbar{\textbf{UC30 - Pregled trenutno aktivnih registriranih korisnika}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator
@@ -1015,7 +962,7 @@
 						
 						\item[] \begin{packed_enum}
 							
-							\item Korisnik odabire gumb "Trenutno aktivni korisnici" pri dnu stranice te mu se prikazuje broj trenutno aktivnih korisnika i njihova imena 
+							\item Korisnik odabire gumb "Trenutno aktivni korisnici" koji je fiksno postavljen na nu svake stranice te mu se prikazuje broj trenutno aktivnih korisnika i njihova imena 
 							
 						\end{packed_enum}
 						
