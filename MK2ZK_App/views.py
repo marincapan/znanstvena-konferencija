@@ -14,8 +14,14 @@ def signup(request):
         Fname = request.POST['Fname']
         Lname = request.POST['Lname']
         email = request.POST['email']
-        pass1 = request.POST['pass1']
-        pass2 = request.POST['pass2']
+        matustName = request.POST['matustName']
+        matustAdr = request.POST['matustAdr']
+        matustCity = request.POST['matustCity']
+        matustDrz = request.POST['matustDrz']
+        uloga = request.POST['uloga']
+        title = request.POST['title']
+        authors = request.POST['authors']
+        emailCon = request.POST['emailCon']
 
         #Ubaci u bazu podataka
 
