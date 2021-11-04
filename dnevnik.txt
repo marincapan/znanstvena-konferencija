@@ -22,11 +22,18 @@
 
 
 3. sastanak
-	Datum: 25.listopada 2021.
+	Datum: 25. listopada 2021.
 	Prisustovali: J.Gavran, L.Mujagić, M.Capan, P.D.Grujić Ostojić, R.Pintar, F.Mesić, A.Sambolek
 	Teme sastanka:
 		- Na ovom smo se online sastanku bavili izlučivanjem i analizom funkcionalnih zahtjeva. Dogovorili smo tko će raspisati funkcionalne zahtjeve, tko će napraviti
 		tekstualni, a tko grafički prikaz (UML dijagrame) obrazaca uporabe.
 		- Raspravljali smo u o dizajnu korisničkog sučelja web-aplikacije, komentirali što nam se (ne) sviđa na nekim javno dostupnim web-stranicama za prijavu na konferencije. 
 
+
+4. sastanak
+	Datum: 3. studenoga 2021.
+	Prisustovali: J.Gavran, L.Mujagić, M.Capan, P.D.Grujić Ostojić, R.Pintar, F.Mesić, A.Sambolek
+	Teme sastanka:
+		- Rješavali smo neke dvojbe vezane uz konzistentnost i kompletnost funkcionalnih zahtjeva. Dogovorili smo tko će raspisati i napraviti sekvencijske dijagrame.
+		- Dogovorili smo početnu podjelu posla na klijentskoj i poslužiteljskoj strani aplikacije te izradi sheme baze podataka.
 
