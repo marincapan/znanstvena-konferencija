@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Authentication</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="">
+        </head>
+        <body>
+            <h3> SignIn Template</h3>
+            <form action="/signin" method="post">
+            {% csrf_token %}
+                <label for="">Username</label>
+                <input type="text" id="Username" name="Username" placeholder="Enter User" Required>
+                <br>
+                <label for="">Confirm Password</label>
+                <input type="password" id="pass1" name="pass1" placeholder="Enter Password" Required>
+                <br>
+                <button type="submit">Sign Up </button>
+            </form> 
+            {%if randPassword%}
+                <h4>Your random pass word is: {{randPassword}}</h4>
+            {% endif %}
+        </body>
+    </html>

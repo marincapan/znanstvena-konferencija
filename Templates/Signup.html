@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Authentication</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="">
+        </head>
+        <body>
+            <h3> SignUp Template</h3>
+
+            <form action="/signup" method="post">
+            {% csrf_token %}
+                <label for="">Username</label>
+                <input type="text" id="Username" name="Username" placeholder="Create a Username" Required>
+                <br>
+
+                <label for="">First Name</label>
+                <input type="text" id="Fname" name="Fname" placeholder="Enter first name" Required>
+                <br>
+
+                <label for="">Last Name</label>
+                <input type="text" id="Lname" name="Lname" placeholder="Enter last name" Required>
+                <br>
+
+                <label for="">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter email" Required>
+                <br>
+
+                <label for="">Matična ustanova-Ime</label>
+                <input type="text" id="matustName" name="matustName" placeholder="Matična ustanova-Ime" Required>
+                <br>
+
+                <label for="">Matična ustanova-Adresa</label>
+                <input type="text" id="matustAdr" name="matustAdr" placeholder="Matična ustanova-Adresa" Required>
+                <br>
+
+                <label for="">Matična ustanova-Grad</label>
+                <input type="text" id="matustCity" name="matustCity" placeholder="Matična ustanova-Grad" Required>
+                <br>
+
+                <label for="">Matična ustanova-Država</label>
+                <input type="text" id="matustDrz" name="matustDrz" placeholder="Matična ustanova-Država" Required>
+                <br>
+
+                <input type="radio" id="sudionik" name="uloga" value="sudionik">
+                <label for="sudionik">Sudionik</label>
+                <br>
+                <input type="radio" id="recenzent" name="uloga" value="recenzent">
+                <label for="recenzent">Recenzent</label>
+                <br>
+
+                <label for="">Naslov rada</label>
+                <input type="text" id="title" name="title" placeholder="Naslov rada" Required>
+                <br>
+
+                <label for="">Autori</label>
+                <input type="text" id="authors" name="authors" placeholder="Autori" Required>
+                <br>
+
+                <label for="">Email osobe za kontakt</label>
+                <input type="email" id="emailCon" name="emailCon" placeholder="Email osobe za kontakt" Required>
+                <br>
+
+                <button type="submit">Sign Up </button>
+            </form> 
+        </body>
+    </html>
