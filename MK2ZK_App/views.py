@@ -2,11 +2,21 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.utils.crypto import get_random_string
 
 
 # Create your views here.
 def home(request):
-    return render(request, 'Index.html')
+    if 'randPassword' in request.session:
+        del request.session['randPassword']
+    #Password se pokazuje jedanput i vise nikad.
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+
+    context = {
+        'num_visits': num_visits,
+    }
+    return render(request, 'Index.html',context)
 
 def signup(request):
     if request.method == "POST":
@@ -26,6 +36,8 @@ def signup(request):
         #Ubaci u bazu podataka
 
         #messages.success(request, "Success")
+        randPassword=get_random_string(length=16)
+        request.session['randPassword'] = randPassword
 
         return redirect('signin')
 
@@ -39,7 +51,13 @@ def signin(request):
         #Authentikacija usera
 
         return redirect('home')
-    return render(request, 'Signin.html')
+    randPassword=0
+    if 'randPassword' in request.session:
+        randPassword=request.session['randPassword']
+    context = {
+            "randPassword" : randPassword,
+        }
+    return render(request, 'Signin.html',context)
 
 def signout(request):
     pass

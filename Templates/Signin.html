@@ -20,5 +20,8 @@
                 <br>
                 <button type="submit">Sign Up </button>
             </form> 
+            {%if randPassword%}
+                <h4>Your random pass word is: {{randPassword}}</h4>
+            {% endif %}
         </body>
     </html>
