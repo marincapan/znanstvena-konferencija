@@ -49,12 +49,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'MK2ZK_Project.urls'
+ROOT_URLCONF = 'IzvorniKod.MK2ZK_Project.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['Templates'],
+        'DIRS': ['IzvorniKod\Templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'MK2ZK_Project.wsgi.application'
+WSGI_APPLICATION = 'IzvorniKod.MK2ZK_Project.wsgi.application'
 
 
 # Database
