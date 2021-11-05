@@ -152,7 +152,7 @@
 							\item Korisnik odabire kreira li račun kao sudionik ili recenzent, te ukoliko odabere opciju sudionik pojavljuje se još jedan dio obrasca gdje je potrebno unijeti naziv rada koji želi predati i autore istog te označiti osobu za kontakt
 							\item Sustav svakom sudioniku pridjeljuje jedinstveni identifikator ID\_xxxx, pri čemu je xxxx redni broj prijave u sustav
 							\item Ažurira se baza podataka
-							\item Korisnik koji se registrirao kao sudionik konferencije prima obavijest (putem e-maila) o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link) u kojoj se nalazi lozinka i korisničko ime, a recenzent tu obavijest prima po odobrenju predsjedavajućeg
+							\item Korisnik koji se registrirao kao sudionik konferencije prima obavijest (putem e-maila) o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link) u kojoj se nalazi lozinka za prijavu, a recenzent tu obavijest prima po odobrenju predsjedavajućeg
 							
 						\end{packed_enum}
 
@@ -190,7 +190,7 @@
 						\item[] \begin{packed_enum}
 
 							\item Korisnik na naslovnici ili u glavnog izborniku bira opciju "Prijava", nakon čega se učitava stranica za prijavu
-							\item Unos korisničkog imena i lozinke
+							\item Unos korisničkog e-maila i lozinke
 							\item Korisnik može kliknuti gumb "Zaboravljena lozinka" te mu se generira nova (UC 3.1)
 							\item Potvrda o ispravnosti unesenih podataka
 							\item Pristup korisničkom sučelju
@@ -201,7 +201,7 @@
 						
 						\item[] \begin{packed_item}
 	
-							\item[2.a]  Neispravno korisničko ime ili lozinka
+							\item[2.a]  Neispravvan e-mail ili lozinka
 							\item[] \begin{packed_enum}
 								
 								\item Sustav korisniku daje obavijest o neispravno unesenim podacima, omogućuje novi unos podataka za prijavu te upućuje korisnika da ukoliko nije izvršena registracija prvo napravi taj korak
@@ -718,8 +718,9 @@
 							\item Korisnik odabire jedan od ponuđenih radova za recenziju
 							\item  Korisnik na stranici vidi prikaz odabranog dokumenta (uz opciju "Preuzmi rad" koja pohranjuje .pdf lokalno)
 							\item Korisnik bira jednu od 4 moguće ocjene te ovisno o odabranoj ocjeni u polje za obrazloženje navodi razlog svog odabira
-							\item Korisnik šalje recenziju autoru rada (onom koji je označen kao osoba za kontakt) (UC10.1)
-							\item Ažurira se baza podataka
+							\item Korisnik bira opciju "Recenziraj ovaj rad" te se time pojavljuje prozor s pitanjem "Jeste li sigurni da želite recenzirati ovaj rad?" s opcijama "Da" ili "Ne"
+							\item Korisnik odabire opciju "Da"
+							\item Ažurira se baza podataka te se recenzija šalje autoru rada na e-mail  (onom koji je označen kao osoba za kontakt) (UC10.1)
 							\item Recenzentu se recenzija dodaje na popis recenzija te ju može pregledati u izborniku "Moje recenzije" (UC10.2)
 							
 							
@@ -734,10 +735,18 @@
 							\end{packed_enum}
 							
 						\end{packed_enum}
+
+						\item[] \begin{packed_enum}
+							\item[6.a] Korisnik odabire opciju "Ne"
+							\item[] \begin{packed_enum}
+								\item[1.] Ponovno se učitava stranica "Radovi" i recenzija nije pohranjena u bazi podataka
+							\end{packed_enum}
+							
+						\end{packed_enum}
 						
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC10.1 - Poslati recenziju sudioniku}}
+					\noindent \underbar{\textbf{UC10.1 - Slanje recenzije sudioniku}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik:} Recenzent
@@ -1215,19 +1224,19 @@
 					
 					\textit{Prikazati odnos aktora i obrazaca uporabe odgovarajućim UML dijagramom. Nije nužno nacrtati sve na jednom dijagramu. Modelirati po razinama apstrakcije i skupovima srodnih funkcionalnosti.}
 					\begin{figure}[H]
-						\includegraphics[scale=0.35]{dijagrami/pregledvaznijihfunkcionalnosti.png} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+						\includegraphics[scale=0.35]{dijagrami/pregledvaznijihfunkcionalnosti.png} 
 						\centering
 						\caption{Dijagram obrasca uporabe, pregled važnijih funkcionalnosti sustava}
 						\label{fig:dijagramobrascauporabe1}
 					\end{figure}
 					\begin{figure}[H]
-						\includegraphics[scale=0.35]{dijagrami/funkcionalnosti-sudionici-recenzenti.png} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+						\includegraphics[scale=0.35]{dijagrami/funkcionalnosti-sudionici-recenzenti.png} 
 						\centering
 						\caption{Dijagram obrasca uporabe, funkcionalnosti sudionika i recenzenata}
 						\label{fig:dijagramobrascauporabe2}
 					\end{figure}
 						\begin{figure}[H]
-						\includegraphics[height=15cm,keepaspectratio]{dijagrami/funkcionalnosti-administrator-predsjedavajucikonferencije.png} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+						\includegraphics[height=15cm,keepaspectratio]{dijagrami/funkcionalnosti-administrator-predsjedavajucikonferencije.png} 
 						\centering
 						\caption{Dijagram obrasca uporabe, funkcionalnosti administratora i predsjedavajućeg konferencije}
 						\label{fig:dijagramobrascauporabe3}
@@ -1239,7 +1248,18 @@
 				
 				\textbf{\textit{dio 1. revizije}}\\
 				
-				\textit{Nacrtati sekvencijske dijagrame koji modeliraju najvažnije dijelove sustava (max. 4 dijagrama). Ukoliko postoji nedoumica oko odabira, razjasniti s asistentom. Uz svaki dijagram napisati detaljni opis dijagrama.}
+				\textbf{Obrazac uporabe UC10 - Recenziranje rada}\\
+				Recenzent na stranici radova može koliko želi odabirati radove, čitati ih i pregledavati. Kada odabere i pročita rad koji namjerava recenzirati, a rad prethodno nije recenziran, kreće se prema dnu stranice gdje se nalazi odabir ocjene te mora odabrati jednu od četiri ocjene koje su definirane u opisu zadatka te je svakoj dodijeljen simboličan broj (u bazi podataka i u dokumentaciji). Bira jednu od 4 ocjene, te ovisno o tome koju ocjenu je odabrao (ukoliko su to ocjene 2., 3. ili 4.) pojavljuje se polje za upis obrazloženja ocjene. Korisnik može mijenjati ocjenu klikom sve dok se ne odluči za svoju konačnu ocjenu (i po potrebi unese obrazloženje ocjene), nakon čega korisnik bira opciju "Recenziraj ovaj rad". Klikom na navedenu opciju, otvara se prozor s pitanjem "Jeste li sigurni da želite recenzirati ovaj rad?". Ukoliko korisnik odabere opciju "Da", recenzija se pohranjuje u bazi podataka (te je sukladno dostupna na stranici "Moje recenzije"), a ako korisnik odabere opciju "Ne" ponovno se učitava stranica radova te korisnik opet ima mogućnost pregledavati radove s ciljem recenziranja.
+				\eject
+
+				\begin{figure}[H]
+					\includegraphics[scale=0.58]{dijagrami/UC10-RecenziranjeRada.png} 
+					\centering
+					\caption{Sekvencijski dijagram za UC10 - Recenziranje rada}
+					\label{fig:sekvencijski1}
+				\end{figure}
+
+
 				\eject
 	
 		\section{Ostali zahtjevi}
