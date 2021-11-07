@@ -66,7 +66,12 @@ def signin(request):
         Username = request.POST['Username']
         pass1 = request.POST['pass1']
 
-        return redirect('home')
+        if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists:
+            messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
+            return redirect('home')
+        else:
+            messages.error(request, "Korisnicko ime ili lozinka su krivi")
+            return redirect('signin')
     
     context = {}
     if "randPassword" in request.session:
