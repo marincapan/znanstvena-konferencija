@@ -121,7 +121,7 @@
 					\noindent \underbar{\textbf{UC1 - Pregled naslovnice}}
 					\begin{packed_item}
 	
-						\item \textbf{Glavni sudionik: } Neregistrirani korisnik, registrirani korisnik, admininistrator, predsjedavajući konferencije
+						\item \textbf{Glavni sudionik: } Neregistrirani korisnik, registrirani korisnik
 						\item  \textbf{Cilj:} Pregledavanje statičnog sadržaja stranice
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} -
@@ -201,7 +201,7 @@
 						
 						\item[] \begin{packed_item}
 	
-							\item[2.a]  Neispravvan e-mail ili lozinka
+							\item[2.a]  Neispravan e-mail ili lozinka
 							\item[] \begin{packed_enum}
 								
 								\item Sustav korisniku daje obavijest o neispravno unesenim podacima, omogućuje novi unos podataka za prijavu te upućuje korisnika da ukoliko nije izvršena registracija prvo napravi taj korak
@@ -345,9 +345,11 @@
 							\end{packed_enum}
 							
 						\end{packed_item}
-			
+					
 					\end{packed_item}
-						\noindent \underbar{\textbf{UC6.1 - Pregled vlastitih radova}}
+						\noindent \underbar{\textbf{UC6 - Upravljanje vlastitim radovima (specijalizacije opisane u nastavku)}}
+					
+					\noindent \underbar{\textbf{UC6.1 - Pregled vlastitih radova}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Sudionik konferencije
@@ -360,9 +362,7 @@
 							
 							\item Korisnik klikne na gumb "Moji radovi" iz glavnog izbornika
 							\item Aplikacija prikazuje popis predanih radova povučen iz baze podataka
-							\item Korisnik može, ako želi, predati još koji rad (UC6.1)
-       u(UC6.2)
-       to zahtjevao recenzent(UC6.3)
+							\item Korisnik odabire željeni rad s popisa te mu se otvara stranica s podatcima o radu
 					
 						\end{packed_enum}                
 						
@@ -408,52 +408,8 @@
 						\end{packed_item}               
 						
 					\end{packed_item}
-					\noindent \underbar{\textbf{UC6.3 - Promjena podataka o vlastitom radu}}
-					\begin{packed_item}
-						
-						\item \textbf{Glavni sudionik: } Registrirani korisnik
-						Korisnik ima otvorenu stranicu s podatcima o svom radu
-      						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						\item  \textbf{Opis osnovnog tijeka:}
-						
-						\item[] \begin{packed_enum}
-							                                                                               
-							
-							\item Korisnik klikne na gumb "Moji radovi" iz glavnog izbornika
-							\item Aplikacija prikazuje popis predanih radova povučen iz baze podataka
-							\item Korisnik odabire rad s popisa te mu se otvara stranica s podatcima o radu
-							\item Korisnik odabere opciju "Promijeni podatke"
-							\item Korisnik radi željene izmjene
-							\item Korisnik odabire opciju "Spremi promjene"
-							\item Baza podataka se ažurira
-							
-						\end{packed_enum}
-						
-						\item  \textbf{Opis mogućih odstupanja:}
-						
-						\item[] \begin{packed_item}
-							
-							\item[5.a]  Korisnik izvrši promjenu podataka, ali uneseni podaci nisu u ispravnom formatu
-							\item[] \begin{packed_enum}
-								
-								\item Sustav ne dozvoljava spremanje izmjena dok podaci nisu u ispravnom formatu
-								\item Sustav kraj podatka koji je neispravno zapisan prikaže obavijest kako podatak nije u ispravnom formatu te upućuje da korisnik ispravi isto
-								
-							\end{packed_enum}
-							
-							\item[6.a]  Korisnik izvrši promjenu podataka, ali ne odabere opciju "Spremi promjene"
-							\item[] \begin{packed_enum}
-								
-								\item Sustav obavještava korisnika da nije spremio podatke prije izlaska iz prozora
-								
-							\end{packed_enum}
-							
-						\end{packed_item}               
-						
-					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC6.4 - Izmjena rada po zahtjevu recenzenta}}
+					\noindent \underbar{\textbf{UC6.3 - Izmjena rada po zahtjevu recenzenta}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Sudionik
 						\item \textbf{Cilj:} Izmijeniti ranije učitan rad
@@ -562,6 +518,9 @@
 						
 					\end{packed_item}
 					
+					\noindent \underbar{\textbf{UC8 - Upravljanje registriranim korisnicima (sudionicima i odobrenim recenzentima) }}
+					\noindent \underbar{\textbf{(specijalizacije opisane u nastavku)}}
+					\newline
 					\noindent \underbar{\textbf{UC8.1 - Pregled registriranih sudionika}}
 					\begin{packed_item}
 						
@@ -804,7 +763,8 @@
 					\end{packed_item}
 					
 					
-				
+					\noindent \underbar{\textbf{UC11 -Upravljanje predanim radovima (specijalizacije opisane u nastavku)}}
+					\newline
 					\noindent \underbar{\textbf{UC11.1 - Pregled radova}}
 					\begin{packed_item}
 						
@@ -817,8 +777,7 @@
 						
 						\item[] \begin{packed_enum}
 							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika te mu se učitava stranica s opcijama
-							\item Korisnik, po potrebi, može izmijeniti podatke o radu (UC11.3)
-       stito računalo (UC11.4)\item Korisnik odabire opciju "Predani radovi" 
+							\item Korisnik odabire opciju "Predani radovi" 
 							\item Korisniku je učitana stranica s popisom svih radova
 							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po sekciji, po državi) te mu se sukladno prikazuje popis radova koji odgovaraju rezultatima filtra
 							\item Korisnik odabire rad s popisa
@@ -1236,7 +1195,7 @@
 						\label{fig:dijagramobrascauporabe2}
 					\end{figure}
 						\begin{figure}[H]
-						\includegraphics[height=15cm,keepaspectratio]{dijagrami/funkcionalnosti-administrator-predsjedavajucikonferencije.png} 
+						\includegraphics[height=17cm,width=15cm]{dijagrami/funkcionalnosti-administrator-predsjedavajucikonferencije.png} 
 						\centering
 						\caption{Dijagram obrasca uporabe, funkcionalnosti administratora i predsjedavajućeg konferencije}
 						\label{fig:dijagramobrascauporabe3}
