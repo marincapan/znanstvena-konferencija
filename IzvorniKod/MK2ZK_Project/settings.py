@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'IzvorniKod.MK2ZK_Project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Backend_DB',
+        'NAME': 'MK2ZK_DB',
         'USER': 'postgres',
         'PASSWORD': 'dogwoofwoof',
         'HOST': 'localhost',

@@ -8,11 +8,11 @@ class Sekcija(models.Model):
     nazivSekcija = models.CharField(max_length=50)
 
 class Ustanova(models.Model):
-    sifSekcija = models.AutoField(primary_key=True)
+    sifUstanova = models.AutoField(primary_key=True)
     nazivUstanova = models.CharField(max_length=50)
-    grad = models.CharField(max_length=50)
-    drzava = models.CharField(max_length=50)
-    adresa = models.CharField(max_length=50)
+    gradUstanova = models.CharField(max_length=50)
+    drzavaUstanova = models.CharField(max_length=50)
+    adresaUstanova = models.CharField(max_length=50)
 
 class Autor(models.Model):
     sifAutor = models.AutoField(primary_key=True)
@@ -37,7 +37,8 @@ def increment_KorisnikID():
   return new_korisnik_id
 
 class Korisnik(models.Model):
-    korisnickoIme = models.CharField(max_length=50, primary_key=True)
+    id = models.AutoField(primary_key=True)
+    korisnickoIme = models.CharField(max_length=50, unique=True)
     lozinka = models.CharField(max_length=50)
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
@@ -59,7 +60,6 @@ class Rad(models.Model):
     recinziranBool = models.BooleanField(default=False)
     ocjena = models.IntegerField()
     obrazlozenje = models.CharField(max_length=500)
-    radRecenzent = models.ForeignKey('Korisnik',on_delete=models.CASCADE)
 
 class Konferencija(models.Model):
     sifKonferencija = models.AutoField(primary_key=True)
@@ -67,7 +67,6 @@ class Konferencija(models.Model):
     opisKonferencije = models.CharField(max_length=1000)
     datumKonferencije = models.DateField()
     rokPrijave = models.DateField()
-    predsjedavajuci = models.ForeignKey('Korisnik',on_delete=models.CASCADE)
 
 
 

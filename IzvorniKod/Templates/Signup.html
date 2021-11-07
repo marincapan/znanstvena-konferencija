@@ -9,6 +9,13 @@
             <link rel="stylesheet" href="">
         </head>
         <body>
+            <!--Ako npr nakon sign up treba displayat "Uspjesno registrirani!"-->
+            {% if messages %}
+                {% for message in messages %}
+                <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+                {% endfor %}
+            {% endif %} 
+            <!---->
             <h3> SignUp Template</h3>
 
             <form action="/signup" method="post">
@@ -62,6 +69,10 @@
 
                 <label for="">Email osobe za kontakt</label>
                 <input type="email" id="emailCon" name="emailCon" placeholder="Email osobe za kontakt" Required>
+                <br>
+
+                <label for="">Sekcija</label>
+                <input type="text" id="section" name="section" placeholder="Sekcija na kojoj zelite sudjelovati" Required>
                 <br>
 
                 <button type="submit">Sign Up </button>
