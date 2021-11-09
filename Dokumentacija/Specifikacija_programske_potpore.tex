@@ -673,8 +673,6 @@
 							\item Korisnik odabire jedan od ponuđenih radova za recenziju
 							\item  Korisnik na stranici vidi prikaz odabranog dokumenta (uz opciju "Preuzmi rad" koja pohranjuje .pdf lokalno)
 							\item Korisnik bira jednu od 4 moguće ocjene te ovisno o odabranoj ocjeni u polje za obrazloženje navodi razlog svog odabira
-							\item Korisnik bira opciju "Recenziraj ovaj rad" te se time pojavljuje prozor s pitanjem "Jeste li sigurni da želite recenzirati ovaj rad?" s opcijama "Da" ili "Ne"
-							\item Korisnik odabire opciju "Da"
 							\item Ažurira se baza podataka te se recenzija šalje autoru rada na e-mail  (onom koji je označen kao osoba za kontakt) (UC10.1)
 							\item Recenzentu se recenzija dodaje na popis recenzija
 							
@@ -1191,7 +1189,7 @@
 				\eject
 				
 				\textbf{Obrazac uporabe UC13 - Recenziranje rada}\\
-				Recenzent na stranici radova može koliko želi odabirati radove, čitati ih i pregledavati. Kada odabere i pročita rad koji namjerava recenzirati, a rad prethodno nije recenziran, kreće se prema dnu stranice gdje se nalazi odabir ocjene te mora odabrati jednu od četiri ocjene koje su definirane u opisu zadatka te je svakoj dodijeljen simboličan broj (u bazi podataka i u dokumentaciji). Bira jednu od 4 ocjene, te ovisno o tome koju ocjenu je odabrao (ukoliko su to ocjene 2., 3. ili 4.) pojavljuje se polje za upis obrazloženja ocjene. Korisnik može mijenjati ocjenu klikom sve dok se ne odluči za svoju konačnu ocjenu (i po potrebi unese obrazloženje ocjene), nakon čega korisnik bira opciju "Recenziraj ovaj rad". Klikom na navedenu opciju, otvara se prozor s pitanjem "Jeste li sigurni da želite recenzirati ovaj rad?". Ukoliko korisnik odabere opciju "Da", recenzija se pohranjuje u bazi podataka (te je sukladno dostupna na stranici "Moje recenzije"), a ako korisnik odabere opciju "Ne" ponovno se učitava stranica radova te korisnik opet ima mogućnost pregledavati radove s ciljem recenziranja.
+				Recenzent na stranici radova može koliko želi odabirati radove, čitati ih i pregledavati. Kada odabere i pročita rad koji namjerava recenzirati, a rad prethodno nije recenziran, kreće se prema dnu stranice gdje se nalazi odabir ocjene te mora odabrati jednu od četiri ocjene koje su definirane u opisu zadatka te je svakoj dodijeljen simboličan broj (u bazi podataka i u dokumentaciji). Bira jednu od 4 ocjene, te ovisno o tome koju ocjenu je odabrao (ukoliko su to ocjene 2., 3. ili 4.) pojavljuje se polje za upis obrazloženja ocjene. Korisnik može mijenjati ocjenu klikom sve dok se ne odluči za svoju konačnu ocjenu (i po potrebi unese obrazloženje ocjene), nakon čega korisnik bira opciju "Recenziraj ovaj rad". Klikom na navedenu opciju, recenzija se pohranjuje u bazi podataka (te je sukladno dostupna na stranici "Moje recenzije").
 				\eject
 
 				\begin{figure}[H]
@@ -1236,7 +1234,14 @@
 		
 			\textbf{\textit{dio 1. revizije}}\\
 		 
-			 \textit{Nefunkcionalni zahtjevi i zahtjevi domene primjene dopunjuju funkcionalne zahtjeve. Oni opisuju \textbf{kako se sustav treba ponašati} i koja \textbf{ograničenja} treba poštivati (performanse, korisničko iskustvo, pouzdanost, standardi kvalitete, sigurnost...). Primjeri takvih zahtjeva u Vašem projektu mogu biti: podržani jezici korisničkog sučelja, vrijeme odziva, najveći mogući podržani broj korisnika, podržane web/mobilne platforme, razina zaštite (protokoli komunikacije, kriptiranje...)... Svaki takav zahtjev potrebno je navesti u jednoj ili dvije rečenice.}
+			 \begin{packed_item}
+
+				\item Sustav treba omogućiti istovremeni rad više korisnika, isto kao što i treba osigurati da svaki korisnik ima jedinstvenu i sigurnu zaporku s kojom se prijavljuju u sustav. Također, svi korisnici koji vrše registraciju daju privolu da pristaju na prikupljanje i daljnju obradu osobnih podataka sukladno sa zakonom o zaštiti podataka (GDPR). Sustav će koristiti protokol HTTPS za komunikaciju između korisnika i servera.
+				\item Sustav treba biti jednostavan i intuitivan za korištenje, a implementiran je kao web-aplikacija kreirana korištenjem objektno-orijentiranih jezika.
+				\item Veza s bazom podataka mora biti zaštićena, brza i otporna na vanjske greške.
+				\item Neispravno korištenje sučelja ne smije narušiti rad sustava. Korisničko sučelje i sustav moraju podržavati hrvatsku abecedu pri unosu tekstualnog sadržaja
+
+			\end{packed_item}
 			 
 			 
 			 
