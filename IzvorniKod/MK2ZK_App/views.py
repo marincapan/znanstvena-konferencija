@@ -94,3 +94,23 @@ def signout(request):
     if 'LoggedInUserId' in request.session:
         del request.session['LoggedInUserId']
     return redirect('home')
+
+def osobnipodatci(request):
+    LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+    context={}
+    context['korisnickoIme']=LoggedInUser.korisnickoIme
+    context['ime']=LoggedInUser.ime
+    context['prezime']=LoggedInUser.prezime
+    context['email']=LoggedInUser.email
+    if LoggedInUser.vrstaKorisnik==4:
+        uloga="Sudionik"
+    elif LoggedInUser.vrstaKorisnik==3:
+        uloga="Recenzent"
+    elif LoggedInUser.vrstaKorisnik==2:
+        uloga="Presjedavajući"
+    else:
+        uloga="Admin"
+    context['uloga']=uloga
+    context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.nazivUstanova
+    
+    return render(request, 'OsobniPodatci.html',context)
