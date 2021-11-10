@@ -152,7 +152,13 @@ def osobnipodatci(request):
 
 def mojiradovi(request):
     LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+    context={}
+    
+    fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
+    print(fetchedRadovi)
+    context['fetchedRadovi']=fetchedRadovi
     if request.method == "POST":
+        print("Flag1")
         fileTitle = request.POST["fileTitle"]
         uploadedFile = request.FILES["uploadedFile"]
 
@@ -162,11 +168,11 @@ def mojiradovi(request):
             radSekcija = LoggedInUser.korisnikSekcija,
             radKorisnik = LoggedInUser
         )
-        rad.save()
-        redirect('mojiradovi')
-    context={}
-    fetchedRad=models.Rad.objects.get(radKorisnik=LoggedInUser)
-    print(fetchedRad.pdf)
-    context['filelocation']=fetchedRad.pdf
-    context['filetitle']=fetchedRad.naslov
+        print(models.Rad.objects.filter(naslov = fileTitle,pdf = uploadedFile,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser).exists())
+        if not models.Rad.objects.filter(naslov = fileTitle,pdf = uploadedFile,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser).exists():
+            print("Flag2")
+            rad.save()
+        return redirect('mojiradovi')
+    
+    
     return render(request, 'MojiRadovi.html',context)

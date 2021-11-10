@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.enums import Choices
 from django.db.models.fields.related import ForeignKey
+from django.utils.crypto import get_random_string
 
 # Create your models here.
 class Sekcija(models.Model):
@@ -55,11 +56,15 @@ class Korisnik(models.Model):
     korisnikUstanova = models.ForeignKey('Ustanova',on_delete=models.CASCADE)
     korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE)
 
+def custom_directory(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return 'user_{0}/{1}/{2}'.format(instance.radKorisnik.id,get_random_string(length=8), filename)
+
 class Rad(models.Model):
     sifRad = models.AutoField(primary_key=True)
     naslov = models.CharField(max_length=50)
     recinziranBool = models.BooleanField(default=False)
-    pdf = models.FileField(upload_to="Radovi/")
+    pdf = models.FileField(upload_to=custom_directory)
     radSekcija=models.ForeignKey("Sekcija", on_delete=models.CASCADE)
     radKorisnik=models.ForeignKey("Korisnik", on_delete=models.CASCADE)
 class Konferencija(models.Model):
