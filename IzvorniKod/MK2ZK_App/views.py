@@ -10,15 +10,21 @@ from django.contrib import messages
 from django.utils.crypto import get_random_string
 from . import models
 from django.db import IntegrityError
+from django.core import serializers
+
+
+
 # Create your views here.
 def home(request):
     if 'randPassword' in request.session:
         del request.session['randPassword']
     #Password se pokazuje jedanput i vise nikad.
-    num_visits = request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits + 1
 
-    return render(request, 'Index.html')
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    print(context)
+    return render(request, 'Index.html',context)
 
 def signup(request):
     if request.method == "POST":
@@ -44,9 +50,11 @@ def signup(request):
         randPassword=get_random_string(length=16)
         request.session['randPassword'] = randPassword
         Ustanova = models.Ustanova(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz)
-        Ustanova.save()
-        Sekcija = models.Sekcija(korisnikSekcija=Section)
-        Sekcija.save()
+        if models.Ustanova.objects.filter(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz).exists:
+            Ustanova = models.Ustanova.objects.get(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz)
+        Sekcija = models.Sekcija(nazivSekcija=Section)
+        if  models.Sekcija.objects.filter(nazivSekcija=Section).exists:
+            Sekcija=models.Sekcija.objects.get(nazivSekcija=Section)
         try:
             NoviKorisnik = models.Korisnik(korisnickoIme=Username,lozinka=randPassword,ime=Fname,prezime=Lname,email=email,vrstaKorisnik=uloga, korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
             NoviKorisnik.save()
@@ -67,8 +75,12 @@ def signin(request):
         pass1 = request.POST['pass1']
 
         if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists:
-            messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
-            return redirect('home')
+            LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
+            request.session['LoggedInUserId']=LoggedInUser.idSudionik
+            if LoggedInUser.odobrenBool==False:
+                messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
+                return redirect('home')
+
         else:
             messages.error(request, "Korisnicko ime ili lozinka su krivi")
             return redirect('signin')
@@ -79,4 +91,6 @@ def signin(request):
     return render(request, 'Signin.html',context)
 
 def signout(request):
-    pass
+    if 'LoggedInUserId' in request.session:
+        del request.session['LoggedInUserId']
+    return redirect('home')
