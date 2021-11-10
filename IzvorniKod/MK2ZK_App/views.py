@@ -96,6 +96,41 @@ def signout(request):
     return redirect('home')
 
 def osobnipodatci(request):
+    if request.method == "POST":
+
+        if 'NewUserName' in request.POST:
+            Username = request.POST['Username']
+            LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+            LoggedInUser.korisnickoIme = Username
+            try:
+                LoggedInUser.save()
+            except IntegrityError:
+                messages.error(request, "To korisnicko ime je vec u uporabi")
+                return redirect('osobnipodatci')
+
+        if 'NewFName' in request.POST:
+            Fname = request.POST['Fname']
+            LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+            LoggedInUser.ime = Fname
+            LoggedInUser.save()
+
+        if 'NewLName' in request.POST:
+            Lname = request.POST['Lname']
+            LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+            LoggedInUser.prezime = Lname
+            LoggedInUser.save()
+
+        if 'NewEmail' in request.POST:
+            email = request.POST['email']
+            LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+            LoggedInUser.email = email
+            try:
+                LoggedInUser.save()
+            except IntegrityError:
+                messages.error(request, "Ta email adresa je vec u uporabi")
+                return redirect('osobnipodatci')  
+        return redirect('osobnipodatci')
+
     LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
     context={}
     context['korisnickoIme']=LoggedInUser.korisnickoIme
