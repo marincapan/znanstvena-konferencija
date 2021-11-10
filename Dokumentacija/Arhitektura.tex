@@ -19,7 +19,7 @@
 			
 			\textbf{\textit{dio 1. revizije}}\\
 			
-		Baze podataka neizostavan su dio razvoja programske potpore jer danas gotova svaka domena primjene obiluje mnoštvom podataka koje treba pohraniti na organiziran način kako bi se efikasno dohvaćali, mijenjali i nadopunjavali. Za upravljanje bazom podataka mogu se koristiti različiti sustavi koji obavljaju optimiranje upita i omogućuju rukovanje podatcima. Mi smo odlučili koristiti PostgreSQL koji nam je bio preporučen na kolegiju Baze podataka. \newline Iako stvarni svijet ne možemo prikazati sa svim detaljima, relacijski nam model baze podataka omogućuje vjeran prikaz stvarnosti pomoću relacija u koje pohranjujemo vrijednosti odabranih atributa vezanih uz entitete bitne za domenu primjene. Formalno gledano relacija, tj. instanca relacije, definirana na relacijskoj shemi je skup n-torki, a neformalno možemo reći da je to imenovana dvodimenzionalna tablica. Atributi su imenovani stupci te tablice. ER (Entity-Relationship) model podataka zadržava dobra svojstva relacijskog modela, a uz to omogućuje eksplicitni prikaz semantičkih informacija vezanih uz veze (odnose) između entiteta. Kako bismo prikazali kako su eniteti našeg sustava povezani koristit ćemo ER model baze podataka.
+		Baze podataka neizostavan su dio razvoja programske potpore jer danas gotova svaka domena primjene obiluje mnoštvom podataka koje treba pohraniti na organiziran način kako bi se efikasno dohvaćali, mijenjali i nadopunjavali. Za upravljanje bazom podataka mogu se koristiti različiti sustavi koji obavljaju optimiranje upita i omogućuju rukovanje podatcima. Mi smo odlučili koristiti PostgreSQL koji nam je bio preporučen na kolegiju Baze podataka. \newline Iako stvarni svijet ne možemo prikazati sa svim detaljima, relacijski nam model baze podataka omogućuje vjeran prikaz stvarnosti pomoću relacija u koje pohranjujemo vrijednosti odabranih atributa vezanih uz entitete bitne za domenu primjene. Formalno gledano relacija, tj. instanca relacije, definirana na relacijskoj shemi je skup n-torki, a neformalno možemo reći da je to imenovana dvodimenzionalna tablica. Atributi su imenovani stupci te tablice. ER (Entity-Relationship) model podataka zadržava dobra svojstva relacijskog modela, a uz to omogućuje eksplicitni prikaz semantičkih informacija vezanih uz veze (odnose) između entiteta. ER dijagram prikazuje kako su eniteti našeg sustava povezani. Pri preslikavanju ER modela u relacijski model entiteti i veze postaju entiteti (relacije) te se sheme s jednakim ključevima zamjene njihovom unijom.
 		Baza podataka ove aplikacije sastoji se od sljedećih entiteta:
 		\begin{packed_item}
 			\item Korisnik
@@ -51,13 +51,15 @@
 				\SetCell{LightGreen}ID & INT	&  jedinstveni brojčani identifikator	\\ \hline
 				korisnickoIme	& VARCHAR & jedinstveni korisnicki identifikator  	\\ \hline 
 				email & VARCHAR & e-mail adresa korisnika  \\ \hline 
-				lozinjka & VARCHAR & hash lozinke  \\ \hline 
+				lozinka & VARCHAR & hash lozinke  \\ \hline 
 				ime & VARCHAR	&  	ime korisnika	\\ \hline 
 				prezime & VARCHAR & prezime korisnika  \\ \hline 
-				IDSudionik & INT & jedinstvena oznaka sudionika (ID\_XXXX, pri čemu je XXXX redni broj prijave)
+				IDSudionik & INT & jedinstvena oznaka sudionika (ID\_XXXX,
+				 pri čemu je XXXX redni broj prijave)
 				odobren & BOOLEAN & oznaka može li se korisnik prijaviti u sustav (sudionik nakon potvrde registricije, a recenzent nakon odobrenja predsjedavajućeg konferencije )
 				\SetCell{LightBlue} sifUstanova	& INT & jedinstvna brojčana oznaka matične ustanove korisnika (Ustanova.ID)  	\\ \hline 
-				\SetCell{LightBlue} sifSekcija	& INT & jedinstvena brojčana oznake sekcije (Sekcija.ID) u koju se korisnik prijavio prilikom registracije  	\\ \hline 
+				\SetCell{LightBlue} sifSekcija	& INT & jedinstvena brojčana oznake sekcije (Sekcija.ID) u koju
+				 se korisnik prijavio prilikom registracije  	\\ \hline 
 			\end{longtblr}
 				\begin{longtblr}[
 				label=none,
@@ -68,7 +70,9 @@
 					rowhead = 1,
 				} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 				\hline \multicolumn{3}{|c|}{\textbf{korisnik - ime tablice}}	 \\ \hline[3pt]
-				\SetCell{LightGreen}IDKorisnik & INT	&  	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod  	\\ \hline
+				\SetCell{LightGreen}IDKorisnik & INT	&  	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod  eeeeeeeeeeee
+				eeeeeeeeeeee
+				eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee	\\ \hline
 				korisnickoIme	& VARCHAR &   	\\ \hline 
 				email & VARCHAR &   \\ \hline 
 				ime & VARCHAR	&  		\\ \hline 
