@@ -9,9 +9,25 @@
             <link rel="stylesheet" href="">
         </head>
         <body>
+            <!--Ako npr nakon sign in treba displayat "Vaš account jos nije potvrden. Molimo potvrdite svoj account"-->
+            {% if messages %}
+                {% for message in messages %}
+                <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+                {% endfor %}
+            {% endif %}
+            <!---->
             <h3> Welcome page Template</h3>
-            <button type="submit"><a href="signup">Signup</a></button>
-            <button type="submit"><a href="signin">Signin</a></button>
-            <button type="submit">Signout</button>
+            {%if not LoggedInUser%}
+                <button type="submit"><a href="signup">Signup</a></button>
+                <button type="submit"><a href="signin">Signin</a></button>
+            {% endif %}
+            {%if LoggedInUser%}
+                <button type="submit"><a href="signout">Signout</a></button>
+                <button type="submit"><a href="osobnipodatci">OsobniPodatci</a></button>
+                <button type="submit"><a href="mojiradovi">MojiRadovi</a></button>
+            {% endif %}
+            {%if LoggedInUser%}
+                <h4>Your ID is: {{LoggedInUser}}</h4>
+            {% endif %}
         </body>
     </html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>OsobniPodatci</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="">
+        </head>
+        <body>
+            <h3>Osobni podatci Template</h3>
+            <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
+            jer se java script na dnu referira na njih-->
+
+            {% if messages %}
+                {% for message in messages %}
+                <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+                {% endfor %}
+            {% endif %}
+            <button type="submit"><a href='/'>Home</a></button><br>
+            {%if korisnickoIme%}
+                <h4>Korisnicko Ime : <h4 id='korisnickoIme'>{{korisnickoIme}}</h4></h4>
+                <button type="button" onclick="UpdateUserName()" id="UpdateUserName" value="UpdateUserName">Update</button>
+                
+                <form action="/osobnipodatci" method="post" id='NewUserNameForm'>
+                {% csrf_token %}
+                    <input type="text" id="Username" name="Username" placeholder="EnterNewUser" Required>
+                    <button type="submit"  name='NewUserName'>Change </button>
+                </form>
+            {%endif%}
+            
+            {%if ime%}
+                <h4>Ime : <h4 id='ime'>{{ime}}</h4></h4>
+                <button type="button" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName">Update</button>
+                
+                <form action="/osobnipodatci" method="post" id='NewFNameForm'>
+                {% csrf_token %}
+                    <input type="text" id="Fname" name="Fname" placeholder="EnterNewFname" Required>
+                    <button type="submit" name='NewFName'>Change </button>
+                </form>
+            {%endif%}
+
+
+            {%if prezime%}
+                <h4>Prezime : <h4 id='prezime'>{{prezime}}</h4></h4>
+                <button type="button" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName">Update</button>
+                
+                <form action="/osobnipodatci" method="post" id='NewLNameForm'>
+                {% csrf_token %}
+                    <input type="text" id="Lname" name="Lname" placeholder="EnterNewLname" Required>
+                    <button type="submit" name='NewLName'>Change </button>
+                </form>
+            {%endif%}
+
+
+            {%if email%}
+                <h4>Email : <h4 id='email'>{{email}}</h4></h4>
+                <button type="button" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail">Update</button>
+                
+                <form action="/osobnipodatci" method="post" id='NewEmailForm'>
+                {% csrf_token %}
+                    <input type="text" id="email" name="email" placeholder="EnterNewEmail" Required>
+                    <button type="submit" name='NewEmail'>Change </button>
+                </form>
+            {%endif%}
+
+
+            {%if uloga%}
+                <h4>Uloga : <h4 >{{uloga}}</h4></h4>
+            {%endif%}
+
+
+            {%if MaticnaUstanova%}
+                <h4>MatičnaUstanova : <h4>{{MaticnaUstanova}}</h4></h4>
+            {%endif%}
+
+
+        </body>
+        <script type="text/javascript">
+            window.onload = function(){
+                document.getElementById("NewUserNameForm").style.display = "none";
+                document.getElementById("NewFNameForm").style.display = "none";
+                document.getElementById("NewLNameForm").style.display = "none";
+                document.getElementById("NewEmailForm").style.display = "none";
+            };
+            function UpdateUserName(){
+                document.getElementById("NewUserNameForm").style.display = "inline";
+                document.getElementById("UpdateUserName").style.display = "none";
+                document.getElementById("korisnickoIme").style.display = "none";
+            }
+            function UpdateFName(){
+                document.getElementById("NewFNameForm").style.display = "inline";
+                document.getElementById("UpdateFName").style.display = "none";
+                document.getElementById("ime").style.display = "none";
+            }
+            function UpdateLName(){
+                document.getElementById("NewLNameForm").style.display = "inline";
+                document.getElementById("UpdateLName").style.display = "none";
+                document.getElementById("prezime").style.display = "none";
+            }
+            function UpdateEmail(){
+                document.getElementById("NewEmailForm").style.display = "inline";
+                document.getElementById("UpdateEmail").style.display = "none";
+                document.getElementById("email").style.display = "none";
+            }
+        </script>
+    </html>
