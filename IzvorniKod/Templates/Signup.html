@@ -53,30 +53,62 @@
                 <input type="text" id="matustDrz" name="matustDrz" placeholder="Matična ustanova-Država" Required>
                 <br>
 
-                <input type="radio" id="sudionik" name="uloga" value="sudionik">
+                <input type="radio" id="sudionik" name="uloga" value="sudionik" onclick=UpdateOnSudionik()>
                 <label for="sudionik">Sudionik</label>
                 <br>
-                <input type="radio" id="recenzent" name="uloga" value="recenzent">
+                <input type="radio" id="recenzent" name="uloga" value="recenzent" onclick=UpdateOnRecezent()>
                 <label for="recenzent">Recenzent</label>
                 <br>
 
-                <label for="">Naslov rada</label>
+                <label for="" id='titleLabel'>Naslov rada</label>
                 <input type="text" id="title" name="title" placeholder="Naslov rada" Required>
                 <br>
 
-                <label for="">Autori</label>
+                <label for="" id='authorsLabel'>Autori</label>
                 <input type="text" id="authors" name="authors" placeholder="Autori" Required>
                 <br>
 
-                <label for="">Email osobe za kontakt</label>
+                <label for="" id='emailConLabel'>Email osobe za kontakt</label>
                 <input type="email" id="emailCon" name="emailCon" placeholder="Email osobe za kontakt" Required>
                 <br>
 
-                <label for="">Sekcija</label>
+                <label for="" id='sectionLabel'>Sekcija</label>
                 <input type="text" id="section" name="section" placeholder="Sekcija na kojoj zelite sudjelovati" Required>
                 <br>
 
                 <button type="submit">Sign Up </button>
             </form> 
         </body>
+        <script type="text/javascript">
+            window.onload = function(){
+                document.getElementById("title").style.display = "none";
+                document.getElementById("authors").style.display = "none";
+                document.getElementById("emailCon").style.display = "none";
+                document.getElementById("section").style.display = "none";
+                document.getElementById("titleLabel").style.display = "none";
+                document.getElementById("authorsLabel").style.display = "none";
+                document.getElementById("emailConLabel").style.display = "none";
+                document.getElementById("sectionLabel").style.display = "none";
+            };
+            function UpdateOnSudionik(){
+                document.getElementById("title").style.display = "inline";
+                document.getElementById("authors").style.display = "inline";
+                document.getElementById("emailCon").style.display = "inline";
+                document.getElementById("section").style.display = "inline";
+                document.getElementById("titleLabel").style.display = "inline";
+                document.getElementById("authorsLabel").style.display = "inline";
+                document.getElementById("emailConLabel").style.display = "inline";
+                document.getElementById("sectionLabel").style.display = "inline";
+            }
+            function UpdateOnRecezent(){
+                document.getElementById("title").style.display = "none";
+                document.getElementById("authors").style.display = "none";
+                document.getElementById("emailCon").style.display = "none";
+                document.getElementById("section").style.display = "none";
+                document.getElementById("titleLabel").style.display = "none";
+                document.getElementById("authorsLabel").style.display = "none";
+                document.getElementById("emailConLabel").style.display = "none";
+                document.getElementById("sectionLabel").style.display = "none";
+            }
+        </script>
     </html>
