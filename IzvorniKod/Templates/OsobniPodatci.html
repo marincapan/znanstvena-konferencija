@@ -13,12 +13,16 @@
             <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
             jer se java script na dnu referira na njih-->
 
+            <!--Klasika za error messages-->
             {% if messages %}
                 {% for message in messages %}
                 <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
                 {% endfor %}
             {% endif %}
+
             <button type="submit"><a href='/'>Home</a></button><br>
+
+            <!--Ako postoje informacije (Tj ako je ulogiran korisnik) prikazi ih-->
             {%if korisnickoIme%}
                 <h4>Korisnicko Ime : <h4 id='korisnickoIme'>{{korisnickoIme}}</h4></h4>
                 <button type="button" onclick="UpdateUserName()" id="UpdateUserName" value="UpdateUserName">Update</button>

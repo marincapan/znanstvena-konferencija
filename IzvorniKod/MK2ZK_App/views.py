@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.utils.crypto import get_random_string
 from . import models
-from django.db import IntegrityError
+from django.db import IntegrityError 
 from django.core import serializers
 
 
@@ -73,15 +73,15 @@ def signin(request):
     if request.method == "POST":
         Username = request.POST['Username']
         pass1 = request.POST['pass1']
+        try:
+            if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists:
+                LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
+                request.session['LoggedInUserId']=LoggedInUser.idSudionik
+                if LoggedInUser.odobrenBool==False:
+                    messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
+                    return redirect('home')
 
-        if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists:
-            LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
-            request.session['LoggedInUserId']=LoggedInUser.idSudionik
-            if LoggedInUser.odobrenBool==False:
-                messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
-                return redirect('home')
-
-        else:
+        except:
             messages.error(request, "Korisnicko ime ili lozinka su krivi")
             return redirect('signin')
     
@@ -166,7 +166,7 @@ def mojiradovi(request):
         redirect('mojiradovi')
     context={}
     fetchedRad=models.Rad.objects.get(radKorisnik=LoggedInUser)
-    print(fetchedRad.naslov)
+    print(fetchedRad.pdf)
     context['filelocation']=fetchedRad.pdf
     context['filetitle']=fetchedRad.naslov
     return render(request, 'MojiRadovi.html',context)
