@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.enums import Choices
+from django.db.models.fields.related import ForeignKey
 
 # Create your models here.
 class Sekcija(models.Model):
@@ -58,9 +59,9 @@ class Rad(models.Model):
     sifRad = models.AutoField(primary_key=True)
     naslov = models.CharField(max_length=50)
     recinziranBool = models.BooleanField(default=False)
-    ocjena = models.IntegerField()
-    obrazlozenje = models.CharField(max_length=500)
-
+    pdf = models.FileField(upload_to="Radovi/")
+    radSekcija=models.ForeignKey("Sekcija", on_delete=models.CASCADE)
+    radKorisnik=models.ForeignKey("Korisnik", on_delete=models.CASCADE)
 class Konferencija(models.Model):
     sifKonferencija = models.AutoField(primary_key=True)
     nazivKonferencije = models.CharField(max_length=50)

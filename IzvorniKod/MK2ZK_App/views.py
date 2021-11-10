@@ -149,3 +149,24 @@ def osobnipodatci(request):
     context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.nazivUstanova
     
     return render(request, 'OsobniPodatci.html',context)
+
+def mojiradovi(request):
+    LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+    if request.method == "POST":
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+
+        rad = models.Rad(
+            naslov = fileTitle,
+            pdf = uploadedFile,
+            radSekcija = LoggedInUser.korisnikSekcija,
+            radKorisnik = LoggedInUser
+        )
+        rad.save()
+        redirect('mojiradovi')
+    context={}
+    fetchedRad=models.Rad.objects.get(radKorisnik=LoggedInUser)
+    print(fetchedRad.naslov)
+    context['filelocation']=fetchedRad.pdf
+    context['filetitle']=fetchedRad.naslov
+    return render(request, 'MojiRadovi.html',context)

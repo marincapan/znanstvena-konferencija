@@ -9,7 +9,7 @@
             <link rel="stylesheet" href="">
         </head>
         <body>
-            <h3>Osobni podatci</h3>
+            <h3>Osobni podatci Template</h3>
             <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
             jer se java script na dnu referira na njih-->
 
@@ -18,7 +18,7 @@
                 <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
                 {% endfor %}
             {% endif %}
-
+            <button type="submit"><a href='/'>Home</a></button><br>
             {%if korisnickoIme%}
                 <h4>Korisnicko Ime : <h4 id='korisnickoIme'>{{korisnickoIme}}</h4></h4>
                 <button type="button" onclick="UpdateUserName()" id="UpdateUserName" value="UpdateUserName">Update</button>

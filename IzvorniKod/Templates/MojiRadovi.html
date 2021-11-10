@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Authentication</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="">
+        </head>
+        <body>
+            <h3> MojiRadovi Template</h3>
+            <button type="submit"><a href='/'>Home</a></button><br>
+            <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="fileTitle" placeholder="Enter a title">
+                <input type="file" name="uploadedFile" accept="application/pdf">
+                <input type="submit" value="Upload">
+            </form>
+            
+            {%if filelocation%}
+                <h4> Predani radovi </h4>
+                <a href={{filelocation}}>{{filetitle}}</a>
+            {% endif %}
+        </body>
+    </html>
