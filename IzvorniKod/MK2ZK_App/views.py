@@ -50,11 +50,16 @@ def signup(request):
         randPassword=get_random_string(length=16)
         request.session['randPassword'] = randPassword
         Ustanova = models.Ustanova(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz)
-        if models.Ustanova.objects.filter(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz).exists:
+        if models.Ustanova.objects.filter(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz).exists():
             Ustanova = models.Ustanova.objects.get(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz)
+        else:
+            Ustanova.save()
         Sekcija = models.Sekcija(nazivSekcija=Section)
-        if  models.Sekcija.objects.filter(nazivSekcija=Section).exists:
+        if  models.Sekcija.objects.filter(nazivSekcija=Section).exists():
             Sekcija=models.Sekcija.objects.get(nazivSekcija=Section)
+        else:
+            print(Sekcija)
+            Sekcija.save()
         try:
             NoviKorisnik = models.Korisnik(korisnickoIme=Username,lozinka=randPassword,ime=Fname,prezime=Lname,email=email,vrstaKorisnik=uloga, korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
             NoviKorisnik.save()
@@ -74,7 +79,7 @@ def signin(request):
         Username = request.POST['Username']
         pass1 = request.POST['pass1']
         try:
-            if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists:
+            if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists():
                 LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
                 request.session['LoggedInUserId']=LoggedInUser.idSudionik
                 if LoggedInUser.odobrenBool==False:
