@@ -1,15 +1,121 @@
+{% load static %}
 <!DOCTYPE html>
     <html>
+
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <title>Authentication</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="stylesheet" href="">
+            <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+            <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
+            <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+            <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+            <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+
         </head>
+
+        <style>
+          .gradient-custom-3 {
+            /* fallback for old browsers */
+            background: #8fb5cc;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, #f2f2f2, #8FB5CC);
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, #f2f2f2, #8FB5CC);
+
+            
+
+
+          }
+
+          .card {
+            background-color: #f2f2f2;
+          }
+
+          .btn {
+            background-color: #1c3a9c;
+            
+          }
+
+          .mask {
+            padding: 5rem;
+          }
+
+          .radiobuttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+          }
+
+          
+
+        </style>
+
+    
         <body>
-            <button type="submit"><a href='/'>Home</a></button><br>
+
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <!-- gumb za Naslovnicu-->
+                <symbol id="home" viewBox="0 0 16 16">
+                  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                </symbol>
+                <!-- gumb za Prijavu -->
+                <symbol id="people-circle" viewBox="0 0 16 16">
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </symbol>
+                <symbol id="sci-con" viewBox="0 0 29 29">
+                    
+                </symbol>
+              </svg>
+    
+             <!-- HEADER TEMPLATE za neregistriranog / neprijavljenog korisnika --> 
+            
+              <header>
+                <div class="px-3 py-3 bg-dark bg-gradient text-white">
+                  <div class="container">
+                    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                      <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                        <img src="{% static '/vectors/SciConIcon.svg' %}" alt="SciCon" class="main-icon">
+                      </a>
+            
+                      <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                        <li>
+                          <a href="#" class="nav-link text-white">
+                            <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
+                            Naslovna
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" class="nav-link text-white">
+                            <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                            O konferenciji
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" class="nav-link text-white">
+                            <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+                            Prijava
+                          </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white">
+                                <img src="{% static '/vectors/RegisterIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                              Registracija
+                            </a>
+                          </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+        
+              </header>
+    
+              <!------------------------------------------------------------------------------------->
+
             <!--Ako npr nakon sign up treba displayat "Uspjesno registrirani!"-->
             {% if messages %}
                 {% for message in messages %}
@@ -17,67 +123,184 @@
                 {% endfor %}
             {% endif %} 
             <!---->
-            <h3> SignUp Template</h3>
 
-            <form action="/signup" method="post">
-            {% csrf_token %}
-                <label for="">Username</label>
-                <input type="text" id="Username" name="Username" placeholder="Create a Username" Required>
-                <br>
+            <div class="gradient-custom-3">
+              <div class="mask">
+                  <div class="row d-flex justify-content-center align-items-center">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                      <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                          <h2 class="text-uppercase text-center mb-5">Registracija</h2>
+            
+                          <form action="/signup" method="post">
+                            {% csrf_token %}
 
-                <label for="">First Name</label>
-                <input type="text" id="Fname" name="Fname" placeholder="Enter first name" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Korisničko ime</label>
+                              <input type="text" id="Username" name="Username" class="form-control form-control-lg" required/>
+                            </div>
+            
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Ime</label>
+                              <input type="text" id="Fname" name="Fname" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="">Last Name</label>
-                <input type="text" id="Lname" name="Lname" placeholder="Enter last name" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Prezime</label>
+                              <input type="text" id="Lname" name="Lname" class="form-control form-control-lg" required/>
+                            </div>
+            
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">E-mail</label>
+                              <input type="text" id="email" name="email" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter email" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Naziv matične ustanove</label>
+                              <input type="text" id="matustName" name="matustName" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="">Matična ustanova-Ime</label>
-                <input type="text" id="matustName" name="matustName" placeholder="Matična ustanova-Ime" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Adresa matične ustanove</label>
+                              <input type="text" id="matustAdr" name="matustAdr" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="">Matična ustanova-Adresa</label>
-                <input type="text" id="matustAdr" name="matustAdr" placeholder="Matična ustanova-Adresa" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Mjesto matične ustanove</label>
+                              <input type="text" id="matustCity" name="matustCity" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="">Matična ustanova-Grad</label>
-                <input type="text" id="matustCity" name="matustCity" placeholder="Matična ustanova-Grad" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Država matične ustanove</label>
+                              <input type="text" id="matustDrz" name="matustDrz" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="">Matična ustanova-Država</label>
-                <input type="text" id="matustDrz" name="matustDrz" placeholder="Matična ustanova-Država" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label for="">Prijavljujem se kao: </label>
 
-                <input type="radio" id="sudionik" name="uloga" value="sudionik" onclick=UpdateOnSudionik()>
-                <label for="sudionik">Sudionik</label>
-                <br>
-                <input type="radio" id="recenzent" name="uloga" value="recenzent" onclick=UpdateOnRecezent()>
-                <label for="recenzent">Recenzent</label>
-                <br>
+                            </div>
+                            
+                            <div class="form-outline mb-4 radiobuttons">
+                              <div class="button">
+                                <input type="radio" id="sudionik" name="uloga" value="sudionik" onclick=UpdateOnSudionik()>
+                                <label for="sudionik" class="emphasized-text"><b>Sudionik</b></label>
+                              </div>
+                              <div class="button">
+                                <input type="radio" id="recenzent" name="uloga" value="recenzent" onclick=UpdateOnRecezent()>
+                                <label for="recenzent" class="emphasized-text"><b>Recenzent</b></label></div>
+                            </div>
 
-                <label for="" id='titleLabel'>Naslov rada</label>
-                <input type="text" id="title" name="title" placeholder="Naslov rada" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="" id='sectionLabel'>Sekcija</label>
+                              <input type="text" id="section" name="section" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="" id='authorsLabel'>Autori</label>
-                <input type="text" id="authors" name="authors" placeholder="Autori" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="" id='titleLabel'>Naslov rada</label>
+                              <input type="text" id="title" name="title" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="" id='emailConLabel'>Email osobe za kontakt</label>
-                <input type="email" id="emailCon" name="emailCon" placeholder="Email osobe za kontakt" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="" id='authorsLabel'>Autori</label>
+                              <input type="text" id="authors" name="authors" class="form-control form-control-lg" required/>
+                            </div>
 
-                <label for="" id='sectionLabel'>Sekcija</label>
-                <input type="text" id="section" name="section" placeholder="Sekcija na kojoj zelite sudjelovati" Required>
-                <br>
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="" id='emailConLabel'>E-mail osobe za kontakt</label>
+                              <input type="text" id="emailCon" name="emailCon" class="form-control form-control-lg" required/>
+                            </div>
+            
+                            <div class="d-flex justify-content-center">
+                              <button type="submit" class="btn btn-success btn-lg">Registriraj se</button>
+                            </div>
+            
+                            <p class="text-center text-muted mt-5 mb-0">Već imaš račun? <a href="signin" class="fw-bold text-body"><u>Prijavi se</u></a></p>
+            
+                          </form>
+            
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                <button type="submit">Sign Up </button>
-            </form> 
+
+          <footer>
+              <div class="footer">
+              Copyright blabla
+            </div>
+          </footer>
+            
+            <!--<div class="main">
+                <div class="middle">
+                    <h3> Registracija</h3>
+
+                    <form action="/signup" method="post">
+                        {% csrf_token %}
+                            <label for="">Korisničko ime</label>
+                            <input type="text" id="Username" name="Username" placeholder="Upiši korisničko ime" Required>
+                            <br>
+        
+                            <label for="">Ime</label>
+                            <input type="text" id="Fname" name="Fname" placeholder="Upiši svoje ime" Required>
+                            <br>
+        
+                            <label for="">Prezime</label>
+                            <input type="text" id="Lname" name="Lname" placeholder="Upiši prezime" Required>
+                            <br>
+        
+                            <label for="">E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="Upiši e-mail" Required>
+                            <br>
+        
+                            <label for="">Naziv matične ustanove</label>
+                            <input type="text" id="matustName" name="matustName" placeholder="Upiši naziv matične ustanove" Required>
+                            <br>
+        
+                            <label for="">Adresa matične ustanove</label>
+                            <input type="text" id="matustAdr" name="matustAdr" placeholder="Upiši adresu matične ustanove" Required>
+                            <br>
+        
+                            <label for="">Mjesto matične ustanove</label>
+                            <input type="text" id="matustCity" name="matustCity" placeholder="Upiši mjesto matične ustanove" Required>
+                            <br>
+        
+                            <label for="">Država matične ustanove</label>
+                            <input type="text" id="matustDrz" name="matustDrz" placeholder="Upiši naziv državu ustanove" Required>
+                            <br>
+                            <label for="">Prijavljujem se kao: </label>
+                            <br>
+                            <input type="radio" id="sudionik" name="uloga" value="sudionik" onclick=UpdateOnSudionik()>
+                            <label for="sudionik">Sudionik</label>
+                            <br>
+                            <input type="radio" id="recenzent" name="uloga" value="recenzent" onclick=UpdateOnRecezent()>
+                            <label for="recenzent">Recenzent</label>
+                            <br>
+        
+                            <label for="" id='sectionLabel'>Sekcija</label>
+                            <input type="text" id="section" name="section" placeholder="Sekcija na kojoj želite sudjelovati" Required>
+                            <br>
+        
+                            <label for="" id='titleLabel'>Naslov rada</label>
+                            <input type="text" id="title" name="title" placeholder="Naslov rada" Required>
+                            <br>
+        
+                            <label for="" id='authorsLabel'>Autori</label>
+                            <input type="text" id="authors" name="authors" placeholder="Autori" Required>
+                            <br>
+        
+                            <label for="" id='emailConLabel'>Email osobe za kontakt</label>
+                            <input type="email" id="emailCon" name="emailCon" placeholder="E-mail osobe za kontakt" Required>
+                            <br>
+        
+                        
+                            <button type="submit">Registriraj se</button>
+                    </form> 
+                </div>
+                
+            </div>-->
+            
         </body>
         <script type="text/javascript">
             window.onload = function(){
@@ -104,11 +327,11 @@
                 document.getElementById("title").style.display = "none";
                 document.getElementById("authors").style.display = "none";
                 document.getElementById("emailCon").style.display = "none";
-                document.getElementById("section").style.display = "none";
+                document.getElementById("section").style.display = "inline";
                 document.getElementById("titleLabel").style.display = "none";
                 document.getElementById("authorsLabel").style.display = "none";
                 document.getElementById("emailConLabel").style.display = "none";
-                document.getElementById("sectionLabel").style.display = "none";
+                document.getElementById("sectionLabel").style.display = "inline";
             }
         </script>
     </html>
