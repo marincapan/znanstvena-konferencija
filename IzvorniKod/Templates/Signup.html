@@ -38,8 +38,15 @@
 
           .btn {
             background-color: #1c3a9c;
+            border-color: #1c3a9c;
             
           }
+
+          .btn:hover {
+            background-color: #c1666b;
+            border-color: #c1666b;
+          }
+
 
           .mask {
             padding: 5rem;
@@ -48,6 +55,7 @@
           .radiobuttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            justify-items: center;
           }
 
           
@@ -175,7 +183,7 @@
                               <input type="text" id="matustDrz" name="matustDrz" class="form-control form-control-lg" required/>
                             </div>
 
-                            <div class="form-outline mb-4">
+                            <div class="form-outline mb-4" style="text-align: center;">
                               <label for="">Prijavljujem se kao: </label>
 
                             </div>
@@ -210,8 +218,8 @@
                               <input type="text" id="emailCon" name="emailCon" class="form-control form-control-lg" required/>
                             </div>
             
-                            <div class="d-flex justify-content-center">
-                              <button type="submit" class="btn btn-success btn-lg">Registriraj se</button>
+                            <div class="form-outline mb-4">
+                              <button type="submit" class="btn btn-success btn-lg form-control form-control-lg">Registriraj se</button>
                             </div>
             
                             <p class="text-center text-muted mt-5 mb-0">Već imaš račun? <a href="signin" class="fw-bold text-body"><u>Prijavi se</u></a></p>
