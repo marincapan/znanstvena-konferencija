@@ -27,9 +27,6 @@
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
             background: linear-gradient(to right, #f2f2f2, #8FB5CC);
 
-            
-
-
           }
 
           .card {
@@ -47,6 +44,14 @@
             border-color: #c1666b;
           }
 
+          .btn.btn-rounded {
+            border-radius: 5rem;
+            border: none;
+            font-size: small;
+            padding: none;
+            text-align: center;
+            
+          }
 
           .mask {
             padding: 5rem;
@@ -57,7 +62,6 @@
             grid-template-columns: 1fr 1fr;
             justify-items: center;
           }
-
           
 
         </style>
@@ -92,7 +96,7 @@
             
                       <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                         <li>
-                          <a href="#" class="nav-link text-white">
+                          <a href="/" class="nav-link text-white">
                             <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
                             Naslovna
                           </a>
@@ -104,13 +108,13 @@
                           </a>
                         </li>
                         <li>
-                          <a href="#" class="nav-link text-white">
+                          <a href="signin" class="nav-link text-white">
                             <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
                             Prijava
                           </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link text-white">
+                            <a href="signup" class="nav-link text-white">
                                 <img src="{% static '/vectors/RegisterIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                               Registracija
                             </a>
@@ -209,7 +213,9 @@
                             </div>
 
                             <div class="form-outline mb-4">
-                              <label class="form-label" for="" id='authorsLabel'>Autori</label>
+                              <label class="form-label" for="" id='authorsLabel'>Autori </label>
+                              <span><button type="button" class="btn btn-primary btn-rounded" id="btnAddAuthor" onclick=addAuthor()>
+                                <b>+</b></button></span>
                               <input type="text" id="authors" name="authors" class="form-control form-control-lg" required/>
                             </div>
 
@@ -320,6 +326,7 @@
                 document.getElementById("authorsLabel").style.display = "none";
                 document.getElementById("emailConLabel").style.display = "none";
                 document.getElementById("sectionLabel").style.display = "none";
+                document.getElementById("btnAddAuthor").style.display = "none";
             };
             function UpdateOnSudionik(){
                 document.getElementById("title").style.display = "inline";
@@ -330,6 +337,7 @@
                 document.getElementById("authorsLabel").style.display = "inline";
                 document.getElementById("emailConLabel").style.display = "inline";
                 document.getElementById("sectionLabel").style.display = "inline";
+                document.getElementById("btnAddAuthor").style.display = "inline";
             }
             function UpdateOnRecezent(){
                 document.getElementById("title").style.display = "none";
@@ -340,6 +348,11 @@
                 document.getElementById("authorsLabel").style.display = "none";
                 document.getElementById("emailConLabel").style.display = "none";
                 document.getElementById("sectionLabel").style.display = "inline";
+                document.getElementById("btnAddAuthor").style.display = "none";
+            }
+
+            function addAuthor() {
+
             }
         </script>
     </html>
