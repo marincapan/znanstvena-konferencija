@@ -12,6 +12,24 @@
             <link href="{% static '/css/headers.css' %}" rel="stylesheet">
             <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
         </head>
+
+        <style>
+          .gradient-custom-3 {
+            /* fallback for old browsers */
+            background: #8fb5cc;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, #f2f2f2, #8FB5CC);
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, #f2f2f2, #8FB5CC);
+
+          }
+
+          .card {
+            background-color: #f2f2f2;
+          }
+        </style>
         <body>
 
             <!--Vektorske grafike za header-->
@@ -25,6 +43,21 @@
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                   <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                 </symbol>
+                <!-- gumb za uređivanje osobnih podataka -->
+                <symbol id="pencil-square" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                </symbol>
+                <!-- gumb za spremanje uređenih podataka -->
+                <symbol id="save-changes" viewBox="0 0 16 16">
+                  <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.5h2a.5.5 0 0 1 .354.854l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5A.5.5 0 0 1 5.5 6.5h2V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                </symbol>
+                <!-- gumb za otkazivanje spremanja podataka -->
+                <symbol id="cancel-changes" viewBox="0 0 16 16">
+                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </symbol>
+                <!-- gumb ? -->
                 <symbol id="sci-con" viewBox="0 0 29 29">
                     
                 </symbol>
@@ -71,78 +104,165 @@
                   </div>
                 </div>
             </header>
+            <div class="gradient-custom-3">
+              <div class="container pt-5 pb-5">
+                <div class="card" style="border-radius: 15px;">
+                  <div class="card-body p-5">
+                    <div class="text-uppercase text-center mb-5">
+                      <h2>Osobni podatci</h2>
+                    </div>
+                    <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
+                    jer se java script na dnu referira na njih-->
+  
+                    <!--Klasika za error messages-->
+                    {% if messages %}
+                        {% for message in messages %}
+                        <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <!--Ako postoje informacije (Tj ako je ulogiran korisnik) prikazi ih-->
 
-            <h3>Osobni podatci Template</h3>
-            <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
-            jer se java script na dnu referira na njih-->
+                    <!--Osoba per se-->
+                    <div>
+                      {%if korisnickoIme%}
+                      <div>
+                        <div>
+                          <div style="display: inline;" class="fs-4 fw-bold">Korisničko ime</div>
+                          <a data-bs-toggle="tooltip" title="Uredi">
+                            <svg type="button" width="18" height="18" onclick="UpdateUserName()" id="UpdateUserName" value="UpdateUserName"><use xlink:href="#pencil-square"/></svg>
+                          </a>
+                        </div>
+                        
+                        <div class="fs-5" id='korisnickoIme'>{{korisnickoIme}}</div>
 
-            <!--Klasika za error messages-->
-            {% if messages %}
-                {% for message in messages %}
-                <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-                {% endfor %}
-            {% endif %}
+                        <form action="/osobnipodatci" method="post" id='NewUserNameForm'>
+                        {% csrf_token %}
+                            <input type="text" class="form-control" id="Username" name="Username" placeholder={{korisnickoIme}} Required>
 
-            <button type="submit"><a href='/'>Home</a></button><br>
+                            <button style="padding: 0; margin: 5px; border: none; background: none" type="submit" data-bs-toggle="tooltip" title="Spremi promjene" name='NewUserName'>
+                              <svg width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                            </button>
+                            <a data-bs-toggle="tooltip" title="Odbaci promjene">
+                              <svg type="button" width="18" height="18" onclick="CancelUpdateUsername()" id="cancelUsername" value="cancelUsername"><use xlink:href="#cancel-changes"/></svg>
+                            </a>
+                        </form>
+                      </div>
+                      {%endif%}
+                      
+                      {%if ime%}
+                      <div>
+                        <div>
+                          <div style="display: inline;" class="fs-4 fw-bold">Ime</div>
+                          <a data-bs-toggle="tooltip" title="Uredi">
+                            <svg type="button" width="18" height="18" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName"><use xlink:href="#pencil-square"/></svg>
+                          </a>
+                        </div>
+                        
+                        <div class="fs-5" id='ime'>{{ime}}</div>
 
-            <!--Ako postoje informacije (Tj ako je ulogiran korisnik) prikazi ih-->
-            {%if korisnickoIme%}
-                <h4>Korisnicko Ime : <h4 id='korisnickoIme'>{{korisnickoIme}}</h4></h4>
-                <button type="button" onclick="UpdateUserName()" id="UpdateUserName" value="UpdateUserName">Update</button>
-                
-                <form action="/osobnipodatci" method="post" id='NewUserNameForm'>
-                {% csrf_token %}
-                    <input type="text" id="Username" name="Username" placeholder="EnterNewUser" Required>
-                    <button type="submit"  name='NewUserName'>Change </button>
-                </form>
-            {%endif%}
-            
-            {%if ime%}
-                <h4>Ime : <h4 id='ime'>{{ime}}</h4></h4>
-                <button type="button" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName">Update</button>
-                
-                <form action="/osobnipodatci" method="post" id='NewFNameForm'>
-                {% csrf_token %}
-                    <input type="text" id="Fname" name="Fname" placeholder="EnterNewFname" Required>
-                    <button type="submit" name='NewFName'>Change </button>
-                </form>
-            {%endif%}
+                        <form action="/osobnipodatci" method="post" id='NewFNameForm'>
+                        {% csrf_token %}
+                            <input type="text" class="form-control" id="Fname" name="Fname" placeholder={{ime}} Required>
 
+                            <button style="padding: 0; margin: 5px; border: none; background: none" type="submit" data-bs-toggle="tooltip" title="Spremi promjene" name='NewFName'>
+                              <svg width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                            </button>
+                            <a data-bs-toggle="tooltip" title="Odbaci promjene">
+                              <svg type="button" width="18" height="18" onclick="CancelUpdateFName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
+                            </a>
+                        </form>
+                      </div>
+                      {%endif%}
+    
+    
+                      {%if prezime%}
+                      <div>
+                        <div>
+                          <div style="display: inline;" class="fs-4 fw-bold">Prezime</div>
+                          <a data-bs-toggle="tooltip" title="Uredi">
+                            <svg type="button" width="18" height="18" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName"><use xlink:href="#pencil-square"/></svg>
+                          </a>
+                        </div>
+                        
+                        <div class="fs-5" id='prezime'>{{prezime}}</div>
+                        
+                        <form action="/osobnipodatci" method="post" id='NewLNameForm'>
+                        {% csrf_token %}
+                            <input type="text" class="form-control" id="Lname" name="Lname" placeholder={{prezime}} Required>
+                            <button style="padding: 0; margin: 5px; border: none; background: none" type="submit" data-bs-toggle="tooltip" title="Spremi promjene" name='NewLName'>
+                              <svg width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                            </button>
+                            <a data-bs-toggle="tooltip" title="Odbaci promjene">
+                              <svg type="button" width="18" height="18" onclick="CancelUpdateLName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
+                            </a>
+                        </form>
+                      </div>
+                      {%endif%}
+    
+    
+                      {%if email%}
+                      <div>
+                        <div>
+                          <div style="display: inline;" class="fs-4 fw-bold">E-mail</div>
+                          <a data-bs-toggle="tooltip" title="Uredi">
+                            <svg type="button" width="18" height="18" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail"><use xlink:href="#pencil-square"/></svg>
+                          </a>
+                        </div>
+                        <div class="fs-5" id='email'>{{email}}</div>
 
-            {%if prezime%}
-                <h4>Prezime : <h4 id='prezime'>{{prezime}}</h4></h4>
-                <button type="button" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName">Update</button>
-                
-                <form action="/osobnipodatci" method="post" id='NewLNameForm'>
-                {% csrf_token %}
-                    <input type="text" id="Lname" name="Lname" placeholder="EnterNewLname" Required>
-                    <button type="submit" name='NewLName'>Change </button>
-                </form>
-            {%endif%}
+                        
+                        <form action="/osobnipodatci" method="post" id='NewEmailForm'>
+                        {% csrf_token %}
+                            <input type="text" class="form-control" id="email" name="email" placeholder={{email}} Required>
+                            <button style="padding: 0; margin: 5px; border: none; background: none" type="submit" data-bs-toggle="tooltip" title="Spremi promjene" name='NewEmail'>
+                              <svg width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                            </button>
+                            <a data-bs-toggle="tooltip" title="Odbaci promjene">
+                              <svg type="button" width="18" height="18" onclick="CancelUpdateEmail()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
+                            </a>
+                        </form>
+                      </div>
+                      {%endif%}
+                    </div>
+                    
+                    <!--Uloga, ustanova i sekcija-->
+                    <div>
+                      {%if uloga%}
+                      <div>
+                        <div class="fs-4 fw-bold">Uloga:</div>
+                        <div class="fs-5" id='uloga'>{{uloga}}</div>
+                      </div>
+                      {%endif%}
+    
+    
+                      {%if MaticnaUstanova%}
+                      <div>
+                        <div class="fs-4 fw-bold">Matična ustanova:</div>
+                        <div class="fs-5" id='maticnaUstanova'>{{MaticnaUstanova}}</div>
+                      </div>
+                      {%endif%}
 
+                      <!-- Ovo cu promijenit kada sekcije budu thing {%if MaticnaUstanova%} -->
+                      <div>
+                        <div class="fs-4 fw-bold">Sekcija:</div>
+                        <div class="fs-5" id='sekcija'>Višnja hvala ti za sok od trešnje</div>
+                      </div>
+                      <!-- {%endif%} -->
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            {%if email%}
-                <h4>Email : <h4 id='email'>{{email}}</h4></h4>
-                <button type="button" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail">Update</button>
-                
-                <form action="/osobnipodatci" method="post" id='NewEmailForm'>
-                {% csrf_token %}
-                    <input type="text" id="email" name="email" placeholder="EnterNewEmail" Required>
-                    <button type="submit" name='NewEmail'>Change </button>
-                </form>
-            {%endif%}
-
-
-            {%if uloga%}
-                <h4>Uloga : <h4 >{{uloga}}</h4></h4>
-            {%endif%}
-
-
-            {%if MaticnaUstanova%}
-                <h4>MatičnaUstanova : <h4>{{MaticnaUstanova}}</h4></h4>
-            {%endif%}
-
-
+            <footer class="py-2 my-2 container">
+              <ul class="nav justify-content-center border-bottom pb-1 mb-1">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Naslovna</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">O konferenciji</a></li>
+              </ul>
+              <p class="text-center text-muted">© 2021 Pametna ekipa</p>
+            </footer>
         </body>
         <script type="text/javascript">
             window.onload = function(){
@@ -170,6 +290,26 @@
                 document.getElementById("NewEmailForm").style.display = "inline";
                 document.getElementById("UpdateEmail").style.display = "none";
                 document.getElementById("email").style.display = "none";
+            }
+            function CancelUpdateUsername(){
+                document.getElementById("NewUserNameForm").style.display = "none";
+                document.getElementById("UpdateUserName").style.display = "inline";
+                document.getElementById("korisnickoIme").style.display = "inline";
+            }
+            function CancelUpdateFName(){
+                document.getElementById("NewFNameForm").style.display = "none";
+                document.getElementById("UpdateFName").style.display = "inline";
+                document.getElementById("ime").style.display = "inline";
+            }
+            function CancelUpdateLName(){
+              document.getElementById("NewLNameForm").style.display = "none";
+                document.getElementById("UpdateLName").style.display = "inline";
+                document.getElementById("prezime").style.display = "inline";
+            }
+            function CancelUpdateEmail(){
+                document.getElementById("NewEmailForm").style.display = "none";
+                document.getElementById("UpdateEmail").style.display = "inline";
+                document.getElementById("email").style.display = "inline";
             }
         </script>
     </html>
