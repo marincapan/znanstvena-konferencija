@@ -16,6 +16,7 @@ from django.core import serializers
 
 # Create your views here.
 def home(request):
+    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     if 'randPassword' in request.session:
         del request.session['randPassword']
     #Password se pokazuje jedanput i vise nikad.
@@ -31,7 +32,7 @@ def home(request):
         adminSekcija.save()
     admin=models.Korisnik(
         korisnickoIme='admin',
-        lozinka=get_random_string(length=16),
+        lozinka='admin',
         ime='admin',
         prezime='admin',
         email="fm52578@fer.hr",
@@ -48,7 +49,7 @@ def home(request):
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
-
+    context['DodatnaPolja']=fetchedPolja
     print(context)
     return render(request, 'Index.html',context)
 
@@ -97,8 +98,11 @@ def signup(request):
         messages.success(request, "Success")
 
         return redirect('signin')
-
-    return render(request, 'Signup.html')
+    context={}
+    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
+    context['DodatnaPolja']=fetchedPolja
+    print(context)
+    return render(request, 'Signup.html',context)
     
 def signin(request):
     if request.method == "POST":
