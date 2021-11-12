@@ -11,18 +11,47 @@
         <body>
             <h3> MojiRadovi Template</h3>
             <button type="submit"><a href='/'>Home</a></button><br>
-            <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="text" name="fileTitle" placeholder="Enter a title">
-                <input type="file" name="uploadedFile" accept="application/pdf">
-                <input type="submit" value="Upload">
-            </form>
-            
-            {%if fetchedRadovi%}
-                <h4> Predani radovi </h4>
-                {%for rad in fetchedRadovi%}
-                    <a href="Radovi/{{rad.pdf}}">{{rad.naslov}}</a>
-                {%endfor%}
+            {%if LoggedInUserRole == 4%}<!--Html za kad je sudionik-->
+                <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" name="fileTitle" placeholder="Enter a title">
+                    <input type="file" name="uploadedFile" accept="application/pdf">
+                    <input type="submit" value="Upload" name='UploadFile'>
+                </form>
+                
+                {%if fetchedRadovi%}
+                    <h4> Predani radovi </h4>
+                    {%for rad in fetchedRadovi%}
+                        <a href="Radovi/{{rad.pdf}}">{{rad.naslov}}</a>
+                    {%endfor%}
+                {% endif %}
+            {% endif %}
+            {%if LoggedInUserRole == 1%}<!--Html za kad je admin-->
+                <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" name="fieldName" id="fieldName" placeholder="Ime novog fielda">
+                    <br>
+                    <input type="radio" name="fieldType" id="int">INT
+                    <br>
+                    <input type="radio" name="fieldType" id="char">CHAR(lenght=50)
+                    <br>
+                    <input type="radio" name="fieldType" id="longchar">LONGCHAR(lenght=500)
+                    <br>
+                    <input type="radio" name="fieldType" id="longchar">BOOLEAN
+                    <br>
+                    <input type="submit" value="Update" name='AddNewField'>
+                </form>
+                <h4> Aktivna polja </h4>
+                {%if DodatnaPolja%}<!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
+                <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {%for polje in DodatnaPolja%}
+                        <input type="checkbox" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.active == True%} checked {%endif%}>
+                        <label for="{{polje.imePolja}}">{{polje.imePolja}}
+                        <br> 
+                    {%endfor%}
+                    <input type="submit" value="Update" name='ActiveFields'>
+                {%endif%}
             {% endif %}
         </body>
     </html>

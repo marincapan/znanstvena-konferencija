@@ -19,10 +19,36 @@ def home(request):
     if 'randPassword' in request.session:
         del request.session['randPassword']
     #Password se pokazuje jedanput i vise nikad.
-
+    adminUstanova=models.Ustanova(
+            nazivUstanova="Konferencija"
+        )
+    adminSekcija=models.Sekcija(
+        nazivSekcija="Konferencija"
+    )
+    if not models.Ustanova.objects.filter(nazivUstanova="Konferencija").exists():
+        adminUstanova.save()
+    if not models.Sekcija.objects.filter(nazivSekcija="Konferencija").exists():
+        adminSekcija.save()
+    admin=models.Korisnik(
+        korisnickoIme='admin',
+        lozinka=get_random_string(length=16),
+        ime='admin',
+        prezime='admin',
+        email="fm52578@fer.hr",
+        odobrenBool=True,
+        vrstaKorisnik=1,
+        korisnikUstanova=models.Ustanova.objects.get(nazivUstanova="Konferencija"),
+        korisnikSekcija=models.Sekcija.objects.get(nazivSekcija="Konferencija")
+    )
+    if not models.Korisnik.objects.filter(korisnickoIme='admin').exists():
+        admin.save()
     context={}
     if "LoggedInUserId" in request.session:
         context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+
     print(context)
     return render(request, 'Index.html',context)
 
@@ -82,9 +108,10 @@ def signin(request):
             if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists():
                 LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
                 request.session['LoggedInUserId']=LoggedInUser.idSudionik
+                request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik
                 if LoggedInUser.odobrenBool==False:
                     messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
-                    return redirect('home')
+                return redirect('home')
 
         except:
             messages.error(request, "Korisnicko ime ili lozinka su krivi")
@@ -157,27 +184,54 @@ def osobnipodatci(request):
 
 def mojiradovi(request):
     LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
     
-    fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
-    print(fetchedRadovi)
-    context['fetchedRadovi']=fetchedRadovi
-    if request.method == "POST":
-        print("Flag1")
-        fileTitle = request.POST["fileTitle"]
-        uploadedFile = request.FILES["uploadedFile"]
+    if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
 
-        rad = models.Rad(
-            naslov = fileTitle,
-            pdf = uploadedFile,
-            radSekcija = LoggedInUser.korisnikSekcija,
-            radKorisnik = LoggedInUser
-        )
-        print(models.Rad.objects.filter(naslov = fileTitle,pdf = uploadedFile,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser).exists())
-        if not models.Rad.objects.filter(naslov = fileTitle,pdf = uploadedFile,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser).exists():
-            print("Flag2")
-            rad.save()
-        return redirect('mojiradovi')
+    fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
+    print(context)
+    context['fetchedRadovi']=fetchedRadovi
+
+    if request.method == "POST":
+        if 'UploadFile' in request.POST:
+            fileTitle = request.POST["fileTitle"]
+            uploadedFile = request.FILES["uploadedFile"]
+
+            rad = models.Rad(
+                naslov = fileTitle,
+                pdf = uploadedFile,
+                radSekcija = LoggedInUser.korisnikSekcija,
+                radKorisnik = LoggedInUser
+            )
+            if not models.Rad.objects.filter(naslov = fileTitle,pdf = uploadedFile,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser).exists():
+                print("Flag2")
+                rad.save()
+            return redirect('mojiradovi')
+        if 'AddNewField' in request.POST:
+            fieldName = request.POST["fieldName"]
+            fieldType = request.POST["fieldType"]
+            if not models.DodatnaPoljaObrasca.objects.filter(imePolja=fieldName,tipPolja=fieldType).exists():
+                newField=models.DodatnaPoljaObrasca(
+                    imePolja=fieldName,
+                    tipPolja=fieldType
+                )
+                newField.save()
+        if 'ActiveFields' in request.POST:
+            for polje in fetchedPolja:
+                try:
+                    checked = request.POST[polje.imePolja]
+                    checked = True 
+                except:
+                    checked = False
+                polje.active = checked
+                polje.save()
     
+    for polje in fetchedPolja:
+        print(polje.imePolja)        
+    context['DodatnaPolja']=fetchedPolja
     
     return render(request, 'MojiRadovi.html',context)

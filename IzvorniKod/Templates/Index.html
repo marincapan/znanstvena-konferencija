@@ -24,7 +24,12 @@
             {%if LoggedInUser%}
                 <button type="submit"><a href="signout">Signout</a></button>
                 <button type="submit"><a href="osobnipodatci">OsobniPodatci</a></button>
-                <button type="submit"><a href="mojiradovi">MojiRadovi</a></button>
+                {%if LoggedInUserRole == 4%}<!--Ako je sudionik-->
+                    <button type="submit"><a href="mojiradovi">MojiRadovi</a></button>
+                {% endif %}
+                {%if LoggedInUserRole == 1%}<!--Ako je admin-->
+                    <button type="submit"><a href="mojiradovi">Slozi obrazac</a></button>
+                {% endif %}
             {% endif %}
             {%if LoggedInUser%}
                 <h4>Your ID is: {{LoggedInUser}}</h4>

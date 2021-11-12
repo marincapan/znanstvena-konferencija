@@ -223,6 +223,16 @@
                               <label class="form-label" for="" id='emailConLabel'>E-mail osobe za kontakt</label>
                               <input type="text" id="emailCon" name="emailCon" class="form-control form-control-lg" required/>
                             </div>
+
+                            {%if DodatnaPolja%}<!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
+                                {%for polje in DodatnaPolja%}
+                                  {%if polje.active == True %}
+                                    <input type="text" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.obavezan == True%} required/ {%endif%}>
+                                    <label for="{{polje.imePolja}}">{{polje.imePolja}}
+                                    <br>
+                                  {%endif%} 
+                                {%endfor%}
+                            {%endif%}
             
                             <div class="form-outline mb-4">
                               <button type="submit" class="btn btn-success btn-lg form-control form-control-lg">Registriraj se</button>

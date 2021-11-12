@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.enums import Choices
+from django.db.models.fields import BooleanField
 from django.db.models.fields.related import ForeignKey
 from django.utils.crypto import get_random_string
 
@@ -21,12 +22,6 @@ class Autor(models.Model):
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
     email = models.CharField(max_length=50,unique=True)
-
-class PoljaObrasca(models.Model):
-    IDPolja = models.AutoField(primary_key=True)
-    ime = models.CharField(max_length=50)
-    prezime = models.CharField(max_length=50)
-    obaveznoBool = models.BooleanField(default=False)
 
 def increment_KorisnikID():
   last_korisnik = Korisnik.objects.all().order_by('id').last()
@@ -57,7 +52,6 @@ class Korisnik(models.Model):
     korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE)
 
 def custom_directory(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'user_{0}/{1}/{2}'.format(instance.radKorisnik.id,get_random_string(length=8), filename)
 
 class Rad(models.Model):
@@ -73,6 +67,9 @@ class Konferencija(models.Model):
     opisKonferencije = models.CharField(max_length=1000)
     datumKonferencije = models.DateField()
     rokPrijave = models.DateField()
-
-
-
+class DodatnaPoljaObrasca(models.Model):
+    sifPolja = models.AutoField(primary_key=True)
+    imePolja = models.CharField(max_length=50)
+    tipPolja = models.CharField(max_length=50)
+    active = models.BooleanField(default=False)
+    obavezan = models.BooleanField(default=False)
