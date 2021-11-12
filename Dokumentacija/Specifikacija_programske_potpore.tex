@@ -154,7 +154,7 @@
 							\item Korisnik odabire kreira li račun kao sudionik ili recenzent, te ukoliko odabere opciju sudionik pojavljuje se još jedan dio obrasca gdje je potrebno unijeti naziv rada koji želi predati i autore istog te označiti osobu za kontakt
 							\item Sustav svakom sudioniku pridjeljuje jedinstveni identifikator ID\_xxxx, pri čemu je xxxx redni broj prijave u sustav
 							\item Ažurira se baza podataka
-							\item Korisnik koji se registrirao kao sudionik konferencije prima obavijest (putem e-maila) o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link - UC2.1) u kojoj se nalazi lozinka za prijavu, a recenzent tu obavijest prima po odobrenju predsjedavajućeg
+							\item Korisnik koji se registrirao kao sudionik konferencije prima obavijest (putem e-maila) o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link) u kojoj se nalazi lozinka za prijavu, a recenzent tu obavijest prima po odobrenju predsjedavajućeg
 							
 						\end{packed_enum}
 
@@ -180,23 +180,7 @@
 			
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC2.1 - Potvrda registracije putem e-maila}}
-					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Sudionik
-						\item \textbf{Cilj:} Potvrđivanje svoje registracije putem e-maila
-						\item \textbf{Sudionici:} Baza podataka
-						\item \textbf{Preduvjet:} Korisnik je izvršio registraciju
-						
-						\item \textbf{Opis osnovnog tijeka:} 
-						\item[] \begin{packed_enum}
-							
-							\item Korisnik otvara e-mail poslan s službenog e-maila konferencije u svom mail klijentu
-							\item Korisnik klikom na link "Potvrdi e-mail" potvrđuje da je ispravna e-mail adresa
-							\item Baza podataka se ažurira i registracija je potvrđena
-							
-							
-						\end{packed_enum}
-					\end{packed_item}
+					
 
 					\noindent \underbar{\textbf{UC3 - Prijava u sustav}}
 					\begin{packed_item}
@@ -949,10 +933,10 @@
 					\end{packed_item}
 					                                     
 				
-					\noindent \underbar{\textbf{UC21 - Slanje obavijesti odabranim sudionicima}}
+					\noindent \underbar{\textbf{UC21 - Slanje obavijesti odabranim korisnicima}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Predsjedavajući konferencije
-						\item \textbf{Cilj:} Obavijestiti sve sudionike i recenzente o promjeni ili novosti vezane za konferenciju
+						\item \textbf{Cilj:} Obavijestiti  sudionike i recenzente o promjeni ili novosti vezanoj za konferenciju
 						\item \textbf{Sudionici:} Baza podataka
 						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
 						
@@ -982,38 +966,7 @@
 							
 						\end{packed_enum}
 					\end{packed_item}
-					\noindent \underbar{\textbf{UC21 - Slanje podsjetnika na rok za predaju radova}}
-					
-					\begin{packed_item}
-						
-						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
-						\item  \textbf{Cilj:} Poslati podsjetnik sudionicima na email
-						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						\item  \textbf{Opis osnovnog tijeka:}
-						
-						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Administracijsko sučelje" koji ga vodi na stranicu administracijskog sučelja
-							\item Korisnik bira gumb "Pošalji podsjetnik na rok za predaju radova"
-							\item Korisniku se prikazuje autogenerirana poruka koja će se poslati sudionicima te je može izmijeniti ako želi
-							\item Korisnik bira opciju "Pošalji"
-							\item Svi sudionici primaju obavijest putem e-maila s kojim su se registrirali
-							
-							
-							
-						\end{packed_enum}
-						
-						\item \textbf{Opis mogućih odstupanja:}
-							\item[] \begin{packed_enum}
-								\item[3.a] Korisnik ne odabere opciju "Pošalji"
-								\item[] \begin{packed_enum}
-									\item[1.] Sustav javlja korisniku kako obavijest nije poslana korisnicima prije izlaska iz prozora
-							\end{packed_enum}
-						\end{packed_enum}
-						
-						
-					\end{packed_item}
-					
+				
 
 
 					\noindent \underbar{\textbf{UC22 - Definiranje upitnika za registraciju}}
@@ -1134,7 +1087,7 @@
 					\noindent \underbar{\textbf{UC27 - Odjava iz sustava}}
 					\begin{packed_item}
 						
-						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije, registrirani korisnik
+						\item \textbf{Glavni sudionik: } Registrirani korisnik
 						\item  \textbf{Cilj:} Odjaviti korisnika iz sustava
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -1191,7 +1144,7 @@
 
 					\noindent \underbar{\textbf{UC28.1 - Odabir predsjedavajućeg konferencije}}
 					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator
+						\item \textbf{Glavni sudionik:} Predsjedavajući konferencije
 						\item \textbf{Cilj:} Unijeti podatke o predsjedavajućem konferencije
 						\item \textbf{Sudionici:} Baza podataka
 						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -1252,6 +1205,25 @@
 						
 						
 					\end{packed_item}
+				\noindent \underbar{\textbf{UC30 - Potvrda registracije putem e-maila}}
+				\begin{packed_item}
+					\item \textbf{Glavni sudionik:} Recenzent, Sudionik
+					\item \textbf{Cilj:} Potvrđivanje svoje registracije putem e-maila
+					\item \textbf{Sudionici:} Baza podataka
+					\item \textbf{Preduvjet:} Korisnik je izvršio registraciju
+					
+					\item \textbf{Opis osnovnog tijeka:} 
+					\item[] \begin{packed_enum}
+						
+						\item Korisnik otvara e-mail poslan s službenog e-maila konferencije u svom mail klijentu
+						\item Korisnik klikom na dobiveni link potvrđuje svoju prijavu
+						\item Sustav provjerava podudaranje dobivenog linka (token) s onima koji su u bazi
+						\item Baza podataka se ažurira i registracija je potvrđena 
+						(nakon obavljavanja ovog koraka korisnik se može prijaviti u sustav)
+						
+						
+					\end{packed_enum}
+				\end{packed_item}
 					
 
 				\pagebreak
