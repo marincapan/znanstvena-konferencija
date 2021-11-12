@@ -154,7 +154,7 @@
 							\item Korisnik odabire kreira li račun kao sudionik ili recenzent, te ukoliko odabere opciju sudionik pojavljuje se još jedan dio obrasca gdje je potrebno unijeti naziv rada koji želi predati i autore istog te označiti osobu za kontakt
 							\item Sustav svakom sudioniku pridjeljuje jedinstveni identifikator ID\_xxxx, pri čemu je xxxx redni broj prijave u sustav
 							\item Ažurira se baza podataka
-							\item Korisnik koji se registrirao kao sudionik konferencije prima obavijest (putem e-maila) o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link) u kojoj se nalazi lozinka za prijavu, a recenzent tu obavijest prima po odobrenju predsjedavajućeg
+							\item Korisnik koji se registrirao kao sudionik konferencije prima obavijest (putem e-maila) o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link - UC2.1) u kojoj se nalazi lozinka za prijavu, a recenzent tu obavijest prima po odobrenju predsjedavajućeg
 							
 						\end{packed_enum}
 
@@ -178,6 +178,24 @@
 							
 						\end{packed_item}
 			
+					\end{packed_item}
+
+					\noindent \underbar{\textbf{UC2.1 - Potvrda registracije putem e-maila}}
+					\begin{packed_item}
+						\item \textbf{Glavni sudionik:} Sudionik
+						\item \textbf{Cilj:} Potvrđivanje svoje registracije putem e-maila
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je izvršio registraciju
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik otvara e-mail poslan s službenog e-maila konferencije u svom mail klijentu
+							\item Korisnik klikom na link "Potvrdi e-mail" potvrđuje da je ispravna e-mail adresa
+							\item Baza podataka se ažurira i registracija je potvrđena
+							
+							
+						\end{packed_enum}
 					\end{packed_item}
 
 					\noindent \underbar{\textbf{UC3 - Prijava u sustav}}
@@ -931,9 +949,9 @@
 					\end{packed_item}
 					                                     
 				
-					\noindent \underbar{\textbf{UC21 - Slanje obavijesti svim sudionicima i recenzentima}}
+					\noindent \underbar{\textbf{UC21 - Slanje obavijesti odabranim sudionicima}}
 					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator, predsjedavajući konferencije
+						\item \textbf{Glavni sudionik:} Predsjedavajući konferencije
 						\item \textbf{Cilj:} Obavijestiti sve sudionike i recenzente o promjeni ili novosti vezane za konferenciju
 						\item \textbf{Sudionici:} Baza podataka
 						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -942,8 +960,8 @@
 						\item[] \begin{packed_enum}
 							\item Korisnik bira gumb "Administracijsko sučelje" iz glavnog izbornika
 							\item Korisnik bira gumb "Pošalji obavijest sudionicima" na vrhu stranice
-							\item Korisnik može kliknuti gumb "Pošalji podsjetnik na rok za predaju radova", ukoliko želi podsjetiti sve sudionike da predaju rad ukoliko nisu (UC21.1)
-							\item Pojavljuje se polje za unos teksta obavijesti te korisnik piše tekst obavijesti
+							\item Korisniku se pojavljuje popis korisnika, koje zatim po želji odabire i/ili filtrira (po sekciji ili po državi), a može i kliknuti gumb "Odaberi sve"
+							\item Nakon što je odabran minimalno jedan korisnik, pojavljuje se polje za unos teksta obavijesti te korisnik piše tekst obavijesti
 							\item Korisnik bira opciju "Pošalji"
 							\item Svi sudionici i recenzenti primaju obavijest putem e-maila s kojim su se registrirali
 						\end{packed_enum}
@@ -964,18 +982,19 @@
 							
 						\end{packed_enum}
 					\end{packed_item}
-					\noindent \underbar{\textbf{UC21.1 - Slanje podsjetnika na rok za predaju radova}}
+					\noindent \underbar{\textbf{UC21 - Slanje podsjetnika na rok za predaju radova}}
 					
 					\begin{packed_item}
 						
-						\item \textbf{Glavni sudionik: } Administrator
+						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
 						\item  \textbf{Cilj:} Poslati podsjetnik sudionicima na email
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-							\item Korisnik je odabrao gumb "Pošalji podsjetnik na rok za predaju radova"
+							\item Korisnik bira gumb "Administracijsko sučelje" koji ga vodi na stranicu administracijskog sučelja
+							\item Korisnik bira gumb "Pošalji podsjetnik na rok za predaju radova"
 							\item Korisniku se prikazuje autogenerirana poruka koja će se poslati sudionicima te je može izmijeniti ako želi
 							\item Korisnik bira opciju "Pošalji"
 							\item Svi sudionici primaju obavijest putem e-maila s kojim su se registrirali
@@ -1057,7 +1076,7 @@
 					\noindent \underbar{\textbf{UC24 - Pregled statistike prijava}}
 					\begin{packed_item}
 	
-						\item \textbf{Glavni sudionik: } Administrator
+						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
 						\item  \textbf{Cilj:} Pregledati informacije o prijavama na konferenciju
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -1074,7 +1093,7 @@
 					\noindent \underbar{\textbf{UC25 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
 					\begin{packed_item}
 						
-						\item \textbf{Glavni sudionik: } Administrator
+						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
 						\item  \textbf{Cilj:} Pregledati informacije o incidenciji u pojednim državama iz kojih ima prijavljenih sudionika
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -1201,6 +1220,40 @@
 							
 						\end{packed_enum}
 					\end{packed_item}
+
+				\noindent \underbar{\textbf{UC29 - Slanje podsjetnika na rok za predaju radova}}
+					
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: } Administrator
+						\item  \textbf{Cilj:} Poslati podsjetnik sudionicima na email
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							\item Korisnik bira gumb "Administracijsko sučelje" koji ga vodi na stranicu administracijskog sučelja
+							\item Korisnik bira gumb "Pošalji podsjetnik na rok za predaju radova"
+							\item Korisniku se prikazuje autogenerirana poruka koja će se poslati sudionicima te je može izmijeniti ako želi
+							\item Korisnik bira opciju "Pošalji"
+							\item Svi sudionici primaju obavijest putem e-maila s kojim su se registrirali
+							
+							
+							
+						\end{packed_enum}
+						
+						\item \textbf{Opis mogućih odstupanja:}
+							\item[] \begin{packed_enum}
+								\item[3.a] Korisnik ne odabere opciju "Pošalji"
+								\item[] \begin{packed_enum}
+									\item[1.] Sustav javlja korisniku kako obavijest nije poslana korisnicima prije izlaska iz prozora
+							\end{packed_enum}
+						\end{packed_enum}
+						
+						
+					\end{packed_item}
+					
+
 				\pagebreak
 
 					
@@ -1265,14 +1318,14 @@
 				\eject
 
 
-				\textbf{Obrazac uporabe UC21 - Slanje obavijesti svim sudionicima i recenzentima}\\
-				Administrator i predsjedavajući konferencije imaju mogućnost, ukoliko se ukaže potreba, poslati obavijest svim sudionicima i recenzentima (o bilokakvoj promjeni vezanoj za konferenciju i sl.). Isto čini tako da pristupi stranici "Administracijsko sučelje" te odabere opciju na vrhu stranice "Pošalji obavijest svima" pri čemu se otvara stranica s poljem za unos teksta obavijesti. Korisnik unosi tekst obavijesti, a kad je siguran da želi poslati obavijest bira opciju "Pošalji". Iz baze podataka dohvaćaju se e-mail adrese svih sudionika i recenzenata te se putem Web-aplikacije šalje e-mail na sve adrese povučene iz baze podataka. Korisnik prima obavijest o uspješnom slanju obavijesti.
+				\textbf{Obrazac uporabe UC21 - Slanje obavijesti određenim korisnicima}\\
+				Predsjedavajući konferencije ima mogućnost, ukoliko se ukaže potreba, poslati obavijest sudionicima i recenzentima (o bilokakvoj promjeni vezanoj za konferenciju i sl.). Isto čini tako da pristupi stranici "Administracijsko sučelje" te odabere opciju na vrhu stranice "Pošalji obavijest" pri čemu se otvara stranica za odabir korisnika kojima korisnik želi poslati obavijest (te stoji opcija "Odaberi sve" ukoliko želi svima poslati obavijest). Kad korinsik odabere minimalno jednu osobu s popisa, otvara se prozor za unos teksta obavijesti (a korisnik nastavlja birati korisnike kojima želi poslati obavijest) . Korisnik unosi tekst obavijesti, a kad je siguran da želi poslati obavijest bira opciju "Pošalji". Iz baze podataka dohvaćaju se e-mail adrese odabranih sudionika i recenzenata te se putem Web-aplikacije šalje e-mail na sve adrese povučene iz baze podataka. Korisnik prima obavijest o uspješnom slanju obavijesti.
 				\eject
 
 				\begin{figure}[H]
-					\includegraphics[scale=0.50]{dijagrami/UC21-SlanjeMaila.png} 
+					\includegraphics[scale=0.45]{dijagrami/UC21-SlanjeMaila.png} 
 					\centering
-					\caption{Sekvencijski dijagram za UC21 - Slanje obavijesti svim sudionicima i recenzentima}
+					\caption{Sekvencijski dijagram za UC21 - Slanje obavijesti određenim korisnicima}
 					\label{fig:sekvencijski3}
 				\end{figure}
 
