@@ -148,7 +148,7 @@
                         <div class="card-body p-5">
                           <h2 class="text-uppercase text-center mb-5">Registracija</h2>
             
-                          <form action="/signup" method="post">
+                          <form action="/signup" method="post" id="form">
                             {% csrf_token %}
 
                             <div class="form-outline mb-4">
@@ -238,12 +238,12 @@
 
                               <label class="form-label" for="" id="numOfAuthorsLabel">Broj autora</label>
 
-                              <div class="col-md-2 mb-4">
+                              <div class="col-md-4 mb-4">
                                 <input type="number" min="0" id="numOfAuthors" class="form-control form-control-lg"></input>
                               </div>
   
-                              <div class="col-md-2 mb-4">
-                                <button type="submit" class="btn btn-success btn-lg" id="btnOK">OK</button>
+                              <div class="col-md-4 mb-4">
+                                <button type="button" class="btn btn-success btn-lg" id="btnOK" onclick=AddField()>OK</button>
                               </div>
 
   
@@ -264,18 +264,23 @@
                             </div>-->
 
                             <!--promijenjen parametar name kod Ime i Prezime inputa, ako ti znaci igdje-->
-                            <div class="row">
+                            <div class="row" id="autoridiv">
 
-                              <div class="col-md-6 mb-4">
-                                <div class="form-outline">
+                              <div class="col-md-6 mb-4" id="authordiv1">
+                                <div class="form-outline" id="authordiv2">
                                   <label class="form-label" for="" id="authorNameLabel">Ime autora</label>
                                   <input type="text" id="authorName" name="authorName" class="form-control form-control-lg" required/>
                                 </div>
                               </div>
 
-                              <div class="col-md-6 mb-4">
+                              <div class="col-md-6 mb-4" id="authordiv3">
                                   <label class="form-label" for="" id="authorLnameLabel">Prezime autora</label>
                                   <input type="text" id="authorLname" name="authorLname" class="form-control form-control-lg" required/>  
+                              </div>
+                              
+                              <div class="form-outline mb-4" id="authordiv4">
+                                <label class="form-label" for="" id='emailautorLabel'>E-mail autora</label>
+                                <input type="text" id="emailautora" name="emailautora" class="form-control form-control-lg" required/>
                               </div>
 
                             </div>
@@ -442,9 +447,42 @@
                 document.getElementById("authorLnameLabel").style.display = "none";
                 document.getElementById("authorLname").style.display = "none";
                 document.getElementById("emailConLabel").style.display = "none";
-                document.getElementById("emailCon").style.display = "none";
-                
+                document.getElementById("emailCon").style.display = "none";    
             }
+            function AddField() {
+              
+              const num=document.getElementById("numOfAuthors").value;
+              const inputime=document.getElementById("authorName");
+              const div1ime=document.getElementById("authordiv1");
+              const div2ime=document.getElementById("authordiv2");
+              const labelime=document.getElementById("authorNameLabel");
+
+              const inputprezime=document.getElementById("authorLname");
+              const div1prezime=document.getElementById("authordiv3");
+              const labelprezime=document.getElementById("authorLnameLabel");
+
+              const inputemail=document.getElementById("emailautora");
+              const div1email=document.getElementById("authordiv4");
+              const labelemail=document.getElementById("emailautorLabel");
+
+              const form=document.getElementById("autoridiv");
+              for(let i=0;i<num-1;i++){
+                div2ime.appendChild(labelime.cloneNode());
+                div2ime.appendChild(inputime.cloneNode());
+                div1ime.appendChild(div2ime.cloneNode());
+
+                div1prezime.appendChild(labelprezime.cloneNode());
+                div1prezime.appendChild(inputprezime.cloneNode());
+
+                div1email.appendChild(labelemail.cloneNode());
+                div1email.appendChild(inputemail.cloneNode());
+
+                form.appendChild(div1ime.cloneNode());
+                form.appendChild(div1prezime.cloneNode());
+                form.appendChild(div1ime.cloneNode());
+              }
+            }
+            
 
         </script>
     </html>
