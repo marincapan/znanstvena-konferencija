@@ -98,9 +98,9 @@ def signup(request):
         matustDrz = request.POST['matustDrz']
         uloga = request.POST['uloga']
         title = request.POST['title']
-        authors = request.POST['authors']
         emailCon = request.POST['emailCon']
         Section = request.POST['section']
+        numOfAuthors = request.POST["numOfAuthors"]
 
         if uloga=='sudionik':
             uloga="Sudionik"
@@ -127,6 +127,70 @@ def signup(request):
             messages.error(request, "Korisnicko ime ili email je vec u uporabi")
             return redirect('signup')
            
+
+        noviRad=models.Rad(
+            naslov=title,
+            radSekcija=Sekcija,
+            radKorisnik=NoviKorisnik
+        )
+        if not models.Rad.objects.filter(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik).exists():
+            noviRad.save()
+        else:
+            messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
+            return redirect('signup')
+        noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
+
+
+        authorName= request.POST["authorName"]
+        authorLName= request.POST["authorLname"]
+        authoremail= request.POST["emailautora"]
+        
+        noviAutori=[]
+        
+        print(authorName,authorLName,authoremail)
+        if not models.Autor.objects.filter(ime=authorName,prezime=authorLName,email=authoremail).exists():
+            newAutor = models.Autor(
+                ime = authorName,
+                prezime = authorLName,
+                email = authoremail
+            )
+            noviAutori.append(newAutor)
+            newAutor.save()
+            noviRad.autori.add(newAutor)
+            noviRad.save()
+            noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
+
+
+
+        for i in range(1,int(numOfAuthors)):
+            name="authorName{}".format(i+1)
+            Lname="authorLname{}".format(i+1)
+            email="emailautora{}".format(i+1)
+            authorName= request.POST[name]
+            authorLName= request.POST[Lname]
+            authoremail= request.POST[email]
+            print(authorName,authorLName,authoremail)
+            if not models.Autor.objects.filter(ime=authorName,prezime=authorLName,email=authoremail).exists():
+                newAutor = models.Autor(
+                    ime = authorName,
+                    prezime = authorLName,
+                    email = authoremail
+                )
+                noviAutori.append(newAutor)
+                newAutor.save()
+                noviRad.autori.add(newAutor)
+                noviRad.save()
+                noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
+
+
+        for autor in noviAutori:
+            if autor.email==emailCon:
+                saveAutor=models.Autor.objects.get(sifAutor=autor.sifAutor)
+                saveAutor.OZK=True
+                saveAutor.save()
+        
+        noviAutori.clear()
+        noviRad.save()
 
         messages.success(request, "Success")
 
@@ -207,14 +271,7 @@ def osobnipodatci(request):
     context['ime']=LoggedInUser.ime
     context['prezime']=LoggedInUser.prezime
     context['email']=LoggedInUser.email
-    if LoggedInUser.vrstaKorisnik==4:
-        uloga="Sudionik"
-    elif LoggedInUser.vrstaKorisnik==3:
-        uloga="Recenzent"
-    elif LoggedInUser.vrstaKorisnik==2:
-        uloga="Presjedavajući"
-    else:
-        uloga="Admin"
+    uloga=LoggedInUser.vrstaKorisnik.naziv
     context['uloga']=uloga
     context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
     
