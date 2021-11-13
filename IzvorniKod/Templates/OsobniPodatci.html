@@ -1,12 +1,12 @@
 {% load static %}
 <!DOCTYPE html>
-    <html>
+    <html style="height: 100vh">
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>OsobniPodatci</title>
+            <title>Osobni podatci</title>
             <meta name="description" content="">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
             <link rel="icon" href="{% static '/vectors/icon.svg' %}">
             <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
             <link href="{% static '/css/headers.css' %}" rel="stylesheet">
@@ -30,7 +30,7 @@
             background-color: #f2f2f2;
           }
         </style>
-        <body>
+        <body style="min-height: 100vh">
 
             <!--Vektorske grafike za header-->
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -104,13 +104,15 @@
                   </div>
                 </div>
             </header>
-            <div class="gradient-custom-3">
+            <div class="gradient-custom-3 " style="min-height: 100vh;">
               <div class="container pt-5 pb-5">
                 <div class="card" style="border-radius: 15px;">
                   <div class="card-body p-5">
                     <div class="text-uppercase text-center mb-5">
                       <h2>Osobni podatci</h2>
+                      <hr>
                     </div>
+                    
                     <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
                     jer se java script na dnu referira na njih-->
   
@@ -122,135 +124,159 @@
                     {% endif %}
                     
                     <!--Ako postoje informacije (Tj ako je ulogiran korisnik) prikazi ih-->
+                    <div class="container">
+                      <div class="row">
+                        <!--Osoba per se-->
+                        <div class="col-sm">
+                          {%if korisnickoIme%}
+                          <div style="padding-bottom: 9px;" id="UserNameDiv">
+                            <div>
+                              <div style="display: inline;" class="fs-4 fw-bold">Korisničko ime</div>
+                              <span data-bs-toggle="tooltip" title="Uredi" id="UpdateUserName">
+                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="18" height="18" onclick="UpdateUserName()" value="UpdateUserName"><use xlink:href="#pencil-square"/></svg>
+                              </span>
 
-                    <!--Osoba per se-->
-                    <div>
-                      {%if korisnickoIme%}
-                      <div>
-                        <div>
-                          <div style="display: inline;" class="fs-4 fw-bold">Korisničko ime</div>
-                          <a data-bs-toggle="tooltip" title="Uredi">
-                            <svg type="button" width="18" height="18" onclick="UpdateUserName()" id="UpdateUserName" value="UpdateUserName"><use xlink:href="#pencil-square"/></svg>
-                          </a>
+                              <div style="display: none; margin-left: 5px;" id="formUserNameChanges">
+                                <button style="border: none; background: none" type="submit" form="NewUserNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewUserName'>
+                                  <svg style="margin-bottom: 6px;" width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                                </button>
+                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                                  <svg style="margin-bottom: 6px;" type="button" width="18" height="18" onclick="CancelUpdateUsername()" id="cancelUsername" value="cancelUsername"><use xlink:href="#cancel-changes"/></svg>
+                                </span>
+                              </div>
+                            </div>
+                            
+                            <div class="fs-5" id='korisnickoIme'>{{korisnickoIme}}</div>
+
+                            <form action="/osobnipodatci" method="post" id='NewUserNameForm'>
+                              {% csrf_token %}
+                              <div>
+                                <div style="max-width: 15rem;" id="UserNameCollapse" class="collapse collapse-horizontal">
+                                  <input type="text" class="form-control" id="Username" name="Username" placeholder={{korisnickoIme}} Required>
+                                </div>
+                              </div>
+                              
+                            </form>
+                          </div>
+                          {%endif%}
+                          
+                          {%if ime%}
+                          <div style="padding-bottom: 9px;" id="FNameDiv">
+                            <div>
+                              <div style="display: inline;" class="fs-4 fw-bold">Ime</div>
+                              <span data-bs-toggle="tooltip" title="Uredi">
+                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="18" height="18" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName"><use xlink:href="#pencil-square"/></svg>
+                              </span>
+
+                              <div style="display: none; margin-left: 5px" id="formFNameChanges">
+                                <button style="border: none; background: none" type="submit" form="NewFNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewFName'>
+                                  <svg style="margin-bottom: 6px;" width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                                </button>
+                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                                  <svg style="margin-bottom: 6px;" type="button" width="18" height="18" onclick="CancelUpdateFName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
+                                </span>
+                              </div>
+                            </div>
+                            
+                            <div class="fs-5" id='ime'>{{ime}}</div>
+
+                            <form action="/osobnipodatci" method="post" id='NewFNameForm'>
+                              {% csrf_token %}
+                              <div style="max-width: 15rem;" id="FNameCollapse" class="collapse collapse-horizontal">
+                                <input type="text" class="form-control" id="Fname" name="Fname" placeholder={{ime}} Required>
+                              </div>                        
+                            </form>
+                          </div>
+                          {%endif%}
+        
+        
+                          {%if prezime%}
+                          <div style="padding-bottom: 9px;" id="LNameDiv">
+                            <div>
+                              <div style="display: inline;" class="fs-4 fw-bold">Prezime</div>
+                              <span data-bs-toggle="tooltip" title="Uredi">
+                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="18" height="18" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName"><use xlink:href="#pencil-square"/></svg>
+                              </span>
+
+                              <div style="display: none; margin-left: 5px" id="formLNameChanges">
+                                <button style="border: none; background: none" type="submit" form="NewLNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewLName'>
+                                  <svg style="margin-bottom: 6px;" width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                                </button>
+                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                                  <svg style="margin-bottom: 6px;" type="button" width="18" height="18" onclick="CancelUpdateLName()" id="cancelLName" value="cancelLName"><use xlink:href="#cancel-changes"/></svg>
+                                </span>
+                              </div>
+                            </div>
+                            
+                            <div class="fs-5" id='prezime'>{{prezime}}</div>
+                            
+                            <form action="/osobnipodatci" method="post" id='NewLNameForm'>
+                              {% csrf_token %}
+                              <div style="max-width: 15rem;" id="LNameCollapse" class="collapse collapse-horizontal">
+                                <input type="text" class="form-control" id="Lname" name="Lname" placeholder={{prezime}} Required>
+                              </div>
+                            </form>
+                          </div>
+                          {%endif%}
+        
+        
+                          {%if email%}
+                          <div style="padding-bottom: 9px;" id="EmailDiv">
+                            <div>
+                              <div style="display: inline;" class="fs-4 fw-bold">E-mail</div>
+                              <span data-bs-toggle="tooltip" title="Uredi">
+                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="18" height="18" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail"><use xlink:href="#pencil-square"/></svg>
+                              </span>
+
+                              <div style="display: none; margin-left: 5px" id="formEmailChanges">
+                                <button style="border: none; background: none" type="submit" form="NewEmailForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewEmail'>
+                                  <svg style="margin-bottom: 6px;" width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                                </button>
+                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                                  <svg style="margin-bottom: 6px;" type="button" width="18" height="18" onclick="CancelUpdateEmail()" id="cancelEmail" value="cancelEmail"><use xlink:href="#cancel-changes"/></svg>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="fs-5" id='email'>{{email}}</div>
+
+                            
+                            <form action="/osobnipodatci" method="post" id='NewEmailForm'>
+                              {% csrf_token %}
+                              <div style="max-width: 15rem;" id="EmailCollapse" class="collapse collapse-horizontal">
+                                <input type="text" class="form-control" id="email" name="email" placeholder={{email}} Required>
+                              </div>
+                            </form>
+                          </div>
+                          {%endif%}
                         </div>
                         
-                        <div class="fs-5" id='korisnickoIme'>{{korisnickoIme}}</div>
+                        <!--Uloga, ustanova i sekcija-->
+                        <div class="col-sm">
+                          {%if uloga%}
+                          <div style="padding-bottom: 9px;">
+                            <div class="fs-4 fw-bold">Uloga</div>
+                            <div class="fs-5" id='uloga'>{{uloga}}</div>
+                          </div>
+                          {%endif%}
+        
+        
+                          {%if MaticnaUstanova%}
+                          <div style="padding-bottom: 9px;">
+                            <div class="fs-4 fw-bold">Matična ustanova</div>
+                            <div class="fs-5" id='maticnaUstanova'>{{MaticnaUstanova}}</div>
+                          </div>
+                          {%endif%}
 
-                        <form action="/osobnipodatci" method="post" id='NewUserNameForm'>
-                        {% csrf_token %}
-                            <input type="text" class="form-control" id="Username" name="Username" placeholder={{korisnickoIme}} Required>
-
-                            <button style="padding: 0; margin: 5px; border: none; background: none" type="submit" data-bs-toggle="tooltip" title="Spremi promjene" name='NewUserName'>
-                              <svg width="18" height="18"><use xlink:href="#save-changes"/></svg>
-                            </button>
-                            <a data-bs-toggle="tooltip" title="Odbaci promjene">
-                              <svg type="button" width="18" height="18" onclick="CancelUpdateUsername()" id="cancelUsername" value="cancelUsername"><use xlink:href="#cancel-changes"/></svg>
-                            </a>
-                        </form>
+                          <!-- Ovo cu promijenit kada sekcije budu thing {%if MaticnaUstanova%} -->
+                          <div style="padding-bottom: 9px;">
+                            <div class="fs-4 fw-bold">Sekcija</div>
+                            <div class="fs-5" id='sekcija'>Višnja hvala ti za sok od trešnje</div>
+                          </div>
+                          <!-- {%endif%} -->
+                        </div>
                       </div>
-                      {%endif%}
                       
-                      {%if ime%}
-                      <div>
-                        <div>
-                          <div style="display: inline;" class="fs-4 fw-bold">Ime</div>
-                          <a data-bs-toggle="tooltip" title="Uredi">
-                            <svg type="button" width="18" height="18" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName"><use xlink:href="#pencil-square"/></svg>
-                          </a>
-                        </div>
-                        
-                        <div class="fs-5" id='ime'>{{ime}}</div>
-
-                        <form action="/osobnipodatci" method="post" id='NewFNameForm'>
-                        {% csrf_token %}
-                            <input type="text" class="form-control" id="Fname" name="Fname" placeholder={{ime}} Required>
-
-                            <button style="padding: 0; margin: 5px; border: none; background: none" type="submit" data-bs-toggle="tooltip" title="Spremi promjene" name='NewFName'>
-                              <svg width="18" height="18"><use xlink:href="#save-changes"/></svg>
-                            </button>
-                            <a data-bs-toggle="tooltip" title="Odbaci promjene">
-                              <svg type="button" width="18" height="18" onclick="CancelUpdateFName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
-                            </a>
-                        </form>
-                      </div>
-                      {%endif%}
-    
-    
-                      {%if prezime%}
-                      <div>
-                        <div>
-                          <div style="display: inline;" class="fs-4 fw-bold">Prezime</div>
-                          <a data-bs-toggle="tooltip" title="Uredi">
-                            <svg type="button" width="18" height="18" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName"><use xlink:href="#pencil-square"/></svg>
-                          </a>
-                        </div>
-                        
-                        <div class="fs-5" id='prezime'>{{prezime}}</div>
-                        
-                        <form action="/osobnipodatci" method="post" id='NewLNameForm'>
-                        {% csrf_token %}
-                            <input type="text" class="form-control" id="Lname" name="Lname" placeholder={{prezime}} Required>
-                            <button style="padding: 0; margin: 5px; border: none; background: none" type="submit" data-bs-toggle="tooltip" title="Spremi promjene" name='NewLName'>
-                              <svg width="18" height="18"><use xlink:href="#save-changes"/></svg>
-                            </button>
-                            <a data-bs-toggle="tooltip" title="Odbaci promjene">
-                              <svg type="button" width="18" height="18" onclick="CancelUpdateLName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
-                            </a>
-                        </form>
-                      </div>
-                      {%endif%}
-    
-    
-                      {%if email%}
-                      <div>
-                        <div>
-                          <div style="display: inline;" class="fs-4 fw-bold">E-mail</div>
-                          <a data-bs-toggle="tooltip" title="Uredi">
-                            <svg type="button" width="18" height="18" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail"><use xlink:href="#pencil-square"/></svg>
-                          </a>
-                        </div>
-                        <div class="fs-5" id='email'>{{email}}</div>
-
-                        
-                        <form action="/osobnipodatci" method="post" id='NewEmailForm'>
-                        {% csrf_token %}
-                            <input type="text" class="form-control" id="email" name="email" placeholder={{email}} Required>
-                            <button style="padding: 0; margin: 5px; border: none; background: none" type="submit" data-bs-toggle="tooltip" title="Spremi promjene" name='NewEmail'>
-                              <svg width="18" height="18"><use xlink:href="#save-changes"/></svg>
-                            </button>
-                            <a data-bs-toggle="tooltip" title="Odbaci promjene">
-                              <svg type="button" width="18" height="18" onclick="CancelUpdateEmail()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
-                            </a>
-                        </form>
-                      </div>
-                      {%endif%}
                     </div>
-                    
-                    <!--Uloga, ustanova i sekcija-->
-                    <div>
-                      {%if uloga%}
-                      <div>
-                        <div class="fs-4 fw-bold">Uloga:</div>
-                        <div class="fs-5" id='uloga'>{{uloga}}</div>
-                      </div>
-                      {%endif%}
-    
-    
-                      {%if MaticnaUstanova%}
-                      <div>
-                        <div class="fs-4 fw-bold">Matična ustanova:</div>
-                        <div class="fs-5" id='maticnaUstanova'>{{MaticnaUstanova}}</div>
-                      </div>
-                      {%endif%}
-
-                      <!-- Ovo cu promijenit kada sekcije budu thing {%if MaticnaUstanova%} -->
-                      <div>
-                        <div class="fs-4 fw-bold">Sekcija:</div>
-                        <div class="fs-5" id='sekcija'>Višnja hvala ti za sok od trešnje</div>
-                      </div>
-                      <!-- {%endif%} -->
-                    </div>
-                    
                   </div>
                 </div>
               </div>
@@ -264,52 +290,122 @@
               <p class="text-center text-muted">© 2021 Pametna ekipa</p>
             </footer>
         </body>
+
         <script type="text/javascript">
+            var userCollapse = document.getElementById("UserNameCollapse");
+            var bsUserCollapse = new bootstrap.Collapse(userCollapse, {toggle: false});
+            var fNameCollapse = document.getElementById("FNameCollapse");
+            var bsFNameCollapse = new bootstrap.Collapse(fNameCollapse, {toggle: false});
+            var lNameCollapse = document.getElementById("LNameCollapse");
+            var bsLNameCollapse = new bootstrap.Collapse(lNameCollapse, {toggle: false});
+            var emailCollapse = document.getElementById("EmailCollapse");
+            var bsEmailCollapse = new bootstrap.Collapse(emailCollapse, {toggle: false});
+
+            var user = document.getElementById("korisnickoIme");
+            userCollapse.addEventListener('show.bs.collapse', function(){
+              user.style.position = "absolute";
+              document.getElementById("UserNameDiv").style.paddingBottom = "0px";
+            });
+            userCollapse.addEventListener('hidden.bs.collapse', function(){
+              user.style.position = "relative";
+              document.getElementById("UserNameDiv").style.paddingBottom = "9px";
+            });
+
+            var fName = document.getElementById("ime");
+            fNameCollapse.addEventListener('show.bs.collapse', function(){
+              fName.style.position = "absolute";
+              document.getElementById("FNameDiv").style.paddingBottom = "0px";
+            });
+            fNameCollapse.addEventListener('hidden.bs.collapse', function(){
+              fName.style.position = "relative";
+              document.getElementById("FNameDiv").style.paddingBottom = "9px";
+            });
+
+            var lName = document.getElementById("prezime");
+            lNameCollapse.addEventListener('show.bs.collapse', function(){
+              lName.style.position = "absolute";
+              document.getElementById("LNameDiv").style.paddingBottom = "0px";
+            });
+            lNameCollapse.addEventListener('hidden.bs.collapse', function(){
+              lName.style.position = "relative";
+              document.getElementById("LNameDiv").style.paddingBottom = "9px";
+            });
+
+            var email = document.getElementById("email");
+            emailCollapse.addEventListener('show.bs.collapse', function(){
+              email.style.position = "absolute";
+              document.getElementById("EmailDiv").style.paddingBottom = "0px";
+            });
+            emailCollapse.addEventListener('hidden.bs.collapse', function(){
+              email.style.position = "relative";
+              document.getElementById("EmailDiv").style.paddingBottom = "9px";
+            });
+
             window.onload = function(){
-                document.getElementById("NewUserNameForm").style.display = "none";
-                document.getElementById("NewFNameForm").style.display = "none";
-                document.getElementById("NewLNameForm").style.display = "none";
-                document.getElementById("NewEmailForm").style.display = "none";
+              //document.getElementById("NewUserNameForm").style.display = "none";
+              //document.getElementById("NewFNameForm").style.display = "none";
+              //document.getElementById("NewLNameForm").style.display = "none";
+              //document.getElementById("NewEmailForm").style.display = "none";
             };
             function UpdateUserName(){
-                document.getElementById("NewUserNameForm").style.display = "inline";
-                document.getElementById("UpdateUserName").style.display = "none";
-                document.getElementById("korisnickoIme").style.display = "none";
+              //document.getElementById("NewUserNameForm").style.display = "inline";
+              document.getElementById("formUserNameChanges").style.display = "inline";
+              document.getElementById("UpdateUserName").style.display = "none";
+
+              userCollapse.style.position = "relative";
+              bsUserCollapse.toggle();
             }
             function UpdateFName(){
-                document.getElementById("NewFNameForm").style.display = "inline";
-                document.getElementById("UpdateFName").style.display = "none";
-                document.getElementById("ime").style.display = "none";
+              //document.getElementById("NewFNameForm").style.display = "inline";
+              document.getElementById("formFNameChanges").style.display = "inline";
+              document.getElementById("UpdateFName").style.display = "none";
+              
+              fNameCollapse.style.position = "relative";
+              bsFNameCollapse.toggle();
             }
             function UpdateLName(){
-                document.getElementById("NewLNameForm").style.display = "inline";
-                document.getElementById("UpdateLName").style.display = "none";
-                document.getElementById("prezime").style.display = "none";
+              //document.getElementById("NewLNameForm").style.display = "inline";
+              document.getElementById("formLNameChanges").style.display = "inline";
+              document.getElementById("UpdateLName").style.display = "none";
+              
+              lNameCollapse.style.position = "relative";
+              bsLNameCollapse.toggle();
             }
             function UpdateEmail(){
-                document.getElementById("NewEmailForm").style.display = "inline";
-                document.getElementById("UpdateEmail").style.display = "none";
-                document.getElementById("email").style.display = "none";
+              //document.getElementById("NewEmailForm").style.display = "inline";
+              document.getElementById("formEmailChanges").style.display = "inline";
+              document.getElementById("UpdateEmail").style.display = "none";
+              
+              emailCollapse.style.position = "relative";
+              bsEmailCollapse.toggle();
             }
             function CancelUpdateUsername(){
-                document.getElementById("NewUserNameForm").style.display = "none";
-                document.getElementById("UpdateUserName").style.display = "inline";
-                document.getElementById("korisnickoIme").style.display = "inline";
+              //document.getElementById("NewUserNameForm").style.display = "none";
+              document.getElementById("formUserNameChanges").style.display = "none";
+              document.getElementById("UpdateUserName").style.display = "inline";
+              document.getElementById("korisnickoIme").style.display="inline";
+              bsUserCollapse.toggle();
             }
             function CancelUpdateFName(){
-                document.getElementById("NewFNameForm").style.display = "none";
-                document.getElementById("UpdateFName").style.display = "inline";
-                document.getElementById("ime").style.display = "inline";
+              //document.getElementById("NewFNameForm").style.display = "none";
+              document.getElementById("formFNameChanges").style.display = "none";
+              document.getElementById("UpdateFName").style.display = "inline";
+              document.getElementById("ime").style.display = "inline";
+              bsFNameCollapse.toggle();
             }
             function CancelUpdateLName(){
-              document.getElementById("NewLNameForm").style.display = "none";
-                document.getElementById("UpdateLName").style.display = "inline";
-                document.getElementById("prezime").style.display = "inline";
+              //document.getElementById("NewLNameForm").style.display = "none";
+              document.getElementById("formLNameChanges").style.display = "none";
+              document.getElementById("UpdateLName").style.display = "inline";
+              document.getElementById("prezime").style.display = "inline";
+              bsLNameCollapse.toggle();
             }
             function CancelUpdateEmail(){
-                document.getElementById("NewEmailForm").style.display = "none";
-                document.getElementById("UpdateEmail").style.display = "inline";
-                document.getElementById("email").style.display = "inline";
+              //document.getElementById("NewEmailForm").style.display = "none";
+              document.getElementById("formEmailChanges").style.display = "none";
+              document.getElementById("UpdateEmail").style.display = "inline";
+              document.getElementById("email").style.display = "inline";
+              bsEmailCollapse.toggle();
             }
         </script>
     </html>
