@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import DefaultDict
 from django.core.checks.messages import Error
-from django.db.models.fields import NullBooleanField
+from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
@@ -20,15 +20,48 @@ def home(request):
     if 'randPassword' in request.session:
         del request.session['randPassword']
     #Password se pokazuje jedanput i vise nikad.
+
+    baseKonferncija=models.Konferencija(
+        nazivKonferencije = "Znanstvena konferencija",
+        opisKonferencije = "MK2ZK",
+        datumKonferencije = "2022-12-12",
+        rokPrijave = "2022-12-12"
+    )
+    createAdmin = models.Uloga(
+        naziv="Admin"
+    )
+    if not models.Uloga.objects.filter(naziv="Admin").exists():
+        createAdmin.save()
+    createPredsjedavajuci = models.Uloga(
+        naziv="Predsjedavajuci"
+    )
+    if not models.Uloga.objects.filter(naziv="Predsjedavajuci").exists():
+        createPredsjedavajuci.save()
+    createRecenzent = models.Uloga(
+        naziv="Recenzent"
+    )
+    if not models.Uloga.objects.filter(naziv="Recenzent").exists():
+        createRecenzent.save()
+    createSudionik = models.Uloga(
+        naziv="Sudionik"
+    )
+    if not models.Uloga.objects.filter(naziv="Sudionik").exists():
+        createSudionik.save()
+
+
+    if not models.Konferencija.objects.filter(nazivKonferencije = "Znanstvena konferencija", opisKonferencije = "MK2ZK").exists():
+        baseKonferncija.save()
+
     adminUstanova=models.Ustanova(
-            nazivUstanova="Konferencija"
+            naziv="Konferencija"
         )
     adminSekcija=models.Sekcija(
-        nazivSekcija="Konferencija"
+        naziv="Konferencija",
+        konferencijaSekcija = baseKonferncija
     )
-    if not models.Ustanova.objects.filter(nazivUstanova="Konferencija").exists():
+    if not models.Ustanova.objects.filter(naziv="Konferencija").exists():
         adminUstanova.save()
-    if not models.Sekcija.objects.filter(nazivSekcija="Konferencija").exists():
+    if not models.Sekcija.objects.filter(naziv="Konferencija").exists():
         adminSekcija.save()
     admin=models.Korisnik(
         korisnickoIme='admin',
@@ -37,9 +70,9 @@ def home(request):
         prezime='admin',
         email="fm52578@fer.hr",
         odobrenBool=True,
-        vrstaKorisnik=1,
-        korisnikUstanova=models.Ustanova.objects.get(nazivUstanova="Konferencija"),
-        korisnikSekcija=models.Sekcija.objects.get(nazivSekcija="Konferencija")
+        vrstaKorisnik=createAdmin,
+        korisnikUstanova=models.Ustanova.objects.get(naziv="Konferencija"),
+        korisnikSekcija=models.Sekcija.objects.get(naziv="Konferencija")
     )
     if not models.Korisnik.objects.filter(korisnickoIme='admin').exists():
         admin.save()
@@ -70,25 +103,25 @@ def signup(request):
         Section = request.POST['section']
 
         if uloga=='sudionik':
-            uloga=4
+            uloga="Sudionik"
         else:
-            uloga=3
+            uloga="Recezent"
         
         randPassword=get_random_string(length=16)
         request.session['randPassword'] = randPassword
-        Ustanova = models.Ustanova(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz)
-        if models.Ustanova.objects.filter(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz).exists():
-            Ustanova = models.Ustanova.objects.get(nazivUstanova=matustName,adresaUstanova=matustAdr,gradUstanova=matustCity,drzavaUstanova=matustDrz)
+        Ustanova = models.Ustanova(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
+        if models.Ustanova.objects.filter(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz).exists():
+            Ustanova = models.Ustanova.objects.get(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
         else:
             Ustanova.save()
-        Sekcija = models.Sekcija(nazivSekcija=Section)
-        if  models.Sekcija.objects.filter(nazivSekcija=Section).exists():
-            Sekcija=models.Sekcija.objects.get(nazivSekcija=Section)
+        Sekcija = models.Sekcija(naziv=Section,konferencijaSekcija=models.Sekcija.objects.get(naziv="Konferencija").konferencijaSekcija)
+        if  models.Sekcija.objects.filter(naziv=Section).exists():
+            Sekcija=models.Sekcija.objects.get(naziv=Section)
         else:
             print(Sekcija)
             Sekcija.save()
         try:
-            NoviKorisnik = models.Korisnik(korisnickoIme=Username,lozinka=randPassword,ime=Fname,prezime=Lname,email=email,vrstaKorisnik=uloga, korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
+            NoviKorisnik = models.Korisnik(korisnickoIme=Username,lozinka=randPassword,ime=Fname,prezime=Lname,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
             NoviKorisnik.save()
         except IntegrityError:
             messages.error(request, "Korisnicko ime ili email je vec u uporabi")
@@ -111,8 +144,9 @@ def signin(request):
         try:
             if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists():
                 LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
+                print(LoggedInUser.vrstaKorisnik.naziv)
                 request.session['LoggedInUserId']=LoggedInUser.idSudionik
-                request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik
+                request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
                 if LoggedInUser.odobrenBool==False:
                     messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
                 return redirect('home')
@@ -182,7 +216,7 @@ def osobnipodatci(request):
     else:
         uloga="Admin"
     context['uloga']=uloga
-    context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.nazivUstanova
+    context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
     
     return render(request, 'OsobniPodatci.html',context)
 

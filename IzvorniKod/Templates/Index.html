@@ -24,10 +24,10 @@
             {%if LoggedInUser%}
                 <button type="submit"><a href="signout">Signout</a></button>
                 <button type="submit"><a href="osobnipodatci">OsobniPodatci</a></button>
-                {%if LoggedInUserRole == 4%}<!--Ako je sudionik-->
+                {%if LoggedInUserRole == "Sudionik"%}<!--Ako je sudionik-->
                     <button type="submit"><a href="mojiradovi">MojiRadovi</a></button>
                 {% endif %}
-                {%if LoggedInUserRole == 1%}<!--Ako je admin-->
+                {%if LoggedInUserRole == "Admin"%}<!--Ako je admin-->
                     <button type="submit"><a href="mojiradovi">Slozi obrazac</a></button>
                 {% endif %}
             {% endif %}
