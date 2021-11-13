@@ -25,14 +25,17 @@
             background: linear-gradient(to right, #f2f2f2, #8FB5CC);
 
           }
-
           .card {
             background-color: #f2f2f2;
+          }
+          @keyframes rotation{
+            from {transform: rotate(0deg);}
+            to {transform: rotate(90deg);}
           }
         </style>
         <body style="min-height: 100vh">
 
-            <!--Vektorske grafike za header-->
+            <!--Vektorske grafike-->
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
                 <!-- gumb za Naslovnicu-->
                 <symbol id="home" viewBox="0 0 16 16">
@@ -57,6 +60,10 @@
                   <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </symbol>
+                <!-- gumb za hamburger meni -->
+                <symbol id="hamburger" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                </symbol>
                 <!-- gumb ? -->
                 <symbol id="sci-con" viewBox="0 0 29 29">
                     
@@ -66,27 +73,29 @@
               <!--Nema potrebe za provjerom jer se podrazumijeva da je korisnik ulogiran-->
 
             <header>
-                <div class="px-3 py-3 bg-dark bg-gradient text-white">
+                <nav class="navbar navbar-expand-lg bg-dark bg-gradient">
                   <div class="container">
-                    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                      <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
-                        <img src="{% static '/vectors/SciConIcon.svg' %}" alt="SciCon" class="main-icon">
-                      </a>
-            
-                      <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                        <li>
+                    <a class="navbar-brand" href="/">
+                      <img src="{% static '/vectors/SciConIcon.svg' %}" alt="SciCon" width="64" height="64">
+                    </a>
+                    <button class="navbar-toggler" id="navbarToggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <svg class="navbar-toggler-icon" id="navbarTogglerIcon" width="24" height="24" style="-webkit-filter: invert(100%); filter: invert(100%);"><use xlink:href="#hamburger"/></svg>
+                    </button>
+                    <div class="collapse navbar-collapse" style="justify-content: flex-end;" id="navbarContent">
+                      <ul class="navbar-nav" style="text-align: center;">
+                        <li class="nav-item">
                           <a href="/" class="nav-link text-white">
                             <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
-                            Naslovna
+                            <div style="display:inline; ">Naslovna</div>
                           </a>
                         </li>
-                        <li>
+                        <li class="nav-item">
                           <a href="#" class="nav-link text-white">
                             <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                             O konferenciji
                           </a>
                         </li>
-                        <li>
+                        <li class="nav-item">
                           <a href="mojiradovi" class="nav-link text-white">
                             <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                             Moji radovi <!--  Za recenzenta je isti header, samo pise "Moje recenzije". -->
@@ -102,7 +111,7 @@
                       </ul>
                     </div>
                   </div>
-                </div>
+                </nav>
             </header>
             <div class="gradient-custom-3 " style="min-height: 100vh;">
               <div class="container pt-5 pb-5">
@@ -301,6 +310,22 @@
             var emailCollapse = document.getElementById("EmailCollapse");
             var bsEmailCollapse = new bootstrap.Collapse(emailCollapse, {toggle: false});
 
+            var navbarCollapse = document.getElementById("navbarContent");
+            
+            navbarCollapse.addEventListener('show.bs.collapse', function(){
+              document.getElementById("navbarTogglerIcon").style.animation="rotation 0.5s both";
+            });
+            navbarCollapse.addEventListener('shown.bs.collapse', function(){
+              document.getElementById("navbarTogglerIcon").style.animation="none";
+              document.getElementById("navbarTogglerIcon").style.transform="rotate(90deg)";
+            });
+            navbarCollapse.addEventListener('hide.bs.collapse', function(){
+              document.getElementById("navbarTogglerIcon").style.animation="rotation 0.35s reverse";
+            });
+            navbarCollapse.addEventListener('hidden.bs.collapse', function(){
+              document.getElementById("navbarTogglerIcon").style.animation="none";
+              document.getElementById("navbarTogglerIcon").style.transform="rotate(0deg)";
+            });
             var user = document.getElementById("korisnickoIme");
             userCollapse.addEventListener('show.bs.collapse', function(){
               user.style.position = "absolute";
