@@ -242,7 +242,8 @@ def mojiradovi(request):
 
     if request.method == "POST":
         if 'UploadFile' in request.POST:
-            if len(fetchedRadovi) > 1:
+            if len(fetchedRadovi) >= 1 and fetchedRadovi[0].pdf: #jedan rad i ima pdf
+                
                 fileTitle = request.POST["fileTitle"]
                 uploadedFile = request.FILES["uploadedFile"]
 
@@ -256,7 +257,7 @@ def mojiradovi(request):
                     print("Flag2")
                     rad.save()
                 return redirect('mojiradovi')
-            else:
+            else: #jedan rad, ali nema pdf
                 uploadedFile = request.FILES["uploadedFile"]
                 for rad in fetchedRadovi:
                     rad.pdf = uploadedFile

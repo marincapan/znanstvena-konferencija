@@ -44,6 +44,14 @@
         }
     },
     {
+        "model":"MK2ZK_App.Sekcija",
+        "sifSekcija":4,
+        "fields":{
+            "naziv":"Trešnja sekcija",
+            "konferencijaSekcija": 1
+        }
+    },
+    {
         "model":"MK2ZK_App.Uloga",
         "id":1,
         "fields":{

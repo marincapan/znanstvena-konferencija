@@ -140,22 +140,22 @@
                           {%if korisnickoIme%}
                           <div style="padding-bottom: 9px;" id="UserNameDiv">
                             <div>
-                              <div style="display: inline;" class="fs-4 fw-bold">Korisničko ime</div>
+                              <div style="display: inline;" class="fs-5">Korisničko ime</div>
                               <span data-bs-toggle="tooltip" title="Uredi" id="UpdateUserName">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="18" height="18" onclick="UpdateUserName()" value="UpdateUserName"><use xlink:href="#pencil-square"/></svg>
+                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateUserName()" value="UpdateUserName"><use xlink:href="#pencil-square"/></svg>
                               </span>
 
                               <div style="display: none; margin-left: 5px;" id="formUserNameChanges">
                                 <button style="border: none; background: none" type="submit" form="NewUserNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewUserName'>
-                                  <svg style="margin-bottom: 6px;" width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
                                 </button>
                                 <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="18" height="18" onclick="CancelUpdateUsername()" id="cancelUsername" value="cancelUsername"><use xlink:href="#cancel-changes"/></svg>
+                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateUsername()" id="cancelUsername" value="cancelUsername"><use xlink:href="#cancel-changes"/></svg>
                                 </span>
                               </div>
                             </div>
                             
-                            <div class="fs-5" id='korisnickoIme'>{{korisnickoIme}}</div>
+                            <div class="fs-4 fw-bold" id='korisnickoIme'>{{korisnickoIme}}</div>
 
                             <form action="/osobnipodatci" method="post" id='NewUserNameForm'>
                               {% csrf_token %}
@@ -172,22 +172,22 @@
                           {%if ime%}
                           <div style="padding-bottom: 9px;" id="FNameDiv">
                             <div>
-                              <div style="display: inline;" class="fs-4 fw-bold">Ime</div>
+                              <div style="display: inline;" class="fs-5">Ime</div>
                               <span data-bs-toggle="tooltip" title="Uredi">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="18" height="18" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName"><use xlink:href="#pencil-square"/></svg>
+                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName"><use xlink:href="#pencil-square"/></svg>
                               </span>
 
                               <div style="display: none; margin-left: 5px" id="formFNameChanges">
                                 <button style="border: none; background: none" type="submit" form="NewFNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewFName'>
-                                  <svg style="margin-bottom: 6px;" width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
                                 </button>
                                 <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="18" height="18" onclick="CancelUpdateFName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
+                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateFName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
                                 </span>
                               </div>
                             </div>
                             
-                            <div class="fs-5" id='ime'>{{ime}}</div>
+                            <div class="fs-4 fw-bold" id='ime'>{{ime}}</div>
 
                             <form action="/osobnipodatci" method="post" id='NewFNameForm'>
                               {% csrf_token %}
@@ -202,22 +202,22 @@
                           {%if prezime%}
                           <div style="padding-bottom: 9px;" id="LNameDiv">
                             <div>
-                              <div style="display: inline;" class="fs-4 fw-bold">Prezime</div>
+                              <div style="display: inline;" class="fs-5">Prezime</div>
                               <span data-bs-toggle="tooltip" title="Uredi">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="18" height="18" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName"><use xlink:href="#pencil-square"/></svg>
+                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName"><use xlink:href="#pencil-square"/></svg>
                               </span>
 
                               <div style="display: none; margin-left: 5px" id="formLNameChanges">
                                 <button style="border: none; background: none" type="submit" form="NewLNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewLName'>
-                                  <svg style="margin-bottom: 6px;" width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
                                 </button>
                                 <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="18" height="18" onclick="CancelUpdateLName()" id="cancelLName" value="cancelLName"><use xlink:href="#cancel-changes"/></svg>
+                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateLName()" id="cancelLName" value="cancelLName"><use xlink:href="#cancel-changes"/></svg>
                                 </span>
                               </div>
                             </div>
                             
-                            <div class="fs-5" id='prezime'>{{prezime}}</div>
+                            <div class="fs-4 fw-bold" id='prezime'>{{prezime}}</div>
                             
                             <form action="/osobnipodatci" method="post" id='NewLNameForm'>
                               {% csrf_token %}
@@ -232,21 +232,21 @@
                           {%if email%}
                           <div style="padding-bottom: 9px;" id="EmailDiv">
                             <div>
-                              <div style="display: inline;" class="fs-4 fw-bold">E-mail</div>
+                              <div style="display: inline;" class="fs-5">E-mail</div>
                               <span data-bs-toggle="tooltip" title="Uredi">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="18" height="18" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail"><use xlink:href="#pencil-square"/></svg>
+                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail"><use xlink:href="#pencil-square"/></svg>
                               </span>
 
                               <div style="display: none; margin-left: 5px" id="formEmailChanges">
                                 <button style="border: none; background: none" type="submit" form="NewEmailForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewEmail'>
-                                  <svg style="margin-bottom: 6px;" width="18" height="18"><use xlink:href="#save-changes"/></svg>
+                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
                                 </button>
                                 <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="18" height="18" onclick="CancelUpdateEmail()" id="cancelEmail" value="cancelEmail"><use xlink:href="#cancel-changes"/></svg>
+                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateEmail()" id="cancelEmail" value="cancelEmail"><use xlink:href="#cancel-changes"/></svg>
                                 </span>
                               </div>
                             </div>
-                            <div class="fs-5" id='email'>{{email}}</div>
+                            <div class="fs-4 fw-bold" id='email'>{{email}}</div>
 
                             
                             <form action="/osobnipodatci" method="post" id='NewEmailForm'>
@@ -263,23 +263,23 @@
                         <div class="col-sm">
                           {%if uloga%}
                           <div style="padding-bottom: 9px;">
-                            <div class="fs-4 fw-bold">Uloga</div>
-                            <div class="fs-5" id='uloga'>{{uloga}}</div>
+                            <div class="fs-5">Uloga</div>
+                            <div class="fs-4 fw-bold" id='uloga'>{{uloga}}</div>
                           </div>
                           {%endif%}
         
         
                           {%if MaticnaUstanova%}
                           <div style="padding-bottom: 9px;">
-                            <div class="fs-4 fw-bold">Matična ustanova</div>
-                            <div class="fs-5" id='maticnaUstanova'>{{MaticnaUstanova}}</div>
+                            <div class="fs-5">Matična ustanova</div>
+                            <div class="fs-4 fw-bold" id='maticnaUstanova'>{{MaticnaUstanova}}</div>
                           </div>
                           {%endif%}
 
                           {%if sekcija%}
                           <div style="padding-bottom: 9px;">
-                            <div class="fs-4 fw-bold">Sekcija</div>
-                            <div class="fs-5" id='sekcija'>{{sekcija}}</div>
+                            <div class="fs-5">Sekcija</div>
+                            <div class="fs-4 fw-bold" id='sekcija'>{{sekcija}}</div>
                           </div>
                           {%endif%}
                         </div>
