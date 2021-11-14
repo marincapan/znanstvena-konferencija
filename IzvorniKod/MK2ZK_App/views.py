@@ -59,7 +59,7 @@ def signup(request):
             Ustanova = models.Ustanova.objects.get(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
         else:
             Ustanova.save()
-        Sekcija = models.Sekcija(naziv=Section,konferencijaSekcija=models.Sekcija.objects.get(naziv="Konferencija").konferencijaSekcija)
+        Sekcija = models.Sekcija(naziv=Section,konferencijaSekcija=models.Sekcija.objects.get(naziv=Section).konferencijaSekcija)
         if  models.Sekcija.objects.filter(naziv=Section).exists():
             Sekcija=models.Sekcija.objects.get(naziv=Section)
         else:
@@ -142,7 +142,9 @@ def signup(request):
         return redirect('signin')
     context={}
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
+    fetchedSekcije=models.Sekcija.objects.filter().all()
     context['DodatnaPolja']=fetchedPolja
+    context['sekcije']=fetchedSekcije #dodao sam ovo kako bih mogao implementirati select za sekcije
     print(context)
     return render(request, 'Signup.html',context)
     

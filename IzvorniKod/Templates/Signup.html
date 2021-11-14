@@ -238,8 +238,19 @@
 
                             <div class="form-outline mb-4">
                               <label class="form-label" for="" id='sectionLabel'>Sekcija</label>
-                              <input type="text" id="section" name="section" class="form-control form-control-lg" required/>
+                              <select type="text" id="section" name="section" class="form-control form-control-lg" required>
+                                {%for sekcija in sekcije%}
+                                <option value="{{sekcija.naziv}}">{{sekcija.naziv}}</option>
+                                {%endfor%}
+                              </select>
                             </div>
+
+                            <!-- stare sekcije
+                              <div class="form-outline mb-4">
+                              <label class="form-label" for="" id='sectionLabel'>Sekcija</label>
+                              <input type="text" id="section" name="section" class="form-control form-control-lg" required>
+                            </div>
+                            -->
 
                             <div class="form-outline mb-4">
                               <label class="form-label" for="" id='titleLabel'>Naslov rada</label>

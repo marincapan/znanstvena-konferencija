@@ -27,6 +27,22 @@
             "konferencijaSekcija": 1
         }
     },
+	{
+        "model":"MK2ZK_App.Sekcija",
+        "sifSekcija":2,
+        "fields":{
+            "naziv":"Banana sekcija",
+            "konferencijaSekcija": 1
+        }
+    },
+	{
+        "model":"MK2ZK_App.Sekcija",
+        "sifSekcija":3,
+        "fields":{
+            "naziv":"Avokado sekcija",
+            "konferencijaSekcija": 1
+        }
+    },
     {
         "model":"MK2ZK_App.Uloga",
         "id":1,
