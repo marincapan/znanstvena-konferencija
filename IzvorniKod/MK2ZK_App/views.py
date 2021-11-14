@@ -21,61 +21,6 @@ def home(request):
         del request.session['randPassword']
     #Password se pokazuje jedanput i vise nikad.
 
-    baseKonferncija=models.Konferencija(
-        nazivKonferencije = "Znanstvena konferencija",
-        opisKonferencije = "MK2ZK",
-        datumKonferencije = "2022-12-12",
-        rokPrijave = "2022-12-12"
-    )
-    createAdmin = models.Uloga(
-        naziv="Admin"
-    )
-    if not models.Uloga.objects.filter(naziv="Admin").exists():
-        createAdmin.save()
-    createPredsjedavajuci = models.Uloga(
-        naziv="Predsjedavajuci"
-    )
-    if not models.Uloga.objects.filter(naziv="Predsjedavajuci").exists():
-        createPredsjedavajuci.save()
-    createRecenzent = models.Uloga(
-        naziv="Recenzent"
-    )
-    if not models.Uloga.objects.filter(naziv="Recenzent").exists():
-        createRecenzent.save()
-    createSudionik = models.Uloga(
-        naziv="Sudionik"
-    )
-    if not models.Uloga.objects.filter(naziv="Sudionik").exists():
-        createSudionik.save()
-
-
-    if not models.Konferencija.objects.filter(nazivKonferencije = "Znanstvena konferencija", opisKonferencije = "MK2ZK").exists():
-        baseKonferncija.save()
-
-    adminUstanova=models.Ustanova(
-            naziv="Konferencija"
-        )
-    adminSekcija=models.Sekcija(
-        naziv="Konferencija",
-        konferencijaSekcija = baseKonferncija
-    )
-    if not models.Ustanova.objects.filter(naziv="Konferencija").exists():
-        adminUstanova.save()
-    if not models.Sekcija.objects.filter(naziv="Konferencija").exists():
-        adminSekcija.save()
-    admin=models.Korisnik(
-        korisnickoIme='admin',
-        lozinka='admin',
-        ime='admin',
-        prezime='admin',
-        email="fm52578@fer.hr",
-        odobrenBool=True,
-        vrstaKorisnik=createAdmin,
-        korisnikUstanova=models.Ustanova.objects.get(naziv="Konferencija"),
-        korisnikSekcija=models.Sekcija.objects.get(naziv="Konferencija")
-    )
-    if not models.Korisnik.objects.filter(korisnickoIme='admin').exists():
-        admin.save()
     context={}
     if "LoggedInUserId" in request.session:
         context["LoggedInUser"]=request.session['LoggedInUserId']

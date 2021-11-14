@@ -1,0 +1,101 @@
+[
+    {
+        "model":"MK2ZK_App.Konferencija",
+        "sifKonferencija":1,
+        "fields":{
+            "nazivKonferencije":"Konferencija",
+            "opisKonferencije":"Inital znanstvena konferencija",
+            "datumKonferencije":"2022-12-12",
+            "rokPrijave":"2022-12-12"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Ustanova",
+        "sifUstanova":1,
+        "fields":{
+            "naziv":"Admin Ustanova",
+            "grad":"Zagreb",
+            "drzava":"Hrvatska",
+            "adresa":"Unska 3"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Sekcija",
+        "sifSekcija":1,
+        "fields":{
+            "naziv":"Admin Sekcija",
+            "konferencijaSekcija": 1
+        }
+    },
+    {
+        "model":"MK2ZK_App.Uloga",
+        "id":1,
+        "fields":{
+            "naziv":"Admin"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Uloga",
+        "id":2,
+        "fields":{
+            "naziv":"Predsjedavajuci"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Uloga",
+        "id":4,
+        "fields":{
+            "naziv":"Recenzent"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Uloga",
+        "id":4,
+        "fields":{
+            "naziv":"Sudionik"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Ocjena",
+        "id":1,
+        "fields":{
+            "znacenje":"Rad prihvaćen - Nema potreba za izmjenama"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Ocjena",
+        "id":2,
+        "fields":{
+            "znacenje":"Rad prihvaćen - Potrebne manje promjene, pogledaj obrazloženje"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Ocjena",
+        "id":3,
+        "fields":{
+            "znacenje":"Rad djelomično prihvaćen - Potrebne promjene nakon kojih slijedi ponovna provjera"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Ocjena",
+        "id":4,
+        "fields":{
+            "znacenje":"Rad odbijen - Pogledaj obrazloženje "
+        }
+    },
+    {
+        "model":"MK2ZK_App.Korisnik",
+        "id":1,
+        "fields":{
+            "korisnickoIme":"admin",
+            "lozinka":"admin",
+            "ime":"admin",
+            "prezime":"admin",
+            "email":"adminMK2ZK@konferencija.hr",
+            "odobrenBool": "True",
+            "vrstaKorisnik": 1,
+            "korisnikUstanova" : 1,
+            "korisnikSekcija": 1
+        }
+    }
+]
