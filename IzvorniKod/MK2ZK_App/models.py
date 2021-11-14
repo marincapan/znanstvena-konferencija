@@ -61,7 +61,7 @@ def custom_directory(instance, filename):
 class Rad(models.Model):
     sifRad = models.AutoField(primary_key=True)
     naslov = models.CharField(max_length=500)
-    recinziranBool = models.BooleanField(default=False)
+    recenziranBool = models.BooleanField(default=False)
     pdf = models.FileField(upload_to=custom_directory)
     radSekcija = models.ForeignKey("Sekcija", on_delete=models.CASCADE)
     radKorisnik = models.ForeignKey("Korisnik", on_delete=models.CASCADE)
