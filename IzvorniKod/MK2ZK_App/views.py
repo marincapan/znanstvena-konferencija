@@ -271,9 +271,9 @@ def osobnipodatci(request):
     context['ime']=LoggedInUser.ime
     context['prezime']=LoggedInUser.prezime
     context['email']=LoggedInUser.email
-    uloga=LoggedInUser.vrstaKorisnik.naziv
-    context['uloga']=uloga
+    context['uloga']=LoggedInUser.vrstaKorisnik.naziv
     context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
+    context['sekcija']=LoggedInUser.korisnikSekcija.naziv
     
     return render(request, 'OsobniPodatci.html',context)
 
@@ -288,24 +288,35 @@ def mojiradovi(request):
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
 
     fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
-    print(context)
+    for rad in fetchedRadovi:
+        print(rad.pdf)
+        context['pdf']=rad.pdf
     context['fetchedRadovi']=fetchedRadovi
 
     if request.method == "POST":
         if 'UploadFile' in request.POST:
-            fileTitle = request.POST["fileTitle"]
-            uploadedFile = request.FILES["uploadedFile"]
+            if len(fetchedRadovi) > 1:
+                fileTitle = request.POST["fileTitle"]
+                uploadedFile = request.FILES["uploadedFile"]
 
-            rad = models.Rad(
-                naslov = fileTitle,
-                pdf = uploadedFile,
-                radSekcija = LoggedInUser.korisnikSekcija,
-                radKorisnik = LoggedInUser
-            )
-            if not models.Rad.objects.filter(naslov = fileTitle,pdf = uploadedFile,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser).exists():
-                print("Flag2")
-                rad.save()
-            return redirect('mojiradovi')
+                rad = models.Rad(
+                    naslov = fileTitle,
+                    pdf = uploadedFile,
+                    radSekcija = LoggedInUser.korisnikSekcija,
+                    radKorisnik = LoggedInUser
+                )
+                if not models.Rad.objects.filter(naslov = fileTitle,pdf = uploadedFile,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser).exists():
+                    print("Flag2")
+                    rad.save()
+                return redirect('mojiradovi')
+            else:
+                uploadedFile = request.FILES["uploadedFile"]
+                for rad in fetchedRadovi:
+                    rad.pdf = uploadedFile
+                    rad.save()
+                
+                return redirect('mojiradovi')
+            
         if 'AddNewField' in request.POST:
             fieldName = request.POST["fieldName"]
             fieldType = request.POST["fieldType"]
