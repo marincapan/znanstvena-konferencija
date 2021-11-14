@@ -4,7 +4,7 @@
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>Authentication</title>
+            <title>Home</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="icon" href="{% static '/vectors/icon.svg' %}">
@@ -106,7 +106,11 @@
                             {% if LoggedInUser %}
                             <a href="mojiradovi" class="nav-link text-white">
                                 <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                                {%if LoggedInUserRole == "Admin"%}
+                                Složi obrazac
+                                {%else%}
                                 Moji radovi <!--  Za recenzenta je isti header, samo pise "Moje recenzije". -->
+                                {%endif%}
                             </a>
                             {% else %}
                             <a href="signin" class="nav-link text-white">

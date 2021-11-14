@@ -140,6 +140,8 @@ def signup(request):
         messages.success(request, "Success")
 
         return redirect('signin')
+    if "LoggedInUserId" in request.session: #otprije smo registrirani
+        return redirect('/')
     context={}
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     fetchedSekcije=models.Sekcija.objects.filter().all()
@@ -167,8 +169,11 @@ def signin(request):
             return redirect('signin')
     
     context = {}
-    if "randPassword" in request.session:
+    if "randPassword" in request.session: #tek smo se registrirali
         context["randPassword"]=request.session["randPassword"]
+    elif "LoggedInUserId" in request.session: #otprije smo registrirani
+        return redirect('/')
+        
     return render(request, 'Signin.html',context)
 
 def signout(request):
@@ -212,27 +217,34 @@ def osobnipodatci(request):
                 return redirect('osobnipodatci')  
         return redirect('osobnipodatci')
 
-    LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
-    context={}
-    context['korisnickoIme']=LoggedInUser.korisnickoIme
-    context['ime']=LoggedInUser.ime
-    context['prezime']=LoggedInUser.prezime
-    context['email']=LoggedInUser.email
-    context['uloga']=LoggedInUser.vrstaKorisnik.naziv
-    context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
-    context['sekcija']=LoggedInUser.korisnikSekcija.naziv
+    if "LoggedInUserId" in request.session: #ulogirani smo
+        LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+        context={}
+        context['LoggedInUserRole']=request.session['LoggedInUserRole']
+        context['korisnickoIme']=LoggedInUser.korisnickoIme
+        context['ime']=LoggedInUser.ime
+        context['prezime']=LoggedInUser.prezime
+        context['email']=LoggedInUser.email
+        context['uloga']=LoggedInUser.vrstaKorisnik.naziv
+        context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
+        context['sekcija']=LoggedInUser.korisnikSekcija.naziv
+    else:
+        return redirect('signin')
     
     return render(request, 'OsobniPodatci.html',context)
 
 def mojiradovi(request):
-    LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
-    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     context={}
-    if "LoggedInUserId" in request.session:
+    if "LoggedInUserId" in request.session: #ulogirani smo
         context["LoggedInUser"]=request.session['LoggedInUserId']
+    else: #nismo ulogirani
+        return redirect('signin')
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+
+    LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
 
     fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
     for rad in fetchedRadovi:

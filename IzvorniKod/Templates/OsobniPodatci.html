@@ -98,7 +98,11 @@
                         <li class="nav-item">
                           <a href="mojiradovi" class="nav-link text-white">
                             <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                            {%if LoggedInUserRole == "Admin"%}
+                            Složi obrazac
+                            {%else%}
                             Moji radovi <!--  Za recenzenta je isti header, samo pise "Moje recenzije". -->
+                            {%endif%}
                           </a>
                         </li>
                         <li>
