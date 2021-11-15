@@ -241,7 +241,7 @@
                             
                             <div class="form-outline mb-4 radiobuttons">
                               <div class="button">
-                                <input type="radio" id="sudionik" name="uloga" value="Sudionik" onclick=UpdateOnSudionik()>
+                                <input type="radio" id="sudionik" name="uloga" value="Sudionik" onclick=UpdateOnSudionik() checked>
                                 <label for="sudionik" class="emphasized-text"><b>Sudionik</b></label>
                               </div>
                               <div class="button">
@@ -264,59 +264,62 @@
                               <input type="text" id="section" name="section" class="form-control form-control-lg" required>
                             </div>
                             -->
-
-                            <div class="form-outline mb-4">
-                              <label class="form-label" for="" id='titleLabel'>Naslov rada</label>
-                              <input type="text" id="title" name="title" class="form-control form-control-lg" required/>
-                            </div>
-
-                            <!--OVDJE POCINJE DIO S AUTORIMA-->
-
-                            <!--IDS: numOfAuthorsLabel, numOfAuthors, btnOK, authorNameLabel,
-                              authorName, authorLnameLabel, authorLname, emailConLabel, emailCon --> 
-
-                            
-                            <div class="row">
-
-                              <div id="autori" class="mb-2">
-
-                                <div id="jedanAutor">
-                                  <label class="form-label" for="" id="authorsLabel">Podaci o autoru</label>
+                            <div id="stvariZaSudionika">
+                              <div class="form-outline mb-4">
+                                <label class="form-label" for="" id='titleLabel'>Naslov rada</label>
+                                <input type="text" id="title" name="title" class="form-control form-control-lg" required/>
+                              </div>
   
-                                  <div id="autorIme" class="input-group col-md-10 col-10 mb-1">
-                                    <input type="text" id="autorFName0" name="autorFName0" aria-label="Ime" placeholder="Ime" class="form-control form-control-lg" required>
-                                    <input type="text" id="autorLName0" name="autorLName0" aria-label="Prezime" placeholder="Prezime" class="form-control form-control-lg" required>
-                                  </div>
-                                  <div id="autorPodaci" class="input-group col-md-10 col-10 mb-1">
-                                    <input type="text" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail" class="form-control form-control-lg" required/>
-                                    <div id="autorPodaciKontakt" class="input-group-text">
-                                      <input type="radio" id="autorKontakt0" name="autorKontakt0" aria-label="Kontakt" class="form-check-input form-check-lg" required/>
-                                      <label class="form-check-label" id="autorKontaktLabel0" style="margin-top:4px; margin-left:4px"for="autorKontakt0">Osoba za kontakt</label>
+                              <!--OVDJE POCINJE DIO S AUTORIMA-->
+  
+                              <!--IDS: numOfAuthorsLabel, numOfAuthors, btnOK, authorNameLabel,
+                                authorName, authorLnameLabel, authorLname, emailConLabel, emailCon --> 
+  
+                              
+                              <div class="row">
+  
+                                <div id="autori" class="mb-2">
+  
+                                  <div id="jedanAutor">
+                                    <label class="form-label" for="" id="authorsLabel">Podaci o autoru</label>
+    
+                                    <div id="autorIme" class="input-group col-md-10 col-10 mb-1">
+                                      <input type="text" id="autorFName0" name="autorFName0" aria-label="Ime" placeholder="Ime" class="form-control form-control-lg" required>
+                                      <input type="text" id="autorLName0" name="autorLName0" aria-label="Prezime" placeholder="Prezime" class="form-control form-control-lg" required>
+                                    </div>
+                                    <div id="autorPodaci" class="input-group col-md-10 col-10 mb-1">
+                                      <input type="text" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail" class="form-control form-control-lg" required/>
+                                      <div id="autorPodaciKontakt" class="input-group-text">
+                                        <input type="radio" id="autorKontakt0" name="autorKontakt0" aria-label="Kontakt" class="form-check-input form-check-lg" required/>
+                                        <label class="form-check-label" id="autorKontaktLabel0" style="margin-top:4px; margin-left:4px"for="autorKontakt0">Osoba za kontakt</label>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-
-                              </div>
-                              
-
-                              
-                              
   
-                              <div class="col-md-4 mb-4">
-                                <button type="button" class="btn btn-primary btn-lg" id="btnDodajAutora" onclick=AddAuthor()>
-                                  <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-plus"/></svg>
-                                </button>
-                                <button type="button" class="btn btn-outline-primary btn-lg" id="btnMakniAutora" onclick=RemoveAuthor()>
-                                  <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-dash"/></svg>
-                                </button>
-                                <input type="number" min="0" name="brojAutora" id="brojAutora" class="form-control" value="1" hidden></input>
+                                </div>
+                                
+  
+                                
+                                
+    
+                                <div class="col-md-4 mb-4">
+                                  <button type="button" class="btn btn-primary btn-lg" id="btnDodajAutora" onclick=AddAuthor()>
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-plus"/></svg>
+                                  </button>
+                                  <button type="button" class="btn btn-outline-primary btn-lg" id="btnMakniAutora" onclick=RemoveAuthor()>
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-dash"/></svg>
+                                  </button>
+                                  <input type="number" min="0" name="brojAutora" id="brojAutora" class="form-control" value="1" hidden></input>
+                                </div>
+  
+  
+  
+                              <!--ZAVRSAVA DIO S AUTORIMA-->
+  
+              
                               </div>
-
-
-
-                            <!--ZAVRSAVA DIO S AUTORIMA-->
-
-            
+                            </div>
+                            
                             <div class="form-outline mb-4">
                               <button type="submit" class="btn btn-primary btn-lg form-control form-control-lg">Registriraj se</button>
                             </div>
@@ -435,42 +438,22 @@
                 document.getElementById("btnMakniAutora").disabled = true;
             };
             function UpdateOnSudionik(){
-                document.getElementById("title").style.display = "inline";
-                document.getElementById("section").style.display = "inline";
-                document.getElementById("titleLabel").style.display = "inline";
-                document.getElementById("sectionLabel").style.display = "inline";
+              document.getElementById("title").disabled = false;
+              document.getElementById("autorFName0").disabled = false;
+              document.getElementById("autorLName0").disabled = false;
+              document.getElementById("autorEmail0").disabled = false;
+              document.getElementById("autorKontakt0").disabled = false;
 
-                ////////IDS: numOfAuthorsLabel, numOfAuthors, btnOK, authorNameLabel,
-                //authorName, authorLnameLabel, authorLname, emailConLabel, emailCon
-                document.getElementById("numOfAuthorsLabel").style.display = "inline";
-                document.getElementById("numOfAuthors").style.display = "inline";
-                document.getElementById("btnOK").style.display = "inline";
-                document.getElementById("authorNameLabel").style.display = "inline";
-                document.getElementById("authorName").style.display = "inline";
-                document.getElementById("authorLnameLabel").style.display = "inline";
-                document.getElementById("authorLname").style.display = "inline";
-                document.getElementById("emailConLabel").style.display = "inline";
-                document.getElementById("emailCon").style.display = "inline";
-            }
+              document.getElementById("stvariZaSudionika").style.display = "inline";
+              }
             function UpdateOnRecezent(){
-                document.getElementById("title").style.display = "none";
-                document.getElementById("emailCon").style.display = "none";
-                document.getElementById("titleLabel").style.display = "none";
-                //prikazuje se i recenzentima
-                document.getElementById("section").style.display = "inline";
-                document.getElementById("sectionLabel").style.display = "inline";
-
-                ////////IDS: numOfAuthorsLabel, numOfAuthors, btnOK, authorNameLabel,
-                //authorName, authorLnameLabel, authorLname, emailConLabel, emailCon
-                document.getElementById("numOfAuthorsLabel").style.display = "none";
-                document.getElementById("numOfAuthors").style.display = "none";
-                document.getElementById("btnOK").style.display = "none";
-                document.getElementById("authorNameLabel").style.display = "none";
-                document.getElementById("authorName").style.display = "none";
-                document.getElementById("authorLnameLabel").style.display = "none";
-                document.getElementById("authorLname").style.display = "none";
-                document.getElementById("emailConLabel").style.display = "none";
-                document.getElementById("emailCon").style.display = "none";    
+              document.getElementById("stvariZaSudionika").style.display = "none";
+                
+              document.getElementById("title").disabled = true;
+              document.getElementById("autorFName0").disabled = true;
+              document.getElementById("autorLName0").disabled = true;
+              document.getElementById("autorEmail0").disabled = true;
+              document.getElementById("autorKontakt0").disabled = true;
             }
 
             /**
