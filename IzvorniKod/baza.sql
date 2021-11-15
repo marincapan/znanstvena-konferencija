@@ -15,7 +15,9 @@ CREATE TABLE Konferencija
   opis VARCHAR,
   datum DATE,
   rokPrijava TIMESTAMP,
+  pocetakPrijava TIMESTAMP,
   rokAdmin TIMESTAMP,
+  pocetakRecenzent TIMESTAMP,
   rokRecenzent TIMESTAMP,
   
   PRIMARY KEY (ID)
@@ -36,7 +38,6 @@ CREATE TABLE Autor
   ime VARCHAR,
   prezime VARCHAR,
   email VARCHAR,
-  naznakaOZK BOOLEAN ,
   PRIMARY KEY (ID),
   UNIQUE (email)
 );
@@ -116,6 +117,7 @@ CREATE TABLE AutorRad
 (
   sifRad INT,
   sifAutor INT,
+  naznakaOZK BOOLEAN,
   PRIMARY KEY (sifRad, sifAutor),
   FOREIGN KEY (sifRad) REFERENCES Rad(ID),
   FOREIGN KEY (sifAutor) REFERENCES Autor(ID)
