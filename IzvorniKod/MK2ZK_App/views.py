@@ -60,14 +60,12 @@ def signup(request):
             autori.append(models.Autor(ime=autorIme,prezime=autorPrezime,email=autorEmail))
             i = int(i)
 
-        print(autori)
         #Provjera validnosti autora, provjerava svaki sa svakim i trazi je li email jednak, ako je baca error
         for i in range(brojAutora-1):
             for j in range(i+1, brojAutora):
                 if autori[i].email == autori[j].email: #dva autora imaju isti email
                     messages.error(request, "Autori ne smiju imati istu adresu e-maila")
                     return redirect('signup')
-        print(autori)
 
         #Ako ustanova ne postoji spremi ju, inace dohvati postojecu
         Ustanova = Ustanova = models.Ustanova(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
@@ -106,6 +104,7 @@ def signup(request):
         else:
             messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
             return redirect('signup')
+
         noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
         
         #
@@ -114,115 +113,18 @@ def signup(request):
 
         #Autori se povezuju s radom
         for autor in autori:
-            noviAutor = models.Autor(ime=autor["Ime"],prezime=autor["Prezime"],email=autor["Email"])
+            noviAutor = models.Autor(ime=autor.ime,prezime=autor.prezime,email=autor.email)
             #Ako autor vec postoji u bazi, samo ga dodaj na ovaj rad
-            if models.Autor.objects.filter(ime=autor["Ime"],prezime=autor["Prezime"],email=autor["Email"]).exists():
-                noviAutor = models.Autor.objects.get(ime=autor["Ime"],prezime=autor["Prezime"],email=autor["Email"])
+            if models.Autor.objects.filter(ime=autor.ime,prezime=autor.prezime,email=autor.email).exists():
+                noviAutor = models.Autor.objects.get(ime=autor.ime,prezime=autor.prezime,email=autor.email)
             #Ako autor ne postoji, napravi novog
             else:
                 noviAutor.save()
             noviRad.autori.add(noviAutor)
 
         noviRad.save()
-
-        """
-        emailCon = request.POST['emailCon']
-        Section = request.POST['section']
-        numOfAuthors = request.POST["numOfAuthors"]
-
-        
-        if uloga=='sudionik':
-            uloga="Sudionik"
-        else:
-            uloga="Recezent"
-        
-        randPassword=get_random_string(length=16)
-        request.session['randPassword'] = randPassword
-        Ustanova = models.Ustanova(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
-        if models.Ustanova.objects.filter(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz).exists():
-            Ustanova = models.Ustanova.objects.get(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
-        else:
-            Ustanova.save()
-        Sekcija = models.Sekcija(naziv=Section,konferencijaSekcija=models.Sekcija.objects.get(naziv=Section).konferencijaSekcija)
-        if  models.Sekcija.objects.filter(naziv=Section).exists():
-            Sekcija=models.Sekcija.objects.get(naziv=Section)
-        else:
-            print(Sekcija)
-            Sekcija.save()
-        try:
-            NoviKorisnik = models.Korisnik(korisnickoIme=Username,lozinka=randPassword,ime=Fname,prezime=Lname,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
-            NoviKorisnik.save()
-        except IntegrityError:
-            messages.error(request, "Korisnicko ime ili email je vec u uporabi")
-            return redirect('signup')
-           
-        noviRad=models.Rad(
-            naslov=title,
-            radSekcija=Sekcija,
-            radKorisnik=NoviKorisnik
-        )
-        if not models.Rad.objects.filter(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik).exists():
-            noviRad.save()
-        else:
-            messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
-            return redirect('signup')
-        noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
-
--------------
-        authorName= request.POST["authorName"]
-        authorLName= request.POST["authorLname"]
-        authoremail= request.POST["emailautora"]
-        
-        noviAutori=[]
-        
-        print(authorName,authorLName,authoremail)
-        if not models.Autor.objects.filter(ime=authorName,prezime=authorLName,email=authoremail).exists():
-            newAutor = models.Autor(
-                ime = authorName,
-                prezime = authorLName,
-                email = authoremail
-            )
-            noviAutori.append(newAutor)
-            newAutor.save()
-            noviRad.autori.add(newAutor)
-            noviRad.save()
-            noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
-
-
-
-        for i in range(1,int(numOfAuthors)):
-            name="authorName{}".format(i+1)
-            Lname="authorLname{}".format(i+1)
-            email="emailautora{}".format(i+1)
-            authorName= request.POST[name]
-            authorLName= request.POST[Lname]
-            authoremail= request.POST[email]
-            print(authorName,authorLName,authoremail)
-            if not models.Autor.objects.filter(ime=authorName,prezime=authorLName,email=authoremail).exists():
-                newAutor = models.Autor(
-                    ime = authorName,
-                    prezime = authorLName,
-                    email = authoremail
-                )
-                noviAutori.append(newAutor)
-                newAutor.save()
-                noviRad.autori.add(newAutor)
-                noviRad.save()
-                noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
-
-
-        for autor in noviAutori:
-            if autor.email==emailCon:
-                saveAutor=models.Autor.objects.get(sifAutor=autor.sifAutor)
-                saveAutor.OZK=True
-                saveAutor.save()
-        
-        noviAutori.clear()
-        noviRad.save()
-
-        messages.success(request, "Success")
-        """
         return redirect('signin')
+        
     if "LoggedInUserId" in request.session: #otprije smo registrirani
         return redirect('/')
     context={}
