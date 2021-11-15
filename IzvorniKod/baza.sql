@@ -15,7 +15,9 @@ CREATE TABLE Konferencija
   opis VARCHAR,
   datum DATE,
   rokPrijava TIMESTAMP,
+  pocetakPrijava TIMESTAMP,
   rokAdmin TIMESTAMP,
+  pocetakRecenzent TIMESTAMP,
   rokRecenzent TIMESTAMP,
   
   PRIMARY KEY (ID)
