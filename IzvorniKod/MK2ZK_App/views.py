@@ -241,6 +241,10 @@ def mojiradovi(request):
         return redirect('signin')
     
     if "LoggedInUserRole" in request.session:
+        if request.session['LoggedInUserRole'] != "Admin":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #admin je
+            return redirect('/') #redirect na homepage
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
 
     LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
@@ -301,3 +305,44 @@ def mojiradovi(request):
     context['DodatnaPolja']=fetchedPolja
     
     return render(request, 'MojiRadovi.html',context)
+
+def sloziobrazac(request):
+    context={}
+    if "LoggedInUserId" in request.session: #ulogirani smo
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    else: #nismo ulogirani
+        return redirect('signin')
+    
+    if "LoggedInUserRole" in request.session:
+        if request.session['LoggedInUserRole'] == "Admin":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin
+            return redirect('/') #redirect na homepage
+
+    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
+
+    for polje in fetchedPolja:
+        print(polje.imePolja)        
+    context['DodatnaPolja']=fetchedPolja
+
+    if request.method == "POST":            
+        if 'AddNewField' in request.POST:
+            fieldName = request.POST["fieldName"]
+            fieldType = request.POST["fieldType"]
+            if not models.DodatnaPoljaObrasca.objects.filter(imePolja=fieldName,tipPolja=fieldType).exists():
+                newField=models.DodatnaPoljaObrasca(
+                    imePolja=fieldName,
+                    tipPolja=fieldType
+                )
+                newField.save()
+        if 'ActiveFields' in request.POST:
+            for polje in fetchedPolja:
+                try:
+                    checked = request.POST[polje.imePolja]
+                    checked = True 
+                except:
+                    checked = False
+                polje.active = checked
+                polje.save()
+    
+    return render(request, 'SloziObrazac.html', context)
