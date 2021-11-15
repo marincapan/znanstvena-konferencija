@@ -40,16 +40,14 @@
 			\subsection{Opis tablica}
 			
 
-				\textit{Svaku tablicu je potrebno opisati po zadanom predlošku. Lijevo se nalazi točno ime varijable u bazi podataka, u sredini se nalazi tip podataka, a desno se nalazi opis varijable. Svjetlozelenom bojom označite primarni ključ. Svjetlo plavom označite strani ključ}
-				\newline
 				\textbf{Korisnik}
-				Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, e-mail, lozinku, ime, prezime te ulogu korisnika u sustavu. Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
+				Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, e-mail, lozinku, ime, prezime te ulogu korisnika u sustavu.Atributi token i potvrdioPrijava služe kako bi se za sudionike i recenzente provjerilo jesu li potvrdili prijavu nakon čega se mogu prijaviti u sustav. Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
 					\item Many-to-One s entitetom Ustanova preko atributa ID
 					\item Many-to-One s entitetom Sekcija preko atributa ID
 					\item Many-to-One s entitetom Uloga preko atributa ID
 					\item One-to-Many s entitetom Recenzija preko atributa ID (Recenzija.recezentID)
 					\item Many-to-Many s entitetom OdabranoPoljeObrasca preko atributa ID (DodatniPodatak.korisnikID; ta je veza na ER dijagramu imenovana kao DodatniPodatak pa se može reći da je entitet Korisnik u vezi One-to-Many s entitetom DodatniPodatak preko atributa ID)
-					\item One-to-One s entitetom Konferencija preko atributa ID (Konferencija.predsjedavajuciID)
+					\item One-to-One s entitetom Konferencija preko atributa ID \newline (Konferencija.predsjedavajuciID)
 					\item One-to-Many s entitetom Rad preko atributa ID (Rad.prijavioID)
 				\end{packed_item}
 				\begin{longtblr}[
@@ -57,23 +55,24 @@
 					entry=none
 					]{
 						width = \textwidth,
-						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+						colspec={|X[7,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 					\hline \multicolumn{3}{|c|}{\textbf{Korisnik}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}ID & INT	&  jedinstveni brojčani identifikator	\\ \hline
-					korisnickoIme	& VARCHAR & jedinstveni korisnički identifikator  	\\ \hline 
+					korisnickoIme	& VARCHAR & korisnički identifikator  kojeg korisnik koristi pri prijavi u sustav	\\ \hline 
 					email & VARCHAR & e-mail korisnika  \\ \hline 
 					lozinka & VARCHAR & hash lozinke  \\ \hline 
 					ime & VARCHAR	&  	ime korisnika	\\ \hline 
 					prezime & VARCHAR & prezime korisnika  \\ \hline 
 					sudionikID & INT & jedinstvena oznaka sudionika (ID\_XXXX, 
 					pri čemu je XXXX redni broj prijave)\\ \hline 
-					odobren & BOOLEAN & oznaka može li se korisnik
-					prijaviti u sustav (sudionik nakon potvrde registracije, a recenzent nakon odobrenja predsjedavajućeg konferencije )\\ \hline 
+					odobren & BOOLEAN & oznaka je li predsjedavajući konferencije odobrio recenzenta\\ \hline 
+					token & VARCHAR & link koji se šalje sudionicima i recenzentima na e-mail kako bi klikom na njega potvrdili svoju prijavu  \\ \hline
+					potvrdioPrijava & BOOLEAN & oznaka je li korisnik (sudionik/recenzent) potvrdio svoju prijavu\\ \hline  
 					\SetCell{LightBlue} sifUstanova	& INT & jedinstvna brojčana oznaka matične ustanove korisnika (Ustanova.ID)  	\\ \hline 
-					\SetCell{LightBlue} sifSekcija	& INT & jedinstvena brojčana oznake sekcije (Sekcija.ID) u koju
-					se korisnik prijavio prilikom registracije  	\\ \hline 
+					\SetCell{LightBlue} sifSekcija	& INT & jedinstvena brojčana oznake sekcije (Sekcija.ID) u kojoj je
+					recenzent odabrao recenzirati radove	\\ \hline 
 					\SetCell{LightBlue} ulogaKorisnik	& INT & oznaka korisnikove uloge u sustavu (Uloga.ID) \\ \hline 
 				\end{longtblr}
 				\textbf{Ustanova} Ovaj entitet predstavlja ustanove (poduzeća ili institucije) kojima pripadaju prijavljeni sudionici i recenzenti. Atributi ovog entiteta su: ID, naziv, grad, država i adresa ustanove. Entitet je u vezi
@@ -136,7 +135,7 @@
 				Ovaj entitet predstavlja sekcije na konferenciji. Identifikator entiteta je atribut ID. Entitet sadrži informaciju o nazivu sekcije i u vezi je
 				\begin{packed_item}
 					\item Many-to-One s entitetom Konferencija (preko atributa ID) jer ova znanstvena konferencija može imati više sekcija
-					\item One-to-Many s entitetom Korisnik (preko atributa ID) jer sudionik pri prijavi bira jednu sekciju u kojoj će sudjelovati (Korisnik.sifSekcija)
+					\item One-to-Many s entitetom Korisnik (preko atributa ID) jer recenzent pri prijavi bira jednu sekciju u kojoj će recenzirati (Korisnik.sifSekcija)
 					\item One-to-Many s entitetom Rad preko atributa ID (Rad.sifSekcija)
 				\end{packed_item} 
 				\begin{longtblr}[
@@ -232,7 +231,7 @@
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 					\hline \multicolumn{3}{|c|}{\textbf{Recenzija}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}ID & INT	&  jedinstveni brojčani identifikator	\\ \hline
-					ocjena	& INT &   odabrana ocjena rada	\\ \hline 
+					\SetCell{LightBlue}ocjena	& INT &   odabrana ocjena rada (Ocjena.ID)	\\ \hline 
 					obrazlozenje & VARCHAR & obrazloženje za odabranu ocjenu rada\\ \hline 
 					\SetCell{LightBlue} recenzentID	& ID & jedinstveni identifikator recenzenta (Korisnik.ID)	\\ \hline 
 					\SetCell{LightBlue} sifRad	& ID &   jedinstveni identifikator rada koji se recenzira (Rad.ID)	\\ \hline 
