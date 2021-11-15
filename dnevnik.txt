@@ -42,5 +42,12 @@
 	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić
 	Teme sastanka:
 		- Definiranje i raspodjela zadataka Front-enda (Gavran, Mujagić, Pintar)
-		- Konzultacija s Back-endom (Mesić) vezano za određene funkcionalnosti i implementaciju tih funkcionalnosti 
+		- Konzultacija s Back-endom (Mesić) vezano za određene funkcionalnosti i implementaciju tih funkcionalnosti
 
+ 
+
+6. sastanak
+Datum: 15. studenog 2021.
+	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić, P.D.Grujić Ostojić
+	Teme sastanka:
+		- Diskusija o generičkim funkcionalnostima, dogovorene preinake u dokumentaciji i izvornom kodu

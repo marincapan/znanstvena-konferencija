@@ -978,17 +978,24 @@
 						
 						\item \textbf{Opis osnovnog tijeka:} 
 						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Administracijsko sučelje" iz glavnog izbornika
-							\item Korisnik na administracijskom sučelju bira opciju "Definiraj upitnik"
-							\item Korisnik "kvačicama" označava polja za pitanja koja želi uključiti u upitnik, a odznačava ona koje želi ukloniti (dio polja je predefiniran i ne može ih odznačiti)
-							\item Korisnik bira opciju "Zaključaj"
-							\item Ažurira se baza podataka i upitnik
+							\item Korisnik u zaglavlju bira opciju "Složi obrazac", preusmjeren je na stranicu za slaganje obrasca
+							\item Korisnik u okvir za unos upisuje naziv novog polja za obrazac te bira tip podatka
+							\item Korisnik bira gumb "Dodaj novo polje"
+							\item Ažurira se baza podataka, na stranici se pojavljuju nova dodana polja uz već postojeća polja
+							\item Korisnik "kvačicama" označava polja za pitanja koja želi uključiti u upitnik, a odznačava ona koje želi ukloniti
+							\item Korisnik bira opciju "Ažuriraj obrazac"
+							\item Ažurira se baza podataka i upitnik, korisniku se pojavljuju sva polja koja se trenutno nalaze u obrascu za registraciju
 						\end{packed_enum}
 					
 						\item \textbf{Opis mogućih odstupanja:}
 						\item[] \begin{packed_enum}
+							
+							\item[3.a] Korisnik unese naziv polja i tip podatka, ali ne odabere opciju "Dodaj novo polje"
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako promjene nisu pohranjene prije izlaska iz prozora
+							\end{packed_enum}
 
-							\item[4.a] Korisnik unese promjene, ali ne odabere opciju "Zaključaj"
+							\item[6.a] Korisnik unese promjene, ali ne odabere opciju "Ažuriraj obrazac"
 							\item[] \begin{packed_enum}
 								\item[1.] Sustav javlja korisniku kako promjene nisu pohranjene prije izlaska iz prozora
 							\end{packed_enum}
