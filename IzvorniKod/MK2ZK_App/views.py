@@ -32,21 +32,105 @@ def home(request):
     return render(request, 'Index.html',context)
 
 def signup(request):
-    if request.method == "POST":
-        Username = request.POST['Username']
-        Fname = request.POST['Fname']
-        Lname = request.POST['Lname']
+    if request.method == "POST":        
+        username = request.POST['Username']
+        fName = request.POST['Fname']
+        lName = request.POST['Lname']
         email = request.POST['email']
         matustName = request.POST['matustName']
         matustAdr = request.POST['matustAdr']
         matustCity = request.POST['matustCity']
         matustDrz = request.POST['matustDrz']
         uloga = request.POST['uloga']
+        section = request.POST['section']
         title = request.POST['title']
+        brojAutora = int(request.POST['brojAutora'])
+
+        #Parsiramo autore
+        autori=[]
+        for i in range(brojAutora):
+            i = str(i) #lol
+            autorIme = request.POST['autorFName' + i]
+            autorPrezime = request.POST['autorLName' + i]
+            autorEmail = request.POST['autorEmail' + i]
+            """ #Autori za sad nemaju oznaku OZK because its bwoken
+            if "autorKontakt"+i in request.POST:
+                autor["Kontakt"] = True
+            """
+            autori.append(models.Autor(ime=autorIme,prezime=autorPrezime,email=autorEmail))
+            i = int(i)
+
+        print(autori)
+        #Provjera validnosti autora, provjerava svaki sa svakim i trazi je li email jednak, ako je baca error
+        for i in range(brojAutora-1):
+            for j in range(i+1, brojAutora):
+                if autori[i].email == autori[j].email: #dva autora imaju isti email
+                    messages.error(request, "Autori ne smiju imati istu adresu e-maila")
+                    return redirect('signup')
+        print(autori)
+
+        #Ako ustanova ne postoji spremi ju, inace dohvati postojecu
+        Ustanova = Ustanova = models.Ustanova(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
+        if models.Ustanova.objects.filter(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz).exists():
+            Ustanova = models.Ustanova.objects.get(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
+        else:
+            Ustanova.save()
+
+        #Ako sekcija ne postoji spremi ju, inace dohvati postojecu (nepotrebno jer se za sad ne mogu dodavati nove sekcije)
+        Sekcija = models.Sekcija(naziv=section,konferencijaSekcija=models.Sekcija.objects.get(naziv=section).konferencijaSekcija)
+        if  models.Sekcija.objects.filter(naziv=section).exists():
+            Sekcija=models.Sekcija.objects.get(naziv=section)
+        else:
+            Sekcija.save()
+
+        #Generiraj password za korisnika
+        randPassword=get_random_string(length=16)
+        request.session['randPassword'] = randPassword
+
+        #Probaj spremiti novog korisnika
+        try:
+            NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
+            NoviKorisnik.save()
+        except IntegrityError:
+            messages.error(request, "Korisnicko ime ili email je vec u uporabi")
+            return redirect('signup')
+
+        #Provjeri je li rad ranije prijavljen
+        noviRad=models.Rad(
+            naslov=title,
+            radSekcija=Sekcija,
+            radKorisnik=NoviKorisnik
+        )
+        if not models.Rad.objects.filter(naslov=title, radSekcija=Sekcija, radKorisnik=NoviKorisnik).exists():
+            noviRad.save()
+        else:
+            messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
+            return redirect('signup')
+        noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
+        
+        #
+        #Autor moze biti povezan na vise radova i zato ne moze imati atribut OZK jer se ne zna na koji rad se to odnosi
+        #
+
+        #Autori se povezuju s radom
+        for autor in autori:
+            noviAutor = models.Autor(ime=autor["Ime"],prezime=autor["Prezime"],email=autor["Email"])
+            #Ako autor vec postoji u bazi, samo ga dodaj na ovaj rad
+            if models.Autor.objects.filter(ime=autor["Ime"],prezime=autor["Prezime"],email=autor["Email"]).exists():
+                noviAutor = models.Autor.objects.get(ime=autor["Ime"],prezime=autor["Prezime"],email=autor["Email"])
+            #Ako autor ne postoji, napravi novog
+            else:
+                noviAutor.save()
+            noviRad.autori.add(noviAutor)
+
+        noviRad.save()
+
+        """
         emailCon = request.POST['emailCon']
         Section = request.POST['section']
         numOfAuthors = request.POST["numOfAuthors"]
 
+        
         if uloga=='sudionik':
             uloga="Sudionik"
         else:
@@ -72,7 +156,6 @@ def signup(request):
             messages.error(request, "Korisnicko ime ili email je vec u uporabi")
             return redirect('signup')
            
-
         noviRad=models.Rad(
             naslov=title,
             radSekcija=Sekcija,
@@ -85,7 +168,7 @@ def signup(request):
             return redirect('signup')
         noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
 
-
+-------------
         authorName= request.POST["authorName"]
         authorLName= request.POST["authorLname"]
         authoremail= request.POST["emailautora"]
@@ -138,7 +221,7 @@ def signup(request):
         noviRad.save()
 
         messages.success(request, "Success")
-
+        """
         return redirect('signin')
     if "LoggedInUserId" in request.session: #otprije smo registrirani
         return redirect('/')
@@ -346,3 +429,13 @@ def sloziobrazac(request):
                 polje.save()
     
     return render(request, 'SloziObrazac.html', context)
+
+def info(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+    print(context)
+    return render(request, 'Info.html', context)

@@ -9,6 +9,6 @@ urlpatterns = [
     path('signout', views.signout, name='signout'),
     path('osobnipodatci', views.osobnipodatci, name='osobnipodatci'),
     path('mojiradovi', views.mojiradovi, name='mojiradovi'),
-    path('sloziobrazac', views.sloziobrazac, name='sloziobrazac')
-
+    path('sloziobrazac', views.sloziobrazac, name='sloziobrazac'),
+    path('info', views.info, name='info')
 ]
