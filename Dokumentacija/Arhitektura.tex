@@ -19,7 +19,7 @@
 			
 			\textbf{\textit{dio 1. revizije}}\\
 			
-			Baze podataka neizostavan su dio razvoja programske potpore jer danas gotova svaka domena primjene obiluje mnoštvom podataka koje treba pohraniti na organiziran način kako bi se efikasno dohvaćali, mijenjali i nadopunjavali. Za upravljanje bazom podataka mogu se koristiti različiti sustavi koji obavljaju optimiranje upita i omogućuju rukovanje podatcima. Mi smo odlučili koristiti PostgreSQL koji nam je bio preporučen na kolegiju Baze podataka. \newline Iako stvarni svijet ne možemo prikazati sa svim detaljima, relacijski nam model baze podataka omogućuje vjeran prikaz stvarnosti pomoću relacija u koje pohranjujemo vrijednosti odabranih atributa vezanih uz entitete bitne za domenu primjene. Formalno gledano relacija, tj. instanca relacije, definirana na relacijskoj shemi je skup n-torki, a neformalno možemo reći da je to imenovana dvodimenzionalna tablica. Atributi su imenovani stupci te tablice. ER (Entity-Relationship) model podataka zadržava dobra svojstva relacijskog modela, a uz to omogućuje eksplicitni prikaz semantičkih informacija vezanih uz veze (odnose) između entiteta. ER dijagram prikazuje kako su eniteti našeg sustava povezani. Pri preslikavanju ER modela u relacijski model entiteti i veze postaju entiteti (relacije) te se sheme s jednakim ključevima zamjene njihovom unijom.
+			Baze podataka neizostavan su dio razvoja programske potpore jer danas gotova svaka domena primjene obiluje mnoštvom podataka koje treba pohraniti na organiziran način kako bi se efikasno dohvaćali, mijenjali i nadopunjavali. Za upravljanje bazom podataka mogu se koristiti različiti sustavi koji obavljaju optimiranje upita i omogućuju rukovanje podatcima. Mi smo odlučili koristiti PostgreSQL koji nam je bio preporučen na kolegiju Baze podataka. \newline Iako stvarni svijet ne možemo prikazati sa svim detaljima, relacijski nam model baze podataka omogućuje vjeran prikaz stvarnosti pomoću relacija u koje pohranjujemo vrijednosti odabranih atributa vezanih uz entitete bitne za domenu primjene. Formalno gledano relacija, tj. instanca relacije, definirana na relacijskoj shemi je skup n-torki, a neformalno možemo reći da je to imenovana dvodimenzionalna tablica. Atributi su imenovani stupci te tablice. ER (Entity-Relationship) model podataka zadržava dobra svojstva relacijskog modela, a uz to omogućuje eksplicitni prikaz semantičkih informacija vezanih uz veze (odnose) između entiteta. ER dijagram prikazuje kako su entiteti našeg sustava povezani. Pri preslikavanju ER modela u relacijski model entiteti i veze postaju entiteti (relacije) te se sheme s jednakim ključevima zamjene njihovom unijom.
 		Baza podataka ove aplikacije sastoji se od sljedećih entiteta:
 		\begin{packed_item}
 			\item Korisnik
@@ -30,8 +30,8 @@
 			\item Uloga
 			\item Konferencija
 			\item DodatnoPoljeObrasca
-			\item OdabranoPoljeObrasca
-			\item DodatniPodatak
+			\item TipPoljeObrasca
+			\item DodatniPodatak 
 			\item Recenzija
 			\item Ocjena
 			\item Ustanova
@@ -41,12 +41,12 @@
 			
 
 				\textbf{Korisnik}
-				Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, e-mail, lozinku, ime, prezime te ulogu korisnika u sustavu.Atributi token i potvrdioPrijava služe kako bi se za sudionike i recenzente provjerilo jesu li potvrdili prijavu nakon čega se mogu prijaviti u sustav. Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
+				Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, e-mail, lozinku, ime, prezime te ulogu korisnika u sustavu. Atributi token i potvrdioPrijava služe kako bi se za sudionike i recenzente provjerilo jesu li potvrdili prijavu nakon čega se mogu prijaviti u sustav. Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
 					\item Many-to-One s entitetom Ustanova preko atributa ID
 					\item Many-to-One s entitetom Sekcija preko atributa ID
 					\item Many-to-One s entitetom Uloga preko atributa ID
 					\item One-to-Many s entitetom Recenzija preko atributa ID (Recenzija.recezentID)
-					\item Many-to-Many s entitetom OdabranoPoljeObrasca preko atributa ID (DodatniPodatak.korisnikID; ta je veza na ER dijagramu imenovana kao DodatniPodatak pa se može reći da je entitet Korisnik u vezi One-to-Many s entitetom DodatniPodatak preko atributa ID)
+					\item Many-to-Many s entitetom DodatnoPoljeObrasca preko atributa ID (DodatniPodatak.korisnikID; ta je veza na ER dijagramu imenovana kao DodatniPodatak pa se može reći da je entitet Korisnik u vezi One-to-Many s entitetom DodatniPodatak preko atributa ID)
 					\item One-to-One s entitetom Konferencija preko atributa ID \newline (Konferencija.predsjedavajuciID)
 					\item One-to-Many s entitetom Rad preko atributa ID (Rad.prijavioID)
 				\end{packed_item}
@@ -96,7 +96,7 @@
 					
 				\end{longtblr}
 				\textbf{Uloga}
-				Ovaj entitet predstavlja ulogu koju korisnik sustava može imati. U ovom sustavu razlikujemo 4 uloge: sudionik, administrator, predsjedavajući konferencije, recenzent. Svaki korisnik ima samo jednu ulogu. Atributi ovog entiteta su: ID i naziv uloge. Entitet je u vezi:
+				Ovaj entitet predstavlja ulogu koju korisnik sustava može imati. U ovom sustavu razlikujemo 4 uloge: sudionik, administrator, predsjedavajući konferencije i recenzent. Svaki korisnik ima samo jednu ulogu. Atributi ovog entiteta su: ID i naziv uloge. Entitet je u vezi:
 				\begin{packed_item}
 					\item One-to-Many s entitetom Korisnik preko atributa ID (Korisnik.ulogaKorisnik)
 				\end{packed_item}
@@ -115,7 +115,7 @@
 				\end{longtblr}
 				
 				\textbf{Ocjena}
-				Ovaj entitet predstavlja ocjenu kojom recenzenti mogu ocijeniti neki rad. Početno, u sustavu razlikujemo 4 ocjene (4 jedinstvena brojčana identifikatora) čije se značenje razlikuje (prihavaćanje rada, prihvaćanje rada uz manju doradu, prihvaćanje rada uz veću doradu, neprihvaćanje rada). Ovaj entitet je u vezi 	\begin{packed_item} 
+				Ovaj entitet predstavlja ocjenu kojom recenzenti mogu ocijeniti neki rad. Početno, u sustavu razlikujemo 4 ocjene (4 jedinstvena brojčana identifikatora) čije se značenje razlikuje (prihvaćanje rada, prihvaćanje rada uz manju doradu, prihvaćanje rada uz veću doradu, neprihvaćanje rada). Ovaj entitet je u vezi 	\begin{packed_item} 
 					\item One-to-Many s entitetom Recenzija preko atributa ID (Recenzija.ocjena)
 				\end{packed_item}
 				\begin{longtblr}[
@@ -132,10 +132,10 @@
 					
 				\end{longtblr}
 				\textbf{Sekcija}
-				Ovaj entitet predstavlja sekcije na konferenciji. Identifikator entiteta je atribut ID. Entitet sadrži informaciju o nazivu sekcije i u vezi je
+				Ovaj entitet predstavlja sekcije na konferenciji. Na znanstvenoj konferenciji koju modeliramo može biti više sekcija, recenzent recenzira radove unutar jedne sekcije, a svaki rad pripada točno jednoj sekciji. Identifikator entiteta je atribut ID. Entitet sadrži informaciju o nazivu sekcije i u vezi je
 				\begin{packed_item}
-					\item Many-to-One s entitetom Konferencija (preko atributa ID) jer ova znanstvena konferencija može imati više sekcija
-					\item One-to-Many s entitetom Korisnik (preko atributa ID) jer recenzent pri prijavi bira jednu sekciju u kojoj će recenzirati (Korisnik.sifSekcija)
+					\item Many-to-One s entitetom Konferencija preko atributa ID
+					\item One-to-Many s entitetom Korisnik preko atributa ID (Korisnik.sifSekcija)
 					\item One-to-Many s entitetom Rad preko atributa ID (Rad.sifSekcija)
 				\end{packed_item} 
 				\begin{longtblr}[
@@ -149,14 +149,14 @@
 					\hline \multicolumn{3}{|c|}{\textbf{Sekcija}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}ID & INT	&  	jedinstveni brojčani identifikator	\\ \hline
 					naziv	& VARCHAR &   naziv konferencije	\\ \hline 
-					\SetCell{LightBlue} sifKonferencija	& ID &   jedinstveni brojčani identifikator konferencije (Konferencija.ID)	\\ \hline
+					\SetCell{LightBlue} sifKonferencija	& INT &   jedinstveni brojčani identifikator konferencije (Konferencija.ID)	\\ \hline
 					
 				\end{longtblr}
 				\textbf{Konferencija}
-				Ovaj entitet sadrži važne informacije o znanstvenoj konferenciji. Atributi su: identifikator konferencije (ID), naziv konferencije, opis, datum održavanja, rok za prijave, i identifikator predsjedavajućeg konferencije. Entitet je u vezi
+				Ovaj entitet sadrži važne informacije o znanstvenoj konferenciji. Atributi su: identifikator konferencije (ID), naziv konferencije, opis, datum održavanja, rok za prijave, rok za administracijske promjene, rok za recenzente i identifikator predsjedavajućeg konferencije. Konferencija koju modeliramo ima jednog predsjedavajućeg. Entitet je u vezi
 				\begin{packed_item}
 					\item One-to-Many s entitetom Sekcija preko atributa ID (Sekcija.sifKonferencija)
-					\item One-to-One s entitetom Korisnik preko atributa ID jer konferencija koju modeliramo ima jednog predsjedavajućeg
+					\item One-to-One s entitetom Korisnik preko atributa ID 
 				\end{packed_item}
 				\begin{longtblr}[
 					label=none,
@@ -166,20 +166,22 @@
 						colspec={|X[8,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-					\hline \multicolumn{3}{|c|}{\textbf{Recenzija}}	 \\ \hline[3pt]
+					\hline \multicolumn{3}{|c|}{\textbf{Konferencija}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}ID & INT	& jedinstveni brojčani identifikator	\\ \hline
 					naziv	& VARHCAR & naziv konferencije  	\\ \hline 
 					opis & VARCHAR &  opis konferencije \\ \hline
 					datum & DATE &  datum održavanja konferencije \\ \hline 
 					rokPrijava & TIMESTAMP &  rok za prijavu na konferenciju i učitanje rada u sustav \\ \hline 
-					\SetCell{LightBlue} predsjedavajuciID	& ID &   jedinstveni brojčani identifikator predsjedavajućeg konferencije (Korisnik.ID)	\\ \hline 
+					rokAdmin & TIMESTAMP &  rok do kojeg administrator može mijenjati obrazac za prijavu \\ \hline 
+					rokRecenzent & TIMESTAMP &  rok do kojeg recenzenti mogu (trebaju) obaviti recenziju radova \\ \hline 
+					\SetCell{LightBlue} predsjedavajuciID	& INT &   jedinstveni brojčani identifikator predsjedavajućeg konferencije (Korisnik.ID)	\\ \hline 
 					
 				\end{longtblr}
 				
-				\textbf{DodatnoPoljeObrasca}
-				Ovaj entitet sadrži informacije o dodatnim poljima obrasca koja se nude administratoru pri definiranju obrasca za prijavu na konfereniju. Atributi su: ID (jedinstveni identifikator), naziv polja i tip polja. Entitet je u vezi
+				\textbf{DodatnoPoljeObrasca} Ovaj entitet sadrži informacije o dodatnim poljima obrasca koja se nude administratoru pri definiranju obrasca za prijavu na konferenciju. Atributi su: ID (jedinstveni identifikator), naziv polja, tip polja, oznake obavezno i prisutno. Entitet je u vezi
 				\begin{packed_item}
-					\item One-to-One s entitetom OdabranoPoljeObrasca preko atributa ID \newline (OdabranoPoljeObrasca.sifDodatnoPoljeObrasca)
+					\item Many-to-One s entitetom TipPoljeObrasca preko atributa ID
+					\item Many-to-Many s entitetom Korisnik preko atributa ID \newline (DodatniPodatak.poljeObrascaID; ta je veza na ER dijagramu imenovana kao DodatniPodatak pa se može reći da je entitet DodatnoPoljeObraca u vezi One-to-Many s entitetom DodatniPodatak preko atributa ID)
 				\end{packed_item} 
 				\begin{longtblr}[
 					label=none,
@@ -192,14 +194,16 @@
 					\hline \multicolumn{3}{|c|}{\textbf{DodatnoPoljeObrasca}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}ID & INT	&  jedinstveni brojčani identifikator 	\\ \hline
 					ime	& VARCHAR & ime dodatnog polja obrasca  	\\ \hline 
-					tipPolje	& VARCHAR & tip dodatnog polja obrasca  	\\ \hline 
+					\SetCell{LightBlue}tipPolje	& VARCHAR & tip dodatnog polja obrasca  	\\ \hline 
+					obavezno	& BOOLEAN & oznaka je li polje obavezno polje obrasca	\\ \hline
+					prisutno	& BOOLEAN & oznaka treba li polje biti prisutno u obrascu	\\ \hline
 					
 				\end{longtblr}
-				\textbf{OdabranoPoljeObrasca}
-				Ovaj entitet sadrži informacije o poljima obrasca koja je administrator odabrao pri definiranju obrasca za prijavu na konfereniju. Atributi su: ID (jedinstveni identifikator), sifDodatnoPoljeObrasca i obavezan. Entitet je u vezi
+				\textbf{TipPoljeObrasca}
+				Ovaj entitet sadrži informacije o tipovima polja obrasca koja se nude administratoru pri definiranju dodatnih polja obrasca za prijavu. Početno, u sustavu postoje tri tipa polja obrasca: text, number i date. Atributi ovog entiteta su: ID (jedinstveni identifikator) i naziv tipa. Entitet je u vezi
 				\begin{packed_item} 
-					\item One-to-One s entitetom DodatnoPoljeObrasca preko atributa sifDodatnoPoljeObrasca
-					\item Many-to-Many s entitetom Korisnik preko atributa ID (DodatniPodatak.poljeObrascaID; ta je veza na ER dijagramu imenovana kao DodatniPodatak pa se može reći da je entitet OdabranoPoljeObrasca u vezi One-to-Many s entitetom DodatniPodatak)
+					\item One-to-Many s entitetom DodatnoPoljeObrasca preko atributa ID (DodatnoPoljeObrasca.tipPolja)
+					
 				\end{packed_item}
 				\begin{longtblr}[
 					label=none,
@@ -209,10 +213,10 @@
 						colspec={|X[12,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-					\hline \multicolumn{3}{|c|}{\textbf{OdabranoPoljeObrasca}}	 \\ \hline[3pt]
+					\hline \multicolumn{3}{|c|}{\textbf{TipPoljeObrasca}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}ID & INT	&  jedinstveni brojčani identifikator	\\ \hline
-					\SetCell{LightBlue} sifDodatnoPoljeObrasca	& VARCHAR & jedinstveni identifikator dodatnog polja obrasca  (DodatnoPoljeObrasca.ID)	\\ \hline 
-					obavezno	& BOOLEAN & oznaka je li odabrano polje obrasca obavezno pri ispunjavanju obrasca	\\ \hline 
+					
+					nazivTipa	& VARCHAR & naziv tipa polja obrasca\\ \hline 
 					
 				\end{longtblr}
 				\textbf{Recenzija} Ovaj entitet sadrži informacije o recenzijama predanih radova. Atributi su: ID, ocjena, obrazloženje, recenzentID i sifRad. Entitet je u vezi:
@@ -233,8 +237,8 @@
 					\SetCell{LightGreen}ID & INT	&  jedinstveni brojčani identifikator	\\ \hline
 					\SetCell{LightBlue}ocjena	& INT &   odabrana ocjena rada (Ocjena.ID)	\\ \hline 
 					obrazlozenje & VARCHAR & obrazloženje za odabranu ocjenu rada\\ \hline 
-					\SetCell{LightBlue} recenzentID	& ID & jedinstveni identifikator recenzenta (Korisnik.ID)	\\ \hline 
-					\SetCell{LightBlue} sifRad	& ID &   jedinstveni identifikator rada koji se recenzira (Rad.ID)	\\ \hline 
+					\SetCell{LightBlue} recenzentID	& INT & jedinstveni identifikator recenzenta (Korisnik.ID)	\\ \hline 
+					\SetCell{LightBlue} sifRad	& INT &   jedinstveni identifikator rada koji se recenzira (Rad.ID)	\\ \hline 
 				\end{longtblr}
 				\textbf{Rad}
 				Ovaj entitet sadrži informacije o prijavljenim radovima: ID rada, naslov, poveznicu s pdf dokumentom, je li rad recenziran, u koju je sekciju prijavljen i koji korisnik ga je prijavio. Entitet je u vezi:
@@ -242,7 +246,7 @@
 					\item One-to-One s entitetom Recenzija preko atributa ID (Recenzija.sifRad)
 					\item Many-to-One s entitetom Sekcija preko atributa ID
 					\item Many-to-One s entitetom Korisnik preko atributa ID
-					\item Many-to-Many s entitetom Autor prek atributa ID (ta je veza u ER dijagramu prikazana kao entitet AutorRad pa možemo reći da je entitet Rad u vezi One-to-Many s entitetom AutorRad preko atributa ID(AutorRad.sifRad))
+					\item Many-to-Many s entitetom Autor preko atributa ID (ta je veza u ER dijagramu prikazana kao entitet AutorRad pa možemo reći da je entitet Rad u vezi One-to-Many s entitetom AutorRad preko atributa ID(AutorRad.sifRad))
 				\end{packed_item}
 				\begin{longtblr}[
 					label=none,
@@ -303,11 +307,10 @@
 					\SetCell{LightGreen}sifAutor& INT	&  kedinstveni brojčani identifikator autora	\\ \hline
 					
 				\end{longtblr}
-				\textbf{DodatniPodatak}
-				Ovaj entitet prikazan na ER dijagramu predstavlja Many-to-Many vezu između entiteta Korisnik i entiteta OdabranoPoljeObrasca. Kad bismo tu vezu prikazali kao entitet, primarni bi ključ bio kompozitni ključ: ID korisnika i ID odabranog polja obrasca. Atribut ove veze (entiteta) je podatak - podatak kojeg korisnik unosi u odabrano polje obrasca pri prijavi na konferenciju. Može se reći da je entitet u vezi 
+			\textbf{DodatniPodatak} Ovaj entitet prikazan na ER dijagramu predstavlja Many-to-Many vezu između entiteta Korisnik i entiteta DodatnoPoljeObrasca. Kad bismo tu vezu prikazali kao entitet, primarni bi ključ bio kompozitni ključ: ID korisnika i ID dodatnog polja obrasca. Dodatni atribut ove veze (entiteta) jest podatak - podatak kojeg korisnik unosi u dodatno polje obrasca pri prijavi na konferenciju. Može se reći da je entitet u vezi 
 				\begin{packed_item}
-					\item Many-to-One s entitetom Korisnik preko atributa KorisnikID
-					\item Many-to-One s entitetom OdabranoPoljeObrasca preko atributa poljeObrascaID
+					\item Many-to-One s entitetom Korisnik preko atributa korisnikID
+					\item Many-to-One s entitetom DodatnoPoljeObrasca preko atributa poljeObrascaID
 				\end{packed_item}
 				
 				\begin{longtblr}[
@@ -320,19 +323,19 @@
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 					\hline \multicolumn{3}{|c|}{\textbf{DodatniPodatak}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}korisnikID & INT	& jedinstveni brojčani identifikator korisnika 	\\ \hline
-					\SetCell{LightGreen}poljeObrascaID& INT	&  jedinstveni brojčani identifikator polja obrasca	\\ \hline
-					podatak & VARCHAR	&  podatak koji je korisnik unio u odabrano polje obrasca	\\ \hline 
+					\SetCell{LightGreen}poljeObrascaID& INT	&  jedinstveni brojčani identifikator dodatnog polja obrasca	\\ \hline
+					podatak & VARCHAR	&  podatak koji je korisnik unio u to polje obrasca	\\ \hline 
 					
 				\end{longtblr}
 				
 				
 			\newpage
 			\subsection{Dijagram baze podataka}
-				\textit{ U ovom potpoglavlju potrebno je umetnuti dijagram baze podataka. Primarni i strani ključevi moraju biti označeni, a tablice povezane. Bazu podataka je potrebno normalizirati. Podsjetite se kolegija "Baze podataka".}
+			
 				\begin{figure}[H]
-					%\includegraphics[scale=0.3]{dijagrami/ZK-ER-DIJAGRAM.png} 
+					\includegraphics[width= 15 cm, keepaspectratio]{dijagrami/ZK-ER-DIJAGRAM.png} 
 					\centering
-					\caption{ER dijgram baze podataka}
+					\caption{ER dijagram baze podataka}
 					\label{fig:ERdijagram}
 				\end{figure}
 			\eject
