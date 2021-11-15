@@ -172,7 +172,9 @@
 					datum & DATE &  datum održavanja konferencije \\ \hline 
 					rokPrijava & TIMESTAMP &  rok za prijavu na konferenciju i učitanje rada u sustav \\ \hline 
 					rokAdmin & TIMESTAMP &  rok do kojeg administrator može mijenjati obrazac za prijavu \\ \hline 
-					rokRecenzent & TIMESTAMP &  rok do kojeg recenzenti mogu (trebaju) obaviti recenziju radova \\ \hline 
+					rokRecenzent & TIMESTAMP &  rok do kojeg recenzenti mogu (trebaju) obaviti recenziju radova \\ \hline
+					pocetakRecenzent & TIMESTAMP & vremenski trenutak od kojeg recenzenti mogu recenzirati radove  \\ \hline
+					pocetakPrijava & TIMESTAMP & vremenski trenutak od kojeg se sudionici i recenzenti mogu početi prijavljivati na konferenciju  \\ \hline
 					
 					
 				\end{longtblr}
@@ -264,7 +266,7 @@
 					\SetCell{LightBlue} prijavioID	& INT & jedinstveni brojčani identifikator sudionika koji je prijavio rad (Korisnik.ID) \\\hline 
 				\end{longtblr}
 				\textbf{Autor}
-				Ovaj entitet sadrži važne informacije o autorima predanih radova. Atributi su: ID, ime, prezime, e-mail i naznaka OZK po kojoj se zna je li osoba naznačena kao osoba za kontakt.
+				Ovaj entitet sadrži važne informacije o autorima predanih radova. Atributi su: ID, ime, prezime i e-mail.
 				Entitet je u vezi
 				\begin{packed_item}
 					\item Many-to-Many s entitetom Rad preko atributa ID (ta je veza u ER dijagramu prikazana kao entitet AutorRad pa možemo reći da je entitet Autor u vezi One-to-Many s entitetom AutorRad preko atributa ID (AutorRad.sifAutor))
@@ -282,11 +284,10 @@
 					ime	& VARCHAR & autorovo ime	\\ \hline 
 					prezime	& VARCHAR &   autorovo prezime	\\ \hline
 					email & VARCHAR & e-mail autora  \\ \hline 
-					naznakaOZK & BOOLEAN	& naznaka je li autor označen kao osoba za kontakt 		\\ \hline 
 					
 				\end{longtblr}
 				\textbf{AutorRad}
-				Ovaj entitet prikazan na ER dijagramu predstavlja Many-to-Many vezu između entiteta Autor i entiteta Rad. Kad bismo tu vezu prikazali kao entitet primarni ključ bi bio kompozitni ključ: ID autora i ID rada.
+				Ovaj entitet prikazan na ER dijagramu predstavlja Many-to-Many vezu između entiteta Autor i entiteta Rad. Kad bismo tu vezu prikazali kao entitet primarni ključ bi bio kompozitni ključ: ID autora i ID rada. Atribut veze je naznakaOZK na temelju koje se zna je li autor označen kao osoba za kontakt pri prijavi tog rada.
 				Može se reći da je entitet u vezi:
 				\begin{packed_item}
 					\item Many-to-One s entitetom Autor preko atributa sifAutor
@@ -304,6 +305,8 @@
 					\hline \multicolumn{3}{|c|}{\textbf{AutorRad}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}sifRad & INT	&  jedinstveni brojčani identifikator rada	\\ \hline
 					\SetCell{LightGreen}sifAutor& INT	&  kedinstveni brojčani identifikator autora	\\ \hline
+					naznakaOZK & BOOLEAN	& naznaka je li autor označen kao osoba za kontakt za navedeni rad 		\\ \hline 
+					
 					
 				\end{longtblr}
 			\textbf{DodatniPodatak} Ovaj entitet prikazan na ER dijagramu predstavlja Many-to-Many vezu između entiteta Korisnik i entiteta DodatnoPoljeObrasca. Kad bismo tu vezu prikazali kao entitet, primarni bi ključ bio kompozitni ključ: ID korisnika i ID dodatnog polja obrasca. Dodatni atribut ove veze (entiteta) jest podatak - podatak kojeg korisnik unosi u dodatno polje obrasca pri prijavi na konferenciju. Može se reći da je entitet u vezi 
