@@ -38,7 +38,7 @@ def increment_KorisnikID():
 
 class Korisnik(models.Model):
     id = models.AutoField(primary_key=True)
-    korisnickoIme = models.CharField(max_length=50, unique=True)
+    korisnickoIme = models.CharField(max_length=50, unique=True) 
     lozinka = models.CharField(max_length=50)
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
@@ -65,7 +65,12 @@ class Rad(models.Model):
     pdf = models.FileField(upload_to=custom_directory)
     radSekcija = models.ForeignKey("Sekcija", on_delete=models.CASCADE)
     radKorisnik = models.ForeignKey("Korisnik", on_delete=models.CASCADE)
-    autori = models.ManyToManyField(Autor)
+    autori = models.ManyToManyField(Autor,through="AutorRad")
+
+class AutorRad(models.Model):
+    Autor = models.ForeignKey("Autor", on_delete=models.CASCADE)
+    Rad = models.ForeignKey("Rad",on_delete=models.CASCADE)
+    OZK = models.BooleanField(default=False)
 
 class Konferencija(models.Model):
     sifKonferencija = models.AutoField(primary_key=True)
@@ -73,11 +78,17 @@ class Konferencija(models.Model):
     opisKonferencije = models.CharField(max_length=1000)
     datumKonferencije = models.DateField()
     rokPrijave = models.DateField()
+    rokRecenzenti = models.DateField()
+    rokAdmin = models.DateField()
+
+class TipPoljaObrasca(models.Model):
+    id = models.AutoField(primary_key=True)
+    naziv = models.CharField(max_length=50)
 
 class DodatnaPoljaObrasca(models.Model):
     sifPolja = models.AutoField(primary_key=True)
     imePolja = models.CharField(max_length=50)
-    tipPolja = models.CharField(max_length=50)
+    tipPolja = models.ForeignKey("TipPoljaObrasca", on_delete=models.CASCADE)
     active = models.BooleanField(default=False)
     obavezan = models.BooleanField(default=False)
 

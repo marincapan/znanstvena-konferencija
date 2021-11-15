@@ -6,7 +6,9 @@
             "nazivKonferencije":"Konferencija",
             "opisKonferencije":"Inital znanstvena konferencija",
             "datumKonferencije":"2022-12-12",
-            "rokPrijave":"2022-12-12"
+            "rokPrijave":"2022-12-12",
+            "rokRecenzenti":"2022-12-12",
+            "rokAdmin":"2022-12-12"
         }
     },
     {
@@ -121,5 +123,27 @@
             "korisnikUstanova" : 1,
             "korisnikSekcija": 1
         }
+    },
+    {
+        "model":"MK2ZK_App.TipPoljaObrasca",
+        "id":1,
+        "fields":{
+            "naziv":"text"
+        }
+    },
+    {
+        "model":"MK2ZK_App.TipPoljaObrasca",
+        "id":2,
+        "fields":{
+            "naziv":"date"
+        }
+    },
+    {
+        "model":"MK2ZK_App.TipPoljaObrasca",
+        "id":1,
+        "fields":{
+            "naziv":"number"
+        }
     }
+
 ]

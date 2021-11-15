@@ -213,7 +213,7 @@
                       {% endif %}
                       <br>
                         
-                      <!------------------------------->
+                      <!--
                       <div class="container">
                         <div class="row">
                             <div class="col-sm">
@@ -223,7 +223,7 @@
 
                                     <div>
                                         
-                                        {%if LoggedInUserRole == "Sudionik"%}<!--Html za kad je sudionik-->
+                                        {%if LoggedInUserRole == "Sudionik"%}Html za kad je sudionik-->
 
                                         
 
@@ -388,10 +388,9 @@
 
                                         <div>
                                             <ul class="fs-5 buttons">
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="int"> INT</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="char"> CHAR (duljina = 50)</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="longchar"> LONGCHAR (duljina = 500)</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="longchar"> BOOLEAN</li>
+                                                <li class="fs-5"><input type="radio" name="fieldType" id="text"> TEXT</li>
+                                                <li class="fs-5"><input type="radio" name="fieldType" id="date"> DATE</li>
+                                                <li class="fs-5"><input type="radio" name="fieldType" id="number"> NUMBER</li>
                                             </ul>
                                         </div>
 
@@ -460,7 +459,7 @@
                             </div>
                         </div>
                       </div>
-                      <!------------------------------->
+                      <!--
                       <br>
                         
                     </div>
@@ -471,7 +470,7 @@
 
             
 
-            <!-- {%if LoggedInUserRole == "Admin"%}
+            {%if LoggedInUserRole == "Admin"%}
                 <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="text" name="fieldName" id="fieldName" placeholder="Ime novog fielda">

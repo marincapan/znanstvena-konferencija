@@ -213,7 +213,7 @@
                       {% endif %}
                       <br>
                         
-                      <!------------------------------->
+                      
                       <div class="container">
                         <div class="row">
                             <div class="col-sm">
@@ -222,7 +222,7 @@
                                     <div style="padding-bottom: 9px;" id="UserNameDiv">
 
                                     <div>
-                                    <form action="/sloziobrazac" method="POST" enctype="multipart/form-data">
+                                    <form action="/sloziobrazac" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
 
                                         <div class="form-outline mb-4">
@@ -239,10 +239,9 @@
 
                                         <div>
                                             <ul class="fs-5 buttons">
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="int"> INT</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="char"> CHAR (duljina = 50)</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="longchar"> LONGCHAR (duljina = 500)</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="longchar"> BOOLEAN</li>
+                                                <li class="fs-5"><input type="radio" name="fieldType" id="text" value="text"> TEXT</li>
+                                                <li class="fs-5"><input type="radio" name="fieldType" id="date" value="date"> DATE</li>
+                                                <li class="fs-5"><input type="radio" name="fieldType" id="number" value="number"> NUMBER</li>
                                             </ul>
                                         </div>
 
@@ -264,7 +263,7 @@
                                     </div>
 
                                         
-                                        <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                                        <form action="/sloziobrazac" method="POST" enctype="multipart/form-data">
                                             {% csrf_token %}
 
                                             <p class="text-center text-muted mt-5 mb-0">Odaberi polja koja želiš uključiti u obrazac za registraciju.</p>
@@ -310,7 +309,7 @@
                             </div>
                         </div>
                       </div>
-                      <!------------------------------->
+                      <!--
                       <br>
                         
                     </div>
@@ -321,7 +320,7 @@
 
             
 
-            <!-- {%if LoggedInUserRole == "Admin"%}
+             {%if LoggedInUserRole == "Admin"%}
                 <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="text" name="fieldName" id="fieldName" placeholder="Ime novog fielda">

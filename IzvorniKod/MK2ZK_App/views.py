@@ -266,7 +266,6 @@ def mojiradovi(request):
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
 
     LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
-    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
 
     fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
     for rad in fetchedRadovi:
@@ -298,29 +297,6 @@ def mojiradovi(request):
                     rad.save()
                 
                 return redirect('mojiradovi')
-            
-        if 'AddNewField' in request.POST:
-            fieldName = request.POST["fieldName"]
-            fieldType = request.POST["fieldType"]
-            if not models.DodatnaPoljaObrasca.objects.filter(imePolja=fieldName,tipPolja=fieldType).exists():
-                newField=models.DodatnaPoljaObrasca(
-                    imePolja=fieldName,
-                    tipPolja=fieldType
-                )
-                newField.save()
-        if 'ActiveFields' in request.POST:
-            for polje in fetchedPolja:
-                try:
-                    checked = request.POST[polje.imePolja]
-                    checked = True 
-                except:
-                    checked = False
-                polje.active = checked
-                polje.save()
-    
-    for polje in fetchedPolja:
-        print(polje.imePolja)        
-    context['DodatnaPolja']=fetchedPolja
     
     return render(request, 'MojiRadovi.html',context)
 
@@ -341,18 +317,21 @@ def sloziobrazac(request):
 
     for polje in fetchedPolja:
         print(polje.imePolja)        
-    context['DodatnaPolja']=fetchedPolja
 
     if request.method == "POST":            
         if 'AddNewField' in request.POST:
+            print(request.POST)
             fieldName = request.POST["fieldName"]
             fieldType = request.POST["fieldType"]
-            if not models.DodatnaPoljaObrasca.objects.filter(imePolja=fieldName,tipPolja=fieldType).exists():
+            newfield=models.TipPoljaObrasca.objects.get(naziv=fieldType)
+            if not models.DodatnaPoljaObrasca.objects.filter(imePolja=fieldName,tipPolja=newfield).exists():
                 newField=models.DodatnaPoljaObrasca(
                     imePolja=fieldName,
-                    tipPolja=fieldType
+                    tipPolja=newfield
                 )
                 newField.save()
+            context['DodatnaPolja']=fetchedPolja
+            return redirect('sloziobrazac')
         if 'ActiveFields' in request.POST:
             for polje in fetchedPolja:
                 try:
@@ -362,7 +341,10 @@ def sloziobrazac(request):
                     checked = False
                 polje.active = checked
                 polje.save()
-    
+                
+        context['DodatnaPolja']=fetchedPolja
+        return redirect('sloziobrazac')
+    context['DodatnaPolja']=fetchedPolja
     return render(request, 'SloziObrazac.html', context)
 
 def info(request):
