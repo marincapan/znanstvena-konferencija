@@ -47,7 +47,6 @@
 					\item Many-to-One s entitetom Uloga preko atributa ID
 					\item One-to-Many s entitetom Recenzija preko atributa ID (Recenzija.recezentID)
 					\item Many-to-Many s entitetom DodatnoPoljeObrasca preko atributa ID (DodatniPodatak.korisnikID; ta je veza na ER dijagramu imenovana kao DodatniPodatak pa se može reći da je entitet Korisnik u vezi One-to-Many s entitetom DodatniPodatak preko atributa ID)
-					\item One-to-One s entitetom Konferencija preko atributa ID \newline (Konferencija.predsjedavajuciID)
 					\item One-to-Many s entitetom Rad preko atributa ID (Rad.prijavioID)
 				\end{packed_item}
 				\begin{longtblr}[
@@ -153,10 +152,10 @@
 					
 				\end{longtblr}
 				\textbf{Konferencija}
-				Ovaj entitet sadrži važne informacije o znanstvenoj konferenciji. Atributi su: identifikator konferencije (ID), naziv konferencije, opis, datum održavanja, rok za prijave, rok za administracijske promjene, rok za recenzente i identifikator predsjedavajućeg konferencije. Konferencija koju modeliramo ima jednog predsjedavajućeg. Entitet je u vezi
+				Ovaj entitet sadrži važne informacije o znanstvenoj konferenciji koju modeliramo. Atributi su: identifikator konferencije (ID), naziv konferencije, opis, datum održavanja, rok za prijave, rok za administracijske promjene, rok za recenzente. Entitet je u vezi
 				\begin{packed_item}
 					\item One-to-Many s entitetom Sekcija preko atributa ID (Sekcija.sifKonferencija)
-					\item One-to-One s entitetom Korisnik preko atributa ID 
+					
 				\end{packed_item}
 				\begin{longtblr}[
 					label=none,
@@ -174,7 +173,7 @@
 					rokPrijava & TIMESTAMP &  rok za prijavu na konferenciju i učitanje rada u sustav \\ \hline 
 					rokAdmin & TIMESTAMP &  rok do kojeg administrator može mijenjati obrazac za prijavu \\ \hline 
 					rokRecenzent & TIMESTAMP &  rok do kojeg recenzenti mogu (trebaju) obaviti recenziju radova \\ \hline 
-					\SetCell{LightBlue} predsjedavajuciID	& INT &   jedinstveni brojčani identifikator predsjedavajućeg konferencije (Korisnik.ID)	\\ \hline 
+					
 					
 				\end{longtblr}
 				
@@ -194,7 +193,7 @@
 					\hline \multicolumn{3}{|c|}{\textbf{DodatnoPoljeObrasca}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}ID & INT	&  jedinstveni brojčani identifikator 	\\ \hline
 					ime	& VARCHAR & ime dodatnog polja obrasca  	\\ \hline 
-					\SetCell{LightBlue}tipPolje	& VARCHAR & tip dodatnog polja obrasca  	\\ \hline 
+					\SetCell{LightBlue}tipPolje	& INT & tip dodatnog polja obrasca  	\\ \hline 
 					obavezno	& BOOLEAN & oznaka je li polje obavezno polje obrasca	\\ \hline
 					prisutno	& BOOLEAN & oznaka treba li polje biti prisutno u obrascu	\\ \hline
 					
