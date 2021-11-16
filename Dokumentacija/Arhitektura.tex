@@ -1,16 +1,33 @@
 \chapter{Arhitektura i dizajn sustava}
 		
-		\textbf{\textit{dio 1. revizije}}\\
+	
+		Arhitektura sustava je izvedena u obliku web aplikacije kojoj korisnik pristupa koristeći web preglednik. Web preglednik omogućuje korisniku pregled web-stranica i multimedijskog sadržaja na njoj. Kako postoje razni web preglednici za razne operativne sustave, koji uglavnom dolaze zajedno s nekim ugrađenim web preglednikom, ovaj pristup omogučava laki i široki pristup aplikaciji bez potrebe za preuzimanjem dodatne programske podrške od strane korisnika kao i dodatnog razvoja od strane programera.
+	\par Za razvoj aplikacije koristimo programski jezik Python, HTML, JavaScript i CSS. Za razvoj koristimo razvojni okvir Django koji smo odabrali radi njegove jednostavnosti, modularnosti kao i upoznatosti tima s razvojem u toj okolini.
+Korisnik vrši interakcije sa aplikacijom preko django predlozaka. ("templates") Predložci sadrže strukturo potrebnu za dinamičko generiranje HTML stranice i prikaz nje korisniku.
 
-		\textit{ Potrebno je opisati stil arhitekture te identificirati: podsustave, preslikavanje na radnu platformu, spremišta podataka, mrežne protokole, globalni upravljački tok i sklopovsko-programske zahtjeve. Po točkama razraditi i popratiti odgovarajućim skicama:}
-	\begin{itemize}
-		\item 	\textit{izbor arhitekture temeljem principa oblikovanja pokazanih na predavanjima (objasniti zašto ste baš odabrali takvu arhitekturu)}
-		\item 	\textit{organizaciju sustava s najviše razine apstrakcije (npr. klijent-poslužitelj, baza podataka, datotečni sustav, grafičko sučelje)}
-		\item 	\textit{organizaciju aplikacije (npr. slojevi frontend i backend, MVC arhitektura) }		
+
+
+	\begin{figure}[H]
+						\includegraphics[scale=0.9]{dijagrami/django.png} 
+						\centering
+						\caption{Dijagram naćina rada djanga}
+						\label{fig:dijagramRadaDjanga}
+					\end{figure}
+
+		Django predlošci su jedan od sastavnih dijelova radnog okvira Django. Django funcionora na principu rada MVT koji je strukturno vrlo sličan modelu MVC.\newline MVT model se sastoji od:
+\begin{itemize}
+		\item 	\textbf{Model} - objekti u pythonu koji definiraju strukturu podataka aplikacije i omogučavaju dodavanje, brisanje, mijenjanje i dohvačanje podataka iz baze podataka.
+		\item 	\textbf{View (pogled)} - funkcije koje sluze za obradu HTTP zahtjeva i generiranje HTTP odziva. Pogledi pristupaju podatcima potrebnima za odrađivanje zahtjeva uz pomoć modela, a za formatiranje i prikaz  dohvaćenih podataka koriste predloške.
+		\item 	\textbf{Template (predložak)} - definira strukturu prikaza podataka neke datoteke (na primjer HTML). Pogledi mogu dinamički generirati HTML stranice uz pomoć predložaka i popuniti ih s podatcima dohvačenih preko modela. 
+				
 	\end{itemize}
 
-	
-		
+		\begin{figure}[H]
+						\includegraphics[scale=0.9]{dijagrami/django_mvt.png} 
+						\centering
+						\caption{Dijagram principa rada MVT}
+						\label{fig:dijagramRadaMVT}
+					\end{figure}
 
 		
 
