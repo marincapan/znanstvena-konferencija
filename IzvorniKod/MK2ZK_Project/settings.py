@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 import os
 from os.path import join, dirname
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'IzvorniKod.MK2ZK_App'
 ]
 
 MIDDLEWARE = [
@@ -56,12 +58,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'MK2ZK_Project.urls'
+ROOT_URLCONF = 'IzvorniKod.MK2ZK_Project.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['Templates'],
+        'DIRS': ['IzvorniKod\Templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'MK2ZK_Project.wsgi.application'
+WSGI_APPLICATION = 'IzvorniKod.MK2ZK_Project.wsgi.application'
 
 
 # Database
@@ -82,8 +84,12 @@ WSGI_APPLICATION = 'MK2ZK_Project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'MK2ZK_DB',
+        'USER': 'postgres',
+        'PASSWORD': 'dogwoofwoof',
+        'HOST': 'localhost',
+        'PORT': '5433'
     }
 }
 
@@ -127,6 +133,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'Radovi')
+MEDIA_URL = '/Radovi/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
