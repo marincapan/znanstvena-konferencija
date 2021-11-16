@@ -56,7 +56,7 @@ ROOT_URLCONF = 'IzvorniKod.MK2ZK_Project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['IzvorniKod\Templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'Templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,7 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, 'templates')
 
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'Radovi')
 MEDIA_URL = '/Radovi/'
