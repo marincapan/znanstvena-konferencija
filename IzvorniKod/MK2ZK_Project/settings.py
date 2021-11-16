@@ -77,9 +77,14 @@ WSGI_APPLICATION = 'IzvorniKod.MK2ZK_Project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'MK2ZK_DB',
+        'USER': 'postgres',
+        'PASSWORD': 'dogwoofwoof',
+        'HOST': 'mk2zk_db',
+        'PORT': '5432'
     }
+
 }
 
 
@@ -122,6 +127,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'templates')
+
 
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'Radovi')
 MEDIA_URL = '/Radovi/'

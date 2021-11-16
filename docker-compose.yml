@@ -1,9 +1,28 @@
 version: '3'
+
 services:
     web:
         build: ./IzvorniKod
+        container_name: mk2zk_app
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/code
         ports:
             - "8000:8000"
+        depends_on:
+            - "db"
+
+    db:
+        image: postgres
+        container_name: mk2zk_db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_DB: MK2ZK_DB
+            POSTGRES_PASSWORD: dogwoofwoof
+        volumes:
+            - pgdata:/var/lib/posgresql/data    
+        ports:
+            - "5432:5432"
+    
+volumes:
+  pgdata:
