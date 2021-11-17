@@ -97,27 +97,30 @@
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a href="#" class="nav-link text-white">
+                          <a href="info" class="nav-link text-white">
                             <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                             O konferenciji
                           </a>
                         </li>
                         <li class="nav-item">
-                            {% if LoggedInUser %}
-                            <a href="mojiradovi" class="nav-link text-white">
-                                <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
-                                {%if LoggedInUserRole == "Admin"%}
-                                Složi obrazac
-                                {%else%}
-                                Moji radovi <!--  Za recenzenta je isti header, samo pise "Moje recenzije". -->
-                                {%endif%}
+                          {% if LoggedInUser %}
+                            {%if LoggedInUserRole == "Admin"%}
+                            <a href="sloziobrazac" class="nav-link text-white">
+                              <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                              Složi obrazac
                             </a>
-                            {% else %}
+                            {%else%}
+                            <a href="mojiradovi" class="nav-link text-white">
+                              <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                              Moji radovi
+                            </a>
+                            {%endif%}
+                          {% else %}
                             <a href="signin" class="nav-link text-white">
                                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
                                 Prijava <!--  Za recenzenta je isti header, samo pise "Moje recenzije". -->
                             </a>
-                            {% endif %}
+                          {% endif %}
                         </li>
                         <li>
                             <!--Za ovo smo rekli da se otvori meni gdje korisnik bira?-->
