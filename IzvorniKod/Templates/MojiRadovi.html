@@ -123,6 +123,14 @@
                 <symbol id="hamburger" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                 </symbol>
+                <symbol id="person-plus" viewBox="0 0 16 16">
+                  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                </symbol>
+                <symbol id="person-dash" viewBox="0 0 16 16">
+                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                  <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+                </symbol>
                 <!-- gumb ? -->
                 <symbol id="sci-con" viewBox="0 0 29 29">
                     
@@ -299,17 +307,16 @@
                       <div class="text-center mb-5">
                         <h3>Predaja dodatnog rada</h3>
                       </div>
-                      <p class="text-center text-muted mt-5 mb-0">Ovdje unesi datoteku i ime dodatnog rada s kojim želite
-                        sudjelovati na konferenciji. </p>
+                      <p class="text-center text-muted mt-5 mb-0">
+                        Ovdje uneste ime, datoteku te autore dodatnog rada s kojim želite sudjelovati na konferenciji.
+                      </p>
+
                       <br>
-
-                      <div class="fs-5" id='korisnickoIme'>Odaberite datoteku za unos:
-                      </div>
-
 
                       <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
-
+                        
+                        <div class="fs-5">Odaberite datoteku za unos:</div>
                         <div class="row">
                           <div class="col-md-8 mb-4">
                             <div class="form-floating">
@@ -322,6 +329,40 @@
                           <div class="col-md-4 mb-4 align-self-center">
                             <input class="form-control" type="file" name="uploadedFile" accept="application/pdf">
                           </div>
+                        </div>
+
+                        <div class="fs-5">Podaci o autorima:</div>
+                        <div class="row">
+  
+                          <div id="autori" class="mb-2">
+
+                            <div id="jedanAutor" class="mb-2">
+
+                              <label class="form-label" for="" id="authorsLabel">1.</label>
+                              <div id="autorIme" class="input-group col-md-10 col-10 mb-1">
+                                <input type="text" id="autorFName0" name="autorFName0" aria-label="Ime" placeholder="Ime" class="form-control form-control-lg" required>
+                                <input type="text" id="autorLName0" name="autorLName0" aria-label="Prezime" placeholder="Prezime" class="form-control form-control-lg" required>
+                              </div>
+
+                              <div id="autorPodaci" class="input-group col-md-10 col-10 mb-1">
+                                <input type="text" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail" class="form-control form-control-lg" required/>
+                                <div id="autorPodaciKontakt" class="input-group-text">
+                                  <input type="radio" id="autorKontakt0" name="autorKontakt0" aria-label="Kontakt" class="form-check-input form-check-lg" required/>
+                                  <label class="form-check-label" id="autorKontaktLabel0" style="margin-top:4px; margin-left:4px"for="autorKontakt0">Osoba za kontakt</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-4 mb-4">
+                            <button type="button" class="btn btn-primary btn-lg" id="btnDodajAutora" onclick=AddAuthor()>
+                              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-plus"/></svg>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-lg" id="btnMakniAutora" onclick=RemoveAuthor()>
+                              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-dash"/></svg>
+                            </button>
+                            <input type="number" min="0" name="brojAutora" id="brojAutora" class="form-control" value="1" hidden></input>
+                          </div>          
                         </div>
 
                         {%if not pdf%}
@@ -375,6 +416,99 @@
             document.getElementById("navbarTogglerIcon").style.animation="none";
             document.getElementById("navbarTogglerIcon").style.transform="rotate(0deg)";
           });
+
+          function AddAuthor(){
+              //prati broj autora (SO kaze da + cini ovo brojem)
+              var brojAutora = +document.getElementById("brojAutora").value;
+
+              //kloniramo prvog autora pa ga nastavljamo uredjivati
+              var noviAutor = document.getElementById("autori").firstElementChild.cloneNode(true); 
+              console.log(noviAutor);
+
+              if(noviAutor.hasChildNodes()){
+                var children = noviAutor.childNodes;
+
+                //Prolazimo kroz svu djecu elementa
+                for(var i = 0; i < children.length; i++){
+
+                  //Obrada za redni broj autora
+                  if(children[i].id == "authorsLabel"){
+                    children[i].innerText = (brojAutora+1) + ".";
+                    console.log("Tu sam");
+                    console.log(children[i]);
+                  }
+                  //Obrada za ID-eve imena i prezimena
+                  if(children[i].id == "autorIme"){
+                    for(var j = 0; j < children[i].childNodes.length; j++){
+                      if(children[i].childNodes[j].id == "autorFName0"){
+                        children[i].childNodes[j].id = "autorFName" + brojAutora;
+                        children[i].childNodes[j].name = "autorFName" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                      if(children[i].childNodes[j].id == "autorLName0"){
+                        children[i].childNodes[j].id = "autorLName" + brojAutora;
+                        children[i].childNodes[j].name = "autorLName" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                    }
+                  }
+
+                  //Obrada za ID-eve podataka o autoru
+                  if(children[i].id == "autorPodaci"){
+                    for(var j = 0; j < children[i].childNodes.length; j++){
+                      //Obrada za Email
+                      if(children[i].childNodes[j].id == "autorEmail0"){
+                        children[i].childNodes[j].id = "autorEmail" + brojAutora;
+                        children[i].childNodes[j].name = "autorEmail" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                      //Obrada za kontakt radio button
+                      if(children[i].childNodes[j].id == "autorPodaciKontakt"){
+                        for(var k = 0; k < children[i].childNodes[j].childNodes.length; k++){
+                          if(children[i].childNodes[j].childNodes[k].id == "autorKontakt0"){
+                            children[i].childNodes[j].childNodes[k].id = "autorKontakt" + brojAutora;
+                            children[i].childNodes[j].childNodes[k].checked = false; //Ako je prvi checkan i doda se novi vise novi nije checkan
+                            //children[i].childNodes[j].childNodes[k].name = "autorKontakt" + brojAutora;
+                          }
+                          if(children[i].childNodes[j].childNodes[k].id == "autorKontaktLabel0"){
+                            children[i].childNodes[j].childNodes[k].id = "autorKontaktLabel" + brojAutora;
+                            children[i].childNodes[j].childNodes[k].htmlFor = "autorKontakt" + brojAutora;
+                            console.log(children[i].childNodes[j].childNodes[k])
+                          }
+                        }
+                      }
+                    }
+                  }
+
+                }
+              }
+
+              //Dodavanje novog autora kao child element u div s autorima
+              document.getElementById("autori").appendChild(noviAutor);
+
+              //Povecavanje brojaca
+              document.getElementById("brojAutora").value = brojAutora + 1;
+
+              if(brojAutora + 1 > 1){
+                document.getElementById("btnMakniAutora").disabled = false;
+              }
+            }
+
+            function RemoveAuthor(){
+              //prati broj autora (SO kaze da + cini ovo brojem)
+              var brojAutora = +document.getElementById("brojAutora").value;
+
+              //micemo zadnjeg dodanog autora
+              document.getElementById("autori").removeChild(document.getElementById("autori").lastElementChild); 
+
+              //Smanjivanje brojaca
+              document.getElementById("brojAutora").value = brojAutora - 1;
+
+              //Ako ima samo jedan autor zabrani brisanje
+              if(brojAutora - 1 == 1){
+                document.getElementById("btnMakniAutora").disabled = true;
+              }
+            }
         </script>
   
     </html>
