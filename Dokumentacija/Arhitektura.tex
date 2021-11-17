@@ -1,24 +1,24 @@
 \chapter{Arhitektura i dizajn sustava}
 		
 	
-		Arhitektura sustava je izvedena u obliku web aplikacije kojoj korisnik pristupa koristeći web preglednik. Web preglednik omogućuje korisniku pregled web-stranica i multimedijskog sadržaja na njoj. Kako postoje razni web preglednici za razne operativne sustave, koji uglavnom dolaze zajedno s nekim ugrađenim web preglednikom, ovaj pristup omogučava laki i široki pristup aplikaciji bez potrebe za preuzimanjem dodatne programske podrške od strane korisnika kao i dodatnog razvoja od strane programera.
-	\par Za razvoj aplikacije koristimo programski jezik Python, HTML, JavaScript i CSS. Za razvoj koristimo razvojni okvir Django koji smo odabrali radi njegove jednostavnosti, modularnosti kao i upoznatosti tima s razvojem u toj okolini.
-Korisnik vrši interakcije sa aplikacijom preko django predlozaka. ("templates") Predložci sadrže strukturo potrebnu za dinamičko generiranje HTML stranice i prikaz nje korisniku.
+		Arhitektura sustava je izvedena u obliku web aplikacije kojoj korisnik pristupa koristeći web preglednik. Web preglednik omogućuje korisniku pregled web-stranica i multimedijskog sadržaja na njima. Postoje razni web preglednici za različite operacijske sustave te ovaj pristup omogućava lak i širok pristup aplikaciji bez potrebe za dodatnim preuzimanjem programske podrške od strane korisnika.
+	\par Za razvoj aplikacije koristimo programski jezik Python, HTML, JavaScript i CSS. Koristimo razvojno okruženje Django koje smo odabrali zbog njegove jednostavnosti, modularnosti te upoznatosti tima s razvojem u toj okolini.
+Korisnik vrši interakcije sa aplikacijom preko Django predložaka. Predlošci (eng. \textit{templates}) sadrže strukturu potrebnu za dinamičko generiranje HTML stranice i prikaz iste korisniku.
 
 
 
 	\begin{figure}[H]
 						\includegraphics[scale=0.9]{dijagrami/django.png} 
 						\centering
-						\caption{Dijagram naćina rada djanga}
+						\caption{Dijagram načina rada Djanga}
 						\label{fig:dijagramRadaDjanga}
 					\end{figure}
 
-		Django predlošci su jedan od sastavnih dijelova radnog okvira Django. Django funcionora na principu rada MVT koji je strukturno vrlo sličan modelu MVC.\newline MVT model se sastoji od:
+		Django predlošci su jedan od sastavnih dijelova radnog okvira Django. Django funkcionira na MVT principu rada, koji je strukturno vrlo sličan modelu MVC.\newline MVT model se sastoji od:
 \begin{itemize}
-		\item 	\textbf{Model} - objekti u pythonu koji definiraju strukturu podataka aplikacije i omogučavaju dodavanje, brisanje, mijenjanje i dohvačanje podataka iz baze podataka.
+		\item 	\textbf{Model} - objekti u Pythonu koji definiraju strukturu podataka aplikacije i omogućavaju dodavanje, brisanje, mijenjanje i dohvaćanje podataka iz baze podataka.
 		\item 	\textbf{View (pogled)} - funkcije koje sluze za obradu HTTP zahtjeva i generiranje HTTP odziva. Pogledi pristupaju podatcima potrebnima za odrađivanje zahtjeva uz pomoć modela, a za formatiranje i prikaz  dohvaćenih podataka koriste predloške.
-		\item 	\textbf{Template (predložak)} - definira strukturu prikaza podataka neke datoteke (na primjer HTML). Pogledi mogu dinamički generirati HTML stranice uz pomoć predložaka i popuniti ih s podatcima dohvačenih preko modela. 
+		\item 	\textbf{Template (predložak)} - definira strukturu prikaza podataka neke datoteke (npr. HTML). Pogledi mogu dinamički generirati HTML stranice uz pomoć predložaka i popuniti ih s podacima dohvaćenih putem modela. 
 				
 	\end{itemize}
 
@@ -36,7 +36,7 @@ Korisnik vrši interakcije sa aplikacijom preko django predlozaka. ("templates")
 			
 			\textbf{\textit{dio 1. revizije}}\\
 			
-			Baze podataka neizostavan su dio razvoja programske potpore jer danas gotova svaka domena primjene obiluje mnoštvom podataka koje treba pohraniti na organiziran način kako bi se efikasno dohvaćali, mijenjali i nadopunjavali. Za upravljanje bazom podataka mogu se koristiti različiti sustavi koji obavljaju optimiranje upita i omogućuju rukovanje podatcima. Mi smo odlučili koristiti PostgreSQL koji nam je bio preporučen na kolegiju Baze podataka. \newline Iako stvarni svijet ne možemo prikazati sa svim detaljima, relacijski nam model baze podataka omogućuje vjeran prikaz stvarnosti pomoću relacija u koje pohranjujemo vrijednosti odabranih atributa vezanih uz entitete bitne za domenu primjene. Formalno gledano relacija, tj. instanca relacije, definirana na relacijskoj shemi je skup n-torki, a neformalno možemo reći da je to imenovana dvodimenzionalna tablica. Atributi su imenovani stupci te tablice. ER (Entity-Relationship) model podataka zadržava dobra svojstva relacijskog modela, a uz to omogućuje eksplicitni prikaz semantičkih informacija vezanih uz veze (odnose) između entiteta. ER dijagram prikazuje kako su entiteti našeg sustava povezani. Pri preslikavanju ER modela u relacijski model entiteti i veze postaju entiteti (relacije) te se sheme s jednakim ključevima zamjene njihovom unijom.
+			Baze podataka neizostavan su dio razvoja programske potpore jer danas gotova svaka domena primjene djeluje mnoštvom podataka koje treba pohraniti na organiziran način kako bi se efikasno dohvaćali, mijenjali i nadopunjavali. Za upravljanje bazom podataka mogu se koristiti različiti sustavi koji obavljaju optimiranje upita i omogućuju rukovanje podacima. Mi smo odlučili koristiti PostgreSQL koji nam je bio preporučen na kolegiju Baze podataka. \newline Iako stvarni svijet ne možemo prikazati sa svim detaljima, relacijski nam model baze podataka omogućuje vjeran prikaz stvarnosti pomoću relacija u koje pohranjujemo vrijednosti odabranih atributa koji su vezani uz entitete bitne za domenu primjene. Formalno gledano relacija, odnosno instanca relacije, definirana na relacijskoj shemi je skup n-torki, a neformalno možemo reći da je to imenovana dvodimenzionalna tablica. Atributi su imenovani stupci te tablice. ER (\textit{Entity-Relationship}) model podataka zadržava dobra svojstva relacijskog modela, a uz to omogućuje eksplicitni prikaz semantičkih informacija vezanih uz veze (odnose) između entiteta. ER dijagram prikazuje kako su entiteti našeg sustava povezani. Pri preslikavanju ER modela u relacijski model, entiteti i veze postaju entiteti (relacije) te se sheme s jednakim ključevima zamjene njihovom unijom.
 		Baza podataka ove aplikacije sastoji se od sljedećih entiteta:
 		\begin{packed_item}
 			\item Korisnik
@@ -58,7 +58,7 @@ Korisnik vrši interakcije sa aplikacijom preko django predlozaka. ("templates")
 			
 
 				\textbf{Korisnik}
-				Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, e-mail, lozinku, ime, prezime te ulogu korisnika u sustavu. Atributi token i potvrdioPrijava služe kako bi se za sudionike i recenzente provjerilo jesu li potvrdili prijavu nakon čega se mogu prijaviti u sustav. Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
+				Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, e-mail, lozinku, ime, prezime te ulogu korisnika u sustavu. Atributi token i potvrdioPrijava služe kako bi se za sudionike i recenzente provjerilo jesu li potvrdili prijavu (nakon čega se mogu prijaviti u sustav). Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
 					\item Many-to-One s entitetom Ustanova preko atributa ID
 					\item Many-to-One s entitetom Sekcija preko atributa ID
 					\item Many-to-One s entitetom Uloga preko atributa ID
@@ -77,7 +77,7 @@ Korisnik vrši interakcije sa aplikacijom preko django predlozaka. ("templates")
 					\hline \multicolumn{3}{|c|}{\textbf{Korisnik}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}ID & INT	&  jedinstveni brojčani identifikator	\\ \hline
 					korisnickoIme	& VARCHAR & korisnički identifikator  kojeg korisnik koristi pri prijavi u sustav	\\ \hline 
-					email & VARCHAR & e-mail korisnika  \\ \hline 
+					email & VARCHAR & adresa e-pošte korisnika  \\ \hline 
 					lozinka & VARCHAR & hash lozinke  \\ \hline 
 					ime & VARCHAR	&  	ime korisnika	\\ \hline 
 					prezime & VARCHAR & prezime korisnika  \\ \hline 
