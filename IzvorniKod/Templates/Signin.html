@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Prijava</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+            <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
+            <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+            <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+            <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+        </head>
+
+        <style>
+            .gradient-custom-3 {
+              /* fallback for old browsers */
+              background: #8fb5cc;
+  
+              /* Chrome 10-25, Safari 5.1-6 */
+              background: -webkit-linear-gradient(to right, #f2f2f2, #8FB5CC);
+  
+              /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+              background: linear-gradient(to right, #f2f2f2, #8FB5CC);
+  
+            }
+  
+            .card {
+              background-color: #f2f2f2;
+            }
+  
+            .btn {
+              background-color: #1c3a9c;
+              border-color: #1c3a9c;
+              
+            }
+  
+            .btn:hover {
+              background-color: #c1666b;
+              border-color: #c1666b;
+            }
+  
+            .mask {
+              padding: 5rem;
+            }
+  
+            .radiobuttons {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              justify-items: center;
+            }
+
+            @keyframes rotation{
+              from {transform: rotate(0deg);}
+              to {transform: rotate(90deg);}
+            }
+  
+          </style>
+
+        <body>
+
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <!-- gumb za Naslovnicu-->
+                <symbol id="home" viewBox="0 0 16 16">
+                  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                </symbol>
+                <!-- gumb za Prijavu -->
+                <symbol id="people-circle" viewBox="0 0 16 16">
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </symbol>
+                <!-- gumb za hamburger meni -->
+                <symbol id="hamburger" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                </symbol>
+                <symbol id="sci-con" viewBox="0 0 29 29">
+                    
+                </symbol>
+              </svg> 
+            
+             <header>
+                <nav class="navbar navbar-expand-lg bg-dark bg-gradient">
+                  <div class="container">
+                    <a class="navbar-brand" href="/">
+                      <img src="{% static '/vectors/SciConIcon.svg' %}" alt="SciCon" width="64" height="64">
+                    </a>
+                    <button class="navbar-toggler" id="navbarToggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <svg class="navbar-toggler-icon" id="navbarTogglerIcon" width="24" height="24" style="-webkit-filter: invert(100%); filter: invert(100%);"><use xlink:href="#hamburger"/></svg>
+                    </button>
+                    <div class="collapse navbar-collapse" style="justify-content: flex-end;" id="navbarContent">
+                      <ul class="navbar-nav" style="text-align: center;">
+                        <li class="nav-item">
+                          <a href="/" class="nav-link text-white">
+                            <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
+                            <div style="display:inline; ">Naslovna</div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="info" class="nav-link text-white">
+                            <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                            O konferenciji
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#" class="nav-link text-white">
+                            <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+                            Prijava <!--  Za recenzenta je isti header, samo pise "Moje recenzije". -->
+                          </a>
+                        </li>
+                        <li>
+                            <!--Za ovo smo rekli da se otvori meni gdje korisnik bira?-->
+                          <a href="signup" class="nav-link text-white">
+                            <img src="{% static '/vectors/RegisterIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                            Registracija
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </nav>
+              </header>
+
+              <!--Ako npr nakon sign up treba displayat "Uspjesno registrirani!"-->
+            {% if messages %}
+            {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+            {% endfor %}
+            {% endif %} 
+            <!---->
+            <!--Random šifra nakon prvog signupa. Vjerovatno ce bit prebacena na mail ali zasad je to ovo"-->
+            {%if randPassword%}
+                <h4>Your random pass word is: {{randPassword}}</h4>
+            {% endif %}
+            <!---->
+
+            <div class="gradient-custom-3">
+                <div class="mask">
+                    <div class="row d-flex justify-content-center align-items-center">
+                      <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card" style="border-radius: 15px;">
+                          <div class="card-body p-5">
+                            <h2 class="text-uppercase text-center mb-5">Prijava</h2>
+              
+                            <form action="/signin" method="post">
+                              {% csrf_token %}
+  
+                              <div class="form-outline mb-4">
+                                <label class="form-label" for="">Korisničko ime</label>
+                                <input type="text" id="Username" name="Username" class="form-control form-control-lg" required/>
+                              </div>
+              
+                              <div class="form-outline mb-4">
+                                <label class="form-label" for="">Lozinka</label>
+                                <input type="password" id="pass1" name="pass1" class="form-control form-control-lg" required/>
+                              </div>
+
+                              <div class="form-outline mb-4">
+                                <button type="submit" class="btn btn-success btn-lg form-control form-control-lg">Prijavi se</button>
+                              </div>
+              
+                              <p class="text-center text-muted mt-5 mb-0">Nemaš račun? <a href="signup" class="fw-bold text-body"><u>Registriraj se</u></a></p>
+                              
+                              <p class="text-center text-muted mt-5 mb-0"><a href="#" class="text-body">Zaboravljena lozinka</a></p>
+              
+                            </form>
+              
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+
+              <footer class="py-2 my-2 container">
+                <ul class="nav justify-content-center border-bottom pb-1 mb-1">
+                  <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Naslovna</a></li>
+                  <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">O konferenciji</a></li>
+                </ul>
+                <p class="text-center text-muted">© 2021 Pametna ekipa</p>
+              </footer>
+
+            <!--
+            <button type="submit"><a href='/'>Home</a></button><br>
+            <form action="/signin" method="post">
+            {% csrf_token %}
+                <label for="">Username</label>
+                <input type="text" id="Username" name="Username" placeholder="Enter User" Required>
+                <br>
+                <label for="">Confirm Password</label>
+                <input type="password" id="pass1" name="pass1" placeholder="Enter Password" Required>
+                <br>
+                <button type="submit">Sign Up </button>
+            </form>-->
+        </body>
+        <script type="text/javascript">
+          var navbarCollapse = document.getElementById("navbarContent");
+              
+          navbarCollapse.addEventListener('show.bs.collapse', function(){
+            document.getElementById("navbarTogglerIcon").style.animation="rotation 0.5s both";
+          });
+          navbarCollapse.addEventListener('shown.bs.collapse', function(){
+            document.getElementById("navbarTogglerIcon").style.animation="none";
+            document.getElementById("navbarTogglerIcon").style.transform="rotate(90deg)";
+          });
+          navbarCollapse.addEventListener('hide.bs.collapse', function(){
+            document.getElementById("navbarTogglerIcon").style.animation="rotation 0.35s reverse";
+          });
+          navbarCollapse.addEventListener('hidden.bs.collapse', function(){
+            document.getElementById("navbarTogglerIcon").style.animation="none";
+            document.getElementById("navbarTogglerIcon").style.transform="rotate(0deg)";
+          });
+        </script>
+    </html>
