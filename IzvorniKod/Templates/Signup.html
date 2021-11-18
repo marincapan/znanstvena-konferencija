@@ -5,7 +5,7 @@
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>Registriracija</title>
+            <title>Registracija</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="icon" href="{% static '/vectors/icon.svg' %}">
@@ -258,35 +258,25 @@
                               </select>
                             </div>
 
-                            <!-- stare sekcije
-                              <div class="form-outline mb-4">
-                              <label class="form-label" for="" id='sectionLabel'>Sekcija</label>
-                              <input type="text" id="section" name="section" class="form-control form-control-lg" required>
-                            </div>
-                            -->
                             <div id="stvariZaSudionika">
                               <div class="form-outline mb-4">
                                 <label class="form-label" for="" id='titleLabel'>Naslov rada</label>
                                 <input type="text" id="title" name="title" class="form-control form-control-lg" required/>
                               </div>
-  
-                              <!--OVDJE POCINJE DIO S AUTORIMA-->
-  
-                              <!--IDS: numOfAuthorsLabel, numOfAuthors, btnOK, authorNameLabel,
-                                authorName, authorLnameLabel, authorLname, emailConLabel, emailCon --> 
-  
                               
+                              <div class="fs-5">Podaci o autorima:</div>
                               <div class="row">
   
                                 <div id="autori" class="mb-2">
   
                                   <div id="jedanAutor">
-                                    <label class="form-label" for="" id="authorsLabel">Podaci o autoru</label>
-    
+
+                                    <label class="form-label" for="" id="authorsLabel">1.</label>
                                     <div id="autorIme" class="input-group col-md-10 col-10 mb-1">
                                       <input type="text" id="autorFName0" name="autorFName0" aria-label="Ime" placeholder="Ime" class="form-control form-control-lg" required>
                                       <input type="text" id="autorLName0" name="autorLName0" aria-label="Prezime" placeholder="Prezime" class="form-control form-control-lg" required>
                                     </div>
+
                                     <div id="autorPodaci" class="input-group col-md-10 col-10 mb-1">
                                       <input type="text" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail" class="form-control form-control-lg" required/>
                                       <div id="autorPodaciKontakt" class="input-group-text">
@@ -295,13 +285,8 @@
                                       </div>
                                     </div>
                                   </div>
-  
                                 </div>
                                 
-  
-                                
-                                
-    
                                 <div class="col-md-4 mb-4">
                                   <button type="button" class="btn btn-primary btn-lg" id="btnDodajAutora" onclick=AddAuthor()>
                                     <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-plus"/></svg>
@@ -310,13 +295,7 @@
                                     <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-dash"/></svg>
                                   </button>
                                   <input type="number" min="0" name="brojAutora" id="brojAutora" class="form-control" value="1" hidden></input>
-                                </div>
-  
-  
-  
-                              <!--ZAVRSAVA DIO S AUTORIMA-->
-  
-              
+                                </div>          
                               </div>
                             </div>
                             
@@ -473,6 +452,12 @@
                 //Prolazimo kroz svu djecu elementa
                 for(var i = 0; i < children.length; i++){
 
+                  //Obrada za redni broj autora
+                  if(children[i].id == "authorsLabel"){
+                    children[i].innerText = (brojAutora+1) + ".";
+                    console.log("Tu sam");
+                    console.log(children[i]);
+                  }
                   //Obrada za ID-eve imena i prezimena
                   if(children[i].id == "autorIme"){
                     for(var j = 0; j < children[i].childNodes.length; j++){
