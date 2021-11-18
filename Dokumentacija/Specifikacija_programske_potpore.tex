@@ -1162,7 +1162,7 @@
 							\item Ukoliko je korisnik promijenio adresu e-pošte predsjedavajućeg, pojavljuje se poruka o navedenoj izmjeni te se navodi da će nova lozinka biti generirana i poslana na \textit{novu} adresu e-pošte predsjedavajućeg
 							\item Nakon navedenih izmjena, korisnik bira opciju "Ažuriraj podatke"
 							\item Ažurira se baza podataka
-							\item Ukoliko je adresa e-pošte predsjedavajućeg mijenjana, šalje se mail na novu adresu s novom lozinkom za prijavu u sustav
+							\item Ukoliko je adresa e-pošte predsjedavajućeg mijenjana, šalje se e-pošta na novu adresu s novom lozinkom za prijavu u sustav
 						\end{packed_enum}
 					
 						\item \textbf{Opis mogućih odstupanja:}
@@ -1185,7 +1185,7 @@
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator
-						\item  \textbf{Cilj:} Poslati podsjetnik sudionicima na email
+						\item  \textbf{Cilj:} Poslati podsjetnik sudionicima na adresu e-pošte
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
 						\item  \textbf{Opis osnovnog tijeka:}
@@ -1241,7 +1241,7 @@
 					
 				\subsubsection{Dijagrami obrazaca uporabe}
 					
-					\textit{Prikazati odnos aktora i obrazaca uporabe odgovarajućim UML dijagramom. Nije nužno nacrtati sve na jednom dijagramu. Modelirati po razinama apstrakcije i skupovima srodnih funkcionalnosti.}
+					
 					\begin{figure}[H]
 						\includegraphics[scale=0.35]{dijagrami/pregledvaznijihfunkcionalnosti.png} 
 						\centering
@@ -1265,10 +1265,10 @@
 				
 			\subsection{Sekvencijski dijagrami}
 				
-				\textbf{\textit{dio 1. revizije}}\\
 
 				\textbf{Obrazac uporabe UC9 - Pregled recenzenata koji čekaju na odobrenje}\\
-				Jedna od dužnosti predsjedavajućeg konferencije je odobriti registracije recenzenata. Kako bi odobrio ili odbio pojedinu registraciju, potrebno je otvoriti stranicu "Korisnici i radovi" te na njoj odabrati opciju "Popis recenzenata koji čekaju odobrenje". Ondje predsjedavajući može pregledavati registracije, odnosno podatke koje su pojedini recenzenti unijeli pri registraciji te na temelju toga odlučiti hoće li im odobriti ili odbiti prijavu. Ukoliko odluči odbiti prijavu, potrebno je navesti razlog zašto je prijava odbijena, te će se navedeni razlog poslati u "odbijenici" korisniku putem e-pošte klikom na gumb "Odbij prijavu", nakon čega registracija ujedno biva trajno izbrisana iz baze podataka. Ukoliko predsjedavajući odluči potvrditi registraciju, klikom na gumb "Potvrdi registraciju" podaci iz registracije se koriste za kreiranje novog korisnika, tj. recenzenta u bazi, a recenzentu se na adresu e-pošte šalje automatizirana poruka o prijavi registracije.
+				
+				\indent Jedna od dužnosti predsjedavajućeg konferencije je odobriti registracije recenzenata. Kako bi odobrio ili odbio pojedinu registraciju, potrebno je otvoriti stranicu "Korisnici i radovi" te na njoj odabrati opciju "Popis recenzenata koji čekaju odobrenje". Ondje predsjedavajući može pregledavati registracije, odnosno podatke koje su pojedini recenzenti unijeli pri registraciji te na temelju toga odlučiti hoće li im odobriti ili odbiti prijavu. Ukoliko odluči odbiti prijavu, potrebno je navesti razlog zašto je prijava odbijena, te će se navedeni razlog poslati u "odbijenici" korisniku putem e-pošte klikom na gumb "Odbij prijavu", nakon čega registracija ujedno biva trajno izbrisana iz baze podataka. Ukoliko predsjedavajući odluči potvrditi registraciju, klikom na gumb "Potvrdi registraciju" podaci iz registracije se koriste za kreiranje novog korisnika, tj. recenzenta u bazi, a recenzentu se na adresu e-pošte šalje automatizirana poruka o prijavi registracije.
 				\eject
 
 				\begin{figure}[H]
@@ -1282,7 +1282,8 @@
 				\eject
 				
 				\textbf{Obrazac uporabe UC13 - Recenziranje rada}\\
-				Recenzent na stranici radova može koliko želi odabirati radove, čitati ih i pregledavati. Kada odabere i pročita rad koji namjerava recenzirati, a rad prethodno nije recenziran, kreće se prema dnu stranice gdje se nalazi odabir ocjene te mora odabrati jednu od četiri ocjene koje su definirane u opisu zadatka te je svakoj dodijeljen simboličan broj (u bazi podataka i u dokumentaciji). Bira jednu od 4 ocjene, te ovisno o tome koju ocjenu je odabrao (ukoliko su to ocjene 2., 3. ili 4.) pojavljuje se polje za upis obrazloženja ocjene. Korisnik može mijenjati ocjenu klikom sve dok se ne odluči za svoju konačnu ocjenu (i po potrebi unese obrazloženje ocjene), nakon čega korisnik bira opciju "Recenziraj ovaj rad". Klikom na navedenu opciju, recenzija se pohranjuje u bazi podataka (te je sukladno dostupna na stranici "Moje recenzije").
+				
+				\indent Recenzent na stranici radova može koliko želi odabirati radove, čitati ih i pregledavati. Kada odabere i pročita rad koji namjerava recenzirati, a rad prethodno nije recenziran, kreće se prema dnu stranice gdje se nalazi odabir ocjene te mora odabrati jednu od četiri ocjene koje su definirane u opisu zadatka te je svakoj dodijeljen simboličan broj (u bazi podataka i u dokumentaciji). Bira jednu od 4 ocjene, te ovisno o tome koju ocjenu je odabrao (ukoliko su to ocjene 2., 3. ili 4.) pojavljuje se polje za upis obrazloženja ocjene. Korisnik može mijenjati ocjenu klikom sve dok se ne odluči za svoju konačnu ocjenu (i po potrebi unese obrazloženje ocjene), nakon čega korisnik bira opciju "Recenziraj ovaj rad". Klikom na navedenu opciju, recenzija se pohranjuje u bazi podataka (te je sukladno dostupna na stranici "Moje recenzije").
 				\eject
 
 				\begin{figure}[H]
@@ -1297,7 +1298,8 @@
 
 
 				\textbf{Obrazac uporabe UC21 - Slanje obavijesti određenim korisnicima}\\
-				Predsjedavajući konferencije ima mogućnost, ukoliko se ukaže potreba, poslati obavijest sudionicima i recenzentima (o bilokakvoj promjeni vezanoj za konferenciju i sl.). Isto čini tako da pristupi stranici "Administracijsko sučelje" te odabere opciju na vrhu stranice "Pošalji obavijest" pri čemu se otvara stranica za odabir korisnika kojima korisnik želi poslati obavijest (te stoji opcija "Odaberi sve" ukoliko želi svima poslati obavijest). Kad korinsik odabere minimalno jednu osobu s popisa, otvara se prozor za unos teksta obavijesti (a korisnik nastavlja birati korisnike kojima želi poslati obavijest) . Korisnik unosi tekst obavijesti, a kad je siguran da želi poslati obavijest bira opciju "Pošalji". Iz baze podataka dohvaćaju se adrese e-pošte odabranih sudionika i recenzenata te se putem Web-aplikacije šalje e-poštu na sve adrese povučene iz baze podataka. Korisnik prima obavijest o uspješnom slanju obavijesti.
+				
+				\indent Predsjedavajući konferencije ima mogućnost, ukoliko se ukaže potreba, poslati obavijest sudionicima i recenzentima (o bilokakvoj promjeni vezanoj za konferenciju i sl.). Isto čini tako da pristupi stranici "Administracijsko sučelje" te odabere opciju na vrhu stranice "Pošalji obavijest" pri čemu se otvara stranica za odabir korisnika kojima korisnik želi poslati obavijest (te stoji opcija "Odaberi sve" ukoliko želi svima poslati obavijest). Kad korinsik odabere minimalno jednu osobu s popisa, otvara se prozor za unos teksta obavijesti (a korisnik nastavlja birati korisnike kojima želi poslati obavijest) . Korisnik unosi tekst obavijesti, a kad je siguran da želi poslati obavijest bira opciju "Pošalji". Iz baze podataka dohvaćaju se adrese e-pošte odabranih sudionika i recenzenata te se putem Web-aplikacije šalje e-poštu na sve adrese povučene iz baze podataka. Korisnik prima obavijest o uspješnom slanju obavijesti.
 				\eject
 
 				\begin{figure}[H]
@@ -1310,7 +1312,8 @@
 				\eject
 
 				\textbf{Obrazac uporabe UC28 - Upravljanje informacijama o konferenciji}\\
-				Administrator je dužan ažurirati informacije o konferenciji, što čini preko stranice "informacije o konferenciji". Tamo može, između ostaloga, prvi puta odabrati predsjedavajućeg konferencije, a kasnije može i mijenjati podatke o njemu (promijeniti osobne podatke, unijeti novu adresu e-pošte i sl.). Ukoliko administrator promijeni adresu e-pošte predsjedavajućeg, na novu adresu dolazi poruka s lozinkom za prijavu u sustav. Nadalje, na navedenoj stranici može odabrati odsječak po svojoj želji, kliknuti gumb "Uredi", izmijeniti podatke te na kraju odabrati "Ažuriraj podatke". Pri tome se baza podataka ažurira, kao i stranica koju sudionici i recenzenti vide.
+				
+				\indent Administrator je dužan ažurirati informacije o konferenciji, što čini preko stranice "informacije o konferenciji". Tamo može, između ostaloga, prvi puta odabrati predsjedavajućeg konferencije, a kasnije može i mijenjati podatke o njemu (promijeniti osobne podatke, unijeti novu adresu e-pošte i sl.). Ukoliko administrator promijeni adresu e-pošte predsjedavajućeg, na novu adresu dolazi poruka s lozinkom za prijavu u sustav. Nadalje, na navedenoj stranici može odabrati odsječak po svojoj želji, kliknuti gumb "Uredi", izmijeniti podatke te na kraju odabrati "Ažuriraj podatke". Pri tome se baza podataka ažurira, kao i stranica koju sudionici i recenzenti vide.
 				\eject
 
 				\begin{figure}[H]
@@ -1325,7 +1328,7 @@
 	
 		\section{Ostali zahtjevi}
 		
-			\textbf{\textit{dio 1. revizije}}\\
+		
 		 
 			 \begin{packed_item}
 
