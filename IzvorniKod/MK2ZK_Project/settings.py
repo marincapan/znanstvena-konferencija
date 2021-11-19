@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-4@76gl#nzr4f^-ii2g%dai3$8pa-y9)h4brmhcnbw!nuk#4@hb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ["159.89.99.177","localhost", "mk2zk.tk"]
 
 
 # Application definition
@@ -63,7 +63,7 @@ ROOT_URLCONF = 'IzvorniKod.MK2ZK_Project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['IzvorniKod\Templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'Templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,10 +88,12 @@ DATABASES = {
         'NAME': 'MK2ZK_DB',
         'USER': 'postgres',
         'PASSWORD': 'dogwoofwoof',
-        'HOST': 'localhost',
-        'PORT': '5433'
+        'HOST': 'mk2zk_db',
+        'PORT': '5432'
     }
+
 }
+
 
 
 # Password validation
@@ -131,8 +133,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'templates')
+
 
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'Radovi')
 MEDIA_URL = '/Radovi/'
