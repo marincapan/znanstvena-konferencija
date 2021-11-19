@@ -1,0 +1,618 @@
+{% load static %}
+<!DOCTYPE html>
+    <html>
+
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Registriracija</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+            <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
+            <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+            <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+            <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+
+        </head>
+
+        <style>
+          @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+              font-size: 3.5rem;
+            }
+          }
+
+          /*Bitno za animaciju rotacije hamburger menija*/
+          @keyframes rotation{
+            from {transform: rotate(0deg);}
+            to {transform: rotate(90deg);}
+          }
+
+          .gradient-custom-3 {
+            /* fallback for old browsers */
+            background: #8fb5cc;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, #f2f2f2, #8FB5CC);
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, #f2f2f2, #8FB5CC);
+
+          }
+
+          .card {
+            background-color: #f2f2f2;
+          }
+
+          .btn-primary {
+            background-color: #1c3a9c;
+            border-color: #1c3a9c;
+            
+          }
+
+          .btn-primary:hover {
+            background-color: #c1666b;
+            border-color: #c1666b;
+          }
+
+          .btn-outline-primary:hover {
+            background-color: #c1666b;
+            border-color: #c1666b;
+          }
+
+          .btn.btn-rounded {
+            border-radius: 5rem;
+            border: none;
+            font-size: small;
+            padding: none;
+            text-align: center;
+            
+          }
+
+          .mask {
+            padding: 5rem;
+          }
+
+          .radiobuttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-items: center;
+          }
+
+          /*.footerclass {
+            background-color: #f2f2f2;
+          }*/
+          
+
+        </style>
+
+    
+        <body style="min-width:576px">
+
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <!-- gumb za Naslovnicu-->
+                <symbol id="home" viewBox="0 0 16 16">
+                  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                </symbol>
+                <!-- gumb za Prijavu -->
+                <symbol id="people-circle" viewBox="0 0 16 16">
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </symbol>
+                <!-- gumb za hamburger meni -->
+                <symbol id="hamburger" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                </symbol>
+                <symbol id="person-plus" viewBox="0 0 16 16">
+                  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                </symbol>
+                <symbol id="person-dash" viewBox="0 0 16 16">
+                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                  <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+                </symbol>
+                <symbol id="sci-con" viewBox="0 0 29 29">
+                    
+                </symbol>
+              </svg>
+    
+             <!-- HEADER TEMPLATE za neregistriranog / neprijavljenog korisnika --> 
+            
+             <header>
+              <nav class="navbar navbar-expand-lg bg-dark bg-gradient">
+                <div class="container">
+                  <a class="navbar-brand" href="/">
+                    <img src="{% static '/vectors/SciConIcon.svg' %}" alt="SciCon" width="64" height="64">
+                  </a>
+                  <button class="navbar-toggler" id="navbarToggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <svg class="navbar-toggler-icon" id="navbarTogglerIcon" width="24" height="24" style="-webkit-filter: invert(100%); filter: invert(100%);"><use xlink:href="#hamburger"/></svg>
+                  </button>
+                  <div class="collapse navbar-collapse" style="justify-content: flex-end;" id="navbarContent">
+                    <ul class="navbar-nav" style="text-align: center;">
+                      <li class="nav-item">
+                        <a href="/" class="nav-link text-white">
+                          <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
+                          <div style="display:inline; ">Naslovna</div>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="info" class="nav-link text-white">
+                          <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                          O konferenciji
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="signin" class="nav-link text-white">
+                          <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+                          Prijava <!--  Za recenzenta je isti header, samo pise "Moje recenzije". -->
+                        </a>
+                      </li>
+                      <li>
+                          <!--Za ovo smo rekli da se otvori meni gdje korisnik bira?-->
+                        <a href="#" class="nav-link text-white">
+                          <img src="{% static '/vectors/RegisterIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                          Registracija
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+          </header>
+    
+              <!------------------------------------------------------------------------------------->
+
+            <!--Ako npr nakon sign up treba displayat "Uspjesno registrirani!"-->
+            {% if messages %}
+                {% for message in messages %}
+                <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+                {% endfor %}
+            {% endif %} 
+            <!---->
+
+            <div class="gradient-custom-3">
+              <div class="mask">
+                  <div class="row d-flex justify-content-center align-items-center">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                      <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                          <h2 class="text-uppercase text-center mb-5">Registracija</h2>
+            
+                          <form action="/signup" method="post" id="form">
+                            {% csrf_token %}
+
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Korisničko ime</label>
+                              <input type="text" id="Username" name="Username" class="form-control form-control-lg" required/>
+                            </div>
+            
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Ime</label>
+                              <input type="text" id="Fname" name="Fname" class="form-control form-control-lg" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Prezime</label>
+                              <input type="text" id="Lname" name="Lname" class="form-control form-control-lg" required/>
+                            </div>
+            
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">E-mail</label>
+                              <input type="text" id="email" name="email" class="form-control form-control-lg" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Naziv matične ustanove</label>
+                              <input type="text" id="matustName" name="matustName" class="form-control form-control-lg" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Adresa matične ustanove</label>
+                              <input type="text" id="matustAdr" name="matustAdr" class="form-control form-control-lg" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Mjesto matične ustanove</label>
+                              <input type="text" id="matustCity" name="matustCity" class="form-control form-control-lg" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="">Država matične ustanove</label>
+                              <input type="text" id="matustDrz" name="matustDrz" class="form-control form-control-lg" required/>
+                            </div>
+
+                            {%if DodatnaPolja%}<!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
+                                {%for polje in DodatnaPolja%}
+                                  {%if polje.active == True %}
+                                    <div class="form-outline mb-4">
+                                      <label class="form-label" for="{{polje.imePolja}}">{{polje.imePolja}}</label>
+                                      <input class="form-control form-control-lg" type="text" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.obavezan == True%} required/ {%endif%}>
+                                      <br>
+                                    </div>
+                                  {%endif%} 
+                                {%endfor%}
+                            {%endif%}
+
+                            <div class="form-outline mb-4" style="text-align: center;">
+                              <label for="">Prijavljujem se kao: </label>
+
+                            </div>
+                            
+                            <div class="form-outline mb-4 radiobuttons">
+                              <div class="button">
+                                <input type="radio" id="sudionik" name="uloga" value="Sudionik" onclick=UpdateOnSudionik() checked>
+                                <label for="sudionik" class="emphasized-text"><b>Sudionik</b></label>
+                              </div>
+                              <div class="button">
+                                <input type="radio" id="recenzent" name="uloga" value="Recenzent" onclick=UpdateOnRecezent()>
+                                <label for="recenzent" class="emphasized-text"><b>Recenzent</b></label></div>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                              <label class="form-label" for="" id='sectionLabel'>Sekcija</label>
+                              <select type="text" id="section" name="section" class="form-control form-control-lg" required>
+                                {%for sekcija in sekcije%}
+                                <option value="{{sekcija.naziv}}">{{sekcija.naziv}}</option>
+                                {%endfor%}
+                              </select>
+                            </div>
+
+                            <!-- stare sekcije
+                              <div class="form-outline mb-4">
+                              <label class="form-label" for="" id='sectionLabel'>Sekcija</label>
+                              <input type="text" id="section" name="section" class="form-control form-control-lg" required>
+                            </div>
+                            -->
+                            <div id="stvariZaSudionika">
+                              <div class="form-outline mb-4">
+                                <label class="form-label" for="" id='titleLabel'>Naslov rada</label>
+                                <input type="text" id="title" name="title" class="form-control form-control-lg" required/>
+                              </div>
+  
+                              <!--OVDJE POCINJE DIO S AUTORIMA-->
+  
+                              <!--IDS: numOfAuthorsLabel, numOfAuthors, btnOK, authorNameLabel,
+                                authorName, authorLnameLabel, authorLname, emailConLabel, emailCon --> 
+  
+                              
+                              <div class="row">
+  
+                                <div id="autori" class="mb-2">
+  
+                                  <div id="jedanAutor">
+                                    <label class="form-label" for="" id="authorsLabel">Podaci o autoru</label>
+    
+                                    <div id="autorIme" class="input-group col-md-10 col-10 mb-1">
+                                      <input type="text" id="autorFName0" name="autorFName0" aria-label="Ime" placeholder="Ime" class="form-control form-control-lg" required>
+                                      <input type="text" id="autorLName0" name="autorLName0" aria-label="Prezime" placeholder="Prezime" class="form-control form-control-lg" required>
+                                    </div>
+                                    <div id="autorPodaci" class="input-group col-md-10 col-10 mb-1">
+                                      <input type="text" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail" class="form-control form-control-lg" required/>
+                                      <div id="autorPodaciKontakt" class="input-group-text">
+                                        <input type="radio" id="autorKontakt0" name="autorKontakt0" aria-label="Kontakt" class="form-check-input form-check-lg" required/>
+                                        <label class="form-check-label" id="autorKontaktLabel0" style="margin-top:4px; margin-left:4px"for="autorKontakt0">Osoba za kontakt</label>
+                                      </div>
+                                    </div>
+                                  </div>
+  
+                                </div>
+                                
+  
+                                
+                                
+    
+                                <div class="col-md-4 mb-4">
+                                  <button type="button" class="btn btn-primary btn-lg" id="btnDodajAutora" onclick=AddAuthor()>
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-plus"/></svg>
+                                  </button>
+                                  <button type="button" class="btn btn-outline-primary btn-lg" id="btnMakniAutora" onclick=RemoveAuthor()>
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-dash"/></svg>
+                                  </button>
+                                  <input type="number" min="0" name="brojAutora" id="brojAutora" class="form-control" value="1" hidden></input>
+                                </div>
+  
+  
+  
+                              <!--ZAVRSAVA DIO S AUTORIMA-->
+  
+              
+                              </div>
+                            </div>
+                            
+                            <div class="form-outline mb-4">
+                              <button type="submit" class="btn btn-primary btn-lg form-control form-control-lg">Registriraj se</button>
+                            </div>
+            
+                            <p class="text-center text-muted mt-5 mb-0">Već imaš račun? <a href="signin" class="fw-bold text-body"><u>Prijavi se</u></a></p>
+            
+                          </form>
+            
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="py-2 my-2 container">
+                <ul class="nav justify-content-center border-bottom pb-1 mb-1">
+                  <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Naslovna</a></li>
+                  <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">O konferenciji</a></li>
+                </ul>
+                <p class="text-center text-muted">© 2021 Pametna ekipa</p>
+            </footer>
+            
+            
+            <!--<div class="main">
+                <div class="middle">
+                    <h3> Registracija</h3>
+
+                    <form action="/signup" method="post">
+                        {% csrf_token %}
+                            <label for="">Korisničko ime</label>
+                            <input type="text" id="Username" name="Username" placeholder="Upiši korisničko ime" Required>
+                            <br>
+        
+                            <label for="">Ime</label>
+                            <input type="text" id="Fname" name="Fname" placeholder="Upiši svoje ime" Required>
+                            <br>
+        
+                            <label for="">Prezime</label>
+                            <input type="text" id="Lname" name="Lname" placeholder="Upiši prezime" Required>
+                            <br>
+        
+                            <label for="">E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="Upiši e-mail" Required>
+                            <br>
+        
+                            <label for="">Naziv matične ustanove</label>
+                            <input type="text" id="matustName" name="matustName" placeholder="Upiši naziv matične ustanove" Required>
+                            <br>
+        
+                            <label for="">Adresa matične ustanove</label>
+                            <input type="text" id="matustAdr" name="matustAdr" placeholder="Upiši adresu matične ustanove" Required>
+                            <br>
+        
+                            <label for="">Mjesto matične ustanove</label>
+                            <input type="text" id="matustCity" name="matustCity" placeholder="Upiši mjesto matične ustanove" Required>
+                            <br>
+        
+                            <label for="">Država matične ustanove</label>
+                            <input type="text" id="matustDrz" name="matustDrz" placeholder="Upiši naziv državu ustanove" Required>
+                            <br>
+                            <label for="">Prijavljujem se kao: </label>
+                            <br>
+                            <input type="radio" id="sudionik" name="uloga" value="sudionik" onclick=UpdateOnSudionik()>
+                            <label for="sudionik">Sudionik</label>
+                            <br>
+                            <input type="radio" id="recenzent" name="uloga" value="recenzent" onclick=UpdateOnRecezent()>
+                            <label for="recenzent">Recenzent</label>
+                            <br>
+        
+                            <label for="" id='sectionLabel'>Sekcija</label>
+                            <input type="text" id="section" name="section" placeholder="Sekcija na kojoj želite sudjelovati" Required>
+                            <br>
+        
+                            <label for="" id='titleLabel'>Naslov rada</label>
+                            <input type="text" id="title" name="title" placeholder="Naslov rada" Required>
+                            <br>
+        
+                            <label for="" id='authorsLabel'>Autori</label>
+                            <input type="text" id="authors" name="authors" placeholder="Autori" Required>
+                            <br>
+        
+                            <label for="" id='emailConLabel'>Email osobe za kontakt</label>
+                            <input type="email" id="emailCon" name="emailCon" placeholder="E-mail osobe za kontakt" Required>
+                            <br>
+        
+                        
+                            <button type="submit">Registriraj se</button>
+                    </form> 
+                </div>
+                
+            </div>-->
+            
+        </body>
+        <script type="text/javascript">
+            window.onload = function(){
+              /*
+                document.getElementById("title").style.display = "none";
+                document.getElementById("section").style.display = "none";
+                document.getElementById("titleLabel").style.display = "none";
+                document.getElementById("sectionLabel").style.display = "none";
+
+                ////////IDS: numOfAuthorsLabel, numOfAuthors, btnOK, authorNameLabel,
+                //authorName, authorLnameLabel, authorLname, emailConLabel, emailCon
+                document.getElementById("numOfAuthorsLabel").style.display = "none";
+                document.getElementById("numOfAuthors").style.display = "none";
+                document.getElementById("btnOK").style.display = "none";
+                document.getElementById("authorNameLabel").style.display = "none";
+                document.getElementById("authorName").style.display = "none";
+                document.getElementById("authorLnameLabel").style.display = "none";
+                document.getElementById("authorLname").style.display = "none";
+                document.getElementById("emailConLabel").style.display = "none";
+                document.getElementById("emailCon").style.display = "none";*/
+
+                //U pocetku ima samo jedan autor tako da ga se ne smije micati
+                document.getElementById("btnMakniAutora").disabled = true;
+            };
+            function UpdateOnSudionik(){
+              document.getElementById("title").disabled = false;
+              document.getElementById("autorFName0").disabled = false;
+              document.getElementById("autorLName0").disabled = false;
+              document.getElementById("autorEmail0").disabled = false;
+              document.getElementById("autorKontakt0").disabled = false;
+
+              document.getElementById("stvariZaSudionika").style.display = "inline";
+              }
+            function UpdateOnRecezent(){
+              document.getElementById("stvariZaSudionika").style.display = "none";
+                
+              document.getElementById("title").disabled = true;
+              document.getElementById("autorFName0").disabled = true;
+              document.getElementById("autorLName0").disabled = true;
+              document.getElementById("autorEmail0").disabled = true;
+              document.getElementById("autorKontakt0").disabled = true;
+            }
+
+            /**
+             * Sluzi za dodavanje novih autora u listu autora pojedinog dokumenta.
+             **/
+            function AddAuthor(){
+              //prati broj autora (SO kaze da + cini ovo brojem)
+              var brojAutora = +document.getElementById("brojAutora").value;
+
+              //kloniramo prvog autora pa ga nastavljamo uredjivati
+              var noviAutor = document.getElementById("autori").firstElementChild.cloneNode(true); 
+              console.log(noviAutor);
+
+              if(noviAutor.hasChildNodes()){
+                var children = noviAutor.childNodes;
+
+                //Prolazimo kroz svu djecu elementa
+                for(var i = 0; i < children.length; i++){
+
+                  //Obrada za ID-eve imena i prezimena
+                  if(children[i].id == "autorIme"){
+                    for(var j = 0; j < children[i].childNodes.length; j++){
+                      if(children[i].childNodes[j].id == "autorFName0"){
+                        children[i].childNodes[j].id = "autorFName" + brojAutora;
+                        children[i].childNodes[j].name = "autorFName" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                      if(children[i].childNodes[j].id == "autorLName0"){
+                        children[i].childNodes[j].id = "autorLName" + brojAutora;
+                        children[i].childNodes[j].name = "autorLName" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                    }
+                  }
+
+                  //Obrada za ID-eve podataka o autoru
+                  if(children[i].id == "autorPodaci"){
+                    for(var j = 0; j < children[i].childNodes.length; j++){
+                      //Obrada za Email
+                      if(children[i].childNodes[j].id == "autorEmail0"){
+                        children[i].childNodes[j].id = "autorEmail" + brojAutora;
+                        children[i].childNodes[j].name = "autorEmail" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                      //Obrada za kontakt radio button
+                      if(children[i].childNodes[j].id == "autorPodaciKontakt"){
+                        for(var k = 0; k < children[i].childNodes[j].childNodes.length; k++){
+                          if(children[i].childNodes[j].childNodes[k].id == "autorKontakt0"){
+                            children[i].childNodes[j].childNodes[k].id = "autorKontakt" + brojAutora;
+                            children[i].childNodes[j].childNodes[k].checked = false; //Ako je prvi checkan i doda se novi vise novi nije checkan
+                            //children[i].childNodes[j].childNodes[k].name = "autorKontakt" + brojAutora;
+                          }
+                          if(children[i].childNodes[j].childNodes[k].id == "autorKontaktLabel0"){
+                            children[i].childNodes[j].childNodes[k].id = "autorKontaktLabel" + brojAutora;
+                            children[i].childNodes[j].childNodes[k].htmlFor = "autorKontakt" + brojAutora;
+                            console.log(children[i].childNodes[j].childNodes[k])
+                          }
+                        }
+                      }
+                    }
+                  }
+
+                }
+              }
+
+              //Dodavanje novog autora kao child element u div s autorima
+              document.getElementById("autori").appendChild(noviAutor);
+
+              //Povecavanje brojaca
+              document.getElementById("brojAutora").value = brojAutora + 1;
+
+              if(brojAutora + 1 > 1){
+                document.getElementById("btnMakniAutora").disabled = false;
+              }
+            }
+
+            function RemoveAuthor(){
+              //prati broj autora (SO kaze da + cini ovo brojem)
+              var brojAutora = +document.getElementById("brojAutora").value;
+
+              //micemo zadnjeg dodanog autora
+              document.getElementById("autori").removeChild(document.getElementById("autori").lastElementChild); 
+
+              //Smanjivanje brojaca
+              document.getElementById("brojAutora").value = brojAutora - 1;
+
+              //Ako ima samo jedan autor zabrani brisanje
+              if(brojAutora - 1 == 1){
+                document.getElementById("btnMakniAutora").disabled = true;
+              }
+            }
+            /*
+            function AddField() {
+              
+              const num=document.getElementById("numOfAuthors").value;
+              
+              const inputime=document.getElementById("authorName").cloneNode();
+              const inputimename=document.getElementById("authorName").getAttribute("name");
+              const div1ime=document.getElementById("authordiv1");
+              const div2ime=document.getElementById("authordiv2");
+              const labelime=document.getElementById("authorNameLabel");
+
+              const inputprezime=document.getElementById("authorLname").cloneNode();
+              const div1prezime=document.getElementById("authordiv3");
+              const labelprezime=document.getElementById("authorLnameLabel");
+              const inputprezimename=document.getElementById("authorLname").getAttribute("name");
+              
+              const inputemail=document.getElementById("emailautora").cloneNode();
+              const div1email=document.getElementById("authordiv4");
+              const labelemail=document.getElementById("emailautorLabel");
+              const inputemailname=document.getElementById("emailautora").getAttribute("name");
+              
+              
+
+              const form=document.getElementById("autoridiv");
+              for(let i=0;i<num-1;i++){
+                div2ime.appendChild(labelime.cloneNode());
+                const newName=inputimename + String(i+2)
+                inputime.setAttribute("name",newName)
+                inputime.setAttribute("id",newName)
+                div2ime.appendChild(inputime.cloneNode());
+                div1ime.appendChild(div2ime.cloneNode());
+
+                div1prezime.appendChild(labelprezime.cloneNode());
+                const newLName=inputprezimename + String(i+2)
+                inputprezime.setAttribute("name",newLName)
+                inputprezime.setAttribute("id",newLName)
+                div1prezime.appendChild(inputprezime.cloneNode());
+
+                div1email.appendChild(labelemail.cloneNode());
+                const newEmail=inputemailname + String(i+2)
+                inputemail.setAttribute("name",newEmail)
+                inputemail.setAttribute("id",newEmail)
+                div1email.appendChild(inputemail.cloneNode());
+
+                form.appendChild(div1ime.cloneNode());
+                form.appendChild(div1prezime.cloneNode());
+                form.appendChild(div1ime.cloneNode());
+              }
+            }
+            */
+            
+            //Kopiraj ovaj dio javascripta za hamburger animacije
+            var navbarCollapse = document.getElementById("navbarContent");
+            
+            navbarCollapse.addEventListener('show.bs.collapse', function(){
+              document.getElementById("navbarTogglerIcon").style.animation="rotation 0.5s both";
+            });
+            navbarCollapse.addEventListener('shown.bs.collapse', function(){
+              document.getElementById("navbarTogglerIcon").style.animation="none";
+              document.getElementById("navbarTogglerIcon").style.transform="rotate(90deg)";
+            });
+            navbarCollapse.addEventListener('hide.bs.collapse', function(){
+              document.getElementById("navbarTogglerIcon").style.animation="rotation 0.35s reverse";
+            });
+            navbarCollapse.addEventListener('hidden.bs.collapse', function(){
+              document.getElementById("navbarTogglerIcon").style.animation="none";
+              document.getElementById("navbarTogglerIcon").style.transform="rotate(0deg)";
+            });
+
+        </script>
+    </html>
