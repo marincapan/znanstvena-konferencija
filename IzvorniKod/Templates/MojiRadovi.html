@@ -123,6 +123,14 @@
                 <symbol id="hamburger" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                 </symbol>
+                <symbol id="person-plus" viewBox="0 0 16 16">
+                  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                </symbol>
+                <symbol id="person-dash" viewBox="0 0 16 16">
+                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                  <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+                </symbol>
                 <!-- gumb ? -->
                 <symbol id="sci-con" viewBox="0 0 29 29">
                     
@@ -182,326 +190,204 @@
 
 
             <div class="gradient-custom-3 " style="min-height: 100vh;">
-                <div class="container pt-5 pb-5">
-                  <div class="card" style="border-radius: 15px;">
-                    <div class="card-body p-5">
-
-                    
-                    
-                      <div class="text-uppercase text-center mb-5">
-                        {%if LoggedInUserRole == "Sudionik"%}
-                        <h2>Moji radovi</h2>
-                        {% endif %}
-                        {% if LoggedInUserRole == "Admin" %}
-                        <h2>Složi obrazac</h2>
-                        {% endif %}
-                        <hr>
-                      </div>
-                      
-                      <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
-                      jer se java script na dnu referira na njih-->
-    
-                      <!--Klasika za error messages-->
-                      {% if messages %}
-                          {% for message in messages %}
-                          <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-                          {% endfor %}
-                      {% endif %}
-                      
-                      {%if LoggedInUserRole == "Sudionik"%}
-                      <p class="text-center text-muted mt-5 mb-0">Ovdje unesi datoteku i ime rada s kojim želiš sudjelovati na konferenciji. </p>
-                      {% endif %}
-                      {%if LoggedInUserRole == "Admin"%}
-                      <p class="text-center text-muted mt-5 mb-0">Ovdje možeš definirati novo polje za registracijski obrazac. </p>
-                      {% endif %}
-                      <br>
-                        
-                      <!--
-                      <div class="container">
-                        <div class="row">
-                            <div class="col-sm">
-          
-                                <div class="col-sm">
-                                    <div style="padding-bottom: 9px;" id="UserNameDiv">
-
-                                    <div>
-                                        
-                                        {%if LoggedInUserRole == "Sudionik"%}Html za kad je sudionik-->
-
-                                        
-
-                                        <div class="fs-5" id='korisnickoIme'>Odaberite datoteku za unos:
-                                        </div>
-
-                                        
-                                            <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                                                {% csrf_token %}
-
-                                                <div class="row">
-                                                    <div class="col-md-8 mb-4">
-                                                      <div class="form-floating">
-                                                        <input id="naslovRada" type="text" name="fileTitle" class="form-control" placeholder="Unesite naslov rada" required/>
-                                                        <label for="naslovRada">Unesite naslov rada</label>
-                                                      </div>
-                                                    </div>
-                                                    <!-- align-self-start/center/end -->
-                                                    <div class="col-md-4 mb-4 align-self-center">
-                                                        <input class="form-control" type="file" name="uploadedFile" accept="application/pdf">
-                                                    </div>
-                                                </div>
-                                                
-                                                {%if not pdf%} <!-- nije predan niti jedan rad -->
-                                                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                                                    <button type="submit" class="btn btn-secondary btn-lg" name='UploadFile' style="grid-column: 2;" disabled>Predaj prvi rad prije predaje novog</button>
-                                                </div>
-                                                {%else%}
-                                                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                                                  <button type="submit" class="btn btn-primary btn-lg" name='UploadFile' style="grid-column: 2;">Predaj rad</button>
-                                                </div>
-                                                {%endif%}
-                                                
-                                            </form>
-
-                                            <!-- je li ovaj pdf potreban s obzirom na ostatak koda?-->
-                                            {%if fetchedRadovi%}
-
-                                            <br><hr><br>
-                                            
-                                            
-                                                <div>
-                                                    <div class="text-center mb-5">
-                                                        <h2>Predani radovi</h2>
-                                                    </div>
-
-                                                    <div class="accordion" id="accordionExample">
-                                                      {%for rad in fetchedRadovi%}
-                                                      <div class="accordion-item">
-                                                        <h2 class="accordion-header" id="header{{forloop.counter}}">
-                                                          <button class="accordion-button collapsed fs-5 acc-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{forloop.counter}}" aria-expanded="true" aria-controls="collapse{{forloop.counter}}">
-                                                            <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;" >{{rad.naslov}}</div>
-                                                            {%if rad.pdf == "" %}
-                                                            <span class="badge bg-danger d-flex">Rad nije predan!</span>
-                                                            {%elif rad.recenziranBool == 0%}
-                                                            <span class="badge bg-warning d-flex">Rad nije recenziran.</span>
-                                                            {%else%}
-                                                            <span class="badge bg-success d-flex">Rad je recenziran.</span>
-                                                            {%endif%}
-                                                          </button>
-                                                        </h2>
-                                                        <div id="collapse{{forloop.counter}}" class="accordion-collapse collapse" aria-labelledby="heading{{forloop.counter}}">
-                                                          <div class="accordion-body">
-                                                            <div class="container">
-                                                              <div class="row">
-                                                                <div class="col-auto">
-                                                                  <strong>Naslov:</strong> {{rad.naslov}}
-                                                                </div>
-                                                              </div>
-                                                              <div class="row justify-content-between">
-                                                                <div class="col-12 col-lg-4">
-                                                                  <div>
-                                                                    <strong>Sekcija:</strong> 
-                                                                    {{rad.radSekcija.naziv}}
-                                                                  </div>
-                                                                  <div>
-                                                                    <strong>Autori:</strong>
-                                                                    {%for autor in rad.autori.all%}
-                                                                    </br>{{autor.ime}} {{autor.prezime}}
-                                                                    {%endfor%}
-                                                                  </div>
-                                                                </div>
-                                                                
-                                                                {%if rad.pdf == ""%} <!-- rad nije predan, ponudi predaju rada -->
-                                                                <div class="col-12 col-lg-6">
-                                                                  <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                                                                    {% csrf_token %}
-                                                                    <div class="row">
-                                                                      <div class="col">
-                                                                        <div class="form-floating">
-                                                                          <input id="naslovPredanogRada" type="text" name="fileTitle" class="form-control" placeholder="Unesite naslov rada" value="{{rad.naslov}}" hidden required/>
-                                                                          <label for="naslovPredanogRada" hidden>Unesite naslov rada</label>
-                                                                        </div>
-                                                                      </div>
-                                                                      <!-- align-self-start/center/end -->
-                                                                      <div class="btn-group">
-                                                                        <input class="form-control" type="file" name="uploadedFile" accept="application/pdf">
-                                                                        <button type="submit" class="btn btn-outline-primary" name='UploadFile' style="grid-column: 2;">Predaj</button>
-                                                                      </div>
-                                                                    </div>
-                                                                  </form>
-                                                                </div>
-                                                                  {%else%}
-                                                                <div class="col-12 col-lg-2">
-                                                                  <div class="btn-group-vertical">
-                                                                    <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori rad</a>
-                                                                    <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button" download="{{rad.naslov}}">Preuzmi rad</a>
-                                                                  </div>
-                                                                </div>
-                                                                  {%endif%}
-                                                              </div>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      {%endfor%}
-                                                    </div>
-
-                                                    <!--
-                                                    Staro, ako vam se gornje ne svidi popravit cu ovo da nema overflowa itd
-                                                    <ul class="fs-5 row list-group">
-                                                        {%for rad in fetchedRadovi%}
-                                                          {%if rad.pdf == "" %}
-                                                          <a href="#" style="text-decoration: none">
-                                                            <li style="display: inline" class="list-group-item d-flex justify-content-between align-items-center">
-                                                              {{rad.naslov}}
-                                                              <span class="badge bg-danger ">Rad nije predan!</span>
-                                                            </li>
-                                                          </a>
-                                                          {%else%}
-                                                          <a href="Radovi/{{rad.pdf}}" style="text-decoration: none">
-                                                            <li style="display: inline" class="list-group-item d-flex justify-content-between align-items-center">
-                                                              {{rad.naslov}}
-                                                            </li>
-                                                          </a>
-                                                          {%endif%}
-                                                        {%endfor%}
-                                                      
-                                                    </ul>
-                                                    -->
-                                                </div>
-                                            {% endif %}
-                                        
-                                    {% endif %}
+              <div class="container pt-5 pb-5">
+                <div class="card" style="border-radius: 15px;">
+                  <div class="card-body p-5">
 
 
-                                    {%if LoggedInUserRole == "Admin"%}<!--Html za kad je admin-->
-                                    <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                                        {% csrf_token %}
-
-                                        <div class="form-outline mb-4">
-                                            <label class="fs-5" for="">Naziv novog polja za obrazac:</label>
-                                        </div>
-
-                                        <div class="col-md-6 mb-4">
-                                            <input type="text" name="fieldName" id="fieldName" class="form-control form-control-lg" required>
-                                        </div>
-                                        
-                                        <div class="form-outline mb-4">
-                                            <label class="fs-5" for="">Odaberi tip podatka novog polja:</label>
-                                        </div>
-
-                                        <div>
-                                            <ul class="fs-5 buttons">
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="text"> TEXT</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="date"> DATE</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="number"> NUMBER</li>
-                                            </ul>
-                                        </div>
-
-                                        <br>
-
-                                        <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                                            <button type="submit" class="btn btn-success btn-lg" name='AddNewField' value="Update" style="grid-column: 2;">Dodaj novo polje</button>
-                                        </div>
-
-                                    
-                                    </form>
-
-                                    {%if DodatnaPolja%}<!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
-
-                                    <br><hr><br>
-
-                                    <div class="text-center mb-5">
-                                        <h2>Aktivna polja</h2>
-                                    </div>
-
-                                        
-                                        <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                                            {% csrf_token %}
-
-                                            <p class="text-center text-muted mt-5 mb-0">Odaberi polja koja želiš uključiti u obrazac za registraciju.</p>
-                                            
-                                            <div class="active-fields-container">
-                                                <div class="text-center text-muted mt-5 mb-0">Naziv polja</div>
-                                                <div class="text-center text-muted mt-5 mb-0">Je li polje u obrascu?</div>
-                                            </div>
-
-                                            <div class="active-fields-container">
-                                                <hr style="width: 30%; height: 0.05rem;">
-                                                <hr style="width: 30%; height: 0.05rem; text-align: center;">
-                                            </div>
-
-                                            <div class="container-of-containers">
-                                                {%for polje in DodatnaPolja%}
-                                            <div class="active-fields-container">
-                                                <div class="labels mb-0">
-                                                    <label class="fs-5" for="{{polje.imePolja}}">{{polje.imePolja}}
-                                                </div>
-                                                
-                                                <div class="checkboxes mb-0">
-                                                    <input type="checkbox" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.active == True%} checked {%endif%}>
-                                                </div>
-                                            </div>
-                                                {%endfor%}
-                                            </div>
-
-
-                                            <br>
-
-                                            
-                                            <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                                                <button type="submit" class="btn btn-success btn-lg" name='ActiveFields' value="Update" style="grid-column: 2;">Ažuriraj obrazac</button>
-                                            </div>
-
-                                    {%endif%}
-                                    {% endif %}
-                                    </div>
-                                    
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                      </div>
-                      <!--
-                      <br>
-                        
+                    <div class="text-uppercase text-center mb-5">
+                      <h2>Moji radovi</h2>
+                      <hr>
                     </div>
-                   </div>
-                </div>
-            </div>
+
+                    <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
+                      jer se java script na dnu referira na njih-->
+
+                    <!--Klasika za error messages-->
+                    {% if messages %}
+                      {% for message in messages %}
+                      <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
+                      {% endfor %}
+                    {% endif %}
+                    
+                    <div id="pregledRadova">
+                      <div class="text-center mb-5">
+                        <h3>Pregled radova</h3>
+                      </div>
+
+                      <div class="accordion" id="accordionRadovi">
+                        {%for rad in fetchedRadovi%}
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="header{{forloop.counter}}">
+                            <button class="accordion-button collapsed fs-5 acc-btn" type="button"
+                              data-bs-toggle="collapse" data-bs-target="#collapse{{forloop.counter}}"
+                              aria-expanded="true" aria-controls="collapse{{forloop.counter}}">
+                              <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
+                                {{rad.naslov}}</div>
+                              {%if rad.pdf == "" %}
+                              <span class="badge bg-danger d-flex">Rad nije predan!</span>
+                              {%elif rad.recenziranBool == 0%}
+                              <span class="badge bg-warning d-flex">Rad nije recenziran.</span>
+                              {%else%}
+                              <span class="badge bg-success d-flex">Rad je recenziran.</span>
+                              {%endif%}
+                            </button>
+                          </h2>
+                          <div id="collapse{{forloop.counter}}" class="accordion-collapse collapse"
+                            aria-labelledby="heading{{forloop.counter}}">
+                            <div class="accordion-body">
+                              <div class="container">
+                                <div class="row">
+                                  <div class="col-auto">
+                                    <strong>Naslov:</strong> {{rad.naslov}}
+                                  </div>
+                                </div>
+                                <div class="row justify-content-between">
+                                  <div class="col-12 col-lg-4">
+                                    <div>
+                                      <strong>Sekcija:</strong>
+                                      {{rad.radSekcija.naziv}}
+                                    </div>
+                                    <div>
+                                      <strong>Autori:</strong>
+                                      {%for autor in rad.autori.all%}
+                                      </br>{{autor.ime}} {{autor.prezime}}
+                                      {%endfor%}
+                                    </div>
+                                  </div>
+
+                                  {%if rad.pdf == ""%}
+                                  <!-- rad nije predan, ponudi predaju rada -->
+                                  <div class="col-12 col-lg-6">
+                                    <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                                      {% csrf_token %}
+                                      <div class="row">
+                                        <div class="col">
+                                          <div class="form-floating">
+                                            <input id="naslovPredanogRada" type="text" name="fileTitle"
+                                              class="form-control" placeholder="Unesite naslov rada"
+                                              value="{{rad.naslov}}" hidden required />
+                                            <label for="naslovPredanogRada" hidden>Unesite naslov rada</label>
+                                          </div>
+                                        </div>
+                                        <!-- align-self-start/center/end -->
+                                        <div class="btn-group">
+                                          <input class="form-control" type="file" name="uploadedFile"
+                                            accept="application/pdf">
+                                          <button type="submit" class="btn btn-outline-primary" name='DodajPDFPostojecem'
+                                            style="grid-column: 2;">Predaj</button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  {%else%}
+                                  <div class="col-12 col-lg-2">
+                                    <div class="btn-group-vertical">
+                                      <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori
+                                        rad</a>
+                                      <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button"
+                                        download="{{rad.naslov}}">Preuzmi rad</a>
+                                    </div>
+                                  </div>
+                                  {%endif%}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {%endfor%}
+                      </div>
+                    </div>
+
+                    <br>
+                    <hr>
+                    <br>
+
+                    <div id="dodavanjeRada">
+                      <div class="text-center mb-5">
+                        <h3>Predaja dodatnog rada</h3>
+                      </div>
+                      <p class="text-center text-muted mt-5 mb-0">
+                        Ovdje uneste ime, datoteku te autore dodatnog rada s kojim želite sudjelovati na konferenciji.
+                      </p>
+
+                      <br>
+
+                      <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="fs-5">Odaberite datoteku za unos:</div>
+                        <div class="row">
+                          <div class="col-md-8 mb-4">
+                            <div class="form-floating">
+                              <input id="naslovRada" type="text" name="fileTitle" class="form-control"
+                                placeholder="Unesite naslov rada" required />
+                              <label for="naslovRada">Unesite naslov rada</label>
+                            </div>
+                          </div>
+                          <!-- align-self-start/center/end -->
+                          <div class="col-md-4 mb-4 align-self-center">
+                            <input class="form-control" type="file" name="uploadedFile" accept="application/pdf">
+                          </div>
+                        </div>
+
+                        <div class="fs-5">Podaci o autorima:</div>
+                        <div class="row">
   
+                          <div id="autori" class="mb-2">
 
-            
+                            <div id="jedanAutor" class="mb-2">
 
-            {%if LoggedInUserRole == "Admin"%}
-                <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="text" name="fieldName" id="fieldName" placeholder="Ime novog fielda">
-                    <br>
-                    <input type="radio" name="fieldType" id="int">INT
-                    <br>
-                    <input type="radio" name="fieldType" id="char">CHAR(lenght=50)
-                    <br>
-                    <input type="radio" name="fieldType" id="longchar">LONGCHAR(lenght=500)
-                    <br>
-                    <input type="radio" name="fieldType" id="longchar">BOOLEAN
-                    <br>
-                    <input type="submit" value="Update" name='AddNewField'>
-                </form>
-                <h4> Aktivna polja </h4>
-                {%if DodatnaPolja%}
-                <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {%for polje in DodatnaPolja%}
-                        <input type="checkbox" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.active == True%} checked {%endif%}>
-                        <label for="{{polje.imePolja}}">{{polje.imePolja}}
-                        <br> 
-                    {%endfor%}
-                    <input type="submit" value="Update" name='ActiveFields'>
-                {%endif%}
-            {% endif %} -->
+                              <label class="form-label" for="" id="authorsLabel">1.</label>
+                              <div id="autorIme" class="input-group col-md-10 col-10 mb-1">
+                                <input type="text" id="autorFName0" name="autorFName0" aria-label="Ime" placeholder="Ime" class="form-control form-control-lg" required>
+                                <input type="text" id="autorLName0" name="autorLName0" aria-label="Prezime" placeholder="Prezime" class="form-control form-control-lg" required>
+                              </div>
 
+                              <div id="autorPodaci" class="input-group col-md-10 col-10 mb-1">
+                                <input type="text" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail" class="form-control form-control-lg" required/>
+                                <div id="autorPodaciKontakt" class="input-group-text">
+                                  <input type="radio" id="autorKontakt0" name="autorKontakt0" aria-label="Kontakt" class="form-check-input form-check-lg" required/>
+                                  <label class="form-check-label" id="autorKontaktLabel0" style="margin-top:4px; margin-left:4px"for="autorKontakt0">Osoba za kontakt</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-4 mb-4">
+                            <button type="button" class="btn btn-primary btn-lg" id="btnDodajAutora" onclick=AddAuthor()>
+                              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-plus"/></svg>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-lg" id="btnMakniAutora" onclick=RemoveAuthor()>
+                              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-dash"/></svg>
+                            </button>
+                            <input type="number" min="0" name="brojAutora" id="brojAutora" class="form-control" value="1" hidden></input>
+                          </div>          
+                        </div>
 
+                        {%if not pdf%}
+                        <!-- nije predan niti jedan rad -->
+                        <div class="row"
+                          style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                          <button type="submit" class="btn btn-secondary btn-lg" name='UploadFile'
+                            style="grid-column: 2;" disabled>Predaj prvi rad prije predaje novog</button>
+                        </div>
+                        {%else%}
+                        <div class="row"
+                          style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                          <button type="submit" class="btn btn-primary btn-lg" name='UploadFile'
+                            style="grid-column: 2;">Predaj rad</button>
+                        </div>
+                        {%endif%}
+
+                      </form>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
             <footer class="py-2 my-2 container">
                 <ul class="nav justify-content-center border-bottom pb-1 mb-1">
                   <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Naslovna</a></li>
@@ -530,6 +416,99 @@
             document.getElementById("navbarTogglerIcon").style.animation="none";
             document.getElementById("navbarTogglerIcon").style.transform="rotate(0deg)";
           });
+
+          function AddAuthor(){
+              //prati broj autora (SO kaze da + cini ovo brojem)
+              var brojAutora = +document.getElementById("brojAutora").value;
+
+              //kloniramo prvog autora pa ga nastavljamo uredjivati
+              var noviAutor = document.getElementById("autori").firstElementChild.cloneNode(true); 
+              console.log(noviAutor);
+
+              if(noviAutor.hasChildNodes()){
+                var children = noviAutor.childNodes;
+
+                //Prolazimo kroz svu djecu elementa
+                for(var i = 0; i < children.length; i++){
+
+                  //Obrada za redni broj autora
+                  if(children[i].id == "authorsLabel"){
+                    children[i].innerText = (brojAutora+1) + ".";
+                    console.log("Tu sam");
+                    console.log(children[i]);
+                  }
+                  //Obrada za ID-eve imena i prezimena
+                  if(children[i].id == "autorIme"){
+                    for(var j = 0; j < children[i].childNodes.length; j++){
+                      if(children[i].childNodes[j].id == "autorFName0"){
+                        children[i].childNodes[j].id = "autorFName" + brojAutora;
+                        children[i].childNodes[j].name = "autorFName" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                      if(children[i].childNodes[j].id == "autorLName0"){
+                        children[i].childNodes[j].id = "autorLName" + brojAutora;
+                        children[i].childNodes[j].name = "autorLName" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                    }
+                  }
+
+                  //Obrada za ID-eve podataka o autoru
+                  if(children[i].id == "autorPodaci"){
+                    for(var j = 0; j < children[i].childNodes.length; j++){
+                      //Obrada za Email
+                      if(children[i].childNodes[j].id == "autorEmail0"){
+                        children[i].childNodes[j].id = "autorEmail" + brojAutora;
+                        children[i].childNodes[j].name = "autorEmail" + brojAutora;
+                        children[i].childNodes[j].value = "";
+                      }
+                      //Obrada za kontakt radio button
+                      if(children[i].childNodes[j].id == "autorPodaciKontakt"){
+                        for(var k = 0; k < children[i].childNodes[j].childNodes.length; k++){
+                          if(children[i].childNodes[j].childNodes[k].id == "autorKontakt0"){
+                            children[i].childNodes[j].childNodes[k].id = "autorKontakt" + brojAutora;
+                            children[i].childNodes[j].childNodes[k].checked = false; //Ako je prvi checkan i doda se novi vise novi nije checkan
+                            //children[i].childNodes[j].childNodes[k].name = "autorKontakt" + brojAutora;
+                          }
+                          if(children[i].childNodes[j].childNodes[k].id == "autorKontaktLabel0"){
+                            children[i].childNodes[j].childNodes[k].id = "autorKontaktLabel" + brojAutora;
+                            children[i].childNodes[j].childNodes[k].htmlFor = "autorKontakt" + brojAutora;
+                            console.log(children[i].childNodes[j].childNodes[k])
+                          }
+                        }
+                      }
+                    }
+                  }
+
+                }
+              }
+
+              //Dodavanje novog autora kao child element u div s autorima
+              document.getElementById("autori").appendChild(noviAutor);
+
+              //Povecavanje brojaca
+              document.getElementById("brojAutora").value = brojAutora + 1;
+
+              if(brojAutora + 1 > 1){
+                document.getElementById("btnMakniAutora").disabled = false;
+              }
+            }
+
+            function RemoveAuthor(){
+              //prati broj autora (SO kaze da + cini ovo brojem)
+              var brojAutora = +document.getElementById("brojAutora").value;
+
+              //micemo zadnjeg dodanog autora
+              document.getElementById("autori").removeChild(document.getElementById("autori").lastElementChild); 
+
+              //Smanjivanje brojaca
+              document.getElementById("brojAutora").value = brojAutora - 1;
+
+              //Ako ima samo jedan autor zabrani brisanje
+              if(brojAutora - 1 == 1){
+                document.getElementById("btnMakniAutora").disabled = true;
+              }
+            }
         </script>
   
     </html>
