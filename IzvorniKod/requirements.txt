@@ -1,5 +1,9 @@
 Django
+<<<<<<< HEAD
 psycopg2-binary
 python-dotenv
 psycopg2
 
+=======
+psycopg2
+>>>>>>> 970e712beb6a2224db491dcbda6b45258e18d8b1

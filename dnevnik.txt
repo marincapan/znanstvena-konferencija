@@ -1,0 +1,59 @@
+1.sastanak
+	Datum: 11. listopada 2021.
+	Prisustvovali: J.Gavran, L.Mujagić, M.Capan, P.D.Grujić Ostojić, R.Pintar, F.Mesić, A.Sambolek
+	Teme sastanka:
+		- Na prvom smo se neformalnom sastanku upoznali i kratko prodiskutirali dodijeljeni projektni zadatak složivši se da nećemo predlagati vlastiti projektni zadatak.
+
+		- Okvirno smo dogovorili podjelu uloga unutar tima koju ćemo po potrebi revidirati. Članovi tima će si međusobno pomagati te će svatko imati priliku (i obvezu)
+		raditi i na implementaciji i na dokumentaciji projekta. Po trenutnoj su podjeli uloga za poslužiteljsku stranu aplikacije zaduženi M.Capan i F.Mesić, za klijentsku
+		stranu R.Pintar i L.Mujagić, za dokumentaciju zahtjeva A.Sambolek, za bazu podataka P.D.Grujić Ostojić te za dizajn korisničkog sučelja/korisničkog iskustva J.Gavran.
+
+		- Razgovorali smo koje bismo tehnologije i alate koristili pri razvoju aplikacije, a koje za komunikaciju unutar tima. Inicijalni je dogovor da ćemo koristiti Python,
+ 		Bootstrap i PostgreSQL, a komunicirat ćemo preko WhatsAppa i Discorda.
+
+
+2.sastanak
+	Datum: 13. listopada 2021.
+	Prisustvovali: J.Gavran, L.Mujagić, M.Capan, P.D.Grujić Ostojić, R.Pintar, F.Mesić, A.Sambolek
+	Teme sastanka:
+		- Na ovom incijalnom sastanku s asistentom Miljenkom Krhenom bili su prisutni svi članovi tima i demonstrator zadužen za našu grupu, kolega Vedran Kolka.
+		Asistent nam je dao osnovne informacije o načinu provedbe i kolokviranju projekta. Pozvani smo dolaziti na fakultet u terminima laboratorijskih vježbi kako bismo
+ 		diskutirali projektno rješenje i nedoumice, a također pitanja možemo postavljati i preko platforme MS Teams.
+
+
+3. sastanak
+	Datum: 25. listopada 2021.
+	Prisustovali: J.Gavran, L.Mujagić, M.Capan, P.D.Grujić Ostojić, R.Pintar, F.Mesić, A.Sambolek
+	Teme sastanka:
+		- Na ovom smo se online sastanku bavili izlučivanjem i analizom funkcionalnih zahtjeva. Dogovorili smo tko će raspisati funkcionalne zahtjeve, tko će napraviti
+		tekstualni, a tko grafički prikaz (UML dijagrame) obrazaca uporabe.
+		- Raspravljali smo u o dizajnu korisničkog sučelja web-aplikacije, komentirali što nam se (ne) sviđa na nekim javno dostupnim web-stranicama za prijavu na konferencije. 
+
+
+4. sastanak
+	Datum: 3. studenoga 2021.
+	Prisustovali: J.Gavran, L.Mujagić, M.Capan, P.D.Grujić Ostojić, R.Pintar, F.Mesić, A.Sambolek
+	Teme sastanka:
+		- Rješavali smo neke dvojbe vezane uz konzistentnost i kompletnost funkcionalnih zahtjeva. Dogovorili smo tko će raspisati i napraviti sekvencijske dijagrame.
+		- Dogovorili smo početnu podjelu posla na klijentskoj i poslužiteljskoj strani aplikacije te izradi sheme baze podataka.
+
+5. sastanak
+	Datum: 10. studenog 2021.
+	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić
+	Teme sastanka:
+		- Definiranje i raspodjela zadataka Front-enda (Gavran, Mujagić, Pintar)
+		- Konzultacija s Back-endom (Mesić) vezano za određene funkcionalnosti i implementaciju tih funkcionalnosti
+ 
+
+6. sastanak
+Datum: 15. studenog 2021.
+	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić, P.D.Grujić Ostojić
+	Teme sastanka:
+		- Diskusija o generičkim funkcionalnostima, dogovorene preinake u dokumentaciji i izvornom kodu
+
+
+7. sastanak
+Datum: 15. studenog 2021.
+	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić, P.D.Grujić Ostojić, A.Sambolek, M.Capan
+	Teme sastanka:
+		- kratki timski informativni sastanak, dogovor oko finalnih izmjena generičkih funkcionalnosti prije obaveznog termina laboratorijske vježbe
