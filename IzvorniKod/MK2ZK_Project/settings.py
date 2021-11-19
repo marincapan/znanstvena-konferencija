@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4@76gl#nzr4f^-ii2g%dai3$8pa-y9)h4brmhcnbw!nuk#4@hb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["159.89.99.177","localhost", "mk2zk.tk"]
+ALLOWED_HOSTS = ["159.89.99.177","localhost"]
 
 
 # Application definition
@@ -77,14 +77,9 @@ WSGI_APPLICATION = 'IzvorniKod.MK2ZK_Project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MK2ZK_DB',
-        'USER': 'postgres',
-        'PASSWORD': 'dogwoofwoof',
-        'HOST': 'mk2zk_db',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-
 }
 
 
@@ -127,7 +122,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'templates')
-
 
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'Radovi')
 MEDIA_URL = '/Radovi/'
