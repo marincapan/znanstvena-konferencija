@@ -4,4 +4,8 @@ RUN mkdir /code
 WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt
-COPY . /code/
+ADD . /code/
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod a+x /docker-entrypoint.sh
+ENTRYPOINT ["bash","/docker-entrypoint.sh"]
+
