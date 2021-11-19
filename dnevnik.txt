@@ -37,6 +37,7 @@
 		- Rješavali smo neke dvojbe vezane uz konzistentnost i kompletnost funkcionalnih zahtjeva. Dogovorili smo tko će raspisati i napraviti sekvencijske dijagrame.
 		- Dogovorili smo početnu podjelu posla na klijentskoj i poslužiteljskoj strani aplikacije te izradi sheme baze podataka.
 
+
 5. sastanak
 	Datum: 10. studenog 2021.
 	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić
@@ -57,3 +58,5 @@ Datum: 15. studenog 2021.
 	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić, P.D.Grujić Ostojić, A.Sambolek, M.Capan
 	Teme sastanka:
 		- kratki timski informativni sastanak, dogovor oko finalnih izmjena generičkih funkcionalnosti prije obaveznog termina laboratorijske vježbe
+=======
+>>>>>>> main
