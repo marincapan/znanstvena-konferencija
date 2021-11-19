@@ -10,13 +10,13 @@
 			\begin{packed_enum}
 				
 				\item Znanstvena udruga "Pametna ekipa" (naručitelj)
-				\item Registrirani korisnici
+				\item Registrirani korisnici (korisnici koji se mogu prijaviti u sustav)
 				\begin{packed_enum}
-					\item Sudionici
-					\item Recenzenti
+					\item Sudionik
+					\item Recenzent
+					\item Predsjedavajući konferencije				
+					\item Administrator
 				\end{packed_enum}
-				\item Predsjedavajući konferencije				
-				\item Administrator sustava
 				\item Razvojni tim
 				
 			\end{packed_enum}
@@ -30,7 +30,7 @@
 				\begin{packed_enum}
 					
 					\item pristupiti naslovnici konferencije i sadržaju na njoj, kao i stranici s informacijama o samoj konferenciji
-					\item registrirati se - stvoriti novi korisnički račun za koji su mu potrebni osobni podaci - ime i prezime, naziv matične ustanove (kao i ulica i kućni broj, grad i država institucije), e-mail adresa; korisnik koji se registrira kao sudionik konferencije unosi i naslov rada, autore te e-mail adresu autora koji je osoba za kontakt 
+					\item registrirati se - stvoriti novi korisnički račun za koji su mu potrebni osobni podaci - ime i prezime, naziv matične ustanove (kao i ulica i kućni broj, grad i država institucije), adresa e-pošte; korisnik koji se registrira kao sudionik konferencije unosi i naslov rada, autore te adresu e-pošte autora koji je osoba za kontakt 
 					\item prijaviti se u sustav (ukoliko se prethodno registrirao)
 					\item na stranici prijave zatražiti novu lozinku (ukoliko se prethodno registrirao)
 					
@@ -42,10 +42,10 @@
 				
 					\begin{packed_enum}
 					
-						\item pregledavati i mijenjati osobne podatke (osim e-maila i lozinke)
+						\item pregledavati i mijenjati osobne podatke 
 						\item učitati rad u \textit{.pdf} formatu (do kraja roka za predaju)
 						\item po potrebi priložiti izmijenjenu verziju rada i pri tome obavijestiti recenzenta u učinjenome
-						\item mijenjati podatke prijavnice
+						\item ako želi predati dodatni rad 
 					
 					
 					\end{packed_enum}
@@ -54,7 +54,7 @@
 				
 					\begin{packed_enum}
 					
-						\item pregledavati i mijenjati osobne podatke (osim e-maila i lozinke)
+						\item pregledavati i mijenjati osobne podatke 
 						\item pregledavati pristigle radove
 						\item preuzeti radove na lokalno računalo
 						\item prihvatiti rad bez izmjena
@@ -68,11 +68,12 @@
 					\item  \underbar{Predsjedavajući konferencije (inicijator) može:}
 				
 					\begin{packed_enum}
-				
+						
+						\item pregledavati i mijenjati osobne podatke 
 						\item vidjeti sve podatke o sudionicima, mijenjati ih i dodavati sadržaj
 						\item preuzeti sve pristigle radove na lokalno računalo
 						\item dati odobrenje za obavljanje recenzije radova recenzentima
-						\item svima ili samo odabranim korisnicima slati obavijesti na e-mail
+						\item svima ili samo odabranim korisnicima slati obavijesti na njihove adrese e-pošte
 					
 				
 					\end{packed_enum}
@@ -80,11 +81,12 @@
 					\item  \underbar{Administrator (inicijator) može:}
 				
 					\begin{packed_enum}
-				
+						
+						\item pregledavati i mijenjati osobne podatke 
 						\item upisati podatke o konferenciji
 						\item odrediti predsjedavajućeg konferencije
-						\item pratiti stanje COVID-19 pandemije putem javno dostupnih podataka o incidenciji u pojedinim državama
-						\item objaviti radove online u slučaju pogoršanja epidemiološke situacije
+						\item pratiti stanje COVID-19 pandemije putem javno dostupnih podataka o incidenciji u državama iz kojih ima prijavljenih sudionika
+						\item učiniti radove javno dostupnima u slučaju pogoršanja epidemiološke situacije
 						\item definirati upitnik za prijavu na konferenciju
 						\item vidjeti broj i imena aktivno registriranih korisnika
 						\item pregledavati statistiku (broj radova) prijava po državama, sekcijama
@@ -102,7 +104,7 @@
 					\item pohranjuje podatke o korisnicima i njihovim ovlastima u sustavu
 					\item pohranjuje podatke o radovima, njihovim autorima i recenzijama tih radova
 					\item pohranjuje podatke o konferenciji i upitniku za prijavu na konferenciju
-					\item pohranjuje podatke o ustanovama i državama iz kojih dolaze registrirani sudionici
+					\item pohranjuje podatke o ustanovama iz kojih dolaze registrirani sudionici
 
 				\end{packed_enum}
 					
@@ -121,7 +123,7 @@
 					\noindent \underbar{\textbf{UC1 - Pregled naslovnice}}
 					\begin{packed_item}
 	
-						\item \textbf{Glavni sudionik: } Neprijavljeni korisnik, registrirani korisnik, admininistrator, predsjedavajući konferencije
+						\item \textbf{Glavni sudionik: } Neregistrirani korisnik, registrirani korisnik
 						\item  \textbf{Cilj:} Pregledavanje statičnog sadržaja stranice
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} -
@@ -139,7 +141,7 @@
 					\noindent \underbar{\textbf{UC2 - Registracija}}
 					\begin{packed_item}
 	
-						\item \textbf{Glavni sudionik: } Neprijavljeni korisnik
+						\item \textbf{Glavni sudionik: } Neregistrirani korisnik
 						\item  \textbf{Cilj:} Stvaranje novog korisničkog računa za pristup aplikaciji
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik nema račun
@@ -147,12 +149,12 @@
 						
 						\item[] \begin{packed_enum}
 	
-							\item Korisnik odabire opciju "Registracija" nakon čega se otvara forma za registraciju
-							\item Korisnik ispunjava formu
+							\item Korisnik odabire opciju "Registracija" nakon čega se otvara obrazac za registraciju
+							\item Korisnik ispunjava obrazac
 							\item Korisnik odabire kreira li račun kao sudionik ili recenzent, te ukoliko odabere opciju sudionik pojavljuje se još jedan dio obrasca gdje je potrebno unijeti naziv rada koji želi predati i autore istog te označiti osobu za kontakt
 							\item Sustav svakom sudioniku pridjeljuje jedinstveni identifikator ID\_xxxx, pri čemu je xxxx redni broj prijave u sustav
 							\item Ažurira se baza podataka
-							\item Korisnik koji se registrirao kao sudionik konferencije prima obavijest (putem e-maila) o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link) u kojoj se nalazi lozinka i korisničko ime, a recenzent tu obavijest prima po odobrenju predsjedavajućeg
+							\item Korisnik koji se registrirao kao sudionik konferencije prima obavijest (putem e-pošte) o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link) u kojoj se nalazi lozinka za prijavu, a recenzent tu obavijest prima po odobrenju predsjedavajućeg
 							
 						\end{packed_enum}
 
@@ -160,17 +162,25 @@
 						
 						\item[] \begin{packed_item}
 	
-							\item[2.a]  Odabir već zauzetog e-maila, unos jednog ili više korisničkih podataka u nedozvoljenom formatu, postoji već rad s tim naslovom i istim autorima
+							\item[2.a]  Odabir već zauzete adrese e-pošte, unos jednog ili više korisničkih podataka u nedozvoljenom formatu, postoji već rad s tim naslovom i istim autorima
 							\item[] \begin{packed_enum}
 								
 								\item Sustav korisniku daje obavijest o tome gdje je nastala greška pri registraciji
 								\item Korisnik sukladno mijenja unesene podatke sve dok nisu svi potrebni podaci ispravno upisani, odnosno u odgovarajućem formatu
 								
 							\end{packed_enum}
+							\item[2.b]  Korisnik nije ispunio neko polje obrasca koje je označeno kao obavezno
+							\item[] \begin{packed_enum}
+								
+								\item Sustav korisniku daje obavijest o tome koje polje nije ispunjeno i da ga mora ispuniti.
+								
+							\end{packed_enum}
 							
 						\end{packed_item}
 			
 					\end{packed_item}
+
+					
 
 					\noindent \underbar{\textbf{UC3 - Prijava u sustav}}
 					\begin{packed_item}
@@ -198,7 +208,7 @@
 							\item[2.a]  Neispravno korisničko ime ili lozinka
 							\item[] \begin{packed_enum}
 								
-								\item Sustav korisniku daje obavijest o neispravno unesenim podacima, ponovno učitava stranicu za prijavu te upućuje korisnika da ukoliko nije izvršena registracija prvo napravi taj korak
+								\item Sustav korisniku daje obavijest o neispravno unesenim podacima, omogućuje novi unos podataka za prijavu te upućuje korisnika da ukoliko nije izvršena registracija prvo napravi taj korak
 								
 							\end{packed_enum}
 							
@@ -217,9 +227,9 @@
 					\item[] \begin{packed_enum}
 				
 						\item Korisniku je učitana stranica za prijavu te je on kliknuo na gumb "Zaboravljena lozinka"
-						\item Od korisnika se traži da unese e-mail na koju će mu biti poslana nova lozinka
+						\item Od korisnika se traži da unese adresu e-pošte na koju će mu biti poslana nova lozinka
 						\item Generira se lozinka i šalje korisniku
-						\item Aplikacija obavještava korisnika da mu je lozinka poslana na e-mail
+						\item Aplikacija obavještava korisnika da mu je lozinka poslana putem e-pošte
 						\item Ažurira se baza podataka
 						
 					\end{packed_enum}
@@ -228,7 +238,7 @@
 					
 					\item[] \begin{packed_item}
 						
-						\item[2.a]  Neispravan format e-maila i/ili e-mail ne postoji u bazi podataka
+						\item[2.a]  Neispravan format adrese e-pošte i/ili adresa ne postoji u bazi podataka
 						\item[] \begin{packed_enum}
 							
 							\item Sustav korisniku daje obavijest o neispravno unesenim podacima, ponovno učitava stranicu za prijavu te upućuje korisnika da ukoliko nije izvršena registracija prvo napravi taj korak
@@ -238,10 +248,9 @@
 					\end{packed_item}
 					
 				\end{packed_item}
-
 					\noindent \underbar{\textbf{UC4 - Pregled osobnih podataka}}
 					\begin{packed_item}
-	
+						
 						\item \textbf{Glavni sudionik: } Registrirani korisnik
 						\item  \textbf{Cilj:} Pregledati osobne podatke
 						\item  \textbf{Sudionici:} Baza podataka
@@ -249,45 +258,46 @@
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-	
+							
 							\item Korisnik klikom na gumb "Moj profil" otvara stranicu svog profila
 							\item Aplikacija prikazuje osobne podatke o korisniku povučene iz baze podataka
-					
+							\item Korisnik ima mogućnost promjene osobnih podataka (UC4.1)
+							
 						\end{packed_enum}
-			
+						
 					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC5 - Promjena osobnih podataka}}
+					\noindent \underbar{\textbf{UC4.1 - Promjena osobnih podataka}}
 					\begin{packed_item}
-	
+						
 						\item \textbf{Glavni sudionik: } Registrirani korisnik
 						\item  \textbf{Cilj:} Izmijeniti osobne podatke
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						Korisnik ima otvorenu stranicu svog profila
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-							\item Korisnik odabire gumb "Moj profil" iz glavnog izbornika
+							
 							\item Korisnik odabere opciju "Promijeniti" kraj osobnih podataka
 							\item Korisnik radi željene izmjene
 							\item Korisnik odabire opciju "Spremi promjene"
 							\item Baza podataka se ažurira
-					
+							
 						\end{packed_enum}
-
+						
 						\item  \textbf{Opis mogućih odstupanja:}
 						
 						\item[] \begin{packed_item}
-	
-							\item[2.a]  Korisnik izvrši promjenu podataka, ali uneseni podaci nisu u ispravnom formatu
+							
+							\item[3.a]  Korisnik izvrši promjenu podataka, ali uneseni podaci nisu u ispravnom formatu
 							\item[] \begin{packed_enum}
 								
 								\item Sustav ne dozvoljava spremanje izmjena dok podaci nisu u ispravnom formatu
 								\item Sustav kraj podatka koji je neispravno zapisan prikaže obavijest kako podatak nije u ispravnom formatu te upućuje da korisnik ispravi isto
 								
 							\end{packed_enum}
-
-							\item[2.b]  Korisnik izvrši promjenu podataka, ali ne odabere opciju "Spremi promjene"
+							
+							\item[3.b]  Korisnik izvrši promjenu podataka, ali ne odabere opciju "Spremi promjene"
 							\item[] \begin{packed_enum}
 								
 								\item Sustav obavještava korisnika da nije spremio podatke prije izlaska iz prozora
@@ -295,26 +305,28 @@
 							\end{packed_enum}
 							
 						\end{packed_item}
-			
+						
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC6 - Predaja rada}}
+				
+					\noindent \underbar{\textbf{UC5 - Predaja rada}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Sudionik konferencije
-						\item  \textbf{Cilj:} Predati rad
+						\item  \textbf{Cilj:} Predati rad koji je prijavio pri registraciji
 						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav, rad još nije predan (.pdf nije učitan i pohranjen)
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav, prvi rad još nije predan (.pdf nije učitan i pohranjen)
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
 
-							\item Korisnik bira gumb "Moji radovi" iz glavnog izbornika	
-							\item Na stranici "Moji radovi" korisnik odabire opciju "Predaj rad" kraj željenog rada
-							\item Pojavljuju se već ispunjena polja s nazivom rada i skupom autora koje je korisnik pri registraciji naveo, korisnik odabire opciju "Učitaj rad".
+							\item Korisnik bira gumb "Moji radovi" iz glavnog izbornika
+							\item Na stranici "Moji radovi" korisnik odabire rad koji želi predati
+							\item Pojavljuju se već ispunjena polja s nazivom rada i skupom autora koje je korisnik naveo pri registraciji, korisnik odabire opciju "Učitaj rad"
 							\item Korisnik učitava rad u .pdf formatu
 							\item Korisnik odabire opciju "Predaj"
 							\item Rad se pohranjuje i baza podataka se ažurira
+							\item Sustav šalje obavijest korisniku o uspješno predanom radu
 
 					
 						\end{packed_enum}
@@ -323,14 +335,14 @@
 						
 						\item[] \begin{packed_item}
 	
-							\item[3.a]  Korisnik je učitao datoteku koja nije u *.pdf obliku
+							\item[4.a]  Korisnik je učitao datoteku koja nije u *.pdf obliku
 							\item[] \begin{packed_enum}
 								
 								\item Sustav javlja da je dozvoljeno učitavati isključivo .pdf dokumente i ne pohranjuje ono što je korisnik pokušao prenijeti
 								
 							\end{packed_enum}
 
-							\item[3.b]  Korisnik prenese datoteku, ali ne odabere opciju "Predaj"
+							\item[5.a]  Korisnik prenese datoteku, ali ne odabere opciju "Predaj"
 							\item[] \begin{packed_enum}
 								
 								\item Sustav javlja korisniku kako nije pohranio rad prije izlaska iz prozora
@@ -338,53 +350,111 @@
 							\end{packed_enum}
 							
 						\end{packed_item}
-			
+					
 					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC7 - Predaja dodatnog rada}}
+					
+					\noindent \underbar{\textbf{UC6 - Pregled vlastitih radova}}
 					\begin{packed_item}
-	
+						
+						\item \textbf{Glavni sudionik: } Sudionik konferencije
+						\item  \textbf{Cilj:} Pregledati vlastite radove
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik klikne na gumb "Moji radovi" iz glavnog izbornika
+							\item Aplikacija prikazuje popis predanih radova povučen iz baze podataka
+							\item Korisnik odabire željeni rad s popisa te mu se otvara padajuća kartica s podacima o radu
+					
+						\end{packed_enum}                
+						
+					\end{packed_item}
+						\noindent \underbar{\textbf{UC7 - Predaja dodatnog rada}}
+					\begin{packed_item}
+						
 						\item \textbf{Glavni sudionik: } Sudionik konferencije
 						\item  \textbf{Cilj:} Predaja dodatnog rada
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav, prethodno je predao minimalno jedan rad
 						\item  \textbf{Opis osnovnog tijeka:}
-						
+						                                                                          
 						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Moji radovi" iz glavnog izbornika
-							\item Na stranici "Moji radovi" korisnik odabire opciju "Želim predati još jedan rad"
-							\item Korisnik ispunjava formu za predaju dodatnog rada (autori, naziv, .pdf)
+							\item Korisnik klikne na gumb "Moji radovi" iz glavnog izbornika
+							\item Aplikacija prikazuje popis predanih radova povučen iz baze podataka
+							\item Korisnik u odjeljku "Predaja dodatnog rada" ispunjava obrazac za predaju dodatnog rada (autori, naziv, .pdf)
 							\item Korisnik odabire opciju "Predaj rad"
-							\item Korisniku se ponovno učitava stranica "Moji radovi" na kojoj je sada vidljiv novi rad (koji je moguće mijenjati do roka za izmjenu)
-
-					
+							\item Korisniku se ponovno učitava stranica "Moji radovi" na kojoj je sada vidljiv novi rad
+							\item Sustav šalje obavijest korisniku o uspješno predanom radu 
+							
+							
 						\end{packed_enum}
-
-						\item  \textbf{Opis mogućih odstupanja:}
 						
+						\item  \textbf{Opis mogućih odstupanja:}
+						        
 						\item[] \begin{packed_item}
-	
-							\item[3.a]  Korisnik je učitao datoteku koja nije u *.pdf obliku
+							
+							\item[4.a]  Korisnik je učitao datoteku koja nije u *.pdf obliku
 							\item[] \begin{packed_enum}
 								
 								\item Sustav javlja da je dozvoljeno učitavati isključivo .pdf dokumente i ne pohranjuje ono što je korisnik pokušao prenijeti
-								
+								      
 							\end{packed_enum}
-
-							\item[3.b]  Korisnik prenese datoteku, ali ne odabere opciju "Predaj rad"
+							
+							\item[5.a]  Korisnik prenese datoteku, ali ne odabere opciju "Predaj rad"
 							\item[] \begin{packed_enum}
 								
 								\item Sustav javlja korisniku kako nije pohranio rad prije izlaska iz prozora
 								
 							\end{packed_enum}
 							
-						\end{packed_item}
-			
+						\end{packed_item}               
+						
 					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC8 - Odobravanje registracije recenzenta}}
+					
+					\noindent \underbar{\textbf{UC8 - Izmjena rada po zahtjevu recenzenta}}
 					\begin{packed_item}
-	
+						\item \textbf{Glavni sudionik:} Sudionik
+						\item \textbf{Cilj:} Izmijeniti ranije učitan rad
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav, recenzent dao ocjenu za koju je rad potrebno izmijeniti
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							
+							
+							\item Korisnik klikne na gumb "Moji radovi" iz glavnog izbornika
+							\item Aplikacija prikazuje popis predanih radova povučen iz baze podataka
+							\item Korisnik odabire rad s popisa 
+							\item  Korisniku se prikazuju podatci o radu odabranom s popisa vlastitih radova
+							\item Korisnik učitava izmijenjeni rad u .pdf formatu
+							\item Korisnik odabire opciju "Zaključaj predaju"
+							\item Ako je rad ocijenjen da su potrebne veće izmjene, automatski se šalje adresu e-pošte recenzenta rada o obavljenoj izmjeni
+							\item Rad se pohranjuje i baza podataka se ažurira
+						\end{packed_enum}
+						
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+							\item[5.a] Korisnik je učitao datoteku koja nije u .pdf formatu
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja da je dozvoljeno učitati isključivo .pdf dokumente i ne pohranjuje ono što je korisnik pokušao prenijeti
+							\end{packed_enum}
+							
+							\item[6.a] Korisnik prenese datoteku, ali ne odabere opciju "Zaključaj predaju"
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako nije pohranio rad prije izlaska iz prozora
+							\end{packed_enum}
+							
+						\end{packed_enum}
+					\end{packed_item}
+					
+					
+
+				
+					\noindent \underbar{\textbf{UC9 - Pregled recenzenata koji čekaju na odobrenje}}
+					\begin{packed_item}
+						
 						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
 						\item  \textbf{Cilj:} Odobriti registraciju recenzenta i poslati mu podatke za prijavu
 						\item  \textbf{Sudionici:} Baza podataka
@@ -392,71 +462,117 @@
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-	
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Popis recenzenata koje čekaju odobrenje" te mu se učita stranica s popisom svih registracija koje čekaju odobrenje
+							
+							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Popis registracija recenzenata koje čekaju odobrenje" te mu se učita stranica s popisom svih registracija koje čekaju odobrenje
 							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi, po sekciji) te mu se sukladno prikazuje popis recenzenata koji odgovaraju rezultatima filtra
 							\item Korisnik odabire recenzenta s popisa
 							\item Korisniku se prikazuju podaci koje je recenzent unio pri registraciji
-							\item Korisnik odabire opciju "Potvrdi prijavu i pošalji potvrdu"
-							\item Šalje se poruka o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link) i podatci za prijavu putem e-maila odabranom recenzentu
+							\item Korisnik može ili odobriti(UC9.1) ili odbiti registraciju recenzenta (UC9.2)
 							\item Ažurira se baza podataka
-
-					
+							
+							
 						\end{packed_enum}
-			
+						
 					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC9 - Odbijanje registracije recenzenta}}
+					
+					\noindent \underbar{\textbf{UC9.1 - Odobravanje registracije recenzenta}}
 					\begin{packed_item}
-	
+						
 						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
-						\item  \textbf{Cilj:} Odbiti registraciju recenzenta i izbrisati ga iz baze podataka
+						\item  \textbf{Cilj:} Odobriti registraciju recenzenta i poslati mu podatke za prijavu
 						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav i odabrao je recenzenta s popisa recenzenata koji čekaju odobrenje
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Popis recenzenata koje čekaju odobrenje" te mu se učita stranica s popisom svih registracija koje čekaju odobrenje
-							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi, po sekciji) te mu se sukladno prikazuje popis sudionika koji odgovaraju rezultatima filtra
-							\item Korisnik odabire registraciju s popisa
-							\item Korisniku se prikazuju podaci koje je recenzent unio pri registraciji
+							
+							
+							\item Korisniku se prikazani podaci koje je recenzent unio pri registraciji
+							\item Korisnik odabire opciju "Odobri prijavu i pošalji potvrdu"
+							\item Šalje se poruka o uspješnoj registraciji (koju je potrebno potvrditi "klikom" na dobiveni link) i podatci za prijavu (korisničko ime i lozinka) putem e-pošte odabranom recenzentu
+							\item Ažurira se baza podataka
+							
+							
+						\end{packed_enum}
+						
+					\end{packed_item}
+					
+					
+					\noindent \underbar{\textbf{UC9.2 - Odbijanje registracije recenzenta}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
+						\item  \textbf{Cilj:} Odbiti registraciju recenzenta 
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav i odabrao je recenzenta s popisa recenzenata koji čekaju odobrenje
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							
+							\item Korisniku su prikazani podaci koje je recenzent unio pri registraciji
 							\item Korisnik odabire opciju "Odbij prijavu"
 							\item Otvara se polje za unos obrazloženja odbijanja prijave
 							\item Korisnik navodi razlog/e i odabire opciju "Pošalji odbijenicu"
-							\item Šalje se personalizirana poruka putem e-maila odabranom recenzentu
+							\item Šalje se personalizirana poruka (odbijenica) putem e-pošte odabranom recenzentu
 							\item Ažurira se baza podataka
-
-					
+							
+							
 						\end{packed_enum}
-			
+						
 					\end{packed_item}
-
-
-					\noindent \underbar{\textbf{UC10 - Pregled sudionika}}
+					
+					\noindent \underbar{\textbf{UC10 - Pregled registriranih sudionika}}
 					\begin{packed_item}
-	
+						
 						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
-						\item  \textbf{Cilj:} Pregledati popis uspješno registriranih sudionika
+						\item  \textbf{Cilj:} Pregledati popis registriranih sudionika konferencije
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-	
+							
 							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Popis registriranih sudionika" te mu se učita stranica s popisom svih sudionika
-							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi) te mu se sukladno prikazuje popis sudionika koji odgovaraju rezultatima filtra
+							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi, po sekciji) te mu se sukladno prikazuje popis sudionika koji odgovaraju rezultatima filtra
 							\item Korisnik odabire sudionika s popisa
 							\item Korisniku se prikazuju informacije o odabranom sudioniku
-
-					
+							\item Korisnik po potrebi može urediti podatke sudionika (UC10.1)
+							
+							
 						\end{packed_enum}
-			
+						
 					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC11 - Pregled recenzenata}}
+					
+					\noindent \underbar{\textbf{UC10.1 - Uređivanje podataka o sudioniku}}
 					\begin{packed_item}
-	
+						\item \textbf{Glavni sudionik:} Administrator, Predsjedavajući konferencije
+						\item \textbf{Cilj:} Uređivanje osobnih podataka o sudioniku, ispravljanje grešaka
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav i odabrao je sudionika s popisa registriranih sudionika
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik je odabrao željenog sudionika te bira opciju "Uredi podatke o sudioniku"
+							\item Korisnik mijenja željene podatke
+							\item Korisnik bira opciju "Spremi promjene"
+						\end{packed_enum}
+						
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+							
+							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
+							\end{packed_enum}
+						\end{packed_enum}
+					\end{packed_item}
+					
+					
+					\noindent \underbar{\textbf{UC11 - Pregled odobrenih recenzenata}}
+					\begin{packed_item}
+						
 						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
 						\item  \textbf{Cilj:} Pregledati popis registriranih i odobrenih recezenata
 						\item  \textbf{Sudionici:} Baza podataka
@@ -464,17 +580,42 @@
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-
+							
 							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Popis odobrenih recenzenata" te mu se učita stranica s popisom svih recenzenata
-							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi) te mu se sukladno prikazuje popis recenzenata koji odgovaraju rezultatima filtra
+							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi, po sekciji) te mu se sukladno prikazuje popis recenzenata koji odgovaraju rezultatima filtra
 							\item Korisnik odabire recenzenta s popisa
 							\item Korisniku se prikazuju informacije o odabranom recenzentu
-
-					
+							\item Korisnik po potrebi može promijeniti podatke recenzenta (UC11.1)
+							
+							
 						\end{packed_enum}
-			
+						
 					\end{packed_item}
-
+					
+					\noindent \underbar{\textbf{UC11.1 - Uređivanje podataka o recenzentu}}
+					\begin{packed_item}
+						\item \textbf{Glavni sudionik:} Administrator, Predsjedavajući konferencije
+						\item \textbf{Cilj:} Uređivanje osobnih podataka o recenzentu, ispravljanje grešaka
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav i odabrao je recenzenta s popisa odobrenih recenzenata
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							\item Korisnik je odabrao željenog recenzenta te bira opciju "Uredi podatke o recenzentu"
+							\item Korisnik mijenja željene podatke
+							\item Korisnik bira opciju "Spremi promjene"
+						\end{packed_enum}
+						
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+							
+							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
+							\end{packed_enum}
+						\end{packed_enum}
+					\end{packed_item}
+					
 					\noindent \underbar{\textbf{UC12 - Dodavanje novog administratora}}
 					\begin{packed_item}
 	
@@ -488,9 +629,9 @@
 	
 							\item Korisnik bira gumb "Administracijsko sučelje" iz glavnog izbornika
 							\item Korisnik u administracijskom sučelju bira opciju "Dodaj novog administratora"
-							\item Korisnik unosi osobne podatke (ime, prezime, e-mail) administratora kojeg želi dodati
+							\item Korisnik unosi osobne podatke (ime, prezime, adresa e-pošte, korisničko ime) administratora kojeg želi dodati
 							\item Korisnik odabire opciju "Dodaj administratora u sustav"
-							\item Na uneseni e-mail šalju se podatci za prijavu u sustav (korisničko ime i lozinka).
+							\item Na unesenu adresu e-pošte šalju se podatci za prijavu u sustav (korisničko ime i lozinka).
 							\item Ažurira se baza podataka
 							
 
@@ -532,64 +673,97 @@
 						\item \textbf{Opis osnovnog tijeka:} 
 						
 						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Radovi" iz glavnog izbornika te mu se učitava stranica sa radovima dostupnima za recenziju
+							
+							\item Korisnik bira gumb "Radovi" iz glavnog izbornika te mu se učitava stranica sa radovima dostupnima za recenziju (iz sekcije koju je odabrao pri registraciji)
 							\item Korisnik odabire jedan od ponuđenih radova za recenziju
-							\item  Korisnik na stranici vidi prikaz dokumenta kojeg recenzira (uz opciju "Preuzmi rad" koja pohranjuje .pdf lokalno)
+							\item  Korisnik na stranici vidi prikaz odabranog dokumenta (uz opciju "Preuzmi rad" koja pohranjuje .pdf lokalno)
 							\item Korisnik bira jednu od 4 moguće ocjene te ovisno o odabranoj ocjeni u polje za obrazloženje navodi razlog svog odabira
-							\item Korisnik odabire opciju "Zaključaj recenziju i obavijesti autora/e rada"
-							\item Recenzija se pohranjuje i šalje autoru/ima (onom koji je pri registraciji označen kao "osoba za kontakt") rada na e-mail i baza podataka se ažurira
+							\item Ažurira se baza podataka te se recenzija šalje autoru rada putem e-pošte (onom koji je označen kao osoba za kontakt) (UC13.1)
+							\item Recenzentu se recenzija dodaje na popis recenzija
+							
+							
 						\end{packed_enum}
-					
+						
 						\item \textbf{Opis mogućih odstupanja:}
 						
 						\item[] \begin{packed_enum}
 							\item[4.a] Korisnik nije odabrao ocjenu ili upisao obrazloženje
 							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja da se ocjena mora obrazloženje i da komentar mora biti upisano
+								\item[1.] Sustav javlja da se ocjena mora odabrati i obrazložiti
 							\end{packed_enum}
-							\item[4.b] Korisnik je odabrao ocjenu i upisao obrazloženje, ali nije odabrao opciju "Pošalji recenziju"
+							
+						\end{packed_enum}
+
+						\item[] \begin{packed_enum}
+							\item[6.a] Korisnik odabire opciju "Ne"
+							\item[] \begin{packed_enum}
+								\item[1.] Ponovno se učitava stranica "Radovi" i recenzija nije pohranjena u bazi podataka
+							\end{packed_enum}
+							
+						\end{packed_enum}
+						
+					\end{packed_item}
+					\noindent \underbar{\textbf{UC13.1 - Poslati recenziju sudioniku}}
+					\begin{packed_item}
+						\item \textbf{Glavni sudionik:} Recenzent
+						\item \textbf{Cilj:} Poslati recenziju (obrazloženje i ocjenu) sudioniku putem e-pošte
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav i unio je recenziju (ocjenu rada i obrazloženje)
+						\item \textbf{Opis osnovnog tijeka:} 
+						
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik je izabrao jednu od 4 moguće ocjene te ovisno o odabranoj ocjeni u polje za obrazloženje naveo razlog svog odabira
+							\item Korisnik odabire opciju "Pošalji recenziju"
+							\item Recenzija se pohranjuje i šalje autoru rada(onom koji je pri registraciji označen kao "osoba za kontakt") putem e-pošte i baza podataka se ažurira
+						\end{packed_enum}
+						
+						
+						\item \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item[2.a] Korisnik je odabrao ocjenu i upisao obrazloženje, ali nije odabrao opciju "Pošalji recenziju"
 							\item[] \begin{packed_enum}
 								\item[1.] Sustav javlja korisniku kako nije pohranio recenziju prije izlaska iz prozora
 							\end{packed_enum}
 						\end{packed_enum}
-					
 					\end{packed_item}
-				
-					\noindent \underbar{\textbf{UC14 - Izmjena rada po zahtjevu recenzenta}}
-					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Sudionik
-						\item \textbf{Cilj:} Izmijeniti i učitati ranije učitan rad
-						\item \textbf{Sudionici:} Baza podataka
-						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav, recenzent dao ocjenu za koju je rad potrebno izmijeniti
-						
-						\item \textbf{Opis osnovnog tijeka:} 
-						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Moji radovi" iz glavnog izbornika te se učitava stranica s radovima koje je korisnik predao
-							\item Korisnik odabire rad koji želi izmijeniti
-							\item Korisnik učitava izmijenjeni rad u .pdf formatu
-							\item Korisnik odabire opciju "Zaključi predaju"
-							\item Ako je rad ocijenjen da su potrebne veće izmjene, automatski se šalje e-mail recenzentu rada o obavljenoj izmjeni
-							\item Rad se pohranjuje i baza podataka se ažurira
-						\end{packed_enum}
 					
-						\item \textbf{Opis mogućih odstupanja:}
-						\item[] \begin{packed_enum}
-							\item[2.a] Korisnik je učitao datoteku koja nije u .pdf formatu
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja da je dozvoljeno učitati isključivo .pdf dokumente i ne pohranjuje ono što je korisnik pokušao prenijeti
-							\end{packed_enum}
+					\noindent \underbar{\textbf{UC14 - Pregled vlastitih recenzija}}
+					\begin{packed_item}
 						
-							\item[2.b] Korisnik prenese datoteku, ali ne odabere opciju "Zaključi predaju"
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku kako nije pohranio rad prije izlaska iz prozora
-							\end{packed_enum}
+						\item \textbf{Glavni sudionik: } Recenzent
+						\item  \textbf{Cilj:} Pregledati vlastite recenzije
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik odabire gumb "Moje recenzije" iz izbornika te mu se učita stranica s popisom svih recenzija
+							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi, po autoru) te mu se sukladno prikazuje popis recenzija koje odgovaraju rezultatima filtra
+							\item Korisnik odabire recenziju s popisa
+							\item Korisniku se prikazuju podatci o odabranoj recenziji
+							
 							
 						\end{packed_enum}
+							\item \textbf{Opis mogućih odstupanja:}
+						
+							\item[] \begin{packed_enum}
+							
+							\item[2.a] Korisnik je unio ograničenje u filtar koje ne odgovara ni jednoj receniziji iz baze podataka
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako ne postoji recenzija koja odgovara filtru
+							\end{packed_enum}
+						\end{packed_enum}
+						
 					\end{packed_item}
+					
 					
 					\noindent \underbar{\textbf{UC15 - Pregled radova}}
 					\begin{packed_item}
-	
+						
 						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
 						\item  \textbf{Cilj:} Pregledati popis predanih radova
 						\item  \textbf{Sudionici:} Baza podataka
@@ -597,47 +771,66 @@
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-	
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Predani radovi" te mu se učita stranica s popisom svih radova
+							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika te mu se učitava stranica s opcijama
+							\item Korisnik odabire opciju "Predani radovi" 
+							\item Korisniku je učitana stranica s popisom svih radova
 							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po sekciji, po državi) te mu se sukladno prikazuje popis radova koji odgovaraju rezultatima filtra
 							\item Korisnik odabire rad s popisa
-							\item Korisniku se prikazuju informacije o odabranom radu
-							\item Korisnik, ukoliko on to želi, odabire opciju "Preuzmi rad" te preuzima rad lokalno sebi na računalo
-
-					
-						\end{packed_enum}
-			
+							\item Korisnik, ukoliko to želi, preuzima rad lokalno na računalo klikom na gumb "Preuzmi rad"
+							\item Korisniku se prikazuju podatci o odabranom radu
+							
+							
+							
+						\end{packed_enum}                
+						
 					\end{packed_item}
-				
-					\noindent \underbar{\textbf{UC16 - Učini radove javno dostupnima}}
+					
+					
+					
+					\noindent \underbar{\textbf{UC16 - Preuzimanje svih predanih radova}}
+					\begin{packed_item}
+						\item \textbf{Glavni sudionik:} Administrator, predsjedavajući konferencije
+						\item \textbf{Cilj:} Preuzimanje svih predanih radova
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav i otvorio je popis predanih radova
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika te mu se učitava stranica s opcijama
+							\item Korisnik odabire opciju "Predani radovi" 
+							\item Korisniku je prikazana stranica s popisom svih predanih radova
+							\item Korisnik bira opciju "Preuzmi radove" te preuzima sve radove na lokalno računalo
+							
+							
+						\end{packed_enum}
+					\end{packed_item}
+
+
+					\noindent \underbar{\textbf{UC17 - Učini radove javno dostupnima}}
 					
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator
-						\item  \textbf{Cilj:} Učiniti radove javno dostupnima u slučaju kad se ukaže potreba za tim
+						\item  \textbf{Cilj:} Učiniti radove javno dostupnima u slučaju ako se ukaže potreba za tim
 						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav, postoji minimalno 1 rad koji nije javno dostupan
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
 							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Predani radovi" te mu se učita stranica s popisom svih radova
-							\item Korisnik (ukoliko želi) unosi parametre u filtar (po državi, po sekciji) te mu se nakon toga prikazuje popis radova s rezultatima filtra
-							\item	 Korisnik označi željene radove s popisa koji još nemaju javni pristup, ili odabere opciju "Odaberi sve" ukoliko sve radove treba učiniti javno dostupnima
 							\item Korisnik odabire opciju "Učini radove javno dostupnima"
-							\item Korisniku se otvara prozor s porukom "Jeste li sigurni da želite objaviti odabrane radove?"
+							\item Korisniku se otvara prozor s porukom "Jeste li sigurni da želite objaviti sve radove javno?"
 							\item Korisniku odabire opciju "Da"
 							\item Korisnika sustav obavještava da su radovi uspješno objavljeni
 							\item Baza podataka se ažurira
 							
 						\end{packed_enum}
-					
+						
 						\item \textbf{Opis mogućih odstupanja:}
 						\item[] \begin{packed_enum}
-							\item[3.a] Korisnik odabere neke radove koji već jesu javno dostupni
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku da odznači radove koji već jesu javno dostupni, do tada mu nije dostupna opcija "Učini radove javno dostupnima"
-							\end{packed_enum}
-							\item[6.a] Korisnik odabire opciju "Ne"
+							
+							\item[4.a] Korisnik odabire opciju "Ne"
 							\item[] \begin{packed_enum}
 								\item[1.] Korisnik je vraćen na stranicu popisa predanih radova
 							\end{packed_enum} 
@@ -645,22 +838,115 @@
 						
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC17 - Slanje obavijesti sudionicima i recenzentima}}
+					\noindent \underbar{\textbf{UC18 - Ukloni javni pristup svim radovima}}
 					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator, predsjedavajući konferencija
-						\item \textbf{Cilj:} Obavijestiti sve sudionike i recenzente o promjeni ili novosti vezane za konferenciju
+						\item \textbf{Glavni sudionik:} Administrator
+						\item \textbf{Cilj:} Ukloniti javni pristup radovima
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav, korisnik je prethodno omogućio javni pristup radovima
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika te mu se učitava stranica s opcijama
+							\item Korisnik odabire opciju "Predani radovi" 
+							\item Korisniku je učitana stranica s popisom svih radova
+							\item Korisnik bira opciju "Ukloni javni pristup radovima"
+							\item Korisniku se otvara prozor s porukom "Jeste li sigurni da želite ukloniti javni pristup svim radovima?"
+							\item Korisnik odabire opciju "Da"
+							\item Korisnika sustav obavještava da su radovi više nisu javno dostupni
+							\item Baza podataka se ažurira
+						\end{packed_enum}
+						
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+						
+							\item[6.a] Korisnik odabire opciju "Ne"
+							\item[] \begin{packed_enum}
+								\item[1.] Korisnik je vraćen na stranicu popisa predanih radova
+							\end{packed_enum} 
+						\end{packed_enum}
+					\end{packed_item}
+
+					\noindent \underbar{\textbf{UC19 - Pregled javno dostupnih radova}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: } Sudionik, recenzent
+						\item  \textbf{Cilj:} Pregledati popis javno dostupnih predanih radova u slučaju da su svi radovi objavljeni 
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							\item Korisnik odabire gumb "Javno dostupni radovi" iz izbornika te mu se učitava stranica s popisom svih radova
+							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po sekciji, po državi) te mu se sukladno prikazuje popis radova koji odgovaraju rezultatima filtra
+							\item Korisnik odabire rad s popisa
+							\item Korisnik, ukoliko to želi, preuzima rad lokalno na računalo klikom na gumb "Preuzmi rad"
+							\item Korisniku se prikazuju podatci o odabranom radu	
+						\end{packed_enum}  
+
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+						
+							\item[1.a] Radovi nisu javno dostupni, tj. objavljeni jer nije došlo do potrebe za tim
+							\item[] \begin{packed_enum}
+								\item[1.] Korisniku je učitana stranica na kojoj piše "Radovi konferencije trenutačno nisu javno dostupni." s još informacija poput toga da će radovi biti objavljeni ukoliko se ukaže potreba ili nakon što je recenziranje svih radova obavljeno
+							\end{packed_enum}
+ 
+						\end{packed_enum}
+
+					\end{packed_item}              
+				
+				                                                            
+					\noindent \underbar{\textbf{UC20 - Uređivanje podataka o radu}}
+					\begin{packed_item}
+						\item \textbf{Glavni sudionik:} Administrator, predsjedavajući konferencije
+						\item \textbf{Cilj:} Uređivanje podataka o predanom radu
+						\item \textbf{Sudionici:} Baza podataka
+						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav 
+						
+						\item \textbf{Opis osnovnog tijeka:} 
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika te na njoj odabire opciju "Predani radovi"
+							\item Korisnik odabire rad čije podatke želi mijenjati
+							\item Korisniku je prikazana stranica s podatcima o odabranom radu s popisa predanih radova
+							\item Korisnik bira opciju "Unesi promjene"
+							\item Korisnik mijenja podatke o radu i/ili ažurira .pdf dokument
+							\item Korisnik bira opciju "Spremi promjene"
+						\end{packed_enum}
+						
+						\item \textbf{Opis mogućih odstupanja:}
+						\item[] \begin{packed_enum}
+							       
+							
+							\item[5.a] Korisnik unese datoteku koja nije u .pdf formatu
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav obavještava korisnika da nije dozvoljen unos datoteka koje nisu u .pdf formatu te u sustavu ostaje pohranjen stari .pdf
+							\end{packed_enum}
+							\item[6.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
+							\end{packed_enum}               
+						\end{packed_enum}
+					\end{packed_item}
+					                                     
+				
+					\noindent \underbar{\textbf{UC21 - Slanje obavijesti odabranim korisnicima}}
+					\begin{packed_item}
+						\item \textbf{Glavni sudionik:} Predsjedavajući konferencije
+						\item \textbf{Cilj:} Obavijestiti  sudionike i recenzente o promjeni ili novosti vezanoj za konferenciju
 						\item \textbf{Sudionici:} Baza podataka
 						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
 						
 						\item \textbf{Opis osnovnog tijeka:} 
 						\item[] \begin{packed_enum}
 							\item Korisnik bira gumb "Administracijsko sučelje" iz glavnog izbornika
-							\item Korisnik na administracijskom sučelju bira opciju "Pošalji obavijest korisnicima"
-							\item Pojavljuje se popis svih sudionika i recenzenata i tražilica pomoću koje se taj popis može pretraživati
-							\item Korisnik odabire 1 ili više primatelja obavijesti, a također ima i opciju "Označi sve"
-							\item Pojavljuje se polje za unos teksta obavijesti te korisnik piše tekst obavijesti
+							\item Korisnik bira gumb "Pošalji obavijest sudionicima" na vrhu stranice
+							\item Korisniku se pojavljuje popis korisnika, koje zatim po želji odabire i/ili filtrira (po sekciji ili po državi), a može i kliknuti gumb "Odaberi sve"
+							\item Nakon što je odabran minimalno jedan korisnik, pojavljuje se polje za unos teksta obavijesti te korisnik piše tekst obavijesti
 							\item Korisnik bira opciju "Pošalji"
-							\item Svi primatelji primaju obavijest putem e-maila s kojim su se registrirali
+							\item Svi sudionici i recenzenti primaju obavijest na adresu e-pošte s kojim su se registrirali
 						\end{packed_enum}
 					
 						\item \textbf{Opis mogućih odstupanja:}
@@ -668,24 +954,21 @@
 							
 		
 
-							\item[6.a] Korisnik unese tekst obavijesti, ali ne odabere opciju "Pošalji"
+							\item[5.a] Korisnik unese tekst obavijesti, ali ne odabere opciju "Pošalji"
 							\item[] \begin{packed_enum}
 								\item[1.] Sustav javlja korisniku kako obavijest nije poslana korisnicima prije izlaska iz prozora
 							\end{packed_enum}
-							item[6.b] Korisnik ne odabere ni jednog primatelja obavijesti, a odabere opciju "Pošalji".
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku kako mora odabrati barem jednog primatelja.
-							\end{packed_enum}
-							item[6.c] Korisnik ne upiše ništa u polje za unos teksta, a odabere opciju "Pošalji".
+							\item[5.b] Korisnik ne upiše ništa u polje za unos teksta, a odabere opciju "Pošalji".
 							\item[] \begin{packed_enum}
 								\item[1.] Sustav upozorava korisnika da nije upisao tekst obavijesti.
 							\end{packed_enum}
 							
 						\end{packed_enum}
 					\end{packed_item}
+				
 
 
-					\noindent \underbar{\textbf{UC18 - Definiranje upitnika za registraciju}}
+					\noindent \underbar{\textbf{UC22 - Definiranje upitnika za registraciju}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Urediti upitnik za registraciju
@@ -694,28 +977,35 @@
 						
 						\item \textbf{Opis osnovnog tijeka:} 
 						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Administracijsko sučelje" iz glavnog izbornika
-							\item Korisnik na administracijskom sučelju bira opciju "Definiraj upitnik"
-							\item Korisnik "kvačicama" označava polja za pitanja koja želi uključiti u upitnik, a odznačava ona koje želi ukloniti (dio polja je predefiniran i ne može ih odznačiti)
-							\item Korisnik bira opciju "Zaključaj"
-							\item Ažurira se baza podataka i upitnik
+							\item Korisnik u zaglavlju bira opciju "Složi obrazac", preusmjeren je na stranicu za slaganje obrasca
+							\item Korisnik u okvir za unos upisuje naziv novog polja za obrazac te bira tip podatka
+							\item Korisnik bira gumb "Dodaj novo polje"
+							\item Ažurira se baza podataka, na stranici se pojavljuju nova dodana polja uz već postojeća polja
+							\item Korisnik "kvačicama" označava polja za pitanja koja želi uključiti u upitnik, a odznačava ona koje želi ukloniti
+							\item Korisnik bira opciju "Ažuriraj obrazac"
+							\item Ažurira se baza podataka i upitnik, korisniku se pojavljuju sva polja koja se trenutno nalaze u obrascu za registraciju
 						\end{packed_enum}
 					
 						\item \textbf{Opis mogućih odstupanja:}
 						\item[] \begin{packed_enum}
+							
+							\item[3.a] Korisnik unese naziv polja i tip podatka, ali ne odabere opciju "Dodaj novo polje"
+							\item[] \begin{packed_enum}
+								\item[1.] Sustav javlja korisniku kako promjene nisu pohranjene prije izlaska iz prozora
+							\end{packed_enum}
 
-							\item[4.a] Korisnik unese promjene, ali ne odabere opciju "Zaključaj"
+							\item[6.a] Korisnik unese promjene, ali ne odabere opciju "Ažuriraj obrazac"
 							\item[] \begin{packed_enum}
 								\item[1.] Sustav javlja korisniku kako promjene nisu pohranjene prije izlaska iz prozora
 							\end{packed_enum}
 							
-						\end{packed_enum}
+						\end{packed_enum}                            
 					\end{packed_item}
 
 
-					\noindent \underbar{\textbf{UC19 - Upravljanje sadržajem naslovnice}}
+					\noindent \underbar{\textbf{UC23 - Upravljanje sadržajem naslovnice}}
 					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator, predsjedavajući konferencije
+						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Ažurirati naslovnicu
 						\item \textbf{Sudionici:} Baza podataka
 						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -740,153 +1030,12 @@
 					\end{packed_item}
 
 					
-					\noindent \underbar{\textbf{UC20 - Uređivanje podataka o sudioniku}}
-					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator, Predsjedavajući konferencije
-						\item \textbf{Cilj:} Uređivanje osobnih podataka o sudioniku, ispravljanje grešaka
-						\item \textbf{Sudionici:} Baza podataka
-						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						
-						\item \textbf{Opis osnovnog tijeka:} 
-						\item[] \begin{packed_enum}
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Registrirani sudionici" te mu se učita stranica s popisom svih sudionika
-							\item Korisnik (ukoliko želi) unosi parametre u filtar (po državi) te mu se nakon toga prikazuje popis sudionika s rezultatima filtra
-							\item Korisnik odabere željenog sudionika te bira opciju "Uredi podatke o korisniku"
-							\item Korisnik mijenja željene podatke
-							\item Korisnik bira opciju "Spremi promjene"
-						\end{packed_enum}
-					
-						\item \textbf{Opis mogućih odstupanja:}
-						\item[] \begin{packed_enum}
 
-							\item[5.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
-							\end{packed_enum}
-						\end{packed_enum}
-					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC21 - Uređivanje podataka o recenzentu}}
-					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator, Predsjedavajući konferencije
-						\item \textbf{Cilj:} Uređivanje osobnih podataka o recenzentu, ispravljanje grešaka
-						\item \textbf{Sudionici:} Baza podataka
-						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						
-						\item \textbf{Opis osnovnog tijeka:} 
-						\item[] \begin{packed_enum}
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Registrirani recenzenti" te mu se učita stranica s popisom svih recenzenata
-							\item Korisnik (ukoliko želi) unosi parametre u filtar (po državi) te mu se nakon toga prikazuje popis recenzenata s rezultatima filtra
-							\item Korisnik odabere željenog sudionika te bira opciju "Uredi podatke o korisniku"
-							\item Korisnik mijenja željene podatke
-							\item Korisnik bira opciju "Spremi promjene"
-						\end{packed_enum}
-					
-						\item \textbf{Opis mogućih odstupanja:}
-						\item[] \begin{packed_enum}
-
-							\item[4.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
-							\end{packed_enum}
-						\end{packed_enum}
-					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC22 - Ukloni javni pristup radova}}
-					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator
-						\item \textbf{Cilj:} Ukloniti javni pristup radovima
-						\item \textbf{Sudionici:} Baza podataka
-						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav, korisnik je prethodno dao javni pristup minimalno jednom radu
-						
-						\item \textbf{Opis osnovnog tijeka:} 
-						\item[] \begin{packed_enum}
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika,, nakon što mu se učita stranica odabire "Predani radovi" te mu se učita stranica s popisom svih radova
-							\item Korisnik (ukoliko želi) unosi parametre u filtar (po državi, po sekciji) te mu se nakon toga prikazuje popis radova s rezultatima filtra
-							\item Korisnik označi željene radove ili odabere opciju "Odaberi sve" ukoliko svi radovi s popisa imaju javni pristup
-							\item Korisnik bira opciju "Ukloni javni pristup odabranim radovima"
-							\item Korisniku se otvara prozor s porukom "Jeste li sigurni da želite ukloniti javni pristup ovim radovima?"
-							\item Korisnik odabire opciju "Da"
-							\item Korisnika sustav obavještava da su radovi uspješno uklonjeni s popisa javno dostupnih radova
-							\item Baza podataka se ažurira
-						\end{packed_enum}
-					
-						\item \textbf{Opis mogućih odstupanja:}
-						\item[] \begin{packed_enum}
-							\item[1.a] Korisnik odabere neke radove koji nisu javno dostupni
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku da odznači radove koji nisu javno dostupni, do tada mu nije dostupna opcija "Ukloniti javni pristup radovima"
-
-							\end{packed_enum}
-							\item[6.a] Korisnik odabire opciju "Ne"
-							\item[] \begin{packed_enum}
-								\item[1.] Korisnik je vraćen na stranicu popisa predanih radova
-							\end{packed_enum} 
-						\end{packed_enum}
-					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC23 - Uređivanje podataka o radu}}
-					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator
-						\item \textbf{Cilj:} Uređivanje podataka o predanom radu
-						\item \textbf{Sudionici:} Baza podataka
-						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						
-						\item \textbf{Opis osnovnog tijeka:} 
-						\item[] \begin{packed_enum}
-							\item Korisnik odabire gumb "Korisnici i radovi" iz izbornika, nakon što mu se učita stranica odabire "Predani radovi" te mu se učita stranica s popisom svih radova
-							\item Korisnik bira opciju "Unesi promjene"
-							\item Korisnik mijenja podatke o radu i/ili ažurira .pdf dokument
-							\item Korisnik bira opciju "Spremi promjene"
-						\end{packed_enum}
-					
-						\item \textbf{Opis mogućih odstupanja:}
-						\item[] \begin{packed_enum}
-
-							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
-							\end{packed_enum}
-							\item[3.b] Korisnik unese datoteku koja nije u .pdf formatu
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav obavještava korisnika da nije dozvoljen unos datoteka koje nisu u .pdf formatu te u sustavu ostaje pohranjen stari .pdf
-							\end{packed_enum}
-						\end{packed_enum}
-					\end{packed_item}
-					
-					\noindent \underbar{\textbf{UC25 - Recenzija dodatnog rada nakon inicijalnog}}
+					\noindent \underbar{\textbf{UC24 - Pregled statistike prijava}}
 					\begin{packed_item}
 	
-						\item \textbf{Glavni sudionik: } Recenzent
-						\item  \textbf{Cilj:} Recenzirati još jedan rad osim prethodno ocijenjenih
-						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav, korisnik je prethodno recenzirao minimalno jedan rad
-						\item  \textbf{Opis osnovnog tijeka:}
-						
-						\item[] \begin{packed_enum}
-							\item Korisnik bira gumb "Moji radovi" iz glavnog izbornika te se učitava stranica s radovima koje je korisnik prijavio i/ili predao
-							\item Korisnik odabire opciju "Želim recenzirati još jedan rad" na dnu stranice
-							\item Korisniku se prikazuje prozor s pitanjem "Molimo potvrdite da želite recenzirati dodatan rad klikom na gumb "Ok"." s opcijama "Ok" i "Odustani"
-							\item Korisnik bira opciju "Ok"
-							\item Korisniku se ponovno učitava stranica "Moji radovi" na kojoj se pojavljuje još jedan, nasumično izabran rad za recenziju (iz sekcije koju je naveo pri prijavi)
-
-					
-						\end{packed_enum}
-
-						\item \textbf{Opis mogućih odstupanja:}
-						\item[] \begin{packed_enum}
-
-							\item[3.a] Korisnik odabere opciju "Odustani"
-							\item[] \begin{packed_enum}
-								\item[1.] Uklanja se prozor i korisnik se vraća na stranicu "Moji radovi"
-							\end{packed_enum}
-						\end{packed_enum}
-					\end{packed_item}
-
-					\noindent \underbar{\textbf{UC26 - Pregled statistike prijava}}
-					\begin{packed_item}
-	
-						\item \textbf{Glavni sudionik: } Administrator
+						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
 						\item  \textbf{Cilj:} Pregledati informacije o prijavama na konferenciju
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -900,10 +1049,10 @@
 			
 					\end{packed_item}
 				
-					\noindent \underbar{\textbf{UC27 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
+					\noindent \underbar{\textbf{UC25 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
 					\begin{packed_item}
 						
-						\item \textbf{Glavni sudionik: } Administrator
+						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
 						\item  \textbf{Cilj:} Pregledati informacije o incidenciji u pojednim državama iz kojih ima prijavljenih sudionika
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -912,13 +1061,17 @@
 						\item[] \begin{packed_enum}
 							
 							\item Korisnik odabire gumb "COVID-19" iz izbornika, te se učitava stranica sa popisom država iz kojih ima prijavljenih te javno dostupni podatci o incidenciji u tim državama 
-							\item Korisnik pregledava podatke u organizacijske svrhe, odlučuje hoće li se konferencija održati online (u tom slučaju potrebno je o tome obavijestiti sve sudionike i učiniti radove javno dostupnima) ili će sudionici iz određenih država morati sudjelovati na daljinu  (u tom slučaju administrator treba poslati e-mail tim sudionicima i njihove radove učiniti javno dostupnima) 
+							\item Korisnik pregledava podatke u organizacijske svrhe, odlučuje hoće li se konferencija održati online (u tom slučaju potrebno je o tome obavijestiti sve sudionike)
 							
 							
 						\end{packed_enum}
 						
 					\end{packed_item}
-					\noindent \underbar{\textbf{UC28 - Pregled trenutno aktivnih registriranih korisnika}}
+					
+					
+					
+					
+					\noindent \underbar{\textbf{UC26 - Pregled trenutno aktivnih registriranih korisnika}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator
@@ -937,10 +1090,10 @@
 					\end{packed_item}
 
 
-					\noindent \underbar{\textbf{UC29 - Odjava iz sustava}}
+					\noindent \underbar{\textbf{UC27 - Odjava iz sustava}}
 					\begin{packed_item}
 						
-						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije, registrirani korisnik
+						\item \textbf{Glavni sudionik: } Registrirani korisnik
 						\item  \textbf{Cilj:} Odjaviti korisnika iz sustava
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -966,7 +1119,7 @@
 						
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC30 - Upravljanje informacijama o konferenciji}}
+					\noindent \underbar{\textbf{UC28 - Upravljanje informacijama o konferenciji}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Ažurirati podatke o konferenciji i stranicu s informacijama
@@ -976,8 +1129,8 @@
 						\item \textbf{Opis osnovnog tijeka:} 
 						\item[] \begin{packed_enum}
 							\item Korisnik bira opciju "Informacije o konferenciji" iz glavnog izbornika
-							\item Korisnik, ukoliko to želi, postavlja predsjedavajućeg konferencije (UC30.1)
 							\item Učitava se stranica za upravljanje informacijama o konferenciji
+							\item Korisnik, ukoliko to želi, postavlja predsjedavajućeg konferencije (UC28.1)
 							\item Korisnik na željenom odsječku bira opciju "Uredi"
 							\item Korisnik unosi promjene
 							\item Korisnik bira opciju "Spremi"
@@ -987,7 +1140,7 @@
 						\item \textbf{Opis mogućih odstupanja:}
 						\item[] \begin{packed_enum}
 
-							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Spremi"
+							\item[5.a] Korisnik unese promjene, ali ne odabere opciju "Spremi"
 							\item[] \begin{packed_enum}
 								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
 							\end{packed_enum}
@@ -995,9 +1148,9 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC30.1 - Odabir predsjedavajućeg konferencije}}
+					\noindent \underbar{\textbf{UC28.1 - Odabir predsjedavajućeg konferencije}}
 					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator
+						\item \textbf{Glavni sudionik:} Predsjedavajući konferencije
 						\item \textbf{Cilj:} Unijeti podatke o predsjedavajućem konferencije
 						\item \textbf{Sudionici:} Baza podataka
 						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -1006,10 +1159,10 @@
 						\item[] \begin{packed_enum}
 							\item Korisniku je učitana stranica "Informacije o konferenciji" na kojoj on kraj informacija o predsjedavajućem konferencije bira opciju "Uredi"
 							\item Korisnik unosi prvi put ili mijenja podatke o predsjedavajućem konferencije
-							\item Ukoliko je korisnik promijenio e-mail adresu predsjedavajućeg, pojavljuje se poruka o navedenoj izmjeni te se navodi da će nova lozinka biti generirana i poslana na \textit{novu} e-mail adresu predsjedavajućeg
+							\item Ukoliko je korisnik promijenio adresu e-pošte predsjedavajućeg, pojavljuje se poruka o navedenoj izmjeni te se navodi da će nova lozinka biti generirana i poslana na \textit{novu} adresu e-pošte predsjedavajućeg
 							\item Nakon navedenih izmjena, korisnik bira opciju "Ažuriraj podatke"
 							\item Ažurira se baza podataka
-							\item Ukoliko je e-mail adresa predsjedavajućeg mijenjana, šalje se mail na novu adresu s novom lozinkom za prijavu u sustav
+							\item Ukoliko je adresa e-pošte predsjedavajućeg mijenjana, šalje se e-pošta na novu adresu s novom lozinkom za prijavu u sustav
 						\end{packed_enum}
 					
 						\item \textbf{Opis mogućih odstupanja:}
@@ -1027,6 +1180,60 @@
 						\end{packed_enum}
 					\end{packed_item}
 
+				\noindent \underbar{\textbf{UC29 - Slanje podsjetnika na rok za predaju radova}}
+					
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: } Administrator
+						\item  \textbf{Cilj:} Poslati podsjetnik sudionicima na adresu e-pošte
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							\item Korisnik bira gumb "Administracijsko sučelje" koji ga vodi na stranicu administracijskog sučelja
+							\item Korisnik bira gumb "Pošalji podsjetnik na rok za predaju radova"
+							\item Korisniku se prikazuje autogenerirana poruka koja će se poslati sudionicima te je može izmijeniti ako želi
+							\item Korisnik bira opciju "Pošalji"
+							\item Svi sudionici primaju obavijest na adresu e-pošte s kojim su se registrirali
+							
+							
+							
+						\end{packed_enum}
+						
+						\item \textbf{Opis mogućih odstupanja:}
+							\item[] \begin{packed_enum}
+								\item[3.a] Korisnik ne odabere opciju "Pošalji"
+								\item[] \begin{packed_enum}
+									\item[1.] Sustav javlja korisniku kako obavijest nije poslana korisnicima prije izlaska iz prozora
+							\end{packed_enum}
+						\end{packed_enum}
+						
+						
+					\end{packed_item}
+				\noindent \underbar{\textbf{UC30 - Potvrda registracije putem e-pošte}}
+				\begin{packed_item}
+					\item \textbf{Glavni sudionik:} Recenzent, Sudionik
+					\item \textbf{Cilj:} Potvrđivanje svoje registracije putem e-pošte
+					\item \textbf{Sudionici:} Baza podataka
+					\item \textbf{Preduvjet:} Korisnik je izvršio registraciju
+					
+					\item \textbf{Opis osnovnog tijeka:} 
+					\item[] \begin{packed_enum}
+						
+						\item Korisnik otvara elektroničku poruku poslanu s službene adrese e-pošte konferencije u svom klijentu e-pošte
+						\item Korisnik klikom na dobiveni link potvrđuje svoju prijavu
+						\item Sustav provjerava podudaranje dobivenog linka (token) s onima koji su u bazi
+						\item Baza podataka se ažurira i registracija je potvrđena 
+						(nakon obavljavanja ovog koraka korisnik se može prijaviti u sustav)
+						
+						
+					\end{packed_enum}
+				\end{packed_item}
+					
+
+				\pagebreak
+
 					
 					
 					
@@ -1034,28 +1241,104 @@
 					
 				\subsubsection{Dijagrami obrazaca uporabe}
 					
-					\textit{Prikazati odnos aktora i obrazaca uporabe odgovarajućim UML dijagramom. Nije nužno nacrtati sve na jednom dijagramu. Modelirati po razinama apstrakcije i skupovima srodnih funkcionalnosti.}
+					
 					\begin{figure}[H]
-						\includegraphics[scale=0.4]{dijagrami/preglednajvaznijihfunkcionalnosti.png} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+						\includegraphics[scale=0.35]{dijagrami/pregledvaznijihfunkcionalnosti.png} 
 						\centering
-						\caption{Dijagram obrasca uporabe, pregled najvažnijih funkcionalnosti}
+						\caption{Dijagram obrasca uporabe, pregled važnijih funkcionalnosti sustava}
 						\label{fig:dijagramobrascauporabe1}
+					\end{figure}
+					\begin{figure}[H]
+						\includegraphics[scale=0.35]{dijagrami/funkcionalnosti-sudionici-recenzenti.png} 
+						\centering
+						\caption{Dijagram obrasca uporabe, funkcionalnosti sudionika i recenzenata}
+						\label{fig:dijagramobrascauporabe2}
+					\end{figure}
+						\begin{figure}[H]
+						\includegraphics[height=16cm,width=15cm]{dijagrami/funkcionalnosti-administrator-predsjedavajucikonferencije.png} 
+						\centering
+						\caption{Dijagram obrasca uporabe, funkcionalnosti administratora i predsjedavajućeg konferencije}
+						\label{fig:dijagramobrascauporabe3}
 					\end{figure}
 				\eject		
 	
 				
 			\subsection{Sekvencijski dijagrami}
 				
-				\textbf{\textit{dio 1. revizije}}\\
+
+				\textbf{Obrazac uporabe UC9 - Pregled recenzenata koji čekaju na odobrenje}\\
 				
-				\textit{Nacrtati sekvencijske dijagrame koji modeliraju najvažnije dijelove sustava (max. 4 dijagrama). Ukoliko postoji nedoumica oko odabira, razjasniti s asistentom. Uz svaki dijagram napisati detaljni opis dijagrama.}
+				\indent Jedna od dužnosti predsjedavajućeg konferencije je odobriti registracije recenzenata. Kako bi odobrio ili odbio pojedinu registraciju, potrebno je otvoriti stranicu "Korisnici i radovi" te na njoj odabrati opciju "Popis recenzenata koji čekaju odobrenje". Ondje predsjedavajući može pregledavati registracije, odnosno podatke koje su pojedini recenzenti unijeli pri registraciji te na temelju toga odlučiti hoće li im odobriti ili odbiti prijavu. Ukoliko odluči odbiti prijavu, potrebno je navesti razlog zašto je prijava odbijena, te će se navedeni razlog poslati u "odbijenici" korisniku putem e-pošte klikom na gumb "Odbij prijavu", nakon čega registracija ujedno biva trajno izbrisana iz baze podataka. Ukoliko predsjedavajući odluči potvrditi registraciju, klikom na gumb "Potvrdi registraciju" podaci iz registracije se koriste za kreiranje novog korisnika, tj. recenzenta u bazi, a recenzentu se na adresu e-pošte šalje automatizirana poruka o prijavi registracije.
 				\eject
+
+				\begin{figure}[H]
+					\includegraphics[scale=0.50]{dijagrami/UC9-RegistrRecenzent.png} 
+					\centering
+					\caption{Sekvencijski dijagram za UC9 - Pregled recenzenata koji čekaju na odobrenje}
+					\label{fig:sekvencijski1}
+				\end{figure}
+
+
+				\eject
+				
+				\textbf{Obrazac uporabe UC13 - Recenziranje rada}\\
+				
+				\indent Recenzent na stranici radova može koliko želi odabirati radove, čitati ih i pregledavati. Kada odabere i pročita rad koji namjerava recenzirati, a rad prethodno nije recenziran, kreće se prema dnu stranice gdje se nalazi odabir ocjene te mora odabrati jednu od četiri ocjene koje su definirane u opisu zadatka te je svakoj dodijeljen simboličan broj (u bazi podataka i u dokumentaciji). Bira jednu od 4 ocjene, te ovisno o tome koju ocjenu je odabrao (ukoliko su to ocjene 2., 3. ili 4.) pojavljuje se polje za upis obrazloženja ocjene. Korisnik može mijenjati ocjenu klikom sve dok se ne odluči za svoju konačnu ocjenu (i po potrebi unese obrazloženje ocjene), nakon čega korisnik bira opciju "Recenziraj ovaj rad". Klikom na navedenu opciju, recenzija se pohranjuje u bazi podataka (te je sukladno dostupna na stranici "Moje recenzije").
+				\eject
+
+				\begin{figure}[H]
+					\includegraphics[scale=0.58]{dijagrami/UC13-RecenziranjeRada.png} 
+					\centering
+					\caption{Sekvencijski dijagram za UC13 - Recenziranje rada}
+					\label{fig:sekvencijski2}
+				\end{figure}
+
+
+				\eject
+
+
+				\textbf{Obrazac uporabe UC21 - Slanje obavijesti određenim korisnicima}\\
+				
+				\indent Predsjedavajući konferencije ima mogućnost, ukoliko se ukaže potreba, poslati obavijest sudionicima i recenzentima (o bilokakvoj promjeni vezanoj za konferenciju i sl.). Isto čini tako da pristupi stranici "Administracijsko sučelje" te odabere opciju na vrhu stranice "Pošalji obavijest" pri čemu se otvara stranica za odabir korisnika kojima korisnik želi poslati obavijest (te stoji opcija "Odaberi sve" ukoliko želi svima poslati obavijest). Kad korinsik odabere minimalno jednu osobu s popisa, otvara se prozor za unos teksta obavijesti (a korisnik nastavlja birati korisnike kojima želi poslati obavijest) . Korisnik unosi tekst obavijesti, a kad je siguran da želi poslati obavijest bira opciju "Pošalji". Iz baze podataka dohvaćaju se adrese e-pošte odabranih sudionika i recenzenata te se putem Web-aplikacije šalje e-poštu na sve adrese povučene iz baze podataka. Korisnik prima obavijest o uspješnom slanju obavijesti.
+				\eject
+
+				\begin{figure}[H]
+					\includegraphics[scale=0.45]{dijagrami/UC21-SlanjeMaila.png} 
+					\centering
+					\caption{Sekvencijski dijagram za UC21 - Slanje obavijesti određenim korisnicima}
+					\label{fig:sekvencijski3}
+				\end{figure}
+
+				\eject
+
+				\textbf{Obrazac uporabe UC28 - Upravljanje informacijama o konferenciji}\\
+				
+				\indent Administrator je dužan ažurirati informacije o konferenciji, što čini preko stranice "informacije o konferenciji". Tamo može, između ostaloga, prvi puta odabrati predsjedavajućeg konferencije, a kasnije može i mijenjati podatke o njemu (promijeniti osobne podatke, unijeti novu adresu e-pošte i sl.). Ukoliko administrator promijeni adresu e-pošte predsjedavajućeg, na novu adresu dolazi poruka s lozinkom za prijavu u sustav. Nadalje, na navedenoj stranici može odabrati odsječak po svojoj želji, kliknuti gumb "Uredi", izmijeniti podatke te na kraju odabrati "Ažuriraj podatke". Pri tome se baza podataka ažurira, kao i stranica koju sudionici i recenzenti vide.
+				\eject
+
+				\begin{figure}[H]
+					\includegraphics[scale=0.50]{dijagrami/UC28-UprInfoAdmin.png} 
+					\centering
+					\caption{Sekvencijski dijagram za UC28 - Upravljanje informacijama o konferenciji}
+					\label{fig:sekvencijski4}
+				\end{figure}
+
+				\eject
+
 	
 		\section{Ostali zahtjevi}
 		
-			\textbf{\textit{dio 1. revizije}}\\
+		
 		 
-			 \textit{Nefunkcionalni zahtjevi i zahtjevi domene primjene dopunjuju funkcionalne zahtjeve. Oni opisuju \textbf{kako se sustav treba ponašati} i koja \textbf{ograničenja} treba poštivati (performanse, korisničko iskustvo, pouzdanost, standardi kvalitete, sigurnost...). Primjeri takvih zahtjeva u Vašem projektu mogu biti: podržani jezici korisničkog sučelja, vrijeme odziva, najveći mogući podržani broj korisnika, podržane web/mobilne platforme, razina zaštite (protokoli komunikacije, kriptiranje...)... Svaki takav zahtjev potrebno je navesti u jednoj ili dvije rečenice.}
+			 \begin{packed_item}
+
+				\item Sustav treba omogućiti istovremeni rad više korisnika, isto kao što i treba osigurati da svaki korisnik ima jedinstvenu i sigurnu zaporku s kojom se prijavljuju u sustav. Također, svi korisnici koji vrše registraciju daju privolu da pristaju na prikupljanje i daljnju obradu osobnih podataka sukladno sa zakonom o zaštiti podataka (GDPR). Sustav će koristiti protokol HTTPS za komunikaciju između korisnika i servera.
+				\item Sustav treba spriječiti višestruku prijavu istog rada (radova istog naslova i autora).
+				\item Sustav treba biti jednostavan i intuitivan za korištenje, a implementiran je kao web-aplikacija kreirana korištenjem objektno-orijentiranih jezika.
+				\item Veza s bazom podataka mora biti zaštićena, brza i otporna na vanjske greške.
+				\item Neispravno korištenje sučelja ne smije narušiti rad sustava. Korisničko sučelje i sustav moraju podržavati hrvatsku abecedu pri unosu tekstualnog sadržaja.
+
+			\end{packed_item}
 			 
 			 
 			 
