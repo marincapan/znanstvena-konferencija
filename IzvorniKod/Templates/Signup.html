@@ -90,79 +90,11 @@
     
         <body style="min-width:576px">
 
-            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                <!-- gumb za Naslovnicu-->
-                <symbol id="home" viewBox="0 0 16 16">
-                  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
-                </symbol>
-                <!-- gumb za Prijavu -->
-                <symbol id="people-circle" viewBox="0 0 16 16">
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                </symbol>
-                <!-- gumb za hamburger meni -->
-                <symbol id="hamburger" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                </symbol>
-                <symbol id="person-plus" viewBox="0 0 16 16">
-                  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-                </symbol>
-                <symbol id="person-dash" viewBox="0 0 16 16">
-                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-                  <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
-                </symbol>
-                <symbol id="sci-con" viewBox="0 0 29 29">
-                    
-                </symbol>
-              </svg>
-    
-             <!-- HEADER TEMPLATE za neregistriranog / neprijavljenog korisnika --> 
+            <!--HEADER-->
+            {% include "./Header.html" %}
+            <!--HEADER-->
             
-             <header>
-              <nav class="navbar navbar-expand-lg bg-dark bg-gradient">
-                <div class="container">
-                  <a class="navbar-brand" href="/">
-                    <img src="{% static '/vectors/SciConIcon.svg' %}" alt="SciCon" width="64" height="64">
-                  </a>
-                  <button class="navbar-toggler" id="navbarToggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <svg class="navbar-toggler-icon" id="navbarTogglerIcon" width="24" height="24" style="-webkit-filter: invert(100%); filter: invert(100%);"><use xlink:href="#hamburger"/></svg>
-                  </button>
-                  <div class="collapse navbar-collapse" style="justify-content: flex-end;" id="navbarContent">
-                    <ul class="navbar-nav" style="text-align: center;">
-                      <li class="nav-item">
-                        <a href="/" class="nav-link text-white">
-                          <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
-                          <div style="display:inline; ">Naslovna</div>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="info" class="nav-link text-white">
-                          <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
-                          O konferenciji
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="signin" class="nav-link text-white">
-                          <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
-                          Prijava <!--  Za recenzenta je isti header, samo pise "Moje recenzije". -->
-                        </a>
-                      </li>
-                      <li>
-                          <!--Za ovo smo rekli da se otvori meni gdje korisnik bira?-->
-                        <a href="#" class="nav-link text-white">
-                          <img src="{% static '/vectors/RegisterIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
-                          Registracija
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </nav>
-          </header>
-    
-              <!------------------------------------------------------------------------------------->
-
+            
             <!--Ako npr nakon sign up treba displayat "Uspjesno registrirani!"-->
             {% if messages %}
                 {% for message in messages %}
@@ -314,83 +246,11 @@
               </div>
             </div>
 
-            <footer class="py-2 my-2 container">
-                <ul class="nav justify-content-center border-bottom pb-1 mb-1">
-                  <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Naslovna</a></li>
-                  <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">O konferenciji</a></li>
-                </ul>
-                <p class="text-center text-muted">© 2021 Pametna ekipa</p>
-            </footer>
+            <!--FOOTER-->
+            {% include "./Footer.html" %}
+            <!--FOOTER-->
             
             
-            <!--<div class="main">
-                <div class="middle">
-                    <h3> Registracija</h3>
-
-                    <form action="/signup" method="post">
-                        {% csrf_token %}
-                            <label for="">Korisničko ime</label>
-                            <input type="text" id="Username" name="Username" placeholder="Upiši korisničko ime" Required>
-                            <br>
-        
-                            <label for="">Ime</label>
-                            <input type="text" id="Fname" name="Fname" placeholder="Upiši svoje ime" Required>
-                            <br>
-        
-                            <label for="">Prezime</label>
-                            <input type="text" id="Lname" name="Lname" placeholder="Upiši prezime" Required>
-                            <br>
-        
-                            <label for="">E-mail</label>
-                            <input type="email" id="email" name="email" placeholder="Upiši e-mail" Required>
-                            <br>
-        
-                            <label for="">Naziv matične ustanove</label>
-                            <input type="text" id="matustName" name="matustName" placeholder="Upiši naziv matične ustanove" Required>
-                            <br>
-        
-                            <label for="">Adresa matične ustanove</label>
-                            <input type="text" id="matustAdr" name="matustAdr" placeholder="Upiši adresu matične ustanove" Required>
-                            <br>
-        
-                            <label for="">Mjesto matične ustanove</label>
-                            <input type="text" id="matustCity" name="matustCity" placeholder="Upiši mjesto matične ustanove" Required>
-                            <br>
-        
-                            <label for="">Država matične ustanove</label>
-                            <input type="text" id="matustDrz" name="matustDrz" placeholder="Upiši naziv državu ustanove" Required>
-                            <br>
-                            <label for="">Prijavljujem se kao: </label>
-                            <br>
-                            <input type="radio" id="sudionik" name="uloga" value="sudionik" onclick=UpdateOnSudionik()>
-                            <label for="sudionik">Sudionik</label>
-                            <br>
-                            <input type="radio" id="recenzent" name="uloga" value="recenzent" onclick=UpdateOnRecezent()>
-                            <label for="recenzent">Recenzent</label>
-                            <br>
-        
-                            <label for="" id='sectionLabel'>Sekcija</label>
-                            <input type="text" id="section" name="section" placeholder="Sekcija na kojoj želite sudjelovati" Required>
-                            <br>
-        
-                            <label for="" id='titleLabel'>Naslov rada</label>
-                            <input type="text" id="title" name="title" placeholder="Naslov rada" Required>
-                            <br>
-        
-                            <label for="" id='authorsLabel'>Autori</label>
-                            <input type="text" id="authors" name="authors" placeholder="Autori" Required>
-                            <br>
-        
-                            <label for="" id='emailConLabel'>Email osobe za kontakt</label>
-                            <input type="email" id="emailCon" name="emailCon" placeholder="E-mail osobe za kontakt" Required>
-                            <br>
-        
-                        
-                            <button type="submit">Registriraj se</button>
-                    </form> 
-                </div>
-                
-            </div>-->
             
         </body>
         <script type="text/javascript">

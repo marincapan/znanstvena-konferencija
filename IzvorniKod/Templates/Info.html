@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +12,6 @@
     <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static '/css/headers.css' %}" rel="stylesheet">
     <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-    <!--za head i foot-->
-    <object data="Footer.html" type="text/html" title="footer" id="objectF" hidden>{{Footer}}</object>
-    <object data="Header.html" type="text/html" title="header" id="objectH" hidden>{{Header}}</object>
     
 </head>
 
@@ -90,29 +88,33 @@
     </style>
     
 <body>
-    <div id="header"></div>
-    <p>
-        Trešnja (latinski: Prunus avium), listopadna je vrsta drveća iz porodice Rosaceae.
-    </p>
-    <p>
-        Stablo trešnje naraste do 20 m, prsnog promjera do 70 cm.
-    </p>
 
-    <p>
-        Kora je sivo-crvenkaste boje, sjajna, glatka, ljušti se u obliku koncentričnih krugova. Pri dnu debla stvara se tamni lub, koji se uzdužno raspucava. Izbojci su s jedne strane sivkasti, dok su s druge strane smeđkasti.
-        Pupovi su jajoliko čunjasti, na vrhu ušiljeni, obavijeni većim brojem smeđkastih ljuskica, čiji su rubovi sivkasti. Smješteni su naizmjenično i često nagomilani.
-        Listovi su eliptični do obrnuto jajoliki, na vrhu ušiljeni, a na bazi suženi, rubovi su napiljeni. Listovi su dugi do 12 cm, s donje strane posuti rijetkim bijelim dlačicama. Na prijelazu od plojke do peteljke lista vide se dvije crvenkaste žlijezde. Prije otpadanja listovi pocrvene.
-        Cvjetovi rastu prije listanja, na prošlogodišnjim izbojcima. Bijele su boje, rastu gusto nagomilani, vise na dugim stapkama, a cvat je u obliku gronje.
-        Plod je trešnja, jestiva tamnocrvena koštunica s debelim, mesnatim i sočnim usplođem.
-    </p>
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
 
-    <div id="footer"></div>
+  <p>
+    Trešnja (latinski: Prunus avium), listopadna je vrsta drveća iz porodice Rosaceae.
+  </p>
+  <p>
+    Stablo trešnje naraste do 20 m, prsnog promjera do 70 cm.
+  </p>
+  
+  <p>
+    Kora je sivo-crvenkaste boje, sjajna, glatka, ljušti se u obliku koncentričnih krugova. Pri dnu debla stvara se tamni lub, koji se uzdužno raspucava. Izbojci su s jedne strane sivkasti, dok su s druge strane smeđkasti.
+    Pupovi su jajoliko čunjasti, na vrhu ušiljeni, obavijeni većim brojem smeđkastih ljuskica, čiji su rubovi sivkasti. Smješteni su naizmjenično i često nagomilani.
+    Listovi su eliptični do obrnuto jajoliki, na vrhu ušiljeni, a na bazi suženi, rubovi su napiljeni. Listovi su dugi do 12 cm, s donje strane posuti rijetkim bijelim dlačicama. Na prijelazu od plojke do peteljke lista vide se dvije crvenkaste žlijezde. Prije otpadanja listovi pocrvene.
+    Cvjetovi rastu prije listanja, na prošlogodišnjim izbojcima. Bijele su boje, rastu gusto nagomilani, vise na dugim stapkama, a cvat je u obliku gronje.
+    Plod je trešnja, jestiva tamnocrvena koštunica s debelim, mesnatim i sočnim usplođem.
+  </p>
+
+  <!--FOOTER--> 
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
+  
 
 </body>
 <script>
-    document.getElementById("footer").innerHTML = document.getElementById("objectF").innerText;
-    document.getElementById("header").innerHTML = document.getElementById("objectH").innerText;
-
 
           var navbarCollapse = document.getElementById("navbarContent");
               

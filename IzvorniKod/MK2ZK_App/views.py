@@ -14,32 +14,6 @@ from django.core import serializers
 
 
 
-##### za citanje headera i footera
-import os.path
-
-def readHeader(LoggedInUser, LoggedInUserRole):
-    f = open(os.path.dirname(__file__) + '/../Templates/Header.html')
-    file = f.read().split("<!---->")
-    toRender = file[0]
-    if LoggedInUser:
-        if LoggedInUserRole == "Admin":
-            toRender += file[1]
-        elif LoggedInUserRole == "Sudionik":
-            toRender += file[2]
-        elif LoggedInUserRole == "Recenzent":
-            toRender += file[3]
-        else:
-            toRender += file[4] #predsjedavajuci
-    else:
-        toRender += file[5] #nereg korisnik
-    return toRender
-
-def readFooter():
-    f = open(os.path.dirname(__file__) + '/../Templates/Footer.html')
-    file = f.read()
-    return file
-
-######
 
 # Create your views here.
 def home(request):
@@ -435,14 +409,6 @@ def sloziobrazac(request):
 
 def info(request):
     context={}
-    ##dodavanje headera i footera
-    if "LoggedInUserId" in request.session:
-        if "LoggedInUserRole" in request.session:
-            context["Header"] = readHeader(request.session['LoggedInUserId'], request.session['LoggedInUserRole'])
-    else:
-        context['Header'] = readHeader(False, False)
-    context["Footer"] = readFooter()
-    ####
     if "LoggedInUserId" in request.session:
         context["LoggedInUser"]=request.session['LoggedInUserId']
     
