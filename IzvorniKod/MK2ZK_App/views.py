@@ -416,3 +416,12 @@ def info(request):
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
     print(context)
     return render(request, 'Info.html', context)
+
+def mojerecenzije(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+    return render(request, 'MojeRecenzije.html', context)

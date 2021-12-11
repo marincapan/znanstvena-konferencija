@@ -12,80 +12,13 @@
             <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
             <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
             <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+            <!--nas css-->
+            <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+            <!--nas css-->
             <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
 
         </head>
 
-        <style>
-          @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-              font-size: 3.5rem;
-            }
-          }
-
-          /*Bitno za animaciju rotacije hamburger menija*/
-          @keyframes rotation{
-            from {transform: rotate(0deg);}
-            to {transform: rotate(90deg);}
-          }
-
-          .gradient-custom-3 {
-            /* fallback for old browsers */
-            background: #8fb5cc;
-
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to right, #f2f2f2, #8FB5CC);
-
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to right, #f2f2f2, #8FB5CC);
-
-          }
-
-          .card {
-            background-color: #f2f2f2;
-          }
-
-          .btn-primary {
-            background-color: #1c3a9c;
-            border-color: #1c3a9c;
-            
-          }
-
-          .btn-primary:hover {
-            background-color: #c1666b;
-            border-color: #c1666b;
-          }
-
-          .btn-outline-primary:hover {
-            background-color: #c1666b;
-            border-color: #c1666b;
-          }
-
-          .btn.btn-rounded {
-            border-radius: 5rem;
-            border: none;
-            font-size: small;
-            padding: none;
-            text-align: center;
-            
-          }
-
-          .mask {
-            padding: 5rem;
-          }
-
-          .radiobuttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            justify-items: center;
-          }
-
-          /*.footerclass {
-            background-color: #f2f2f2;
-          }*/
-          
-
-        </style>
 
     
         <body style="min-width:576px">
@@ -159,7 +92,7 @@
                                   {%if polje.active == True %}
                                     <div class="form-outline mb-4">
                                       <label class="form-label" for="{{polje.imePolja}}">{{polje.imePolja}}</label>
-                                      <input class="form-control form-control-lg" type="text" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.obavezan == True%} required/ {%endif%}>
+                                      <input class="form-control form-control-lg" type="{{polje.tipPolja.naziv}}" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.obavezan == True%} required/ {%endif%}>
                                       <br>
                                     </div>
                                   {%endif%} 

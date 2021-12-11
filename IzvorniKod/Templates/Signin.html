@@ -11,53 +11,13 @@
             <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
             <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
             <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+            <!--nas css-->
+            <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+            <!--nas css-->
             <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
         </head>
 
-        <style>
-            .gradient-custom-3 {
-              /* fallback for old browsers */
-              background: #8fb5cc;
-  
-              /* Chrome 10-25, Safari 5.1-6 */
-              background: -webkit-linear-gradient(to right, #f2f2f2, #8FB5CC);
-  
-              /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-              background: linear-gradient(to right, #f2f2f2, #8FB5CC);
-  
-            }
-  
-            .card {
-              background-color: #f2f2f2;
-            }
-  
-            .btn {
-              background-color: #1c3a9c;
-              border-color: #1c3a9c;
-              
-            }
-  
-            .btn:hover {
-              background-color: #c1666b;
-              border-color: #c1666b;
-            }
-  
-            .mask {
-              padding: 5rem;
-            }
-  
-            .radiobuttons {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              justify-items: center;
-            }
-
-            @keyframes rotation{
-              from {transform: rotate(0deg);}
-              to {transform: rotate(90deg);}
-            }
-  
-          </style>
+        
 
         <body>
           <!--HEADER-->
@@ -99,7 +59,7 @@
                               </div>
 
                               <div class="form-outline mb-4">
-                                <button type="submit" class="btn btn-success btn-lg form-control form-control-lg">Prijavi se</button>
+                                <button type="submit" class="btn-primary btn-lg form-control form-control-lg">Prijavi se</button>
                               </div>
               
                               <p class="text-center text-muted mt-5 mb-0">Nemaš račun? <a href="signup" class="fw-bold text-body"><u>Registriraj se</u></a></p>

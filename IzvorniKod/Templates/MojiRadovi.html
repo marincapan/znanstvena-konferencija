@@ -12,80 +12,11 @@
             <link rel="icon" href="{% static '/vectors/icon.svg' %}">
             <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
             <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+            <!--nas css-->
+            <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+            <!--nas css-->
             <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
         </head>
-
-        <style>
-          @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-              font-size: 3.5rem;
-            }
-          }
-
-          /*Bitno za animaciju rotacije hamburger menija*/
-          @keyframes rotation{
-            from {transform: rotate(0deg);}
-            to {transform: rotate(90deg);}
-          }   
-            .gradient-custom-3 {
-              /* fallback for old browsers */
-              background: #8fb5cc;
-  
-              /* Chrome 10-25, Safari 5.1-6 */
-              background: -webkit-linear-gradient(to right, #f2f2f2, #8FB5CC);
-  
-              /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-              background: linear-gradient(to right, #f2f2f2, #8FB5CC);
-            }
-  
-            .card {
-              background-color: #f2f2f2;
-            }
-
-            .btn-primary {
-                background-color: #1c3a9c;
-                border-color: #1c3a9c;
-            }
-
-            .btn-primary:hover {
-                background-color: #c1666b;
-                border-color: #c1666b;
-            }
-            .btn-outline-primary:hover {
-                background-color: #c1666b;
-                border-color: #c1666b;
-            }
-
-            .list-group-item:hover {
-                background-color: #8fb5cc;
-                color: black;
-                font-weight: bold;
-            }
-
-            .buttons {
-                list-style-type: none;
-            }
-
-            input[type='radio'],input[type='checkbox'] { 
-                transform: scale(1.25); 
-            }
-
-            .active-fields-container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                align-items: center;
-                text-align: center;
-                justify-items: center;
-            }
-
-            button.acc-btn {
-              display: grid;
-              grid-template-columns: 1fr max-content max-content;
-              align-items: center;
-              grid-gap: 10px;
-            }
-
-          </style>
 
 
         <body style="min-width: 500px">
