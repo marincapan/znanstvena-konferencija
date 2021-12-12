@@ -165,7 +165,9 @@ def signup(request):
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     fetchedSekcije=models.Sekcija.objects.filter().all()
     context['DodatnaPolja']=fetchedPolja
-    context['sekcije']=fetchedSekcije #dodao sam ovo kako bih mogao implementirati select za sekcije
+    #!!
+    context['sekcije']=fetchedSekcije.exclude(naziv="Admin Sekcija") #dodao sam ovo kako bih mogao implementirati select za sekcije
+    ##
     print(context)
     return render(request, 'Signup.html',context)
     
@@ -200,7 +202,7 @@ def signout(request):
         del request.session['LoggedInUserId']
     return redirect('home')
 
-def osobnipodatci(request):
+def osobnipodaci(request):
     if request.method == "POST":
         if 'NewUserName' in request.POST:
             Username = request.POST['Username']
@@ -210,7 +212,7 @@ def osobnipodatci(request):
                 LoggedInUser.save()
             except IntegrityError:
                 messages.error(request, "To korisnicko ime je vec u uporabi")
-                return redirect('osobnipodatci')
+                return redirect('osobnipodaci')
 
         if 'NewFName' in request.POST:
             Fname = request.POST['Fname']
@@ -232,12 +234,13 @@ def osobnipodatci(request):
                 LoggedInUser.save()
             except IntegrityError:
                 messages.error(request, "Ta email adresa je vec u uporabi")
-                return redirect('osobnipodatci')  
-        return redirect('osobnipodatci')
+                return redirect('osobnipodaci')  
+        return redirect('osobnipodaci')
 
     if "LoggedInUserId" in request.session: #ulogirani smo
         LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
         context={}
+        context['LoggedInUser']=request.session['LoggedInUserId']
         context['LoggedInUserRole']=request.session['LoggedInUserRole']
         context['korisnickoIme']=LoggedInUser.korisnickoIme
         context['ime']=LoggedInUser.ime
@@ -249,7 +252,7 @@ def osobnipodatci(request):
     else:
         return redirect('signin')
     
-    return render(request, 'OsobniPodatci.html',context)
+    return render(request, 'OsobniPodaci.html',context)
 
 def mojiradovi(request):
     context={}

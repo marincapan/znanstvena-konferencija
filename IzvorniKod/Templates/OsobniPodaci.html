@@ -4,7 +4,7 @@
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>Osobni podatci</title>
+            <title>Osobni podaci</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
             <link rel="icon" href="{% static '/vectors/icon.svg' %}">
@@ -27,7 +27,7 @@
                 <div class="card" style="border-radius: 15px;">
                   <div class="card-body p-5">
                     <div class="text-uppercase text-center mb-5">
-                      <h2>Osobni podatci</h2>
+                      <h2>Osobni podaci</h2>
                       <hr>
                     </div>
                     
@@ -66,7 +66,7 @@
                             
                             <div class="fs-4 fw-bold" id='korisnickoIme'>{{korisnickoIme}}</div>
 
-                            <form action="/osobnipodatci" method="post" id='NewUserNameForm'>
+                            <form action="/osobnipodaci" method="post" id='NewUserNameForm'>
                               {% csrf_token %}
                               <div>
                                 <div style="max-width: 15rem;" id="UserNameCollapse" class="collapse collapse-horizontal">
@@ -98,7 +98,7 @@
                             
                             <div class="fs-4 fw-bold" id='ime'>{{ime}}</div>
 
-                            <form action="/osobnipodatci" method="post" id='NewFNameForm'>
+                            <form action="/osobnipodaci" method="post" id='NewFNameForm'>
                               {% csrf_token %}
                               <div style="max-width: 15rem;" id="FNameCollapse" class="collapse collapse-horizontal">
                                 <input type="text" class="form-control" id="Fname" name="Fname" placeholder={{ime}} Required>
@@ -128,7 +128,7 @@
                             
                             <div class="fs-4 fw-bold" id='prezime'>{{prezime}}</div>
                             
-                            <form action="/osobnipodatci" method="post" id='NewLNameForm'>
+                            <form action="/osobnipodaci" method="post" id='NewLNameForm'>
                               {% csrf_token %}
                               <div style="max-width: 15rem;" id="LNameCollapse" class="collapse collapse-horizontal">
                                 <input type="text" class="form-control" id="Lname" name="Lname" placeholder={{prezime}} Required>
@@ -158,7 +158,7 @@
                             <div class="fs-4 fw-bold" id='email'>{{email}}</div>
 
                             
-                            <form action="/osobnipodatci" method="post" id='NewEmailForm'>
+                            <form action="/osobnipodaci" method="post" id='NewEmailForm'>
                               {% csrf_token %}
                               <div style="max-width: 15rem;" id="EmailCollapse" class="collapse collapse-horizontal">
                                 <input type="text" class="form-control" id="email" name="email" placeholder={{email}} Required>

@@ -4,16 +4,26 @@
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>Home</title>
+            <title>Naslovna</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+
+            <!-- Vendor CSS Files -->
+            <link href="{%static 'css/vendor/animate.min.css' %}" rel="stylesheet">
+            <link href="{%static 'css/vendor/bootstrap-icons.css' %}" rel="stylesheet">
+            <!--Template Main CSS File-->
+            <link href="{%static 'css/vendor/style.css' %}" rel="stylesheet">
+           
             <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
             <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
             <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+           
+
             <!--nas css-->
             <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
             <!--nas css-->
+
             <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
         </head>
 
@@ -74,32 +84,174 @@
                 {% endfor %}
             {% endif %}
             <!---->
-            <h3> Welcome page Template</h3>
-            {%if not LoggedInUser%}
-                <button type="submit"><a href="signup">Signup</a></button>
-                <button type="submit"><a href="signin">Signin</a></button>
-            {% endif %}
-            {%if LoggedInUser%}
-                <button type="submit"><a href="signout">Signout</a></button>
-                <button type="submit"><a href="osobnipodatci">OsobniPodatci</a></button>
-                {%if LoggedInUserRole == "Sudionik"%}<!--Ako je sudionik-->
-                    <button type="submit"><a href="mojiradovi">MojiRadovi</a></button>
-                {% endif %}
-                {%if LoggedInUserRole == "Admin"%}<!--Ako je admin-->
-                    <button type="submit"><a href="sloziobrazac">Slozi obrazac</a></button>
-                {% endif %}
-            {% endif %}
+
             {%if LoggedInUser%}
                 <h4>Your ID is: {{LoggedInUser}}</h4>
             {% endif %}
 
-            <!--FOOTER-->
-            {% include "./Footer.html" %}
-            <!--FOOTER-->
-        </body>
+
+            <!-- ======= Hero Section ======= -->
+      <section id="hero">
+        <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+          <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+          <div class="carousel-inner" role="listbox">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active" style="background-image: image('../MK2ZK_App/static/bg.png')">
+              <div class="carousel-container">
+                <div class="container">
+                  <h2 class="animate__animated animate__fadeInDown">Dobrodošli na <span>Znanstvenu konferenciju</span></h2>
+                  <div class="animate__animated animate__fadeInUp countdown-container">
+                    Vrijeme do zaključavanja predaje radova:
+                    <div class="row countdown-container">
+                        <div class="countdown-frame col-xs-10 col-sm-5 col-md-2">
+                          <span id="countdown-days"></span><div>dana</div>
+                        </div>
+                        <div class="countdown-frame col-xs-10 col-sm-5 col-md-2">
+                          <span id="countdown-hours"></span><div>sati</div>
+                        </div>
+                        <div class="countdown-frame col-xs-10 col-sm-5 col-md-2">
+                          <span id="countdown-minutes"></span><div>minuta</div>
+                        </div>
+                        <div class="countdown-frame col-xs-10 col-sm-5 col-md-2">
+                          <span id="countdown-seconds"></span><div>sekundi</div>
+                        </div>
+                    </div>
+                  </div>
+
+                  {%if not LoggedInUser %}
+                  <a href="signup" class="btn btn-primary animate__animated animate__fadeInUp scrollto">Registriraj se</a>
+                  {%else%}
+                    {%if LoggedInUserRole == "Sudionik" %}
+                  <a href="mojiradovi" class="btn btn-primary animate__animated animate__fadeInUp scrollto">Predaj rad</a>
+                    {%endif%}
+                  {%endif%}
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item" style="background-image: image('../MK2ZK_App/static/bg.png')">
+              <div class="carousel-container">
+                <div class="container">
+                  <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2>
+                  <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
+                  <a href="#" class="btn btn-primary animate__animated animate__fadeInUp scrollto">Saznaj više</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item" style="background-image: image('../MK2ZK_App/static/bg.png')">
+              <div class="carousel-container">
+                <div class="container">
+                  <h2 class="animate__animated animate__fadeInDown">Sequi ea ut et est quaerat</h2>
+                  <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
+                  <a href="#" class="btn btn-primary animate__animated animate__fadeInUp scrollto">Saznaj više</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          
+
+          <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev" style="text-decoration: none;">
+            <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+          </a>
+
+          <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next" style="text-decoration: none;">
+            <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+          </a>
+
+        </div>
+      </section><!-- End Hero -->
+
+      <div class="gradient-custom-3 card-container" style="min-height: 100vh;">
+        <div class="container pt-5 pb-5 card-item">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+    
+              <div class="text-uppercase text-center mb-5">
+                  <div style="padding-bottom: 9px;" id="titleDiv">
+                    <div>
+                      <h2 style="display: inline;" id="myTitle">Naslov</h2>
+                    </div>
+                  </div>
+                  
+                <hr>
+              </div>
+    
+              <div class="container">
+                  text
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="container pt-5 pb-5 card-item">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+    
+              <div class="text-uppercase text-center mb-5">
+                  <div style="padding-bottom: 9px;" id="titleDiv">
+                    <div>
+                      <h2 style="display: inline;" id="myTitle">Naslov</h2>
+                    </div>
+                  </div>
+                  
+                <hr>
+              </div>
+    
+              <div class="container">
+                  text
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="container pt-5 pb-5 card-item">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+    
+              <div class="text-uppercase text-center mb-5">
+                  <div style="padding-bottom: 9px;" id="titleDiv">
+                    <div>
+                      <h2 style="display: inline;" id="myTitle">Naslov</h2>
+                    </div>
+                  </div>
+                  
+                <hr>
+              </div>
+    
+              <div class="container">
+                  text
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--FOOTER-->
+      {% include "./Footer.html" %}
+      <!--FOOTER-->
+      </body>
 
         <!--nas js-->
         <script src="{% static '/js/hamburgerActions.js' %}"></script>
         <!--nas js-->
 
-    </html>
+        <!-- Vendor JS Files -->
+        <script src="{% static '/js/vendor/glightbox.min.js' %}"></script>
+        <script src="{% static '/js/vendor/isotope.pkgd.min.js' %}"></script>
+        <script src="{% static '/js/vendor/swiper-bundle.min.js' %}"></script>
+        <script src="{% static '/js/vendor/noframework.waypoints.js' %}"></script>
+        <script src="{% static '/js/countdownScript.js' %}"></script>
+
+        <!-- Template Main JS File -->
+        <script src="{% static '/js/vendor/main.js' %}"></script>
+
+</html>

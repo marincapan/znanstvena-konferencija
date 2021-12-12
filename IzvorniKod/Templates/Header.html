@@ -39,7 +39,6 @@
   </symbol>
   <!-- gumb ? -->
   <symbol id="sci-con" viewBox="0 0 29 29">
-      
   </symbol>
 </svg>
 
@@ -89,6 +88,7 @@
                 Predsjedavajuci
               </a>
               {%endif%}
+              
             {% else %}
               <a href="signin" class="nav-link text-white">
                   <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
@@ -96,11 +96,19 @@
               </a>
             {% endif %}
           </li>
+          {%if LoggedInUser %}
+          <li>
+            <a href="osobnipodaci" class="nav-link text-white">
+              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+              Osobni podaci
+          </a>
+          </li>
+          {%endif%}
           <li>
               <!--Za ovo smo rekli da se otvori meni gdje korisnik bira?-->
               {% if LoggedInUser %}
               <a href="signout" class="nav-link text-white">
-                  <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+                <img src="{% static '/vectors/LogoutIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                   Odjava
               </a>
               {% else %}
