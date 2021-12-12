@@ -29,26 +29,62 @@
     <div class="container pt-5 pb-5">
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
+
           <div class="text-uppercase text-center mb-5">
-            <h2>O konferenciji</h2>
+              <div style="padding-bottom: 9px;" id="titleDiv">
+                <div>
+                  <h2 style="display: inline;" id="myTitle">O konferenciji</h2>
+                  
+                  {% if LoggedInUser %}
+                  {%if LoggedInUserRole == "Admin"%}
+                  <span data-bs-toggle="tooltip" title="Uredi" id="UpdateTitle">
+                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateTitle()" value="UpdateTitle"><use xlink:href="#pencil-square"/></svg>
+                  </span>
+
+                  <div style="display: none; margin-left: 5px;" id="formTitleChange">
+                    <button style="border: none; background: none" onclick="" data-bs-toggle="tooltip" title="Spremi promjene" name='newTitle'>
+                      <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
+                    </button>
+                    <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                      <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelTitle()" id="CancelTitle" value="CancelTitle"><use xlink:href="#cancel-changes"/></svg>
+                    </span>
+                  </div>
+
+                  <form action="/info" method="post" id='NewTitleForm'>
+                    {% csrf_token %}
+                    <div>
+                      <div id="TitleColapse" class="collapse collapse-horizontal">
+                        <input type="text" class="form-control" id="Title" name="Title" Required>
+                      </div>
+                    </div>
+                    
+                  </form>
+
+                  {%endif%}
+                  {%endif%}
+                </div>
+              </div>
+              
             <hr>
           </div>
 
+
           <div class="container">
-            <p>
-              Trešnja (latinski: Prunus avium), listopadna je vrsta drveća iz porodice Rosaceae.
-            </p>
-            <p>
-              Stablo trešnje naraste do 20 m, prsnog promjera do 70 cm.
-            </p>
             
-            <p>
+              Trešnja (latinski: Prunus avium), listopadna je vrsta drveća iz porodice Rosaceae.
+            <br>
+            <br>
+            
+               Stablo trešnje naraste do 20 m, prsnog promjera do 70 cm.
+            <br>
+            <br>
+            
               Kora je sivo-crvenkaste boje, sjajna, glatka, ljušti se u obliku koncentričnih krugova. Pri dnu debla stvara se tamni lub, koji se uzdužno raspucava. Izbojci su s jedne strane sivkasti, dok su s druge strane smeđkasti.
               Pupovi su jajoliko čunjasti, na vrhu ušiljeni, obavijeni većim brojem smeđkastih ljuskica, čiji su rubovi sivkasti. Smješteni su naizmjenično i često nagomilani.
               Listovi su eliptični do obrnuto jajoliki, na vrhu ušiljeni, a na bazi suženi, rubovi su napiljeni. Listovi su dugi do 12 cm, s donje strane posuti rijetkim bijelim dlačicama. Na prijelazu od plojke do peteljke lista vide se dvije crvenkaste žlijezde. Prije otpadanja listovi pocrvene.
               Cvjetovi rastu prije listanja, na prošlogodišnjim izbojcima. Bijele su boje, rastu gusto nagomilani, vise na dugim stapkama, a cvat je u obliku gronje.
               Plod je trešnja, jestiva tamnocrvena koštunica s debelim, mesnatim i sočnim usplođem.
-            </p>
+            
           </div>
         </div>
       </div>
@@ -63,23 +99,8 @@
   
 
 </body>
-<script>
-
-          var navbarCollapse = document.getElementById("navbarContent");
-              
-          navbarCollapse.addEventListener('show.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="rotation 0.5s both";
-          });
-          navbarCollapse.addEventListener('shown.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="none";
-            document.getElementById("navbarTogglerIcon").style.transform="rotate(90deg)";
-          });
-          navbarCollapse.addEventListener('hide.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="rotation 0.35s reverse";
-          });
-          navbarCollapse.addEventListener('hidden.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="none";
-            document.getElementById("navbarTogglerIcon").style.transform="rotate(0deg)";
-          });
-</script>
+    <!--nas js-->
+    <script src="{% static '/js/hamburgerActions.js' %}"></script>
+    <script src="{% static '/js/updateInfo.js' %}"></script>
+    <!--nas js-->
 </html>

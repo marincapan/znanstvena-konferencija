@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
-    <html>
-        <head>
+<html>
+  <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <title>Prijava</title>
@@ -15,11 +15,11 @@
             <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
             <!--nas css-->
             <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-        </head>
+  </head>
 
         
 
-        <body>
+  <body>
           <!--HEADER-->
           {% include "./Header.html" %}
           <!--HEADER-->
@@ -79,35 +79,9 @@
               {% include "./Footer.html" %}
               <!--FOOTER-->
 
-            <!--
-            <button type="submit"><a href='/'>Home</a></button><br>
-            <form action="/signin" method="post">
-            {% csrf_token %}
-                <label for="">Username</label>
-                <input type="text" id="Username" name="Username" placeholder="Enter User" Required>
-                <br>
-                <label for="">Confirm Password</label>
-                <input type="password" id="pass1" name="pass1" placeholder="Enter Password" Required>
-                <br>
-                <button type="submit">Sign Up </button>
-            </form>-->
-        </body>
-        <script type="text/javascript">
-          var navbarCollapse = document.getElementById("navbarContent");
-              
-          navbarCollapse.addEventListener('show.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="rotation 0.5s both";
-          });
-          navbarCollapse.addEventListener('shown.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="none";
-            document.getElementById("navbarTogglerIcon").style.transform="rotate(90deg)";
-          });
-          navbarCollapse.addEventListener('hide.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="rotation 0.35s reverse";
-          });
-          navbarCollapse.addEventListener('hidden.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="none";
-            document.getElementById("navbarTogglerIcon").style.transform="rotate(0deg)";
-          });
-        </script>
-    </html>
+  </body>
+        
+  <!--nas js-->
+  <script src="{% static '/js/hamburgerActions.js' %}"></script>
+  <!--nas js-->
+</html>

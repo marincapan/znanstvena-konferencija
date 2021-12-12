@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
+  <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>
@@ -16,9 +16,9 @@
         <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
         <!--nas css-->
         <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-    </head>
+  </head>
 
-    <body>
+  <body>
         <!--HEADER-->
         {% include "./Header.html" %}
         <!--HEADER-->
@@ -56,5 +56,10 @@
         <!--FOOTER-->
         {% include "./Footer.html" %}
         <!--FOOTER-->
-    </body>
+  </body>
+
+  <!--nas js-->
+  <script src="{% static '/js/hamburgerActions.js' %}"></script>
+  <!--nas js-->
+
 </html>
