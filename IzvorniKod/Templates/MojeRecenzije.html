@@ -28,14 +28,42 @@
               <div class="card" style="border-radius: 15px;">
                 <div class="card-body p-5">
                   <div class="text-uppercase text-center mb-5">
-                    <h2>Moje recenzije</h2>
+                    <h2>Dostupni radovi</h2>
                     <hr>
                   </div>
-        
+                  {%for rad in fetchedRadovi%}
+                    {%if rad.recenziranBool == 0%}
+                      <h2>{{rad.naslov}}</h2>
+                      <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori rad</a>
+                      <form action="/mojerecenzije" method="post" id='#'>
+                        {% csrf_token %}
+                        {%for ocjena in fetchedOcjene%}
+                          <div>
+                            <input type="radio" id="{{ocjena.znacenje}}" name="{{rad.sifRad}}ocjena" value="{{ocjena.znacenje}}" style="block" {%if ocjena.id == 1%}checked onclick=UpdateOnOne(){%else%}onclick=UpdateOnElse(){%endif%}>{{ocjena.znacenje}}
+                          </div>
+                        {%endfor%}
+                        <input type="text" id="obrazlozenje" name="{{rad.sifRad}}obrazlozenje" class="form-control form-control-lg"/>
+                        <button type="submit" class="btn btn-primary" name="{{rad.sifRad}}">Ocijeni rad</button>                     
+                      </form>
+                    {%endif%}
+                  {%endfor%}
                   <div class="container">
                     <i>Još nije istekao rok za prijavu radova. Nakon isteka roka, dobivate radove za recenziranje.</i>
                   </div>
+                  {%if fetchedRecenzije%}
+                    <div class="text-uppercase text-center mb-5">
+                      <h2>Moje recenzije</h2>
+                      <hr>
+                    </div>
+                    {%for recenzija in fetchedRecenzije%}
+                      <h2>{{recenzija.rad.naslov}}</h2>
+                      <a class="btn btn-primary" href="Radovi/{{recenzija.rad.pdf}}" role="button">Otvori rad</a>
+                      <h2>{{recenzija.ocjena.znacenje}}</h2>
+                      <h2>{{recenzija.obrazlozenje}}</h2>
+                    {%endfor%}
+                  {%endif%}
                 </div>
+                
               </div>
             </div>
           </div>
@@ -47,6 +75,15 @@
 
   <!--nas js-->
   <script src="{% static '/js/hamburgerActions.js' %}"></script>
+  <script>
+    function UpdateOnOne(){
+      document.getElementById("obrazlozenje").required = false;
+    }
+    function UpdateOnElse(){
+      document.getElementById("obrazlozenje").required = true;
+    }
+
+  </script>
   <!--nas js-->
 
 </html>

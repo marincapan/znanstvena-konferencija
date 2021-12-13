@@ -17,7 +17,6 @@ from django.core import serializers
 
 # Create your views here.
 def home(request):
-    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     if 'randPassword' in request.session:
         del request.session['randPassword']
     #Password se pokazuje jedanput i vise nikad.
@@ -28,7 +27,6 @@ def home(request):
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
-    context['DodatnaPolja']=fetchedPolja
     print(context)
     return render(request, 'Index.html',context)
 
@@ -421,10 +419,43 @@ def info(request):
     return render(request, 'Info.html', context)
 
 def mojerecenzije(request):
-    context={}
-    if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
     
-    if "LoggedInUserRole" in request.session:
+    context={}
+    if "LoggedInUserId" in request.session: #ulogirani smo
+        context["LoggedInUser"]=request.session['LoggedInUserId']
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+    else: #nismo ulogirani
+        return redirect('signin')
+    
+    LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+    recenzentSekcija = LoggedInUser.korisnikSekcija
+    fetchRadovi = models.Rad.objects.filter(radSekcija=recenzentSekcija)
+    fetchOcjene = models.Ocjena.objects.all()
+    fetchRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser)
+    
+    if request.method == "POST":
+        print(request.POST)
+        
+        for rad in fetchRadovi:
+            print(rad.sifRad)
+            print(str(rad.sifRad) in request.POST)
+            if str(rad.sifRad) in request.POST:        
+                ocjena=request.POST[str(rad.sifRad) + "ocjena"]
+                print(ocjena)
+                obrazlozenje=request.POST[str(rad.sifRad) + "obrazlozenje"]
+                newRecenzija=models.Recenzija(
+                    ocjena = models.Ocjena.objects.get(znacenje=ocjena),
+                    obrazlozenje = obrazlozenje,
+                    recenzent = LoggedInUser,
+                    rad = rad
+                )
+                rad.recenziranBool=True
+                rad.save()
+                newRecenzija.save()
+        return redirect('mojerecenzije')
+
+    context['fetchedOcjene']=fetchOcjene
+    context['fetchedRadovi']=fetchRadovi
+    context['fetchedRecenzije']=fetchRecenzije
+    
     return render(request, 'MojeRecenzije.html', context)
