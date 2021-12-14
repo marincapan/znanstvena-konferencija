@@ -32,7 +32,7 @@
                     <hr>
                   </div>
                   {%for rad in fetchedRadovi%}
-                    {%if rad.recenziranBool == 0%}
+                    {%if rad.recenziranBool == 0 and rad.pdf%}
                       <h2>{{rad.naslov}}</h2>
                       <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori rad</a>
                       <form action="/mojerecenzije" method="post" id='#'>
@@ -42,6 +42,14 @@
                             <input type="radio" id="{{ocjena.znacenje}}" name="{{rad.sifRad}}ocjena" value="{{ocjena.znacenje}}" style="block" {%if ocjena.id == 1%}checked onclick=UpdateOnOne(){%else%}onclick=UpdateOnElse(){%endif%}>{{ocjena.znacenje}}
                           </div>
                         {%endfor%}
+                        <!--Ako je rad vec bio jednom ocjenjen i sad je poslana revizija-->
+                        {%for recenzija in fetchedRecenzije%}
+                          {%if recenzija.rad == rad and recenzija.ocjena.id != 1%}
+                            <div>
+                              <h3>Revizija rada zatrazena od strane recenzenta: {{recenzija.recenzent.ime}} {{recenzija.recenzent.prezime}}</h3>
+                            </div>
+                          {%endif%}
+                        {%endfor%}
                         <input type="text" id="obrazlozenje" name="{{rad.sifRad}}obrazlozenje" class="form-control form-control-lg"/>
                         <button type="submit" class="btn btn-primary" name="{{rad.sifRad}}">Ocijeni rad</button>                     
                       </form>
@@ -50,12 +58,12 @@
                   <div class="container">
                     <i>Još nije istekao rok za prijavu radova. Nakon isteka roka, dobivate radove za recenziranje.</i>
                   </div>
-                  {%if fetchedRecenzije%}
+                  {%if fetchedMyRecenzije%}
                     <div class="text-uppercase text-center mb-5">
                       <h2>Moje recenzije</h2>
                       <hr>
                     </div>
-                    {%for recenzija in fetchedRecenzije%}
+                    {%for recenzija in fetchedMyRecenzije%}
                       <h2>{{recenzija.rad.naslov}}</h2>
                       <a class="btn btn-primary" href="Radovi/{{recenzija.rad.pdf}}" role="button">Otvori rad</a>
                       <h2>{{recenzija.ocjena.znacenje}}</h2>

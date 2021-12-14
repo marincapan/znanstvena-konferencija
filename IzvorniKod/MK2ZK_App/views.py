@@ -269,10 +269,14 @@ def mojiradovi(request):
     LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
 
     fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
-    for rad in fetchedRadovi:
-        print(rad.pdf)
-        context['pdf']=rad.pdf
     context['fetchedRadovi']=fetchedRadovi
+    fetchRecenzije=[]
+    for rad in fetchedRadovi:
+        if rad.recenziranBool==True:
+            fetchRecenzije.append(models.Recenzija.objects.get(rad=rad))
+    context['fetchedRecenzije']=fetchRecenzije
+    for rad in fetchedRadovi:
+        context['pdf']=rad.pdf
 
     """
     Mislim da bi bilo sigurnije da se uz predaju provjerava i naziv rada.
@@ -288,6 +292,13 @@ def mojiradovi(request):
             for rad in fetchedRadovi:
                 rad.pdf = uploadedFile
                 rad.save()
+        if 'PonovniUnosPdf' in request.POST:
+            fileTitle = request.POST["fileTitle"]
+            uploadedFile = request.FILES["uploadedFile"]
+            updateRad=models.Rad.objects.get(naslov=fileTitle)
+            updateRad.pdf=uploadedFile
+            updateRad.recenziranBool=False
+            updateRad.save()
             
             return redirect('mojiradovi')
         if 'UploadFile' in request.POST:
@@ -431,7 +442,8 @@ def mojerecenzije(request):
     recenzentSekcija = LoggedInUser.korisnikSekcija
     fetchRadovi = models.Rad.objects.filter(radSekcija=recenzentSekcija)
     fetchOcjene = models.Ocjena.objects.all()
-    fetchRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser)
+    fetchMyRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser)
+    fetchRecenzije = models.Recenzija.objects.all()
     
     if request.method == "POST":
         print(request.POST)
@@ -456,6 +468,7 @@ def mojerecenzije(request):
 
     context['fetchedOcjene']=fetchOcjene
     context['fetchedRadovi']=fetchRadovi
+    context['fetchedMyRecenzije']=fetchMyRecenzije
     context['fetchedRecenzije']=fetchRecenzije
     
     return render(request, 'MojeRecenzije.html', context)
