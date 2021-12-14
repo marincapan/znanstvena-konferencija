@@ -14,12 +14,17 @@
   <link href="{% static '/css/headers.css' %}" rel="stylesheet">
   <!--nas css-->
   <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
-  <!--nas css-->
+
+  <!--tablice-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
   <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-  <base href="/pregled/recenzenti/" />
 
 </head>
-
 
 <body>
 
@@ -41,8 +46,8 @@
             <hr>
           </div>
 
-          <div class="container">
-            <table class="table table-bordered">
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered" id="tablicaRecenzenti">
               <thead>
                 <tr>
                   <th scope="col">ID</th>
@@ -88,6 +93,26 @@
 <!--nas js-->
 <script src="{% static '/js/hamburgerActions.js' %}"></script>
 <script src="{% static '/js/updateInfo.js' %}"></script>
+<!--bitno za datatables-->
+<script>
+  $(document).ready( function () {
+    $('#tablicaRecenzenti').DataTable({
+      responsive: {
+    breakpoints: [
+      {name: 'bigdesktop', width: Infinity},
+      {name: 'meddesktop', width: 1480},
+      {name: 'smalldesktop', width: 1280},
+      {name: 'medium', width: 1188},
+      {name: 'tabletl', width: 1024},
+      {name: 'btwtabllandp', width: 848},
+      {name: 'tabletp', width: 768},
+      {name: 'mobilel', width: 480},
+      {name: 'mobilep', width: 320}
+    ]
+  }
+    });
+  } );
+</script>
 <!--nas js-->
 
 </html>
