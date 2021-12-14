@@ -123,6 +123,71 @@
             "korisnikUstanova" : 1,
             "korisnikSekcija": 1
         }
+        
+    },
+    {
+        "model":"MK2ZK_App.Korisnik",
+        "id":2,
+        "fields":{
+            "korisnickoIme":"recenzent",
+            "lozinka":"recenzent",
+            "ime":"recenzent",
+            "prezime":"recenzent",
+            "email":"recenzentMK2ZK@konferencija.hr",
+            "odobrenBool": "True",
+            "vrstaKorisnik": 3,
+            "korisnikUstanova" : 1,
+            "korisnikSekcija": 2
+        }
+        
+    },
+    {
+        "model":"MK2ZK_App.Korisnik",
+        "id":3,
+        "fields":{
+            "korisnickoIme":"sudionik",
+            "lozinka":"sudionik",
+            "ime":"sudionik",
+            "prezime":"sudionik",
+            "email":"sudionikMK2ZK@konferencija.hr",
+            "odobrenBool": "True",
+            "vrstaKorisnik": 4,
+            "korisnikUstanova" : 1,
+            "korisnikSekcija": 2
+        }
+        
+    },
+    {
+        "model":"MK2ZK_App.Autor",
+        "sifAutor":1,
+        "fields":{
+            "ime":"Petar",
+            "prezime":"Perić",
+            "email": "TestAutor@MK2ZK.hr"
+        }
+        
+    },
+    {
+        "model":"MK2ZK_App.Autor",
+        "sifAutor":2,
+        "fields":{
+            "ime":"Metar",
+            "prezime":"Merić",
+            "email": "TestAutor2@MK2ZK.hr"
+        }
+        
+    },
+    {
+        "model":"MK2ZK_App.Rad",
+        "sifRad":1,
+        "fields":{
+            "naslov":"Test Rad 1",
+            "recenziranBool":"False",
+            "radSekcija": 2,
+            "radKorisnik":3,
+            "autori":[1,2]
+        }
+        
     },
     {
         "model":"MK2ZK_App.TipPoljaObrasca",
