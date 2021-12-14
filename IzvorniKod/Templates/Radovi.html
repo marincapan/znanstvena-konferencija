@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Pregled recenzenata</title>
+  <title>Pregled sudionika</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="{% static '/vectors/icon.svg' %}">
@@ -40,37 +40,35 @@
           <div class="text-uppercase text-center mb-5">
             <div style="padding-bottom: 9px;" id="titleDiv">
               <div>
-                <h2 style="display: inline;" id="myTitle">Pregled recenzenata</h2>
+                <h2 style="display: inline;" id="myTitle">Pregled sudionika</h2>
               </div>
             </div>
             <hr>
           </div>
 
           <div class="table-responsive container">
-            <table class="table table-hover table-bordered" id="tablicaRecenzenti">
+            <table class="table table-hover table-bordered" id="tablicaSudionici">
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col">Korisničko ime</th>
-                  <th scope="col">Ime</th>
-                  <th scope="col">Prezime</th>
-                  <th scope="col">E-pošta</th>
-                  <th scope="col">Status odobrenja</th>
+                  <th scope="col">Naslov</th>
+                  <th scope="col">Status recenzije</th>
+                  <th scope="col">Predao</th>
                   <th scope="col">Sekcija</th>
-                  <th scope="col">Ustanova</th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
-                {% for recenzent in Recenzenti %}
+                {% for rad in Radovi %}
                   <tr class="text-center">
-                    <th scope="row">{{recenzent.idSudionik}}</th>
-                    <td>{{recenzent.korisnickoIme}}</td>
-                    <td>{{recenzent.ime}}</td>
-                    <td>{{recenzent.prezime}}</td>
-                    <td>{{recenzent.email}}</td>
-                    <td>{{recenzent.odobrenBool|yesno:"Odobren,Nije odobren,Nema podataka"}}</td>
-                    <td>{{recenzent.korisnikSekcija_naziv}}</td>
-                    <td>{{recenzent.korisnikUstanova_naziv}}</td>
+                    <th scope="row">{{rad.sifRad}}</th>
+                    <td>{{rad.naslov}}</td>
+                    <td>{{rad.recenziranBool|yesno:"Recenziran,Nije recenziran,Nema podataka"}}</td>
+                    <td>{{rad.radKorisnik_prezime}}</td>
+                    <td>{{rad.radSekcija_naziv}}</td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-primary" href="/Radovi/{{rad.pdf}}" role="button" download="{{rad.naslov}}">Preuzmi rad</a>
+                    </td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -96,7 +94,7 @@
 <!--bitno za datatables-->
 <script>
   $(document).ready( function () {
-    $('#tablicaRecenzenti').DataTable({
+    $('#tablicaSudionici').DataTable({
       responsive: {
         breakpoints: [
           {name: 'bigdesktop', width: Infinity},

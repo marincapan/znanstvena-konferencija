@@ -498,6 +498,18 @@ def sudionici(request):
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+
+    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=1)
+    sekcije = models.Sekcija.objects.all()
+    ustanove = models.Ustanova.objects.all()
+
+    """Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea"""
+    for sudionik in sudionici:
+        sudionik.korisnikSekcija_naziv = sekcije.get(sifSekcija=sudionik.korisnikSekcija_id).naziv
+        sudionik.korisnikUstanova_naziv = ustanove.get(sifUstanova=sudionik.korisnikUstanova_id).naziv
+
+    context["Sudionici"] = sudionici
+
     return render(request, 'Sudionici.html', context)
 
 def radovi(request):
@@ -507,4 +519,16 @@ def radovi(request):
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+
+    radovi = models.Rad.objects.all()
+    sekcije = models.Sekcija.objects.all()
+    korisnici = models.Korisnik.objects.all()
+
+    """Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea"""
+    for rad in radovi:
+        rad.radSekcija_naziv = sekcije.get(sifSekcija=rad.radSekcija_id).naziv
+        rad.radKorisnik_prezime = korisnici.get(id=rad.radKorisnik_id).prezime
+
+    context["Radovi"] = radovi
+
     return render(request, 'Radovi.html', context)

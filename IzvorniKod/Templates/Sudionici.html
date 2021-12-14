@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Pregled recenzenata</title>
+  <title>Pregled sudionika</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="{% static '/vectors/icon.svg' %}">
@@ -40,14 +40,14 @@
           <div class="text-uppercase text-center mb-5">
             <div style="padding-bottom: 9px;" id="titleDiv">
               <div>
-                <h2 style="display: inline;" id="myTitle">Pregled recenzenata</h2>
+                <h2 style="display: inline;" id="myTitle">Pregled sudionika</h2>
               </div>
             </div>
             <hr>
           </div>
 
           <div class="table-responsive container">
-            <table class="table table-hover table-bordered" id="tablicaRecenzenti">
+            <table class="table table-hover table-bordered" id="tablicaSudionici">
               <thead>
                 <tr>
                   <th scope="col">ID</th>
@@ -61,16 +61,16 @@
                 </tr>
               </thead>
               <tbody>
-                {% for recenzent in Recenzenti %}
+                {% for sudionik in Sudionici %}
                   <tr class="text-center">
-                    <th scope="row">{{recenzent.idSudionik}}</th>
-                    <td>{{recenzent.korisnickoIme}}</td>
-                    <td>{{recenzent.ime}}</td>
-                    <td>{{recenzent.prezime}}</td>
-                    <td>{{recenzent.email}}</td>
-                    <td>{{recenzent.odobrenBool|yesno:"Odobren,Nije odobren,Nema podataka"}}</td>
-                    <td>{{recenzent.korisnikSekcija_naziv}}</td>
-                    <td>{{recenzent.korisnikUstanova_naziv}}</td>
+                    <th scope="row">{{sudionik.idSudionik}}</th>
+                    <td>{{sudionik.korisnickoIme}}</td>
+                    <td>{{sudionik.ime}}</td>
+                    <td>{{sudionik.prezime}}</td>
+                    <td>{{sudionik.email}}</td>
+                    <td>{{sudionik.odobrenBool|yesno:"Odobren,Nije odobren,Nema podataka"}}</td>
+                    <td>{{sudionik.korisnikSekcija_naziv}}</td>
+                    <td>{{sudionik.korisnikUstanova_naziv}}</td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -96,7 +96,7 @@
 <!--bitno za datatables-->
 <script>
   $(document).ready( function () {
-    $('#tablicaRecenzenti').DataTable({
+    $('#tablicaSudionici').DataTable({
       responsive: {
         breakpoints: [
           {name: 'bigdesktop', width: Infinity},
