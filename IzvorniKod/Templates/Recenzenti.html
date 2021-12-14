@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Pregled recenzenata</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <!--nas css-->
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+  <base href="/pregled/recenzenti/" />
+
+</head>
+
+
+<body>
+
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+  <div class="gradient-custom-3 " style="min-height: 100vh;">
+    <div class="container pt-5 pb-5">
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-5">
+
+          <div class="text-uppercase text-center mb-5">
+            <div style="padding-bottom: 9px;" id="titleDiv">
+              <div>
+                <h2 style="display: inline;" id="myTitle">Pregled recenzenata</h2>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div class="container">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Korisničko ime</th>
+                  <th scope="col">Ime</th>
+                  <th scope="col">Prezime</th>
+                  <th scope="col">E-pošta</th>
+                  <th scope="col">Status odobrenja</th>
+                  <th scope="col">Sekcija</th>
+                  <th scope="col">Ustanova</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for recenzent in Recenzenti %}
+                  <tr>
+                    <th scope="row">{{recenzent.idSudionik}}</th>
+                    <td scope="row">{{recenzent.korisnickoIme}}</th>
+                    <td scope="row">{{recenzent.ime}}</th>
+                    <td scope="row">{{recenzent.prezime}}</th>
+                    <td scope="row">{{recenzent.email}}</th>
+                    <td scope="row">{{recenzent.odobrenBool|yesno:"Odobren,Nije odobren,Nema podataka"}}</th>
+                    <td scope="row">{{recenzent.korisnikSekcija_naziv}}</th>
+                    <td scope="row">{{recenzent.korisnikUstanova_naziv}}</th>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!--FOOTER-->
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
+
+
+</body>
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<script src="{% static '/js/updateInfo.js' %}"></script>
+<!--nas js-->
+
+</html>

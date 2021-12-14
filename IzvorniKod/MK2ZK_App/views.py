@@ -459,3 +459,52 @@ def mojerecenzije(request):
     context['fetchedRecenzije']=fetchRecenzije
     
     return render(request, 'MojeRecenzije.html', context)
+
+def pregled(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+    return render(request, 'Pregled.html', context)
+
+def recenzenti(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+
+    recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
+    sekcije = models.Sekcija.objects.all()
+    ustanove = models.Ustanova.objects.all()
+
+    """Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea"""
+    for recenzent in recenzenti:
+        recenzent.korisnikSekcija_naziv = sekcije.get(sifSekcija=recenzent.korisnikSekcija_id).naziv
+        recenzent.korisnikUstanova_naziv = ustanove.get(sifUstanova=recenzent.korisnikUstanova_id).naziv
+
+
+    context["Recenzenti"] = recenzenti
+
+    return render(request, 'Recenzenti.html', context)
+
+def sudionici(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+    return render(request, 'Sudionici.html', context)
+
+def radovi(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+    return render(request, 'Radovi.html', context)

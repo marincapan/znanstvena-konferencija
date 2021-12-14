@@ -50,6 +50,11 @@
     background-color: #c1666b;
     border-color: #c1666b;
 }
+
+.btn-outline-primary {
+  background-color: transparent;
+}
+
 .btn-outline-primary:hover {
     background-color: #c1666b;
     border-color: #c1666b;

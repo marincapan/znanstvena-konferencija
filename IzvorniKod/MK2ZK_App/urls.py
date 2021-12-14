@@ -11,5 +11,9 @@ urlpatterns = [
     path('mojiradovi', views.mojiradovi, name='mojiradovi'),
     path('sloziobrazac', views.sloziobrazac, name='sloziobrazac'),
     path('info', views.info, name='info'),
-    path('mojerecenzije', views.mojerecenzije, name='mojerecenzije')
+    path('mojerecenzije', views.mojerecenzije, name='mojerecenzije'),
+    path('pregled', views.pregled, name='pregled'),
+    path('pregled/recenzenti', views.recenzenti, name='recenzenti'),
+    path('pregled/sudionici', views.sudionici, name='sudionici'),
+    path('pregled/radovi', views.radovi, name='radovi')
 ]
