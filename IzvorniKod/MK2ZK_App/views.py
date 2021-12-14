@@ -292,12 +292,13 @@ def mojiradovi(request):
             for rad in fetchedRadovi:
                 rad.pdf = uploadedFile
                 rad.save()
+            return redirect('mojiradovi')
         if 'PonovniUnosPdf' in request.POST:
             fileTitle = request.POST["fileTitle"]
             uploadedFile = request.FILES["uploadedFile"]
             updateRad=models.Rad.objects.get(naslov=fileTitle)
             updateRad.pdf=uploadedFile
-            updateRad.recenziranBool=False
+            updateRad.revizijaBool=True
             updateRad.save()
             
             return redirect('mojiradovi')
@@ -453,7 +454,6 @@ def mojerecenzije(request):
             print(str(rad.sifRad) in request.POST)
             if str(rad.sifRad) in request.POST:        
                 ocjena=request.POST[str(rad.sifRad) + "ocjena"]
-                print(ocjena)
                 obrazlozenje=request.POST[str(rad.sifRad) + "obrazlozenje"]
                 newRecenzija=models.Recenzija(
                     ocjena = models.Ocjena.objects.get(znacenje=ocjena),
@@ -462,9 +462,13 @@ def mojerecenzije(request):
                     rad = rad
                 )
                 rad.recenziranBool=True
+                rad.revizijaBool=False
                 rad.save()
                 newRecenzija.save()
         return redirect('mojerecenzije')
+
+    for rad in fetchRadovi:
+        print(rad in fetchRecenzije)
 
     context['fetchedOcjene']=fetchOcjene
     context['fetchedRadovi']=fetchRadovi

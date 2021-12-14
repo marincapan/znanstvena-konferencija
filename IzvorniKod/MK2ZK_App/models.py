@@ -66,6 +66,7 @@ class Rad(models.Model):
     radSekcija = models.ForeignKey("Sekcija", on_delete=models.CASCADE)
     radKorisnik = models.ForeignKey("Korisnik", on_delete=models.CASCADE)
     autori = models.ManyToManyField(Autor,through="AutorRad")
+    revizijaBool = models.BooleanField(default=False)
 
 class AutorRad(models.Model):
     Autor = models.ForeignKey("Autor", on_delete=models.CASCADE)

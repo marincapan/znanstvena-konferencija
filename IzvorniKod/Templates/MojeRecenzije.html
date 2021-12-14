@@ -42,14 +42,6 @@
                             <input type="radio" id="{{ocjena.znacenje}}" name="{{rad.sifRad}}ocjena" value="{{ocjena.znacenje}}" style="block" {%if ocjena.id == 1%}checked onclick=UpdateOnOne(){%else%}onclick=UpdateOnElse(){%endif%}>{{ocjena.znacenje}}
                           </div>
                         {%endfor%}
-                        <!--Ako je rad vec bio jednom ocjenjen i sad je poslana revizija-->
-                        {%for recenzija in fetchedRecenzije%}
-                          {%if recenzija.rad == rad and recenzija.ocjena.id != 1%}
-                            <div>
-                              <h3>Revizija rada zatrazena od strane recenzenta: {{recenzija.recenzent.ime}} {{recenzija.recenzent.prezime}}</h3>
-                            </div>
-                          {%endif%}
-                        {%endfor%}
                         <input type="text" id="obrazlozenje" name="{{rad.sifRad}}obrazlozenje" class="form-control form-control-lg"/>
                         <button type="submit" class="btn btn-primary" name="{{rad.sifRad}}">Ocijeni rad</button>                     
                       </form>
@@ -61,13 +53,30 @@
                   {%if fetchedMyRecenzije%}
                     <div class="text-uppercase text-center mb-5">
                       <h2>Moje recenzije</h2>
-                      <hr>
                     </div>
                     {%for recenzija in fetchedMyRecenzije%}
-                      <h2>{{recenzija.rad.naslov}}</h2>
-                      <a class="btn btn-primary" href="Radovi/{{recenzija.rad.pdf}}" role="button">Otvori rad</a>
-                      <h2>{{recenzija.ocjena.znacenje}}</h2>
-                      <h2>{{recenzija.obrazlozenje}}</h2>
+                    <hr>
+                      {%if recenzija.rad.revizijaBool == 1 %}
+                        <h2> {{recenzija.rad.naslov}} - Revizija </h2>
+                        <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori rad</a>
+                        <form action="/mojerecenzije" method="post" id='#'>
+                          {% csrf_token %}
+                          {%for ocjena in fetchedOcjene%}
+                            <div>
+                              <input type="radio" id="{{ocjena.znacenje}}" name="{{recenzija.rad.sifRad}}ocjena" value="{{ocjena.znacenje}}" style="block" {%if ocjena.id == 1%}checked onclick=UpdateOnOne(){%else%}onclick=UpdateOnElse(){%endif%}>{{ocjena.znacenje}}
+                            </div>
+                          {%endfor%}
+                          <input type="text" id="obrazlozenje" name="{{recenzija.rad.sifRad}}obrazlozenje" class="form-control form-control-lg"/>
+                          <button type="submit" class="btn btn-primary" name="{{recenzija.rad.sifRad}}">Ocijeni rad</button>                     
+                        </form>
+                      {%else%}
+                        <h2>{{recenzija.rad.naslov}}</h2>
+                        <a class="btn btn-primary" href="Radovi/{{recenzija.rad.pdf}}" role="button">Otvori rad</a>
+                        <h2>{{recenzija.ocjena.znacenje}}</h2>
+                        {%if recenzija.obrazlozenje %}
+                          <h2><b>Obrazlozenje:</b> {{recenzija.obrazlozenje}}</h2>
+                        {%endif%}
+                      {%endif%}
                     {%endfor%}
                   {%endif%}
                 </div>
