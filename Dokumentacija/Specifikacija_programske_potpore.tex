@@ -70,9 +70,9 @@
 					\begin{packed_enum}
 						
 						\item pregledavati i mijenjati osobne podatke 
-						\item vidjeti sve podatke o sudionicima, mijenjati ih i dodavati sadržaj
-						\item preuzeti sve pristigle radove na lokalno računalo
-						\item dati odobrenje za obavljanje recenzije radova recenzentima
+						\item pregledavati i mijenjati podatke sudionika i/ili recenzenata
+						\item pregledati i/ili preuzeti sve pristigle radove na lokalno računalo
+						\item odobriti registraciju recenzenta
 						\item svima ili samo odabranim korisnicima slati obavijesti na njihove adrese e-pošte
 					
 				
@@ -84,16 +84,16 @@
 						
 						\item pregledavati i mijenjati osobne podatke 
 						\item upisati podatke o konferenciji
+						\item pregledavati i mijenjati sadržaj naslovnice
 						\item odrediti predsjedavajućeg konferencije
-
 						\item pratiti stanje COVID-19 pandemije putem javno dostupnih podataka o incidenciji u pojedinim državama
-
+						\item pregledati i/ili preuzeti sve pristigle radove na lokalno računalo
 						\item učiniti radove javno dostupnima u slučaju pogoršanja epidemiološke situacije
 						\item definirati upitnik za prijavu na konferenciju
 						\item vidjeti broj i imena aktivno registriranih korisnika
 						\item pregledavati statistiku (broj radova) prijava po državama, sekcijama
-						\item pregledavati i mijenjati podatke sudionika
-						\item poslati obavijest pojedinim ili svim sudionicima 
+						\item pregledavati i mijenjati podatke sudionika i/ili recenzenata
+						\item svima ili samo odabranim korisnicima slati obavijesti na njihove adrese e-pošte
 
 					\end{packed_enum}
 				\end{packed_enum}
@@ -760,7 +760,6 @@
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
-<<<<<<< HEAD
 							
 							\item Korisnik odabire gumb "Moje recenzije" iz izbornika te mu se učita stranica s popisom svih recenzija
 							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi, po autoru) te mu se sukladno prikazuje popis recenzija koje odgovaraju rezultatima filtra
@@ -956,7 +955,7 @@
 
 					\noindent \underbar{\textbf{UC21 - Slanje obavijesti odabranim korisnicima}}
 					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Predsjedavajući konferencije
+						\item \textbf{Glavni sudionik:} Predsjedavajući konferencije, administrator
 						\item \textbf{Cilj:} Obavijestiti  sudionike i recenzente o promjeni ili novosti vezanoj za konferenciju
 
 						\item \textbf{Sudionici:} Baza podataka
@@ -966,10 +965,10 @@
 						\item[] \begin{packed_enum}
 							\item Korisnik bira gumb "Administracijsko sučelje" iz glavnog izbornika
 							\item Korisnik bira gumb "Pošalji obavijest sudionicima" na vrhu stranice
-
-							\item Pojavljuje se polje za unos teksta obavijesti te korisnik piše tekst obavijesti
+							\item Korisniku se pojavljuje popis korisnika, koje zatim po želji odabire i/ili filtrira (po sekciji ili po državi), a može i kliknuti gumb "Odaberi sve"
+							\item Nakon što je odabran minimalno jedan korisnik, pojavljuje se polje za unos teksta obavijesti te korisnik piše tekst obavijesti
 							\item Korisnik bira opciju "Pošalji"
-							\item Svi sudionici i recenzenti primaju obavijest putem e-maila s kojim su se registrirali
+							\item Svi odabrani sudionici i recenzenti primaju obavijest putem e-maila s kojim su se registrirali
 
 						\end{packed_enum}
 					
@@ -1009,18 +1008,10 @@
 							\item Korisnik "kvačicama" označava polja za pitanja koja želi uključiti u upitnik, a odznačava ona koje želi ukloniti
 							\item Korisnik bira opciju "Ažuriraj obrazac"
 							\item Ažurira se baza podataka i upitnik, korisniku se pojavljuju sva polja koja se trenutno nalaze u obrascu za registraciju
-=======
-							\item Korisnik bira gumb "Administracijsko sučelje" iz glavnog izbornika
-							\item Korisnik na administracijskom sučelju bira opciju "Definiraj upitnik"
-							\item Korisnik "kvačicama" označava polja za pitanja koja želi uključiti u upitnik, a odznačava ona koje želi ukloniti (dio polja je predefiniran i ne može ih odznačiti)
-							\item Korisnik bira opciju "Zaključaj"
-							\item Ažurira se baza podataka i upitnik
->>>>>>> main
 						\end{packed_enum}
 					
 						\item \textbf{Opis mogućih odstupanja:}
 						\item[] \begin{packed_enum}
-<<<<<<< HEAD
 							
 							\item[3.a] Korisnik unese naziv polja i tip podatka, ali ne odabere opciju "Dodaj novo polje"
 							\item[] \begin{packed_enum}
@@ -1028,10 +1019,6 @@
 							\end{packed_enum}
 
 							\item[6.a] Korisnik unese promjene, ali ne odabere opciju "Ažuriraj obrazac"
-=======
-
-							\item[4.a] Korisnik unese promjene, ali ne odabere opciju "Zaključaj"
->>>>>>> main
 							\item[] \begin{packed_enum}
 								\item[1.] Sustav javlja korisniku kako promjene nisu pohranjene prije izlaska iz prozora
 							\end{packed_enum}
@@ -1379,7 +1366,7 @@
 		 
 			 \begin{packed_item}
 
-				\item Sustav treba omogućiti istovremeni rad više korisnika, isto kao što i treba osigurati da svaki korisnik ima jedinstvenu i sigurnu zaporku s kojom se prijavljuju u sustav. Također, svi korisnici koji vrše registraciju daju privolu da pristaju na prikupljanje i daljnju obradu osobnih podataka sukladno sa zakonom o zaštiti podataka (GDPR). Sustav će koristiti protokol HTTPS za komunikaciju između korisnika i servera.
+				\item Sustav treba omogućiti istovremeni rad više korisnika, isto kao što i treba osigurati da svaki korisnik ima jedinstvenu i sigurnu zaporku s kojom se prijavljuju u sustav. Također, svi korisnici koji vrše registraciju daju privolu da pristaju na prikupljanje i daljnju obradu osobnih podataka sukladno sa zakonom o zaštiti podataka (GDPR). Sustav će koristiti protokol HTTP za komunikaciju između korisnika i servera.
 
 				\item Sustav treba spriječiti višestruku prijavu istog rada (radova istog naslova i autora).
 				\item Sustav treba biti jednostavan i intuitivan za korištenje, a implementiran je kao web-aplikacija kreirana korištenjem objektno-orijentiranih jezika.
