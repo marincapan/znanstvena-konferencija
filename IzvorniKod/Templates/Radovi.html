@@ -56,7 +56,7 @@
             <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaRadovi">
               <thead style="border-bottom: 1px;">
                 <tr class="text-center">
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
                   <th scope="col">Naslov</th>
                   <th scope="col">Status recenzije</th>
                   <th scope="col">Predao</th>
@@ -114,6 +114,10 @@
           {name: 'mobilep', width: 320}
         ]
       },
+      "columnDefs": [ {
+          "targets": 5,
+          "orderable": false
+      }],
       language: {
         lengthMenu: "Prikaži _MENU_ redaka po stranici",
         zeroRecords: "Nema podataka",

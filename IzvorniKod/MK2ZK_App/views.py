@@ -547,7 +547,7 @@ def sudionici(request):
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
 
-    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=1)
+    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
     sekcije = models.Sekcija.objects.all()
     ustanove = models.Ustanova.objects.all()
 

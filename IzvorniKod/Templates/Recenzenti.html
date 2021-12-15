@@ -50,8 +50,8 @@
           <div class="table-responsive container">
             <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaRecenzenti">
               <thead style="border-bottom: 1px;">
-                <tr>
-                  <th scope="col">ID</th>
+                <tr class="text-center">
+                  <th scope="col">#</th>
                   <th scope="col">Korisničko ime</th>
                   <th scope="col">Ime</th>
                   <th scope="col">Prezime</th>
@@ -64,7 +64,7 @@
               <tbody>
                 {% for recenzent in Recenzenti %}
                   <tr class="text-center">
-                    <th scope="row">{{recenzent.idSudionik}}</th>
+                    <th scope="row">{{recenzent.id}}</th>
                     <td>{{recenzent.korisnickoIme}}</td>
                     <td>{{recenzent.ime}}</td>
                     <td>{{recenzent.prezime}}</td>
