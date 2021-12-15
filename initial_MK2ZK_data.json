@@ -8,7 +8,9 @@
             "datumKonferencije":"2022-12-12",
             "rokPrijave":"2022-12-12",
             "rokRecenzenti":"2022-12-12",
-            "rokAdmin":"2022-12-12"
+            "rokAdmin":"2022-12-12",
+            "rokPocRecenzija" : "2022-12-12",
+            "rokPocPrijava" : "2022-12-12"
         }
     },
     {
@@ -119,6 +121,7 @@
             "prezime":"admin",
             "email":"adminMK2ZK@konferencija.hr",
             "odobrenBool": "True",
+            "potvrdenBool": "True",
             "vrstaKorisnik": 1,
             "korisnikUstanova" : 1,
             "korisnikSekcija": 1
@@ -135,6 +138,7 @@
             "prezime":"recenzent",
             "email":"recenzentMK2ZK@konferencija.hr",
             "odobrenBool": "True",
+            "potvrdenBool": "True",
             "vrstaKorisnik": 3,
             "korisnikUstanova" : 1,
             "korisnikSekcija": 2
@@ -151,6 +155,7 @@
             "prezime":"sudionik",
             "email":"sudionikMK2ZK@konferencija.hr",
             "odobrenBool": "True",
+            "potvrdenBool": "True",
             "vrstaKorisnik": 4,
             "korisnikUstanova" : 1,
             "korisnikSekcija": 2

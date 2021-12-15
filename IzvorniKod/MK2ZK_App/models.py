@@ -24,7 +24,6 @@ class Autor(models.Model):
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
     email = models.CharField(max_length=50,unique=True)
-    OZK = models.BooleanField(default=False)
 
 def increment_KorisnikID():
   last_korisnik = Korisnik.objects.all().order_by('id').last()
@@ -45,6 +44,7 @@ class Korisnik(models.Model):
     email = models.CharField(max_length=50, unique=True)
     idSudionik = models.CharField(max_length=10, default=increment_KorisnikID)
     odobrenBool = models.BooleanField(default=False)
+    potvrdenBool = models.BooleanField(default=False)
     vrstaKorisnik = models.ForeignKey('Uloga',on_delete=models.CASCADE)
     korisnikUstanova = models.ForeignKey('Ustanova',on_delete=models.CASCADE)
     korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE)
@@ -81,6 +81,8 @@ class Konferencija(models.Model):
     rokPrijave = models.DateField()
     rokRecenzenti = models.DateField()
     rokAdmin = models.DateField()
+    rokPocRecenzija = models.DateField()
+    rokPocPrijava = models.DateField()
 
 class TipPoljaObrasca(models.Model):
     id = models.AutoField(primary_key=True)
