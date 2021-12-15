@@ -1,9 +1,10 @@
 from collections import defaultdict
+from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
 from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
-from django.http.response import HttpResponse
+from django.http.response import FileResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
@@ -12,6 +13,8 @@ from . import models
 from django.db import IntegrityError 
 from django.core import serializers
 
+import zipfile
+import os
 
 
 
@@ -513,6 +516,30 @@ def sudionici(request):
     return render(request, 'Sudionici.html', context)
 
 def radovi(request):
+    print(request.method)
+    if request.method == "POST":
+        korisnici = models.Korisnik.objects.all()
+        radovi = models.Rad.objects.all()
+
+        zip_name = "radovi.zip"
+        s = BytesIO()
+        zip = zipfile.ZipFile(s, "w")
+
+        for rad in radovi:
+            if(rad.pdf.name == ''):
+                break
+            korisnik = korisnici.get(id=rad.radKorisnik_id)
+            pdf_dir, pdf_name = os.path.split(rad.pdf.name)
+            path = os.path.join(korisnik.prezime + korisnik.ime, rad.naslov, pdf_name)
+
+            zip.write("IzvorniKod/Radovi/" + rad.pdf.name, path)
+
+        zip.close()
+
+        resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+        resp["Content-Disposition"] = 'attachment; filename=%s' % zip_name
+        return resp
+
     context={}
     if "LoggedInUserId" in request.session:
         context["LoggedInUser"]=request.session['LoggedInUserId']
