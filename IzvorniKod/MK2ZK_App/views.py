@@ -14,7 +14,15 @@ from django.core import serializers
 
 
 
-
+def increment_KorisnikID():
+  last_korisnik = models.Korisnik.objects.all().order_by('id').last()
+  if not last_korisnik:
+    return '0001'
+  korisnik_id = last_korisnik.idSudionik
+  korisnik_int = int(korisnik_id)
+  new_korisnik_int = korisnik_int + 1
+  new_korisnik_id =str(new_korisnik_int).zfill(4)
+  return new_korisnik_id
 # Create your views here.
 def home(request):
     if 'randPassword' in request.session:
@@ -23,7 +31,7 @@ def home(request):
 
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        context["LoggedInUser"]=models.Korisnik.objects.get(id=request.session['LoggedInUserId']).idSudionik
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
@@ -48,6 +56,7 @@ def signup(request):
         if(uloga == "Sudionik"):
             title = request.POST['title']
             brojAutora = int(request.POST['brojAutora'])
+            idSudionik=increment_KorisnikID()
 
             #Parsiramo autore
             autori=[]
@@ -90,7 +99,7 @@ def signup(request):
 
             #Probaj spremiti novog korisnika
             try:
-                NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
+                NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,idSudionik=idSudionik,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
                 NoviKorisnik.save()
             except IntegrityError:
                 messages.error(request, "Korisnicko ime ili email je vec u uporabi")
@@ -177,7 +186,7 @@ def signin(request):
             if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists():
                 LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
                 print(LoggedInUser.vrstaKorisnik.naziv)
-                request.session['LoggedInUserId']=LoggedInUser.idSudionik
+                request.session['LoggedInUserId']=LoggedInUser.id
                 request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
                 if LoggedInUser.odobrenBool==False:
                     messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")

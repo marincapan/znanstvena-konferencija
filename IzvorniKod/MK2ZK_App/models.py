@@ -25,15 +25,6 @@ class Autor(models.Model):
     prezime = models.CharField(max_length=50)
     email = models.CharField(max_length=50,unique=True)
 
-def increment_KorisnikID():
-  last_korisnik = Korisnik.objects.all().order_by('id').last()
-  if not last_korisnik:
-    return '0000'
-  korisnik_id = last_korisnik.idSudionik
-  korisnik_int = int(korisnik_id)
-  new_korisnik_int = korisnik_int + 1
-  new_korisnik_id =str(new_korisnik_int).zfill(4)
-  return new_korisnik_id
 
 class Korisnik(models.Model):
     id = models.AutoField(primary_key=True)
@@ -42,7 +33,7 @@ class Korisnik(models.Model):
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
     email = models.CharField(max_length=50, unique=True)
-    idSudionik = models.CharField(max_length=10, default=increment_KorisnikID)
+    idSudionik = models.CharField(max_length=10)
     odobrenBool = models.BooleanField(default=False)
     potvrdenBool = models.BooleanField(default=False)
     vrstaKorisnik = models.ForeignKey('Uloga',on_delete=models.CASCADE)

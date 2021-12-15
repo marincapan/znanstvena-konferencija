@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
                 ('ime', models.CharField(max_length=50)),
                 ('prezime', models.CharField(max_length=50)),
                 ('email', models.CharField(max_length=50, unique=True)),
-                ('idSudionik', models.CharField(default=IzvorniKod.MK2ZK_App.models.increment_KorisnikID, max_length=10)),
+                ('idSudionik', models.CharField(max_length=10)),
                 ('odobrenBool', models.BooleanField(default=False)),
                 ('vrstaKorisnik', models.IntegerField(choices=[(1, 'Admin'), (2, 'Presjedavajući'), (3, 'Recenzent'), (4, 'Sudionik')])),
                 ('korisnikSekcija', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='MK2ZK_App.sekcija')),

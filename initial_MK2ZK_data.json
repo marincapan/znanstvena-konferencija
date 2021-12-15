@@ -154,6 +154,7 @@
             "ime":"sudionik",
             "prezime":"sudionik",
             "email":"sudionikMK2ZK@konferencija.hr",
+            "idSudionik": "0001",
             "odobrenBool": "True",
             "potvrdenBool": "True",
             "vrstaKorisnik": 4,
