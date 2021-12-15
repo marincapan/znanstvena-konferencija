@@ -210,6 +210,7 @@ def signin(request):
 def signout(request):
     if 'LoggedInUserId' in request.session:
         del request.session['LoggedInUserId']
+        del request.session['LoggedInUserRole']
     return redirect('home')
 
 def osobnipodaci(request):
