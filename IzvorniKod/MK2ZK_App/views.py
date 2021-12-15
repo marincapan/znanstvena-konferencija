@@ -442,7 +442,7 @@ def mojerecenzije(request):
         for rad in fetchRadovi:
             print(rad.sifRad)
             print(str(rad.sifRad) in request.POST)
-            if str(rad.sifRad) in request.POST:        
+            if str(rad.sifRad) in request.POST:
                 ocjena=request.POST[str(rad.sifRad) + "ocjena"]
                 print(ocjena)
                 obrazlozenje=request.POST[str(rad.sifRad) + "obrazlozenje"]

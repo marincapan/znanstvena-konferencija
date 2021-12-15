@@ -12,16 +12,17 @@
   <link rel="icon" href="{% static '/vectors/icon.svg' %}">
   <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <!--nas css-->
   <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
 
   <!--tablice-->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-
+  <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" />
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+  
   <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
 
 </head>
@@ -45,16 +46,16 @@
             </div>
             <hr>
           </div>
-          <div class="container">
+          <div class="container" >
             <form action="radovi" method="POST">
               {% csrf_token %}
               <button type="submit" class="btn btn-primary">Preuzmi sve</button>
             </form>
           </div>
           <div class="table-responsive container mt-3 mb-3">
-            <table class="table table-hover table-bordered" id="tablicaRadovi">
-              <thead>
-                <tr>
+            <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaRadovi">
+              <thead style="border-bottom: 1px;">
+                <tr class="text-center">
                   <th scope="col">ID</th>
                   <th scope="col">Naslov</th>
                   <th scope="col">Status recenzije</th>
@@ -72,7 +73,7 @@
                     <td>{{rad.radKorisnik_prezime}}</td>
                     <td>{{rad.radSekcija_naziv}}</td>
                     <td>
-                      <a class="btn btn-sm btn-outline-primary" href="/Radovi/{{rad.pdf}}" role="button" download="{{rad.naslov}}">Preuzmi rad</a>
+                      <a class="btn btn-sm btn-primary" href="/Radovi/{{rad.pdf}}" role="button" download="{{rad.naslov}}">Preuzmi</a>
                     </td>
                   </tr>
                 {% endfor %}

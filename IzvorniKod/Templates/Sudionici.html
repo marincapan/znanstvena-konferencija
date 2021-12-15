@@ -12,15 +12,16 @@
   <link rel="icon" href="{% static '/vectors/icon.svg' %}">
   <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <!--nas css-->
   <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
 
   <!--tablice-->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" />
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
 
   <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
 
@@ -47,8 +48,8 @@
           </div>
 
           <div class="table-responsive container">
-            <table class="table table-hover table-bordered" id="tablicaSudionici">
-              <thead>
+            <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaSudionici">
+              <thead style="border-bottom: 1px;">
                 <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Korisničko ime</th>
