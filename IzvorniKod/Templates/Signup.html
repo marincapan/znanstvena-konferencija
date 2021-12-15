@@ -114,6 +114,7 @@
                                 <label for="recenzent" class="emphasized-text"><b>Recenzent</b></label></div>
                             </div>
 
+                            {%if sekcije%}
                             <div class="form-outline mb-4">
                               <label class="form-label" for="" id='sectionLabel'>Sekcija</label>
                               <select type="text" id="section" name="section" class="form-control form-control-lg" required>
@@ -122,6 +123,7 @@
                                 {%endfor%}
                               </select>
                             </div>
+                            {%endif%} 
 
                             <div id="stvariZaSudionika">
                               <div class="form-outline mb-4">

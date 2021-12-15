@@ -37,8 +37,8 @@ class Korisnik(models.Model):
     odobrenBool = models.BooleanField(default=False)
     potvrdenBool = models.BooleanField(default=False)
     vrstaKorisnik = models.ForeignKey('Uloga',on_delete=models.CASCADE)
-    korisnikUstanova = models.ForeignKey('Ustanova',on_delete=models.CASCADE)
-    korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE)
+    korisnikUstanova = models.ForeignKey('Ustanova',on_delete=models.CASCADE, null=True)
+    korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE, null=True)
     token=models.CharField(max_length=50)
     dodatniPodatak = ManyToManyField("DodatnaPoljaObrasca",through='DodatniPodatci')
 
