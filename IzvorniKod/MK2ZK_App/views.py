@@ -31,7 +31,7 @@ def home(request):
 
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=models.Korisnik.objects.get(id=request.session['LoggedInUserId']).idSudionik
+        context["LoggedInUser"]=models.Korisnik.objects.get(id=request.session['LoggedInUserId']).id
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
@@ -213,7 +213,7 @@ def osobnipodaci(request):
     if request.method == "POST":
         if 'NewUserName' in request.POST:
             Username = request.POST['Username']
-            LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
             LoggedInUser.korisnickoIme = Username
             try:
                 LoggedInUser.save()
@@ -223,19 +223,19 @@ def osobnipodaci(request):
 
         if 'NewFName' in request.POST:
             Fname = request.POST['Fname']
-            LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
             LoggedInUser.ime = Fname
             LoggedInUser.save()
 
         if 'NewLName' in request.POST:
             Lname = request.POST['Lname']
-            LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
             LoggedInUser.prezime = Lname
             LoggedInUser.save()
 
         if 'NewEmail' in request.POST:
             email = request.POST['email']
-            LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
             LoggedInUser.email = email
             try:
                 LoggedInUser.save()
@@ -245,7 +245,7 @@ def osobnipodaci(request):
         return redirect('osobnipodaci')
 
     if "LoggedInUserId" in request.session: #ulogirani smo
-        LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+        LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
         context={}
         context['LoggedInUser']=request.session['LoggedInUserId']
         context['LoggedInUserRole']=request.session['LoggedInUserRole']
@@ -275,7 +275,7 @@ def mojiradovi(request):
             return redirect('/') #redirect na homepage
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
 
-    LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+    LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
 
     fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
     context['fetchedRadovi']=fetchedRadovi
@@ -448,7 +448,7 @@ def mojerecenzije(request):
     else: #nismo ulogirani
         return redirect('signin')
     
-    LoggedInUser=models.Korisnik.objects.get(idSudionik=request.session['LoggedInUserId'])
+    LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
     recenzentSekcija = LoggedInUser.korisnikSekcija
     fetchRadovi = models.Rad.objects.filter(radSekcija=recenzentSekcija)
     fetchOcjene = models.Ocjena.objects.all()
@@ -471,7 +471,10 @@ def mojerecenzije(request):
                     rad = rad
                 )
                 rad.recenziranBool=True
-                rad.revizijaBool=False
+                if models.Ocjena.objects.get(znacenje=ocjena).id==3:
+                    rad.revizijaBool=True
+                else:
+                    rad.revizijaBool=False
                 rad.save()
                 newRecenzija.save()
         return redirect('mojerecenzije')
