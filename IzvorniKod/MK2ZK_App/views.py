@@ -12,6 +12,7 @@ from django.utils.crypto import get_random_string
 from . import models
 from django.db import IntegrityError 
 from django.core import serializers
+from django.utils import (dateformat, formats)
 
 import zipfile
 import os
@@ -40,6 +41,11 @@ def home(request):
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         if request.session['LoggedInUserRole'] == 'Sudionik':
             context["LoggedInUserCode"]=models.Korisnik.objects.get(id=request.session['LoggedInUserId']).idSudionik
+    
+    konferencija=models.Konferencija.objects.filter().first()
+    
+    if (konferencija):
+        context["infoKonferencija"] = konferencija #trebat ce mozda za countdown ili neke druge podatke stavit na naslovnicu
     print(context)
     return render(request, 'Index.html',context)
 
@@ -176,10 +182,12 @@ def signup(request):
     context={}
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     fetchedSekcije=models.Sekcija.objects.filter().all()
+    if (fetchedSekcije.first()): #ako je admin unio sekcije
+        context['sekcije'] = fetchedSekcije
     context['DodatnaPolja']=fetchedPolja
-    #!!
-    context['sekcije']=fetchedSekcije.exclude(naziv="Admin Sekcija") #dodao sam ovo kako bih mogao implementirati select za sekcije
-    ##
+    # #!!
+    # context['sekcije']=fetchedSekcije.exclude(naziv="Admin Sekcija") #dodao sam ovo kako bih mogao implementirati select za sekcije
+    # ##
     print(context)
     return render(request, 'Signup.html',context)
     
@@ -440,9 +448,155 @@ def info(request):
     context={}
     if "LoggedInUserId" in request.session:
         context["LoggedInUser"]=request.session['LoggedInUserId']
-    
+  
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+
+    if request.method == "POST":
+        ##treba raditi validaciju jesu li datumi u dobrom formatu
+        if 'NewNaziv' in request.POST:
+            
+            Naziv = request.POST['Naziv']
+            konferencija=models.Konferencija.objects.filter().first() #Imamo li već neke podatke o konferenciji
+            if konferencija:
+                print(Naziv)
+                konferencija.nazivKonferencije = Naziv
+                konferencija.save()
+            else:
+                novakonferencija = models.Konferencija(nazivKonferencije=Naziv)
+                novakonferencija.save()
+        if 'NewOpis' in request.POST:
+            
+            Opis = request.POST['Opis']
+            konferencija=models.Konferencija.objects.filter().first() 
+            if konferencija:
+                
+                konferencija.opisKonferencije= Opis
+                konferencija.save()
+            else:
+                novakonferencija = models.Konferencija(opisKonferencije = Opis)
+                novakonferencija.save()
+        if 'NewDatum' in request.POST:
+            
+            Datum = request.POST['Datum']
+            konferencija=models.Konferencija.objects.filter().first() 
+            if konferencija:
+                
+                konferencija.datumKonferencije= dateformat.format(Datum, formats.get_format('d.m.Y.'))
+                konferencija.save()
+            else:
+                novakonferencija = models.Konferencija(datumKonferencije = Datum)
+                novakonferencija.save()
+        if 'NewRokPocPrijava' in request.POST:
+            
+            RokPocPrijava = request.POST['RokPocPrijava']
+            konferencija=models.Konferencija.objects.filter().first() 
+            if konferencija:
+                
+                konferencija.rokPocPrijava= RokPocPrijava
+                konferencija.save()
+            else:
+                novakonferencija = models.Konferencija(RokPocPrijava= RokPocPrijava)
+                novakonferencija.save()
+        if 'NewRokPrijava' in request.POST:
+            
+            RokPrijava = request.POST['RokPrijava']
+            konferencija=models.Konferencija.objects.filter().first() 
+            if konferencija:
+    
+                konferencija.rokPrijave= RokPrijava
+                konferencija.save()
+            else:
+                novakonferencija = models.Konferencija(rokPrijave= RokPrijava)
+                novakonferencija.save()
+        if 'NewRokPocRecenzija' in request.POST:
+            
+            RokPocRecenzija= request.POST['RokPocRecenzija']
+            konferencija=models.Konferencija.objects.filter().first() 
+            if konferencija:
+    
+                konferencija.rokRecenzenti= RokPocRecenzija
+                konferencija.save()
+            else:
+                novakonferencija = models.Konferencija(rokRecenzenti= RokPocRecenzija)
+                novakonferencija.save()
+        if 'NewRokRecenzenti' in request.POST:
+            
+            RokRecenzenti= request.POST['RokRecenzenti']
+            konferencija=models.Konferencija.objects.filter().first() 
+            if konferencija:
+    
+                konferencija.rokRecenzenti= RokRecenzenti
+                konferencija.save()
+            else:
+                novakonferencija = models.Konferencija(rokRecenzenti= RokRecenzenti)
+                novakonferencija.save()
+        
+        if 'NewRokAdmin' in request.POST:
+                    
+            RokAdmin= request.POST['RokAdmin']
+            konferencija=models.Konferencija.objects.filter().first() 
+            if konferencija:
+            
+                konferencija.rokAdmin= RokAdmin
+                konferencija.save()
+            else:
+                novakonferencija = models.Konferencija(rokAdmin= RokAdmin)
+                novakonferencija.save()
+        if 'AddNewSection' in request.POST:
+           
+            SectionName = request.POST["SectionName"]
+           
+            konferencija=models.Konferencija.objects.filter().first() 
+            if (not konferencija):
+                konferencija = models.Konferencija() #ako još nemamo podataka za konferenciju
+
+            if not models.Sekcija.objects.filter(naziv = SectionName).exists():
+                newSection=models.Sekcija(naziv = SectionName, konferencijaSekcija=konferencija)
+                newSection.save()
+            # context['sekcije']=models.Sekcija.objects.filter().all() #za prikaz sekcija
+            # return redirect('info')
+        if 'AddNewPreds' in request.POST:
+             username = request.POST['Username']
+             fName = request.POST['Fname']
+             lName = request.POST['Lname']
+             email = request.POST['email']
+
+             predsjedavajuci=models.Korisnik.objects.filter(vrstaKorisnik = models.Uloga.objects.get(naziv = "Predsjedavajuci")).first() 
+             if (not predsjedavajuci):
+                #lozinku mu treba napraviti
+                #poslati podatke na mail
+                predsjedavajuci = models.Korisnik(korisnickoIme = username, ime = fName, prezime = lName, email = email,vrstaKorisnik = models.Uloga.objects.get(naziv = "Predsjedavajuci")) #ako još nemamo podataka za predsjedavajuceg
+                predsjedavajuci.save()
+
+            
+       
+
+    #konferencija je u bazi
+    konferencija=models.Konferencija.objects.filter().first()
+    if konferencija:
+
+        context['konferencijaNaziv']=konferencija.nazivKonferencije
+        context['opis']=konferencija.opisKonferencije
+        datum = dateformat.format(konferencija.datumKonferencije, formats.get_format('d.m.Y.'))
+        context['datum']=datum
+        context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y.'))
+        context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
+        context['rokAdmin']=dateformat.format(konferencija.rokAdmin, formats.get_format('d.m.Y.'))
+        context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('d.m.Y.'))
+        context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('d.m.Y.'))
+    
+    fetchedSekcije=models.Sekcija.objects.filter().all()
+    if (fetchedSekcije.first()):
+        context['sekcije'] = fetchedSekcije
+    if models.Korisnik.objects.filter(vrstaKorisnik = 2).exists():
+        predsjedavajuci = models.Korisnik.objects.get(vrstaKorisnik = 2)
+        context[predsjedavajuci] = predsjedavajuci
+
+
+    
+
+    
     print(context)
     return render(request, 'Info.html', context)
 
