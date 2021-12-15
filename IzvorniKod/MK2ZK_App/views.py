@@ -598,11 +598,17 @@ def radovi(request):
     sekcije = models.Sekcija.objects.all()
     korisnici = models.Korisnik.objects.all()
 
+    #brojac predanih radova
+    brojPredanihRadova = 0
+
     #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea
     for rad in radovi:
         rad.radSekcija_naziv = sekcije.get(sifSekcija=rad.radSekcija_id).naziv
         rad.radKorisnik_prezime = korisnici.get(id=rad.radKorisnik_id).prezime
+        if(rad.pdf != ""):
+            brojPredanihRadova += 1
 
     context["Radovi"] = radovi
+    context["brojPredanihRadova"] = brojPredanihRadova
 
     return render(request, 'Radovi.html', context)
