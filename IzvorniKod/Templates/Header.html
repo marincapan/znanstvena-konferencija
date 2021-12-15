@@ -60,7 +60,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="info" class="nav-link text-white">
+            <a href="/info" class="nav-link text-white">
               <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
               O konferenciji
             </a>
@@ -68,17 +68,17 @@
           <li class="nav-item">
             {% if LoggedInUser %}
               {%if LoggedInUserRole == "Admin"%}
-              <a href="sloziobrazac" class="nav-link text-white">
+              <a href="/sloziobrazac" class="nav-link text-white">
                 <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                 Složi obrazac
               </a>
               {%elif LoggedInUserRole == "Recenzent"%}
-              <a href="mojerecenzije" class="nav-link text-white">
+              <a href="/mojerecenzije" class="nav-link text-white">
                 <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                 Moje recenzije
               </a>
               {%elif LoggedInUserRole == "Sudionik"%}
-              <a href="mojiradovi" class="nav-link text-white">
+              <a href="/mojiradovi" class="nav-link text-white">
                 <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                 Moji radovi
               </a>
@@ -90,7 +90,7 @@
               {%endif%}
               
             {% else %}
-              <a href="signin" class="nav-link text-white">
+              <a href="/signin" class="nav-link text-white">
                   <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
                   Prijava 
               </a>
@@ -98,7 +98,7 @@
           </li>
           {%if LoggedInUser %}
           <li>
-            <a href="osobnipodaci" class="nav-link text-white">
+            <a href="/osobnipodaci" class="nav-link text-white">
               <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
               Osobni podaci
           </a>
@@ -107,12 +107,12 @@
           <li>
               <!--Za ovo smo rekli da se otvori meni gdje korisnik bira?-->
               {% if LoggedInUser %}
-              <a href="signout" class="nav-link text-white">
+              <a href="/signout" class="nav-link text-white">
                 <img src="{% static '/vectors/LogoutIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                   Odjava
               </a>
               {% else %}
-              <a href="signup" class="nav-link text-white">
+              <a href="/signup" class="nav-link text-white">
                   <img src="{% static '/vectors/RegisterIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
                   Registracija
               </a>
