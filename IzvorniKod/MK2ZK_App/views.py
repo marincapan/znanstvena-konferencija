@@ -35,6 +35,8 @@ def home(request):
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        if request.session['LoggedInUserRole'] == 'Sudionik':
+            context["LoggedInUserCode"]=models.Korisnik.objects.get(id=request.session['LoggedInUserId']).idSudionik
     print(context)
     return render(request, 'Index.html',context)
 
@@ -187,6 +189,7 @@ def signin(request):
                 LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
                 print(LoggedInUser.vrstaKorisnik.naziv)
                 request.session['LoggedInUserId']=LoggedInUser.id
+                request.session
                 request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
                 if LoggedInUser.odobrenBool==False:
                     messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")

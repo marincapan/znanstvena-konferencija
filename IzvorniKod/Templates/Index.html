@@ -85,8 +85,8 @@
             {% endif %}
             <!---->
 
-            {%if LoggedInUser%}
-                <h4>Your ID is: {{LoggedInUser}}</h4>
+            {%if LoggedInUserRole == 'Sudionik'%}
+                <h4>Your ID is: {{LoggedInUserCode}}</h4>
             {% endif %}
 
 
