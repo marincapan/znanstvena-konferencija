@@ -81,38 +81,60 @@ def sudionici(request):
     return render(request, 'Sudionici.html', context)
 
 def radovi(request):
+    print(models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool)
     if request.method == "POST":
-        #Dohvacanje svih potrebnih podataka
-        korisnici = models.Korisnik.objects.all()
-        radovi = models.Rad.objects.all()
+        if "downloadAll" in request.POST:
+            #Dohvacanje svih potrebnih podataka
+            korisnici = models.Korisnik.objects.all()
+            radovi = models.Rad.objects.all()
 
-        #Postavljanje zipa
-        zip_name = "radovi.zip"
-        s = BytesIO()
-        zip = zipfile.ZipFile(s, "w")
+            #Postavljanje zipa
+            zip_name = "radovi.zip"
+            s = BytesIO()
+            zip = zipfile.ZipFile(s, "w")
 
-        #Iteriranje kroz sve radove kako bi se mogla napraviti odgovarajuca struktura .zip datoteke
-        for rad in radovi:
-            if(rad.pdf.name == ''):
-                break
-            korisnik = korisnici.get(id=rad.radKorisnik_id)
-            pdf_dir, pdf_name = os.path.split(rad.pdf.name)
-            path = os.path.join(korisnik.prezime + korisnik.ime, rad.naslov, pdf_name)
+            #Iteriranje kroz sve radove kako bi se mogla napraviti odgovarajuca struktura .zip datoteke
+            for rad in radovi:
+                if(rad.pdf.name == ''):
+                    continue
+                korisnik = korisnici.get(id=rad.radKorisnik_id)
+                pdf_dir, pdf_name = os.path.split(rad.pdf.name)
+                path = os.path.join(korisnik.prezime + korisnik.ime, rad.naslov, pdf_name)
 
-            zip.write("IzvorniKod/Radovi/" + rad.pdf.name, path)
+                zip.write("IzvorniKod/Radovi/" + rad.pdf.name, path)
 
-        zip.close()
+            zip.close()
 
-        resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
-        resp["Content-Disposition"] = 'attachment; filename=%s' % zip_name
-        return resp
+            resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+            resp["Content-Disposition"] = 'attachment; filename=%s' % zip_name
+            return resp
+        if "makePublic" in request.POST:
+            konferencija=models.Konferencija.objects.get(sifKonferencija=1)
+            print("IM HERE")
+            print(konferencija.javniRadoviBool)
+            if konferencija.javniRadoviBool==True:
+                print("flag1")
+                konferencija.javniRadoviBool=False
+                konferencija.save()
+            else:
+                print("flag2")
+                konferencija.javniRadoviBool=True
+                konferencija.save()
+            print(konferencija.javniRadoviBool)
+            
 
     context={}
-    if "LoggedInUserId" in request.session:
+    if "LoggedInUserId" in request.session: #ulogirani smo
         context["LoggedInUser"]=request.session['LoggedInUserId']
+    else: #nismo ulogirani
+        return redirect('signin')
     
     if "LoggedInUserRole" in request.session:
-        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        if request.session['LoggedInUserRole'] == "Admin" or models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool==True:
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin ili radovi nisu javni
+            return redirect('/')
+
 
     radovi = models.Rad.objects.all()
     sekcije = models.Sekcija.objects.all()
@@ -128,6 +150,7 @@ def radovi(request):
         if(rad.pdf != ""):
             brojPredanihRadova += 1
 
+    context["javniBool"] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
     context["Radovi"] = radovi
     context["brojPredanihRadova"] = brojPredanihRadova
 
