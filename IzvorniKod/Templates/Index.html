@@ -104,8 +104,15 @@
                 <div class="container">
                   <h2 class="animate__animated animate__fadeInDown">Dobrodošli na <span>Znanstvenu konferenciju</span></h2>
                   <div class="animate__animated animate__fadeInUp countdown-container">
-                    Vrijeme do zaključavanja predaje radova:
-                    <div class="row countdown-container">
+                    {%if LoggedInUserRole == "Sudionik" or LoggedInUserRole == "Admin" or LoggedInUserRole == "Predsjedavajuci" or not LoggedInUserRole %}
+                    <span id ="rok">Vrijeme do zaključavanja predaje radova i prijave na konferenciju ({% firstof infoKonferencija.rokPrijave1 "Nedefiniran datum" %}): </span>
+                    <input type="hidden" id="rokPrijave" name="rokPrijave" value="{% firstof infoKonferencija.rokPrijave "Nedefiniran datum" %}">
+                    {%elif LoggedInUserRole == "Recenzent"%}
+                    <span id ="rok">Vrijeme do roka za recenziranje radova ({% firstof infoKonferencija.rokRecenzenti1 "Nedefiniran datum" %}): </span>
+                    <input type="hidden" id="rokPrijave" name="rokPrijave" value="{% firstof infoKonferencija.rokRecenzenti "Nedefiniran datum" %}">
+                    {%endif%}
+
+                    <div id = "countdownid" class="row countdown-container">
                         <div class="countdown-frame col-xs-10 col-sm-5 col-md-2">
                           <span id="countdown-days"></span><div>dana</div>
                         </div>
@@ -122,10 +129,10 @@
                   </div>
 
                   {%if not LoggedInUser %}
-                  <a href="signup" class="btn btn-primary animate__animated animate__fadeInUp scrollto">Registriraj se</a>
+                  <a href="signup" class=" btn btn1 btn-primary animate__animated animate__fadeInUp scrollto">Registriraj se</a>
                   {%else%}
                     {%if LoggedInUserRole == "Sudionik" %}
-                  <a href="mojiradovi" class="btn btn-primary animate__animated animate__fadeInUp scrollto">Predaj rad</a>
+                  <a href="mojiradovi" class="btn btn1 btn-primary animate__animated animate__fadeInUp scrollto">Predaj rad</a>
                     {%endif%}
                   {%endif%}
                 </div>
@@ -168,7 +175,7 @@
         </div>
       </section><!-- End Hero -->
 
-      <div class="gradient-custom-3 card-container" style="min-height: 100vh;">
+      <div class="gradient-custom-3 card-container" style="min-height: 100vh; flex-direction: column;">
         <div class="container pt-5 pb-5 card-item">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
@@ -191,7 +198,7 @@
           </div>
         </div>
 
-        <div class="container pt-5 pb-5 card-item">
+        <div class="card-item container pt-5 pb-5 ">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
     

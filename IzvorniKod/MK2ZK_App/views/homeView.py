@@ -43,6 +43,9 @@ def home(request):
     konferencija=models.Konferencija.objects.filter().first()
     
     if (konferencija):
+        #da bismo imali naš format imam ovaj rokPrijave1, a JS ne radi dobro s tim formatom pa tamo koristim drugi
+        konferencija.rokPrijave1 = dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y')) #dodati ovisno što će nam trebati na naslovnici
+        konferencija.rokRecenzenti1 = dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y'))
         context["infoKonferencija"] = konferencija #trebat ce mozda za countdown ili neke druge podatke stavit na naslovnicu
     print(context)
     return render(request, 'Index.html',context)

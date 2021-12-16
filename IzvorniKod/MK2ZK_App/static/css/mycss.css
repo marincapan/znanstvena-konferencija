@@ -25,6 +25,10 @@
 .card {
     background-color: #f2f2f2;
     border-radius: 15px;
+  
+}
+.card-item{
+  width: 50% !important;
 }
 
 .btn:hover {
@@ -39,7 +43,9 @@
 .btn-primary {
     background-color: #1c3a9c;
     border-color: #1c3a9c;
+  
 }
+
 
 .btn-primary:hover {
     background-color: #c1666b;
@@ -275,5 +281,5 @@ button.acc-btn {
 .card-container {
   display: flex;
   justify-content: center;
-  flex-direction: row;
+  flex-direction: column;
 }
