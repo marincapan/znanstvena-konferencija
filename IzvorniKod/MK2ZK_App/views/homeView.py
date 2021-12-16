@@ -17,7 +17,7 @@ import zipfile
 import os
 
 def increment_KorisnikID():
-  last_korisnik = models.Korisnik.objects.all().order_by('id').last()
+  last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
   if not last_korisnik:
     return '0001'
   korisnik_id = last_korisnik.idSudionik
@@ -49,6 +49,18 @@ def home(request):
 
 
 def signup(request):
+    if "LoggedInUserId" in request.session: #otprije smo registrirani
+        return redirect('/')
+    context={}
+    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
+    fetchedSekcije=models.Sekcija.objects.filter().all()
+    if (fetchedSekcije.first()): #ako je admin unio sekcije
+        context['sekcije'] = fetchedSekcije
+    context['DodatnaPolja']=fetchedPolja
+    # #!!
+    # context['sekcije']=fetchedSekcije.exclude(naziv="Admin Sekcija") #dodao sam ovo kako bih mogao implementirati select za sekcije
+    # ##
+    print(context)
     if request.method == "POST":        
         username = request.POST['Username']
         fName = request.POST['Fname']
@@ -145,6 +157,16 @@ def signup(request):
                 noviRad.autori.add(noviAutor)
 
             noviRad.save()
+
+            for dodatnoPolje in fetchedPolja:
+                noviPodatak = request.POST[dodatnoPolje.imePolja]
+                noviDodatniPodatak = models.DodatniPodatci(
+                    podatak=noviPodatak,
+                    korisnik=NoviKorisnik,
+                    poljeObrasca=dodatnoPolje
+                )
+                noviDodatniPodatak.save()
+                
         
         #Ako obradjujemo recenzenta, radimo drugacije provjere
         elif(uloga == "Recenzent"):
@@ -173,21 +195,19 @@ def signup(request):
             except IntegrityError:
                 messages.error(request, "Korisnicko ime ili email je vec u uporabi")
                 return redirect('signup')
+                
+            for dodatnoPolje in fetchedPolja:
+                noviPodatak = request.POST[dodatnoPolje.imePolja]
+                noviDodatniPodatak = models.DodatniPodatci(
+                    podatak=noviPodatak,
+                    korisnik=NoviKorisnik,
+                    poljeObrasca=dodatnoPolje
+                )
+                noviDodatniPodatak.save()
         
         return redirect('signin')
 
-    if "LoggedInUserId" in request.session: #otprije smo registrirani
-        return redirect('/')
-    context={}
-    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
-    fetchedSekcije=models.Sekcija.objects.filter().all()
-    if (fetchedSekcije.first()): #ako je admin unio sekcije
-        context['sekcije'] = fetchedSekcije
-    context['DodatnaPolja']=fetchedPolja
-    # #!!
-    # context['sekcije']=fetchedSekcije.exclude(naziv="Admin Sekcija") #dodao sam ovo kako bih mogao implementirati select za sekcije
-    # ##
-    print(context)
+    
     return render(request, 'Signup.html',context)
     
 def signin(request):
