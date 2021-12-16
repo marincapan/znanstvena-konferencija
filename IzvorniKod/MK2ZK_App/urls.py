@@ -1,19 +1,20 @@
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from .views import homeView, sudionikView, recenzentView, predsjedavajuciView, adminView
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('signup', views.signup, name='signup'),
-    path('signin', views.signin, name='signin'),
-    path('signout', views.signout, name='signout'),
-    path('osobnipodaci', views.osobnipodaci, name='osobnipodaci'),
-    path('mojiradovi', views.mojiradovi, name='mojiradovi'),
-    path('sloziobrazac', views.sloziobrazac, name='sloziobrazac'),
-    path('info', views.info, name='info'),
-    path('mojerecenzije', views.mojerecenzije, name='mojerecenzije'),
-    path('pregled', views.pregled, name='pregled'),
-    path('pregled/recenzenti', views.recenzenti, name='recenzenti'),
-    path('pregled/sudionici', views.sudionici, name='sudionici'),
-    path('pregled/radovi', views.radovi, name='radovi')
+    path('', homeView.home, name='home'),
+    path('signup', homeView.signup, name='signup'),
+    path('signin', homeView.signin, name='signin'),
+    path('signout', homeView.signout, name='signout'),
+    path('osobnipodaci', sudionikView.osobnipodaci, name='osobnipodaci'),
+    path('mojiradovi', sudionikView.mojiradovi, name='mojiradovi'),
+    path('sloziobrazac', adminView.sloziobrazac, name='sloziobrazac'),
+    path('info', homeView.info, name='info'),
+    path('mojerecenzije', recenzentView.mojerecenzije, name='mojerecenzije'),
+    path('pregled', predsjedavajuciView.pregled, name='pregled'),
+    path('pregled/recenzenti', predsjedavajuciView.recenzenti, name='recenzenti'),
+    path('pregled/sudionici', predsjedavajuciView.sudionici, name='sudionici'),
+    path('pregled/radovi', predsjedavajuciView.radovi, name='radovi')
 ]
