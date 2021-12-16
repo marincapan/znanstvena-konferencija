@@ -372,43 +372,7 @@
       </form>
            
     </div>
-    <hr>
-    <h2 class="text-uppercase  fs-5"  id='Label'>Predsjedavajući konferencije</h2>
-    <span>Uredite podatke o predsjedavajućem konferencije.</span>
-    <form action="/info" method="post" enctype="multipart/form-data" id="form">
-      {% csrf_token %}
-
-      <div class="form-outline mb-4">
-        <label class="fs-5" for="">Korisničko ime</label>
-        <input type="text" id="Username" name="Username" placeholder="{% firstof predsjedavajuci.korisnickoIme "korisničko ime" %}" class="form-control-lg" required/>
-      </div>
-
-      <div class="form-outline mb-4">
-        <label class="fs-5" for="">Ime</label>
-        <input type="text" id="Fname" name="Fname" placeholder="{% firstof predsjedavajuci.ime "ime" %}" class=" form-control-lg" required/>
-      </div>
-
-      <div class="form-outline mb-4">
-        <label class="fs-5" for="">Prezime</label>
-        <input type="text" id="Lname" name="Lname" placeholder="{% firstof predsjedavajuci.prezime "prezime" %}" class=" form-control-lg" required/>
-      </div>
-
-      <div class="form-outline ">
-        <label class="fs-5" for="">E-mail</label>
-        <input type="text" id="email" name="email" placeholder="{% firstof predsjedavajuci.email "email" %}" class=" form-control-lg" required/>
-      </div>
-      <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-        <button type="submit" class="btn btn-primary " name='AddNewPreds' value="Update" style="grid-column: 2;">Ažuriraj podatke</button>
-        </div>
-    </form>
-    {%endif%} 
-
-
-
-          
-            
-                 
-          
+    {%endif%}      
             
           </div>
         </div>

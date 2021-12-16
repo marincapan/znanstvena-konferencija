@@ -163,6 +163,23 @@
         }
         
     },
+	{
+        "model":"MK2ZK_App.Korisnik",
+        "id":4,
+        "fields":{
+            "korisnickoIme":"predsjedavajuci",
+            "lozinka":"12345678",
+            "ime":"N/A",
+            "prezime":"N/A",
+            "email":"predsjedavajuci@konferencija.hr",
+            "odobrenBool": "True",
+            "potvrdenBool": "True",
+            "vrstaKorisnik": 2,
+            "korisnikUstanova" : 1,
+            "korisnikSekcija": 2
+        }
+        
+    },
     {
         "model":"MK2ZK_App.Autor",
         "sifAutor":1,

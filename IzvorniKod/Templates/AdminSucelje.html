@@ -1,0 +1,192 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Pregled podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+        <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+        <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+        <!--nas css-->
+        <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+        <!--nas css-->
+        
+    </head>
+
+    <body>
+        <!--HEADER-->
+        {% include "./Header.html" %}
+        <!--HEADER-->
+
+        <div class="gradient-custom-3 " style="min-height: 100vh;">
+            <div class="container pt-5 pb-5">
+              <div class="card" style="border-radius: 15px;">
+                <div class="card-body p-5">
+                    
+                    <div class="text-uppercase text-center mb-5">
+                        <div style="padding-bottom: 9px;" id="titleDiv">
+                          <div>
+                            <h2 style="display: inline;" id="myTitle">Administracijsko sučelje</h2>
+                          </div>
+                        </div>
+                      <hr>
+                    </div>
+
+                    <div class="container">
+                        <div class="text-uppercase text-left mb-3">
+                            <div style="padding-bottom: 3px;" id="titleDiv">
+                              <div>
+                                <h4 style="display: inline;" id="myTitle">Podaci o predsjedavajućem konferencije</h4>
+                              </div>
+                            </div>
+                          <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                {%if ime%}
+                                <div style="padding-bottom: 9px;" id="FNameDiv">
+                                    <div>
+                                        <div style="display: inline;" class="fs-6">Ime</div>
+                                        <span data-bs-toggle="tooltip" title="Uredi">
+                                            <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName"><use xlink:href="#pencil-square"/></svg>
+                                        </span>
+    
+                                        <div style="display: none; margin-left: 5px" id="formFNameChanges">
+                                            <button style="border: none; background: none" type="submit" form="NewFNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewFName'>
+                                                <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
+                                            </button>
+                                            <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                                                <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateFName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="fs-5 fw-bold" id='ime'>{{ime}}</div>
+    
+                                    <form action="/adminsucelje" method="post" id='NewFNameForm'>
+                                    {% csrf_token %}
+                                        <div style="max-width: 15rem;" id="FNameCollapse" class="collapse collapse-horizontal">
+                                            <input type="text" class="form-control" id="Fname" name="Fname" placeholder={{ime}} Required>
+                                        </div>                        
+                                    </form>
+                                </div>
+                                {%endif%}
+            
+            
+                                {%if prezime%}
+                                <div style="padding-bottom: 9px;" id="LNameDiv">
+                                    <div>
+                                        <div style="display: inline;" class="fs-6">Prezime</div>
+                                        <span data-bs-toggle="tooltip" title="Uredi">
+                                            <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName"><use xlink:href="#pencil-square"/></svg>
+                                        </span>
+    
+                                        <div style="display: none; margin-left: 5px" id="formLNameChanges">
+                                            <button style="border: none; background: none" type="submit" form="NewLNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewLName'>
+                                                <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
+                                            </button>
+                                            <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                                                <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateLName()" id="cancelLName" value="cancelLName"><use xlink:href="#cancel-changes"/></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="fs-5 fw-bold" id='prezime'>{{prezime}}</div>
+                                
+                                    <form action="/adminsucelje" method="post" id='NewLNameForm'>
+                                        {% csrf_token %}
+                                        <div style="max-width: 15rem;" id="LNameCollapse" class="collapse collapse-horizontal">
+                                            <input type="text" class="form-control" id="Lname" name="Lname" placeholder={{prezime}} Required>
+                                        </div>
+                                    </form>
+                                </div>
+                                {%endif%}
+                            </div>
+                            <div class="col-sm">
+                              {%if korisnickoIme%}
+                              <div style="padding-bottom: 9px;" id="UserNameDiv">
+                                <div>
+                                  <div style="display: inline;" class="fs-6">Korisničko ime</div>
+                                  <span data-bs-toggle="tooltip" title="Uredi" id="UpdateUserName">
+                                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateUserName()" value="UpdateUserName"><use xlink:href="#pencil-square"/></svg>
+                                  </span>
+    
+                                  <div style="display: none; margin-left: 5px;" id="formUserNameChanges">
+                                    <button style="border: none; background: none" type="submit" form="NewUserNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewUserName'>
+                                      <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
+                                    </button>
+                                    <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                                      <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateUsername()" id="cancelUsername" value="cancelUsername"><use xlink:href="#cancel-changes"/></svg>
+                                    </span>
+                                  </div>
+                                </div>
+                                
+                                <div class="fs-5 fw-bold" id='korisnickoIme'>{{korisnickoIme}}</div>
+    
+                                <form action="/adminsucelje" method="post" id='NewUserNameForm'>
+                                  {% csrf_token %}
+                                  <div>
+                                    <div style="max-width: 15rem;" id="UserNameCollapse" class="collapse collapse-horizontal">
+                                      <input type="text" class="form-control" id="Username" name="Username" placeholder={{korisnickoIme}} Required>
+                                    </div>
+                                  </div>
+                                  
+                                </form>
+                              </div>
+                              {%endif%}
+            
+            
+                              {%if email%}
+                              <div style="padding-bottom: 9px;" id="EmailDiv">
+                                <div>
+                                  <div style="display: inline;" class="fs-6">E-mail</div>
+                                  <span data-bs-toggle="tooltip" title="Uredi">
+                                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail"><use xlink:href="#pencil-square"/></svg>
+                                  </span>
+    
+                                  <div style="display: none; margin-left: 5px" id="formEmailChanges">
+                                    <button style="border: none; background: none" type="submit" form="NewEmailForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewEmail'>
+                                      <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
+                                    </button>
+                                    <span data-bs-toggle="tooltip" title="Odbaci promjene">
+                                      <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateEmail()" id="cancelEmail" value="cancelEmail"><use xlink:href="#cancel-changes"/></svg>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div class="fs-5 fw-bold" id='email'>{{email}}</div>
+    
+                                
+                                <form action="/adminsucelje" method="post" id='NewEmailForm'>
+                                  {% csrf_token %}
+                                  <div style="max-width: 15rem;" id="EmailCollapse" class="collapse collapse-horizontal">
+                                    <input type="text" class="form-control" id="email" name="email" placeholder={{email}} Required>
+                                  </div>
+                                </form>
+                              </div>
+                              {%endif%}
+                            </div>
+                            
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+        <!--FOOTER--> 
+        {% include "./Footer.html" %}
+        <!--FOOTER-->
+    </body>
+
+    <!--nas js-->
+    <script src="{% static '/js/hamburgerActions.js' %}"></script>
+    <script src="{% static '/js/adminSucelje.js' %}"></script>
+    <!--nas js-->
+
+</html>
