@@ -81,7 +81,6 @@ def sudionici(request):
     return render(request, 'Sudionici.html', context)
 
 def radovi(request):
-    print(models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool)
     if request.method == "POST":
         if "downloadAll" in request.POST:
             #Dohvacanje svih potrebnih podataka
@@ -108,20 +107,7 @@ def radovi(request):
             resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
             resp["Content-Disposition"] = 'attachment; filename=%s' % zip_name
             return resp
-        if "makePublic" in request.POST:
-            konferencija=models.Konferencija.objects.get(sifKonferencija=1)
-            print("IM HERE")
-            print(konferencija.javniRadoviBool)
-            if konferencija.javniRadoviBool==True:
-                print("flag1")
-                konferencija.javniRadoviBool=False
-                konferencija.save()
-            else:
-                print("flag2")
-                konferencija.javniRadoviBool=True
-                konferencija.save()
-            print(konferencija.javniRadoviBool)
-            
+        
 
     context={}
     if "LoggedInUserId" in request.session: #ulogirani smo

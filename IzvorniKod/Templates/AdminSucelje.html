@@ -36,6 +36,18 @@
                         </div>
                       <hr>
                     </div>
+                    <div class="container" >
+                      {%if LoggedInUserRole == 'Admin'%}
+                        <form action="adminsucelje" method="POST">
+                          {% csrf_token %}
+                          {% if brojPredanihRadova != 0%}
+                            <button type="submit" class="btn btn-primary" name="makePublic">{%if javniBool == 0%} Ucini radove javnim {%else%} Ukloni javni pristup {%endif%} </button>
+                          {% else %}
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Niti jedan rad nije predan" disabled>Ucini radove javnim</button>
+                          {% endif %}
+                        </form>
+                      {%endif%}
+                    </div>
 
                     <div class="container">
                         <div class="text-uppercase text-left mb-3">

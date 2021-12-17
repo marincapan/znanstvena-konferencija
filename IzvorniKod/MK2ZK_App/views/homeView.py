@@ -284,7 +284,7 @@ def info(request):
             konferencija=models.Konferencija.objects.filter().first() 
             if konferencija:
                 
-                konferencija.datumKonferencije= dateformat.format(Datum, formats.get_format('d.m.Y.'))
+                konferencija.datumKonferencije=Datum
                 konferencija.save()
             else:
                 novakonferencija = models.Konferencija(datumKonferencije = Datum)
