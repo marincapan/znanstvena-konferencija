@@ -17,7 +17,6 @@ import zipfile
 import os
 
 def mojerecenzije(request):
-    
     context={}
     if "LoggedInUserId" in request.session: #ulogirani smo
         context["LoggedInUser"]=request.session['LoggedInUserId']
@@ -26,42 +25,40 @@ def mojerecenzije(request):
         return redirect('signin')
     
     LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+
+    if LoggedInUser.vrstaKorisnik_id > 3: #1-admin 2-predsjedavajuci 3-recenzent 4-sudionik
+        return redirect('home') #nema ovlasti, trebalo bi dati poruku
+
+    if request.method == "POST":
+        sifRad = request.POST["sifRad"]
+        rad = models.Rad.objects.get(sifRad=sifRad)
+        ocjena = request.POST["ocjena"] #id ocjene
+        obrazlozenje = request.POST["obrazlozenje"]
+        
+        newRecenzija = models.Recenzija(
+            ocjena = models.Ocjena.objects.get(id=ocjena),
+            obrazlozenje = obrazlozenje,
+            recenzent = LoggedInUser,
+            rad = rad
+        )
+
+        rad.recenziranBool = True
+        if ocjena == 3: #id ocjene
+            rad.revizijaBool = True
+        else:
+            rad.revizijaBool = False
+
+        rad.save()
+        newRecenzija.save()
+
+        return redirect('mojerecenzije')
+
     recenzentSekcija = LoggedInUser.korisnikSekcija
-    fetchRadovi = models.Rad.objects.filter(radSekcija=recenzentSekcija,recenziranBool=False)
-    if (not fetchRadovi.first()):
-        context["nemadostupnih"]="nema"
-    print(fetchRadovi)
+    fetchRadovi = models.Rad.objects.filter(radSekcija=recenzentSekcija, recenziranBool=False).exclude(pdf="")
 
     fetchOcjene = models.Ocjena.objects.all()
     fetchMyRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser)
     fetchRecenzije = models.Recenzija.objects.all()
-    
-    if request.method == "POST":
-        print(request.POST)
-        
-        for rad in fetchRadovi:
-            print(rad.sifRad)
-            print(str(rad.sifRad) in request.POST)
-            if str(rad.sifRad) in request.POST:
-                ocjena=request.POST[str(rad.sifRad) + "ocjena"]
-                obrazlozenje=request.POST[str(rad.sifRad) + "obrazlozenje"]
-                newRecenzija=models.Recenzija(
-                    ocjena = models.Ocjena.objects.get(znacenje=ocjena),
-                    obrazlozenje = obrazlozenje,
-                    recenzent = LoggedInUser,
-                    rad = rad
-                )
-                rad.recenziranBool=True
-                if models.Ocjena.objects.get(znacenje=ocjena).id==3:
-                    rad.revizijaBool=True
-                else:
-                    rad.revizijaBool=False
-                rad.save()
-                newRecenzija.save()
-        return redirect('mojerecenzije')
-
-    for rad in fetchRadovi:
-        print(rad in fetchRecenzije)
 
     context['fetchedOcjene']=fetchOcjene
     context['fetchedRadovi']=fetchRadovi
