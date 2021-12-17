@@ -1,167 +1,187 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>
-          Moje recenzije
-        </title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="{% static '/vectors/icon.svg' %}">
-        <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
-        <link href="{% static '/css/headers.css' %}" rel="stylesheet">
-        <!--nas css-->
-        <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
-        <!--nas css-->
-        <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-  </head>
 
-  <body>
-        <!--HEADER-->
-        {% include "./Header.html" %}
-        <!--HEADER-->
-        
-        <div class="gradient-custom-3 " style="min-height: 100vh;">
-            <div class="container pt-5 pb-5">
-              <div class="card" style="border-radius: 15px;">
-                <div class="card-body p-5">
-                  <div class="text-uppercase text-center mb-5">
-                    <h2>Dostupni radovi</h2>
-                    <hr>
-                  </div>
-                  
-                  
-                  {%if nemadostupnih %}
-                  <div class="text-center" style = "margin-top: -2%;">
-                    <h5>Za sada nema dostupnih radova u Vašoj sekciji.</h5>
-                    <hr>
-                  </div>
-                  {%endif%}
-               
-                  <div class="accordion" id="accordionRadovi">
-                    {%for rad in fetchedRadovi%}
-                    {%if rad.pdf%}
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="header{{forloop.counter}}">
-                        <button class="accordion-button collapsed fs-5 acc-btn" type="button"
-                          data-bs-toggle="collapse" data-bs-target="#collapse{{forloop.counter}}"
-                          aria-expanded="true" aria-controls="collapse{{forloop.counter}}">
-                          <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
-                            {{rad.naslov}}</div>
-                            {%if rad.recenziranBool == 0 or rad.revizijaBool == 1 %}
-                            <span class="badge bg-warning d-flex">Možete recenzirati ovaj rad.</span>
-                            {%else%}
-                            <span class="badge bg-success d-flex">Rad je recenziran.</span>
-                            {%endif%}
-                        </button>
-                      </h2>
-                      <div id="collapse{{forloop.counter}}" class="accordion-collapse collapse"
-                            aria-labelledby="heading{{forloop.counter}}">
-                            <div class="accordion-body">
-                              <!-- <div class="container">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>
+    Moje recenzije
+  </title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <!--nas css-->
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+
+<body>
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+  <div class="gradient-custom-3 " style="min-height: 100vh;">
+    <div class="container pt-5 pb-5">
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-5">
+          <div class="text-uppercase text-center mb-5">
+            <h2>Moje recenzije</h2>
+            <hr>
+          </div>
+
+          {% if messages %}
+          {% for message in messages %}
+          <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
+          {% endfor %}
+          {% endif %}
+
+          <div id="potrebnoRecenzirati">
+            <div class="text-center mb-5">
+              <h3>Potrebno recenzirati</h3>
+            </div>
+
+            {%if nemadostupnih %}
+            <div class="text-center" style="margin-top: -2%;">
+              <h5>Za sada nema dostupnih radova u Vašoj sekciji.</h5>
+              <hr>
+            </div>
+            {%endif%}
+  
+            <div class="accordion" id="accordionRadovi">
+              {%for rad in fetchedRadovi%}
+              {%if rad.pdf%}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="header{{forloop.counter}}">
+                  <button class="accordion-button collapsed fs-5 acc-btn" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{forloop.counter}}" aria-expanded="true"
+                    aria-controls="collapse{{forloop.counter}}">
+                    <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
+                      {{rad.naslov}}</div>
+                    {%if rad.recenziranBool == 0 or rad.revizijaBool == 1 %}
+                    <span class="badge bg-warning d-flex">Možete recenzirati ovaj rad.</span>
+                    {%else%}
+                    <span class="badge bg-success d-flex">Rad je recenziran.</span>
+                    {%endif%}
+                  </button>
+                </h2>
+                <div id="collapse{{forloop.counter}}" class="accordion-collapse collapse"
+                  aria-labelledby="heading{{forloop.counter}}">
+                  <div class="accordion-body">
+                    <!-- <div class="container">
                                 <div class="row">
                                   <div class="col-auto"> -->
-                                    <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori rad</a>
+                    <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori rad</a>
+                    <form action="/mojerecenzije" method="post" id='#'>
+                      {% csrf_token %}
+                      {%for ocjena in fetchedOcjene%}
+                      <div>
+                        <input type="radio" id="{{ocjena.znacenje}}" name="{{rad.sifRad}}ocjena"
+                          value="{{ocjena.znacenje}}" {%if ocjena.id == 1%}checked onclick=UpdateOnOne() {%else%}
+                          onclick=UpdateOnElse() {%endif%}>{{ocjena.znacenje}}
+                      </div>
+                      <br>
+                      {%endfor%}
+                      <span class="fs-5">Obrazloženje</span>
+                      <input type="text" id="obrazlozenje" name="{{rad.sifRad}}obrazlozenje"
+                        class="form-control form-control-lg" />
+                      <br>
+                      <button type="submit" class="btn btn-primary" name="{{rad.sifRad}}">Ocijeni rad</button>
+                    </form>
+                  </div>
+                </div>
+  
+              </div>
+              {%endif%}
+  
+  
+  
+              {%endfor%}
+            </div>
+          </div>
+
+
+
+          <br>
+          <hr>
+          <br>
+
+
+          <div id="recenziraniRadovi">
+            {%if fetchedMyRecenzije%}
+            <div class="text-center mb-5">
+              <h3>Recenzirani radovi</h3>
+            </div>
+  
+            <div class="accordion" id="accordionRadovi">
+              {%for recenzija in fetchedMyRecenzije%}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="recenzirani_header{{forloop.counter}}">
+                  <button class="accordion-button collapsed fs-5 acc-btn" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#recenzirani_collapse{{forloop.counter}}" aria-expanded="true"
+                    aria-controls="recenzirani_collapse{{forloop.counter}}">
+                    <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
+                      {{recenzija.rad.naslov}}</div>
+                    {%if recenzija.rad.recenziranBool == 1 and recenzija.rad.revizijaBool != 1 %}
+                    <span class="badge bg-warning d-flex">Rad je recenziran.</span>
+                    {%elif recenzija.rad.revizijaBool == 1%}
+                    <span class="badge bg-success d-flex">Rad je revidiran.</span>
+                    {%endif%}
+                  </button>
+  
+                </h2>
+  
+  
+                <div id="recenzirani_collapse{{forloop.counter}}" class="accordion-collapse collapse"
+                  aria-labelledby="recenzirani_heading{{forloop.counter}}">
+                  <div class="accordion-body">
+                    <!-- <div class="container">
+                            <div class="row"> -->
+                    <div class="col-auto">
+                      {%if recenzija.rad.revizijaBool == 1 %}
+                      <!-- <h2> {{recenzija.rad.naslov}} - Revizija </h2> -->
+                      <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori rad</a>
                       <form action="/mojerecenzije" method="post" id='#'>
                         {% csrf_token %}
                         {%for ocjena in fetchedOcjene%}
-                          <div>
-                            <input type="radio" id="{{ocjena.znacenje}}" name="{{rad.sifRad}}ocjena" value="{{ocjena.znacenje}}" style="block" {%if ocjena.id == 1%}checked onclick=UpdateOnOne(){%else%}onclick=UpdateOnElse(){%endif%}>{{ocjena.znacenje}}
-                          </div>
-                          <br>
+                        <div>
+                          <input type="radio" id="{{ocjena.znacenje}}" name="{{recenzija.rad.sifRad}}ocjena"
+                            value="{{ocjena.znacenje}}" {%if ocjena.id == 1%} checked onclick=UpdateOnOne() {%else%}
+                            onclick=UpdateOnElse() {%endif%}>{{ocjena.znacenje}}
+                        </div>
                         {%endfor%}
-                        <span class="fs-5">Obrazloženje</span>
-                        <input type="text" id="obrazlozenje" name="{{rad.sifRad}}obrazlozenje" class="form-control form-control-lg"/>
-                        <br>
-                        <button type="submit" class="btn btn-primary" name="{{rad.sifRad}}">Ocijeni rad</button>                     
+                        <input type="text" id="obrazlozenje" name="{{recenzija.rad.sifRad}}obrazlozenje"
+                          class="form-control form-control-lg" />
+                        <button type="submit" class="btn btn-primary" name="{{recenzija.rad.sifRad}}">Ocijeni
+                          rad</button>
                       </form>
-                      </div>
-                      </div>
-                      
-                      </div>
+                      {%else%}
+                      <!-- <h2>{{recenzija.rad.naslov}}</h2> -->
+                      <a class="btn btn-primary" href="Radovi/{{recenzija.rad.pdf}}" role="button">Otvori rad</a>
+                      <h2>{{recenzija.ocjena.znacenje}}</h2>
+                      {%if recenzija.obrazlozenje %}
+                      <h2><b>Obrazloženje:</b> {{recenzija.obrazlozenje}}</h2>
                       {%endif%}
-                      
-                    
-                     
-                      {%endfor%}
-                    </div> 
-                
-                    
-                    
-                      
-                      <br>
-
-
-
-                      {%if fetchedMyRecenzije%}
-                      <div class="text-uppercase text-center mb-5">
-                        <h2>Moje recenzije</h2>
-                      </div>
-
-                      <div class="accordion" id="accordionRadovi">
-                      {%for recenzija in fetchedMyRecenzije%}
-                      <hr>
-                      <div class="accordion-item">
-                        <h2 class="accordion-header" id="header{{forloop.counter}}">
-                          <button class="accordion-button collapsed fs-5 acc-btn" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapse{{forloop.counter}}"
-                            aria-expanded="true" aria-controls="collapse{{forloop.counter}}">
-                            <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
-                              {{recenzija.rad.naslov}}</div>
-                              {%if recenzija.rad.recenziranBool == 1 and recenzija.rad.revizijaBool != 1 %}
-                              <span class="badge bg-warning d-flex">Rad je recenziran.</span>
-                              {%elif recenzija.rad.revizijaBool == 1%}
-                              <span class="badge bg-success d-flex">Rad je revidiran.</span>
-                              {%endif%}
-                            </button> 
-                            
-                        </h2>
-                      
-                      
-                        <div id="collapse{{forloop.counter}}" class="accordion-collapse collapse"
-                        aria-labelledby="heading{{forloop.counter}}">
-                        <div class="accordion-body">
-                          <!-- <div class="container">
-                            <div class="row"> -->
-                              <div class="col-auto">
-                        {%if recenzija.rad.revizijaBool == 1 %}
-                          <!-- <h2> {{recenzija.rad.naslov}} - Revizija </h2> -->
-                          <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori rad</a>
-                          <form action="/mojerecenzije" method="post" id='#'>
-                            {% csrf_token %}
-                            {%for ocjena in fetchedOcjene%}
-                              <div>
-                                <input type="radio" id="{{ocjena.znacenje}}" name="{{recenzija.rad.sifRad}}ocjena" value="{{ocjena.znacenje}}" style="block" {%if ocjena.id == 1%}checked onclick=UpdateOnOne(){%else%}onclick=UpdateOnElse(){%endif%}>{{ocjena.znacenje}}
-                              </div>
-                            {%endfor%}
-                            <input type="text" id="obrazlozenje" name="{{recenzija.rad.sifRad}}obrazlozenje" class="form-control form-control-lg"/>
-                            <button type="submit" class="btn btn-primary" name="{{recenzija.rad.sifRad}}">Ocijeni rad</button>                     
-                          </form>
-                        {%else%}
-                          <!-- <h2>{{recenzija.rad.naslov}}</h2> -->
-                          <a class="btn btn-primary" href="Radovi/{{recenzija.rad.pdf}}" role="button">Otvori rad</a>
-                          <h2>{{recenzija.ocjena.znacenje}}</h2>
-                          {%if recenzija.obrazlozenje %}
-                            <h2><b>Obrazloženje:</b> {{recenzija.obrazlozenje}}</h2>
-                          {%endif%}
-                        {%endif%}
-                      </div>
+                      {%endif%}
                     </div>
-                    
                   </div>
-                   
+  
                 </div>
-                {%endfor%} 
-                {%endif%}
-                        
-                              
+  
+              </div>
+              {%endfor%}
+              {%endif%}
+          </div>
 
 
 
-                      
-                  <!-- {%for rad in fetchedRadovi%}
+
+
+
+              <!-- {%for rad in fetchedRadovi%}
                     {%if rad.recenziranBool == 0 and rad.pdf%}
                       <h2>{{rad.naslov}}</h2>
                       
@@ -214,28 +234,28 @@
                       {%endif%}
                     {%endfor%}
                   {%endif%} -->
-                </div>
-                
-              </div>
             </div>
-          </div>
 
-        <!--FOOTER-->
-        {% include "./Footer.html" %}
-        <!--FOOTER-->
-  </body>
+        </div>
+      </div>
+    </div>
 
-  <!--nas js-->
-  <script src="{% static '/js/hamburgerActions.js' %}"></script>
-  <script>
-    function UpdateOnOne(){
-      document.getElementById("obrazlozenje").required = false;
-    }
-    function UpdateOnElse(){
-      document.getElementById("obrazlozenje").required = true;
-    }
+    <!--FOOTER-->
+    {% include "./Footer.html" %}
+    <!--FOOTER-->
+</body>
 
-  </script>
-  <!--nas js-->
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<script>
+  function UpdateOnOne() {
+    document.getElementById("obrazlozenje").required = false;
+  }
+
+  function UpdateOnElse() {
+    document.getElementById("obrazlozenje").required = true;
+  }
+</script>
+<!--nas js-->
 
 </html>
