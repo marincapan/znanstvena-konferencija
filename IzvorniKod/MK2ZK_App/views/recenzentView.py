@@ -4,6 +4,7 @@ from typing import DefaultDict
 from django.core.checks.messages import Error
 from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
+from django.db.models.expressions import RawSQL
 from django.http.response import FileResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -35,20 +36,12 @@ def mojerecenzije(request):
         ocjena = request.POST["ocjena"] #id ocjene
         obrazlozenje = request.POST["obrazlozenje"]
 
-        #Ako recenzija za ovaj rad vec postoji onda se samo azurira, inace se pravi nova
-        if models.Recenzija.objects.filter(rad=rad).exists():
-            recenzija = models.Recenzija.objects.get(rad=rad)
-            recenzija.ocjena = models.Ocjena.objects.get(id=ocjena)
-            recenzija.obrazlozenje = obrazlozenje
-            recenzija.recenzent = LoggedInUser
-        
-        else:
-            recenzija = models.Recenzija(
-                ocjena = models.Ocjena.objects.get(id=ocjena),
-                obrazlozenje = obrazlozenje,
-                recenzent = LoggedInUser,
-                rad = rad
-            )
+        novaRecenzija = models.Recenzija(
+            ocjena = models.Ocjena.objects.get(id=ocjena),
+            obrazlozenje = obrazlozenje,
+            recenzent = LoggedInUser,
+            rad = rad
+        )
 
         rad.recenziranBool = True
         if ocjena == 3: #id ocjene
@@ -57,16 +50,28 @@ def mojerecenzije(request):
             rad.revizijaBool = False
 
         rad.save()
-        recenzija.save()
+        novaRecenzija.save()
 
         return redirect('mojerecenzije')
-
-    recenzentSekcija = LoggedInUser.korisnikSekcija
     #radovi koji nemaju predan pdf se ne recenziraju, a također nas ne zanimaju radovi koji su recenzirani no ne trebaju reviziju (oni su tako i tako u recenzijama)
     fetchRadovi = models.Rad.objects.exclude(pdf="").exclude(recenziranBool = True, revizijaBool = False)
     fetchOcjene = models.Ocjena.objects.all()
     #ne zanimaju nas radovi koji zahtijevaju reviziju, oni se nalaze u fetchRadovi i ne prikazuju se kao "Recenzirani radovi"
     fetchMyRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser).exclude(rad__revizijaBool = True)
+
+    #Trazimo najnoviju recenziju za svaki pojedini rad. Upit odvoji sve recenzije s istim rad_id te svaku posebno sortira
+    #po sifRecenzija, od najvece do najmanje. Kada to napravi, za svaki skup recenzija s istim rad_id pobroji redove (prvi je 1, drugi 2, ...)
+    #te to koristimo kao rank. Na kraju uzimamo samo redove kojima je rank = 1.
+    """
+    WITH ranked AS (
+    SELECT r.*, ROW_NUMBER() OVER (PARTITION BY rad_id ORDER BY "sifRecenzija" DESC) AS rank
+    FROM "MK2ZK_App_recenzija" AS r
+    )
+    SELECT * FROM ranked WHERE rank = 1;
+    """
+    #SQL upit preuzet sa https://stackoverflow.com/a/1313293/4363932
+    najnovijeRecenzije = models.Recenzija.objects.raw('WITH ranked AS (SELECT r.*, ROW_NUMBER() OVER (PARTITION BY rad_id ORDER BY "sifRecenzija" DESC) AS rank FROM "MK2ZK_App_recenzija" AS r) SELECT "sifRecenzija" FROM ranked WHERE rank = 1')
+    fetchMyRecenzije = fetchMyRecenzije.filter(sifRecenzija__in = (x.sifRecenzija for x in najnovijeRecenzije))
 
     context['fetchedOcjene']=fetchOcjene
     context['fetchedRadovi']=fetchRadovi
