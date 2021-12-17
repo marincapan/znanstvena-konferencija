@@ -86,11 +86,11 @@ def mojiradovi(request):
 
     fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
     context['fetchedRadovi']=fetchedRadovi
-    fetchRecenzije=[]
-    for rad in fetchedRadovi:
-        if rad.recenziranBool==True:
-            fetchRecenzije.append(models.Recenzija.objects.get(rad=rad))
-    context['fetchedRecenzije']=fetchRecenzije
+
+    #Sve recenzije radova koje je uploadao trenutni korisnik
+    recenzije = models.Recenzija.objects.filter(rad__radKorisnik = LoggedInUser)
+
+    context['fetchedRecenzije']=recenzije
     for rad in fetchedRadovi:
         context['pdf']=rad.pdf
 

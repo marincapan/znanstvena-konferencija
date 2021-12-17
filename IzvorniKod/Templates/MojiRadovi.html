@@ -62,10 +62,22 @@
                                 {{rad.naslov}}</div>
                               {%if rad.pdf == "" %}
                               <span class="badge bg-danger d-flex">Rad nije predan!</span>
-                              {%elif rad.recenziranBool == 0 or rad.revizijaBool == 1 %}
-                              <span class="badge bg-warning d-flex">Rad nije recenziran.</span>
+                              {%elif rad.recenziranBool == 1%}
+                                {%for recenzija in fetchedRecenzije%}
+                                  {%if recenzija.rad == rad %}
+                                    {%if recenzija.ocjena_id == 4 %}
+                                    <span class="badge bg-danger d-flex">Rad je odbijen!</span>
+                                    {%elif recenzija.ocjena_id == 3 %}
+                                    <span class="badge bg-danger d-flex">Rad zahtijeva promjene!</span>
+                                    {%elif recenzija.ocjena_id == 2 %}
+                                    <span class="badge bg-warning d-flex">Rad zahtijeva manje promjene</span>
+                                    {%elif recenzija.ocjena_id == 1 %}
+                                    <span class="badge bg-success d-flex">Rad je recenziran</span>
+                                    {%endif%}
+                                  {%endif%}
+                                {%endfor%}
                               {%else%}
-                              <span class="badge bg-success d-flex">Rad je recenziran.</span>
+                              <span class="badge bg-primary d-flex">Rad nije recenziran</span>
                               {%endif%}
                             </button>
                           </h2>
