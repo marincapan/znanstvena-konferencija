@@ -111,10 +111,10 @@
                                               </div>
                                               <!-- align-self-start/center/end -->
                                               <div class="btn-group">
-                                                <input class="form-control" type="file" name="uploadedFile"
+                                                <input class="form-control file1" type="file" name="uploadedFile"
                                                   accept="application/pdf">
-                                                <button type="submit" class="btn btn-outline-primary" name='PonovniUnosPdf'
-                                                  style="grid-column: 2;">Predaj</button>
+                                                <button type="submit" id = "file1" class=" btn btn-outline-primary" name='PonovniUnosPdf'
+                                                  style="grid-column: 2;" >Predaj</button>
                                               </div>
                                             </div>
                                           </form>
@@ -138,10 +138,10 @@
                                         </div>
                                         <!-- align-self-start/center/end -->
                                         <div class="btn-group">
-                                          <input class="form-control" type="file" name="uploadedFile"
+                                          <input class="form-control file2" type="file" name="uploadedFile"
                                             accept="application/pdf">
-                                          <button type="submit" class="btn btn-outline-primary" name='DodajPDFPostojecem'
-                                            style="grid-column: 2;">Predaj</button>
+                                          <button type="submit" id="file2" class="btn btn-outline-primary" name='DodajPDFPostojecem'
+                                            style="grid-column: 2;" >Predaj</button>
                                         </div>
                                       </div>
                                     </form>
@@ -197,7 +197,8 @@
                           </div>
                           <!-- align-self-start/center/end -->
                           <div class="col-md-4 mb-4 align-self-center">
-                            <input class="form-control" type="file" name="uploadedFile" accept="application/pdf">
+                            <span id = "greskafile3"></span>
+                            <input class="form-control file3" type="file" name="uploadedFile" accept="application/pdf">
                           </div>
                         </div>
 
@@ -239,14 +240,14 @@
                         <!-- nije predan niti jedan rad -->
                         <div class="row"
                           style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                          <button type="submit" class="btn btn-secondary btn-lg" name='UploadFile'
-                            style="grid-column: 2;" disabled>Predaj prvi rad prije predaje novog</button>
+                          <button type="submit" id = "file1" class=" btn btn-secondary btn-lg" name='UploadFile'
+                            style="grid-column: 2;" >Predaj prvi rad prije predaje novog</button>
                         </div>
                         {%else%}
                         <div class="row"
                           style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                          <button type="submit" class="btn btn-primary btn-lg" name='UploadFile'
-                            style="grid-column: 2;">Predaj rad</button>
+                          <button type="submit" id = "file3" class="btn btn-primary btn-lg" name='UploadFile'
+                            style="grid-column: 2;"  >Predaj rad</button>
                         </div>
                         {%endif%}
 
@@ -267,5 +268,6 @@
         <!--nas js-->
         <script src="{% static '/js/hamburgerActions.js' %}"></script>
         <script src="{% static '/js/manageAuthors.js' %}"></script>
+        <script src="{% static '/js/disableSubmit.js' %}"></script>
         <!--nas js-->
     </html>

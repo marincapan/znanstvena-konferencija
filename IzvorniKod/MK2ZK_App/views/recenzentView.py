@@ -27,7 +27,11 @@ def mojerecenzije(request):
     
     LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
     recenzentSekcija = LoggedInUser.korisnikSekcija
-    fetchRadovi = models.Rad.objects.filter(radSekcija=recenzentSekcija)
+    fetchRadovi = models.Rad.objects.filter(radSekcija=recenzentSekcija,recenziranBool=False)
+    if (not fetchRadovi.first()):
+        context["nemadostupnih"]="nema"
+    print(fetchRadovi)
+
     fetchOcjene = models.Ocjena.objects.all()
     fetchMyRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser)
     fetchRecenzije = models.Recenzija.objects.all()
