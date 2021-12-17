@@ -34,13 +34,21 @@ def mojerecenzije(request):
         rad = models.Rad.objects.get(sifRad=sifRad)
         ocjena = request.POST["ocjena"] #id ocjene
         obrazlozenje = request.POST["obrazlozenje"]
+
+        #Ako recenzija za ovaj rad vec postoji onda se samo azurira, inace se pravi nova
+        if models.Recenzija.objects.filter(rad=rad).exists():
+            recenzija = models.Recenzija.objects.get(rad=rad)
+            recenzija.ocjena = models.Ocjena.objects.get(id=ocjena)
+            recenzija.obrazlozenje = obrazlozenje
+            recenzija.recenzent = LoggedInUser
         
-        newRecenzija = models.Recenzija(
-            ocjena = models.Ocjena.objects.get(id=ocjena),
-            obrazlozenje = obrazlozenje,
-            recenzent = LoggedInUser,
-            rad = rad
-        )
+        else:
+            recenzija = models.Recenzija(
+                ocjena = models.Ocjena.objects.get(id=ocjena),
+                obrazlozenje = obrazlozenje,
+                recenzent = LoggedInUser,
+                rad = rad
+            )
 
         rad.recenziranBool = True
         if ocjena == 3: #id ocjene
@@ -49,20 +57,19 @@ def mojerecenzije(request):
             rad.revizijaBool = False
 
         rad.save()
-        newRecenzija.save()
+        recenzija.save()
 
         return redirect('mojerecenzije')
 
     recenzentSekcija = LoggedInUser.korisnikSekcija
-    fetchRadovi = models.Rad.objects.filter(radSekcija=recenzentSekcija, recenziranBool=False).exclude(pdf="")
-
+    #radovi koji nemaju predan pdf se ne recenziraju, a također nas ne zanimaju radovi koji su recenzirani no ne trebaju reviziju (oni su tako i tako u recenzijama)
+    fetchRadovi = models.Rad.objects.exclude(pdf="").exclude(recenziranBool = True, revizijaBool = False)
     fetchOcjene = models.Ocjena.objects.all()
-    fetchMyRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser)
-    fetchRecenzije = models.Recenzija.objects.all()
+    #ne zanimaju nas radovi koji zahtijevaju reviziju, oni se nalaze u fetchRadovi i ne prikazuju se kao "Recenzirani radovi"
+    fetchMyRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser).exclude(rad__revizijaBool = True)
 
     context['fetchedOcjene']=fetchOcjene
     context['fetchedRadovi']=fetchRadovi
     context['fetchedMyRecenzije']=fetchMyRecenzije
-    context['fetchedRecenzije']=fetchRecenzije
     
     return render(request, 'MojeRecenzije.html', context)

@@ -35,190 +35,170 @@
           {% if messages %}
           {% for message in messages %}
           <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
-            {% endfor %}
-            {% endif %}
+          {% endfor %}
+          {% endif %}
 
-            <div id="potrebnoRecenzirati">
-              <div class="text-center mb-4">
-                <h3>Potrebno recenzirati</h3>
-              </div>
-
-              {%if fetchedRadovi.count == 0 %}
-              <div class="text-center">
-                <h5>Za sada nema dostupnih radova u Vašoj sekciji.</h5>
-              </div>
-              {%endif%}
-
-              <div class="accordion" id="accordionRadovi">
-                {%for rad in fetchedRadovi%}
-                {%if rad.pdf%}
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="header{{forloop.counter}}">
-                    <button class="accordion-button collapsed fs-5 acc-btn" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#collapse{{forloop.counter}}" aria-expanded="true"
-                      aria-controls="collapse{{forloop.counter}}">
-                      <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
-                        {{rad.naslov}}</div>
-                      {%if rad.recenziranBool == 0 or rad.revizijaBool == 1 %}
-                      <span class="badge bg-warning d-flex">Možete recenzirati ovaj rad.</span>
-                      {%else%}
-                      <span class="badge bg-success d-flex">Rad je recenziran.</span>
-                      {%endif%}
-                    </button>
-                  </h2>
-                  <div id="collapse{{forloop.counter}}" class="accordion-collapse collapse"
-                    aria-labelledby="heading{{forloop.counter}}">
-                    <div class="accordion-body">
-                      <div class="row justify-content-between" id="podaci{{rad.id}}">
-                        <div class="col-12 col-lg-4">
-                          <div>
-                            <strong>Naslov:</strong> {{rad.naslov}}
-                          </div>
-                          <div>
-                            <strong>Sekcija:</strong>
-                            {{rad.radSekcija.naziv}}
-                          </div>
-                          <div>
-                            <strong>Autori:</strong>
-                            {%for autor in rad.autori.all%}
-                            </br>{{autor.ime}} {{autor.prezime}}
-                            {%endfor%}
-                          </div>
-                        </div>
-                        <div class="col-12 col-lg-2">
-                          <div class="btn-group-vertical">
-                            <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori
-                              rad</a>
-                            <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button"
-                              download="{{rad.naslov}}">Preuzmi rad</a>
-                          </div>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row" id="ocjenjivanje{{rad.id}}">
-                        <form action="/mojerecenzije" method="post" id='recenziranje'>
-                          {% csrf_token %}
-                          <input type="text" name="sifRad" value="{{rad.sifRad}}" hidden />
-                          <select class="form-select" id="selectOcjena" name="ocjena" required>
-                            <option value="" id="defaultselect" name="defaultselect" hidden selected disabled>Odaberi
-                              ocjenu</option>
-                            {%for ocjena in fetchedOcjene%}
-                            <option value="{{ocjena.id}}">{{ocjena.znacenje}}</option>
-                            {%endfor%}
-                          </select>
-                          <div class="form-floating mt-3" id="obrazlozenjeWrapper" hidden>
-                            <input type="text" id="obrazlozenje" name="obrazlozenje" class="form-control"
-                              placeholder="Obrazloženje" />
-                            <label for="obrazlozenje">Obrazloženje</label>
-                          </div>
-                          <button type="submit" class="btn btn-primary mt-3">Ocijeni rad</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {%endif%}
-                {%endfor%}
-              </div>
+          <div id="potrebnoRecenzirati">
+            <div class="text-center mb-4">
+              <h3>Potrebno recenzirati</h3>
             </div>
 
-            <br>
-            <hr>
+            {%if fetchedRadovi.count == 0 %}
+            <div class="text-center">
+              <h5>Za sada nema dostupnih radova u Vašoj sekciji.</h5>
+            </div>
+            {%endif%}
 
-            <div id="recenziraniRadovi">
-              
-              <div class="text-center mb-4">
-                <h3>Recenzirani radovi</h3>
-              </div>
-              {%if not fetchedMyRecenzije%}
-              <div class="text-center">
-                <h5>Nemate postojeće recenzije.</h5>
-              </div>
-              {%else%}
-              <div class="accordion" id="accordionRadovi">
-                {%for recenzija in fetchedMyRecenzije%}
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="recenzirani_header{{forloop.counter}}">
-                    <button class="accordion-button collapsed fs-5 acc-btn" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#recenzirani_collapse{{forloop.counter}}" aria-expanded="true"
-                      aria-controls="recenzirani_collapse{{forloop.counter}}">
-                      <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
-                        {{recenzija.rad.naslov}}</div>
-                      {%if recenzija.rad.recenziranBool == 1 and recenzija.rad.revizijaBool != 1 %}
-                      <span class="badge bg-warning d-flex">Rad je recenziran.</span>
-                      {%elif recenzija.rad.revizijaBool == 1%}
-                      <span class="badge bg-success d-flex">Rad je revidiran.</span>
-                      {%endif%}
-                    </button>
-                  </h2>
-                  <div id="recenzirani_collapse{{forloop.counter}}" class="accordion-collapse collapse"
-                    aria-labelledby="recenzirani_heading{{forloop.counter}}">
-                    <div class="accordion-body">
-                      <div class="row justify-content-between" id="podaci{{rad.id}}">
-                        <div class="col-12 col-lg-4">
-                          <div>
-                            <strong>Naslov:</strong> {{recenzija.rad.naslov}}
-                          </div>
-                          <div>
-                            <strong>Sekcija:</strong>
-                            {{recenzija.rad.radSekcija.naziv}}
-                          </div>
-                          <div>
-                            <strong>Autori:</strong>
-                            {%for autor in recenzija.rad.autori.all%}
-                            </br>{{autor.ime}} {{autor.prezime}}
-                            {%endfor%}
-                          </div>
+            <div class="accordion" id="accordionRadovi">
+              {%for rad in fetchedRadovi%}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="header{{forloop.counter}}">
+                  <button class="accordion-button collapsed fs-5 acc-btn" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{forloop.counter}}" aria-expanded="true"
+                    aria-controls="collapse{{forloop.counter}}">
+                    <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
+                      {{rad.naslov}}</div>
+                    {%if rad.recenziranBool == 0 %}
+                    <span class="badge bg-warning d-flex">Možete recenzirati ovaj rad.</span>
+                    {%elif rad.recenziranBool == 1 and rad.revizijaBool == 1%}
+                    <span class="badge bg-danger d-flex">Rad zahtijeva reviziju.</span>
+                    {%endif%}
+                  </button>
+                </h2>
+                <div id="collapse{{forloop.counter}}" class="accordion-collapse collapse"
+                  aria-labelledby="heading{{forloop.counter}}">
+                  <div class="accordion-body">
+                    <div class="row justify-content-between" id="podaci{{rad.id}}">
+                      <div class="col-12 col-lg-4">
+                        <div>
+                          <strong>Naslov:</strong> {{rad.naslov}}
                         </div>
-                        <div class="col-12 col-lg-2">
-                          <div class="btn-group-vertical">
-                            <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori
-                              rad</a>
-                            <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button"
-                              download="{{rad.naslov}}">Preuzmi rad</a>
-                          </div>
+                        <div>
+                          <strong>Sekcija:</strong>
+                          {{rad.radSekcija.naziv}}
                         </div>
-                      </div>
-
-                      <hr>
-
-                      <div class="row">
-                        {%if recenzija.rad.revizijaBool == 1 %}
-                        <form action="/mojerecenzije" method="post" id='#'>
-                          {% csrf_token %}
-                          {%for ocjena in fetchedOcjene%}
-                          <div>
-                            <input type="radio" id="{{ocjena.znacenje}}" name="{{recenzija.rad.sifRad}}ocjena"
-                              value="{{ocjena.znacenje}}" {%if ocjena.id == 1%} checked onclick=UpdateOnOne() {%else%}
-                              onclick=UpdateOnElse() {%endif%}>{{ocjena.znacenje}}
-                          </div>
+                        <div>
+                          <strong>Autori:</strong>
+                          {%for autor in rad.autori.all%}
+                          </br>{{autor.ime}} {{autor.prezime}}
                           {%endfor%}
-                          <input type="text" id="obrazlozenje" name="{{recenzija.rad.sifRad}}obrazlozenje"
-                            class="form-control form-control-lg" />
-                          <button type="submit" class="btn btn-primary" name="{{recenzija.rad.sifRad}}">Ocijeni
-                            rad</button>
-                        </form>
-                        {%else%}
+                        </div>
+                      </div>
+                      <div class="col-12 col-lg-2">
+                        <div class="btn-group-vertical">
+                          <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori
+                            rad</a>
+                          <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button"
+                            download="{{rad.naslov}}">Preuzmi rad</a>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row" id="ocjenjivanje{{rad.id}}">
+                      <form action="/mojerecenzije" method="post" id='recenziranje'>
+                        {% csrf_token %}
+                        <input type="text" name="sifRad" value="{{rad.sifRad}}" hidden />
+                        <select class="form-select" id="selectOcjena" name="ocjena" required>
+                          <option value="" id="defaultselect" name="defaultselect" hidden selected disabled>Odaberi
+                            ocjenu</option>
+                          {%for ocjena in fetchedOcjene%}
+                          <option value="{{ocjena.id}}">{{ocjena.znacenje}}</option>
+                          {%endfor%}
+                        </select>
+                        <div class="form-floating mt-3" id="obrazlozenjeWrapper" hidden>
+                          <input type="text" id="obrazlozenje" name="obrazlozenje" class="form-control"
+                            placeholder="Obrazloženje" />
+                          <label for="obrazlozenje">Obrazloženje</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Ocijeni rad</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {%endfor%}
+            </div>
+          </div>
+
+          <br>
+          <hr>
+
+          <div id="recenziraniRadovi">
+
+            <div class="text-center mb-4">
+              <h3>Recenzirani radovi</h3>
+            </div>
+            {%if not fetchedMyRecenzije%}
+            <div class="text-center">
+              <h5>Nemate postojeće recenzije.</h5>
+            </div>
+            {%else%}
+            <div class="accordion" id="accordionRadovi">
+              {%for recenzija in fetchedMyRecenzije%}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="recenzirani_header{{forloop.counter}}">
+                  <button class="accordion-button collapsed fs-5 acc-btn" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#recenzirani_collapse{{forloop.counter}}" aria-expanded="true"
+                    aria-controls="recenzirani_collapse{{forloop.counter}}">
+                    <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
+                      {{recenzija.rad.naslov}}</div>
+                    {%if recenzija.rad.recenziranBool == 1%}
+                    <span class="badge bg-success d-flex">Rad je recenziran.</span>
+                    {%else%}
+                    <span class="badge bg-danger d-flex">Ovo se nikada ne bi trebalo prikazati</span>
+                    {%endif%}
+                  </button>
+                </h2>
+                <div id="recenzirani_collapse{{forloop.counter}}" class="accordion-collapse collapse"
+                  aria-labelledby="recenzirani_heading{{forloop.counter}}">
+                  <div class="accordion-body">
+                    <div class="row justify-content-between" id="podaci{{rad.id}}">
+                      <div class="col-12 col-lg-4">
                         <div>
-                          <strong>Ocjena:</strong>
-                          {{recenzija.ocjena.znacenje}}
+                          <strong>Naslov:</strong> {{recenzija.rad.naslov}}
                         </div>
                         <div>
-                          <strong>Obrazloženje:</strong>
-                          {{recenzija.obrazlozenje}}
+                          <strong>Sekcija:</strong>
+                          {{recenzija.rad.radSekcija.naziv}}
                         </div>
-                        {%endif%}
+                        <div>
+                          <strong>Autori:</strong>
+                          {%for autor in recenzija.rad.autori.all%}
+                          </br>{{autor.ime}} {{autor.prezime}}
+                          {%endfor%}
+                        </div>
+                      </div>
+                      <div class="col-12 col-lg-2">
+                        <div class="btn-group-vertical">
+                          <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori
+                            rad</a>
+                          <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button"
+                            download="{{rad.naslov}}">Preuzmi rad</a>
+                        </div>
                       </div>
                     </div>
 
+                    <hr>
+
+                    <div class="row">
+                      <div>
+                        <strong>Ocjena:</strong>
+                        {{recenzija.ocjena.znacenje}}
+                      </div>
+                      <div>
+                        <strong>Obrazloženje:</strong>
+                        {{recenzija.obrazlozenje}}
+                      </div>
+                    </div>
                   </div>
 
                 </div>
-                {%endfor%}
-                {%endif%}
-              </div>
-            </div>
 
+              </div>
+              {%endfor%}
+              {%endif%}
+            </div>
+          </div>
         </div>
       </div>
     </div>
