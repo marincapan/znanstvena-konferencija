@@ -90,11 +90,25 @@ def mojiradovi(request):
 
     fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
     context['fetchedRadovi']=fetchedRadovi
-    fetchRecenzije=[]
-    for rad in fetchedRadovi:
-        if rad.recenziranBool==True:
-            fetchRecenzije.append(models.Recenzija.objects.get(rad=rad))
-    context['fetchedRecenzije']=fetchRecenzije
+
+    #Recenzije svih radova koje je uploadao trenutni korisnik
+    recenzije = models.Recenzija.objects.filter(rad__radKorisnik=LoggedInUser)
+
+    #Trazimo najnoviju recenziju za svaki pojedini rad. Upit odvoji sve recenzije s istim rad_id te svaku posebno sortira
+    #po sifRecenzija, od najvece do najmanje. Kada to napravi, za svaki skup recenzija s istim rad_id pobroji redove (prvi je 1, drugi 2, ...)
+    #te to koristimo kao rank. Na kraju uzimamo samo redove kojima je rank = 1.
+    """
+    WITH ranked AS (
+    SELECT r.*, ROW_NUMBER() OVER (PARTITION BY rad_id ORDER BY "sifRecenzija" DESC) AS rank
+    FROM "MK2ZK_App_recenzija" AS r
+    )
+    SELECT * FROM ranked WHERE rank = 1;
+    """
+    #SQL upit preuzet sa https://stackoverflow.com/a/1313293/4363932
+    najnovijeRecenzije = models.Recenzija.objects.raw('WITH ranked AS (SELECT r.*, ROW_NUMBER() OVER (PARTITION BY rad_id ORDER BY "sifRecenzija" DESC) AS rank FROM "MK2ZK_App_recenzija" AS r) SELECT "sifRecenzija" FROM ranked WHERE rank = 1')
+    recenzije = recenzije.filter(sifRecenzija__in = (x.sifRecenzija for x in najnovijeRecenzije))
+
+    context['fetchedRecenzije']=recenzije
     for rad in fetchedRadovi:
         context['pdf']=rad.pdf
 

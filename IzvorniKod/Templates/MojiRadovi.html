@@ -62,10 +62,22 @@
                                 {{rad.naslov}}</div>
                               {%if rad.pdf == "" %}
                               <span class="badge bg-danger d-flex">Rad nije predan!</span>
-                              {%elif rad.recenziranBool == 0 or rad.revizijaBool == 1 %}
-                              <span class="badge bg-warning d-flex">Rad nije recenziran.</span>
+                              {%elif rad.recenziranBool == 1%}
+                                {%for recenzija in fetchedRecenzije%}
+                                  {%if recenzija.rad == rad %}
+                                    {%if recenzija.ocjena_id == 4 %}
+                                    <span class="badge bg-danger d-flex">Rad je odbijen!</span>
+                                    {%elif recenzija.ocjena_id == 3 %}
+                                    <span class="badge bg-danger d-flex">Rad zahtijeva promjene!</span>
+                                    {%elif recenzija.ocjena_id == 2 %}
+                                    <span class="badge bg-warning d-flex">Rad zahtijeva manje promjene</span>
+                                    {%elif recenzija.ocjena_id == 1 %}
+                                    <span class="badge bg-success d-flex">Rad je recenziran</span>
+                                    {%endif%}
+                                  {%endif%}
+                                {%endfor%}
                               {%else%}
-                              <span class="badge bg-success d-flex">Rad je recenziran.</span>
+                              <span class="badge bg-primary d-flex">Rad nije recenziran</span>
                               {%endif%}
                             </button>
                           </h2>
@@ -91,37 +103,6 @@
                                       {%endfor%}
                                     </div>
                                   </div>
-                                  {%for recenzija in fetchedRecenzije%}
-                                    {%if recenzija.rad == rad %}
-                                      <hr>
-                                      <span>{{recenzija.ocjena.znacenje}}</span>
-                                      {%if recenzija.ocjena.id != 1 %}
-                                        <span>Obrazlozenje: {{recenzija.obrazlozenje}}</span>
-                                        <div class="col-12 col-lg-6">
-                                          <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                                            {% csrf_token %}
-                                            <div class="row">
-                                              <div class="col">
-                                                <div class="form-floating">
-                                                  <input id="naslovPredanogRada" type="text" name="fileTitle"
-                                                    class="form-control" placeholder="Unesite naslov rada"
-                                                    value="{{rad.naslov}}" hidden required />
-                                                  <label for="naslovPredanogRada" hidden>Unesite naslov rada</label>
-                                                </div>
-                                              </div>
-                                              <!-- align-self-start/center/end -->
-                                              <div class="btn-group">
-                                                <input class="form-control file1" type="file" name="uploadedFile"
-                                                  accept="application/pdf" required>
-                                                <button type="submit" id = "file1" class=" btn btn-outline-primary" name='PonovniUnosPdf'
-                                                  style="grid-column: 2;" >Predaj</button>
-                                              </div>
-                                            </div>
-                                          </form>
-                                        </div>
-                                      {%endif%}
-                                    {%endif%}
-                                  {%endfor%}
                                   {%if rad.pdf == ""%}
                                   <!-- rad nije predan, ponudi predaju rada -->
                                   <div class="col-12 col-lg-6">
@@ -147,20 +128,57 @@
                                     </form>
                                   </div>
                                   {%else%}
-                                    {%for recenzija in fetchedRecenzije%}
-                                      {%if recenzija.rad != rad %}
-                                        <div class="col-12 col-lg-2">
-                                          <div class="btn-group-vertical">
-                                            <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori
-                                              rad</a>
-                                            <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button"
-                                              download="{{rad.naslov}}">Preuzmi rad</a>
-                                          </div>
-                                        </div>
-                                      {%endif%}
-                                    {%endfor%}
+                                  <div class="col-12 col-lg-2">
+                                    <div class="btn-group-vertical">
+                                      <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori
+                                        rad</a>
+                                      <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button"
+                                        download="{{rad.naslov}}">Preuzmi rad</a>
+                                    </div>
+                                  </div>
                                   {%endif%}
                                 </div>
+                                {%for recenzija in fetchedRecenzije%}
+                                {%if recenzija.rad == rad %}
+                                <hr>
+                                <div class="row mt-3">  
+                                  <div class="row">
+                                    <div>
+                                      <strong>Ocjena:</strong>
+                                      {{recenzija.ocjena.znacenje}}
+                                    </div>
+                                    <div>
+                                      <strong>Obrazloženje:</strong>
+                                      {{recenzija.obrazlozenje}}
+                                    </div>
+                                  </div>
+                                  {%if recenzija.ocjena.id == 2 or recenzija.ocjena.id == 3 %}
+                                  <div class="col-12 col-lg-6">
+                                    <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                                      {% csrf_token %}
+                                      <div class="row">
+                                        <div class="col">
+                                          <div class="form-floating">
+                                            <input id="naslovPredanogRada" type="text" name="fileTitle"
+                                              class="form-control" placeholder="Unesite naslov rada"
+                                              value="{{rad.naslov}}" hidden required />
+                                            <label for="naslovPredanogRada" hidden>Unesite naslov rada</label>
+                                          </div>
+                                        </div>
+                                        <!-- align-self-start/center/end -->
+                                        <div class="btn-group">
+                                          <input class="form-control file1" type="file" name="uploadedFile"
+                                            accept="application/pdf" required>
+                                          <button type="submit" id = "file1" class=" btn btn-outline-primary" name='PonovniUnosPdf'
+                                            style="grid-column: 2;" >Predaj</button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  {%endif%}
+                                </div>
+                                {%endif%}
+                                {%endfor%}
                               </div>
                             </div>
                           </div>
@@ -229,7 +247,7 @@
                             <button type="button" class="btn btn-primary btn-lg" id="btnDodajAutora" onclick=AddAuthor()>
                               <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-plus"/></svg>
                             </button>
-                            <button type="button" class="btn btn-outline-primary btn-lg" id="btnMakniAutora" onclick=RemoveAuthor()>
+                            <button type="button" class="btn btn-outline-primary btn-lg" id="btnMakniAutora" onclick=RemoveAuthor() disabled>
                               <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#person-dash"/></svg>
                             </button>
                             <input type="number" min="0" name="brojAutora" id="brojAutora" class="form-control" value="1" hidden></input>
