@@ -138,38 +138,46 @@
                                   </div>
                                   {%endif%}
                                 </div>
-                                <hr>
                                 {%for recenzija in fetchedRecenzije%}
-                                  <div class="row mt-3">  
-                                    {%if recenzija.rad == rad %}
-                                      <span>{{recenzija.ocjena.znacenje}}</span>
-                                      {%if recenzija.ocjena.id != 1 %}
-                                        <span>Obrazlozenje: {{recenzija.obrazlozenje}}</span>
-                                        <div class="col-12 col-lg-6">
-                                          <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                                            {% csrf_token %}
-                                            <div class="row">
-                                              <div class="col">
-                                                <div class="form-floating">
-                                                  <input id="naslovPredanogRada" type="text" name="fileTitle"
-                                                    class="form-control" placeholder="Unesite naslov rada"
-                                                    value="{{rad.naslov}}" hidden required />
-                                                  <label for="naslovPredanogRada" hidden>Unesite naslov rada</label>
-                                                </div>
-                                              </div>
-                                              <!-- align-self-start/center/end -->
-                                              <div class="btn-group">
-                                                <input class="form-control file1" type="file" name="uploadedFile"
-                                                  accept="application/pdf" required>
-                                                <button type="submit" id = "file1" class=" btn btn-outline-primary" name='PonovniUnosPdf'
-                                                  style="grid-column: 2;" >Predaj</button>
-                                              </div>
-                                            </div>
-                                          </form>
-                                        </div>
-                                      {%endif%}
-                                    {%endif%}
+                                {%if recenzija.rad == rad %}
+                                <hr>
+                                <div class="row mt-3">  
+                                  <div class="row">
+                                    <div>
+                                      <strong>Ocjena:</strong>
+                                      {{recenzija.ocjena.znacenje}}
+                                    </div>
+                                    <div>
+                                      <strong>Obrazloženje:</strong>
+                                      {{recenzija.obrazlozenje}}
+                                    </div>
                                   </div>
+                                  {%if recenzija.ocjena.id == 2 or recenzija.ocjena.id == 3 %}
+                                  <div class="col-12 col-lg-6">
+                                    <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
+                                      {% csrf_token %}
+                                      <div class="row">
+                                        <div class="col">
+                                          <div class="form-floating">
+                                            <input id="naslovPredanogRada" type="text" name="fileTitle"
+                                              class="form-control" placeholder="Unesite naslov rada"
+                                              value="{{rad.naslov}}" hidden required />
+                                            <label for="naslovPredanogRada" hidden>Unesite naslov rada</label>
+                                          </div>
+                                        </div>
+                                        <!-- align-self-start/center/end -->
+                                        <div class="btn-group">
+                                          <input class="form-control file1" type="file" name="uploadedFile"
+                                            accept="application/pdf" required>
+                                          <button type="submit" id = "file1" class=" btn btn-outline-primary" name='PonovniUnosPdf'
+                                            style="grid-column: 2;" >Predaj</button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  {%endif%}
+                                </div>
+                                {%endif%}
                                 {%endfor%}
                               </div>
                             </div>
