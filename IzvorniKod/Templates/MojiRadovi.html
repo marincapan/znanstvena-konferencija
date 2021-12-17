@@ -112,7 +112,7 @@
                                               <!-- align-self-start/center/end -->
                                               <div class="btn-group">
                                                 <input class="form-control file1" type="file" name="uploadedFile"
-                                                  accept="application/pdf">
+                                                  accept="application/pdf" required>
                                                 <button type="submit" id = "file1" class=" btn btn-outline-primary" name='PonovniUnosPdf'
                                                   style="grid-column: 2;" >Predaj</button>
                                               </div>
@@ -139,9 +139,9 @@
                                         <!-- align-self-start/center/end -->
                                         <div class="btn-group">
                                           <input class="form-control file2" type="file" name="uploadedFile"
-                                            accept="application/pdf">
+                                            accept="application/pdf" required>
                                           <button type="submit" id="file2" class="btn btn-outline-primary" name='DodajPDFPostojecem'
-                                            style="grid-column: 2;" >Predaj</button>
+                                            style="grid-column: 2;">Predaj</button>
                                         </div>
                                       </div>
                                     </form>
@@ -198,7 +198,7 @@
                           <!-- align-self-start/center/end -->
                           <div class="col-md-4 mb-4 align-self-center">
                             <span id = "greskafile3"></span>
-                            <input class="form-control file3" type="file" name="uploadedFile" accept="application/pdf">
+                            <input class="form-control file3" type="file" name="uploadedFile" accept="application/pdf" required>
                           </div>
                         </div>
 
@@ -268,6 +268,5 @@
         <!--nas js-->
         <script src="{% static '/js/hamburgerActions.js' %}"></script>
         <script src="{% static '/js/manageAuthors.js' %}"></script>
-        <script src="{% static '/js/disableSubmit.js' %}"></script>
         <!--nas js-->
     </html>
