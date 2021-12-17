@@ -85,11 +85,6 @@
             {% endif %}
             <!---->
 
-            {%if LoggedInUserRole == 'Sudionik'%}
-                <h4>Your ID is: {{LoggedInUserCode}}</h4>
-            {% endif %}
-
-
             <!-- ======= Hero Section ======= -->
       <section id="hero">
         <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -105,10 +100,10 @@
                   <h2 class="animate__animated animate__fadeInDown">Dobrodošli na <span>Znanstvenu konferenciju</span></h2>
                   <div class="animate__animated animate__fadeInUp countdown-container">
                     {%if LoggedInUserRole == "Sudionik" or LoggedInUserRole == "Admin" or LoggedInUserRole == "Predsjedavajuci" or not LoggedInUserRole %}
-                    <span id ="rok">Vrijeme do zaključavanja predaje radova i prijave na konferenciju ({% firstof infoKonferencija.rokPrijave1 "Nedefiniran datum" %}): </span>
+                    <span id ="rok">Vrijeme preostalo za izvršavanje registracije i predaje znanstvenog rada </span>
                     <input type="hidden" id="rokPrijave" name="rokPrijave" value="{% firstof infoKonferencija.rokPrijave "Nedefiniran datum" %}">
                     {%elif LoggedInUserRole == "Recenzent"%}
-                    <span id ="rok">Vrijeme do roka za recenziranje radova ({% firstof infoKonferencija.rokRecenzenti1 "Nedefiniran datum" %}): </span>
+                    <span id ="rok">Vrijeme preostalo do roka za recenziranje radova </span>
                     <input type="hidden" id="rokPrijave" name="rokPrijave" value="{% firstof infoKonferencija.rokRecenzenti "Nedefiniran datum" %}">
                     {%endif%}
 
@@ -175,7 +170,7 @@
         </div>
       </section><!-- End Hero -->
 
-      <div class="gradient-custom-3 card-container" style="min-height: 100vh; flex-direction: column;">
+      <div class="gradient-custom-3 card-container" style="min-height: 100vh; flex-direction: row;">
         <div class="container pt-5 pb-5 card-item">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">

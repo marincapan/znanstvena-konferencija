@@ -63,6 +63,10 @@ def osobnipodaci(request):
         context['uloga']=LoggedInUser.vrstaKorisnik.naziv
         context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
         context['sekcija']=LoggedInUser.korisnikSekcija.naziv
+
+        if context['LoggedInUserRole']=='Sudionik':
+            context['SudionikID']=LoggedInUser.idSudionik
+        
     else:
         return redirect('signin')
     

@@ -191,6 +191,15 @@
                             <div class="fs-4 fw-bold" id='sekcija'>{{sekcija}}</div>
                           </div>
                           {%endif%}
+
+                          {%if LoggedInUserRole == 'Sudionik'%}
+                            {%if SudionikID%}
+                            <div style="padding-bottom: 9px;">
+                              <div class="fs-5">Jedinstveni identifikator sudionika</div>
+                              <div class="fs-4 fw-bold" id="idsudionik">{{SudionikID}}</div>
+                            </div>
+                            {% endif %}
+                          {% endif %}
                         </div>
                       </div>
                       
