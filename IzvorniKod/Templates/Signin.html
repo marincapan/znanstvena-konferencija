@@ -24,12 +24,14 @@
           {% include "./Header.html" %}
           <!--HEADER-->
 
+
               <!--Ako npr nakon sign up treba displayat "Uspjesno registrirani!"-->
+            <!-- to sam prebacila ispod u formi da pokazuje
             {% if messages %}
             {% for message in messages %}
             <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
             {% endfor %}
-            {% endif %} 
+            {% endif %}  -->
             <!---->
             <!--Random šifra nakon prvog signupa. Vjerovatno ce bit prebacena na mail ali zasad je to ovo"-->
             {%if randPassword%}
@@ -47,6 +49,13 @@
               
                             <form action="/signin" method="post">
                               {% csrf_token %}
+                              <div class="fs-6 fw-bold text-center" id='greska'>
+                                {% if messages %}
+                                {% for message in messages %}
+                                {{ message }}
+                                {% endfor %}
+                                {% endif %}
+                              </div>
   
                               <div class="form-outline mb-4">
                                 <label class="form-label" for="">Korisničko ime</label>
@@ -61,11 +70,29 @@
                               <div class="form-outline mb-4">
                                 <button type="submit" class="btn btn-primary btn-lg form-control form-control-lg">Prijavi se</button>
                               </div>
+                             
               
                               <p class="text-center text-muted mt-5 mb-0">Nemaš račun? <a href="signup" class="fw-bold text-body"><u>Registriraj se</u></a></p>
                               
-                              <p class="text-center text-muted mt-5 mb-0"><a href="#" class="text-body">Zaboravljena lozinka</a></p>
-              
+                              <p class="text-center text-muted mt-5 mb-0"><a href="javascript:;" onclick='newPass();' class="text-body">Zaboravljena lozinka</a></p>
+                              <br>
+
+                              <div class="form-outline mb-4">
+                                <label id = "label" class="form-label mt-5 mb-0" style = "display:none;" for="">Unesite e-mail s kojim ste se registrirali</label>
+                                <input type="text" style = "display:none; margin-top:2%;" id="email" name="email" class="form-control form-control-lg" />
+                              </div>
+                              <div class="form-outline mb-4">
+                                <button id ="emailgumb" type="submit" style = "display:none;"class="btn btn-primary btn-lg form-control form-control-lg">Pošalji novu lozinku na e-mail</button>
+                              </div>
+
+                              <!-- <div  class="fs-6 fw-bold text-center" id='kriviemail'>
+                                {% if messages %}
+                                {% for message in messages %}
+                                {{ message }}
+                                {% endfor %}
+                                {% endif %}
+                              </div> -->
+
                             </form>
               
                           </div>
@@ -83,5 +110,6 @@
         
   <!--nas js-->
   <script src="{% static '/js/hamburgerActions.js' %}"></script>
+  <script src="{% static '/js/newPassword.js' %}"></script>
   <!--nas js-->
 </html>

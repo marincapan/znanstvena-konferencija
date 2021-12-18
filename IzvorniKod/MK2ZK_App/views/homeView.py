@@ -214,25 +214,45 @@ def signup(request):
     return render(request, 'Signup.html',context)
     
 def signin(request):
+    context = {}
     if request.method == "POST":
         Username = request.POST['Username']
         pass1 = request.POST['pass1']
+        email = request.POST['email']
         try:
-            if models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists():
+            if (email != ""):
+                #zahtjev za novom lozinkom
+                if (models.Korisnik.objects.filter(email = email).exists()):
+                    #dodati enkripciju i slanje lozinke na mail
+                    randPassword=get_random_string(length=16)
+                    print(randPassword)
+                    messages.error(request, "Nova lozinka je poslana na e-mail.")
+
+                else:
+                    
+                    messages.error(request, "E-mail koji ste unijeli ne postoji u bazi.")
+                    return redirect('signin')
+
+
+            elif (models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists()):
                 LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
                 print(LoggedInUser.vrstaKorisnik.naziv)
                 request.session['LoggedInUserId']=LoggedInUser.id
                 request.session
                 request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
+                #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
                 if LoggedInUser.odobrenBool==False:
                     messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
                 return redirect('home')
+            else:
+               
+                messages.error(request, "Korisničko ime ili lozinka su krivi.")
+                return redirect('signin')
+
 
         except:
-            messages.error(request, "Korisnicko ime ili lozinka su krivi")
             return redirect('signin')
-    
-    context = {}
+ 
     if "randPassword" in request.session: #tek smo se registrirali
         context["randPassword"]=request.session["randPassword"]
     elif "LoggedInUserId" in request.session: #otprije smo registrirani
