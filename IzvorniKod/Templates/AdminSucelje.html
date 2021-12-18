@@ -41,9 +41,9 @@
                         <form action="adminsucelje" method="POST">
                           {% csrf_token %}
                           {% if brojPredanihRadova != 0%}
-                            <button type="submit" class="btn btn-primary" name="makePublic">{%if javniBool == 0%} Ucini radove javnim {%else%} Ukloni javni pristup {%endif%} </button>
+                            <button type="submit" class="btn btn-primary" name="makePublic">{%if javniBool == 0%} Učini radove javnim {%else%} Ukloni javni pristup radovima {%endif%} </button>
                           {% else %}
-                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Niti jedan rad nije predan" disabled>Ucini radove javnim</button>
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Niti jedan rad nije predan" disabled>Još nema predanih radova</button>
                           {% endif %}
                         </form>
                       {%endif%}
@@ -59,8 +59,10 @@
                           <hr>
                         </div>
                         <div class="row">
+                          
+                            {%if ime%}  
                             <div class="col-sm">
-                                {%if ime%}
+                              
                                 <div style="padding-bottom: 9px;" id="FNameDiv">
                                     <div>
                                         <div style="display: inline;" class="fs-6">Ime</div>
@@ -77,9 +79,9 @@
                                             </span>
                                         </div>
                                     </div>
-                                
+                                   
                                     <div class="fs-5 fw-bold" id='ime'>{{ime}}</div>
-    
+                                    
                                     <form action="/adminsucelje" method="post" id='NewFNameForm'>
                                     {% csrf_token %}
                                         <div style="max-width: 15rem;" id="FNameCollapse" class="collapse collapse-horizontal">
@@ -89,8 +91,8 @@
                                 </div>
                                 {%endif%}
             
-            
                                 {%if prezime%}
+                                
                                 <div style="padding-bottom: 9px;" id="LNameDiv">
                                     <div>
                                         <div style="display: inline;" class="fs-6">Prezime</div>
@@ -107,9 +109,10 @@
                                             </span>
                                         </div>
                                     </div>
-                                
+                                    
                                     <div class="fs-5 fw-bold" id='prezime'>{{prezime}}</div>
-                                
+                                    
+
                                     <form action="/adminsucelje" method="post" id='NewLNameForm'>
                                         {% csrf_token %}
                                         <div style="max-width: 15rem;" id="LNameCollapse" class="collapse collapse-horizontal">
@@ -118,9 +121,11 @@
                                     </form>
                                 </div>
                                 {%endif%}
+                                
                             </div>
+                            {%if korisnickoIme%}
                             <div class="col-sm">
-                              {%if korisnickoIme%}
+                              
                               <div style="padding-bottom: 9px;" id="UserNameDiv">
                                 <div>
                                   <div style="display: inline;" class="fs-6">Korisničko ime</div>
@@ -137,9 +142,10 @@
                                     </span>
                                   </div>
                                 </div>
+
                                 
                                 <div class="fs-5 fw-bold" id='korisnickoIme'>{{korisnickoIme}}</div>
-    
+                                
                                 <form action="/adminsucelje" method="post" id='NewUserNameForm'>
                                   {% csrf_token %}
                                   <div>
@@ -170,8 +176,9 @@
                                     </span>
                                   </div>
                                 </div>
+                                
                                 <div class="fs-5 fw-bold" id='email'>{{email}}</div>
-    
+                                
                                 
                                 <form action="/adminsucelje" method="post" id='NewEmailForm'>
                                   {% csrf_token %}
@@ -182,12 +189,37 @@
                               </div>
                               {%endif%}
                             </div>
+                            <hr>
+                           
+                            <div  class="text-uppercase text-left mb-3"  id='Label'>Administratori konferencije</div>
+                            {%if administratori%}
+        
+                            <ul type="text" id="admin" name="admin">
+                            {%for admin in administratori%}
+                            <li  value="{{admin}}">{{admin}}</li>
                             
+                            {%endfor%}
+                            {%endif%}
+                            </ul>
+                            
+                            <div class="text-uppercase text-left mb-3">
+                              <div style="padding-bottom: 3px;" id="titleDiv">
+                                <div>
+                                  <h4 style="display: inline;" id="myTitle">Dodavanje dodatnog administratora</h4>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                           </div>
                           
                         </div>
+                        
                       </div>
-                    </div>
+                      
+                      </div>
+                      
+                      
+                   
                   </div>
                 </div>
 

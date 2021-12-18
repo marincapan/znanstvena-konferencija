@@ -134,14 +134,22 @@ def adminsucelje(request):
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            context['korisnickoIme']=Predsjedavajuci.korisnickoIme
-            context['ime']=Predsjedavajuci.ime
-            context['prezime']=Predsjedavajuci.prezime
-            context['email']=Predsjedavajuci.email
-            context['uloga']=Predsjedavajuci.vrstaKorisnik.naziv
-            context['MaticnaUstanova']=Predsjedavajuci.korisnikUstanova.naziv
-            context['sekcija']=Predsjedavajuci.korisnikSekcija.naziv
+            Predsjedavajuci=models.Korisnik.objects.filter(id=4).first()
+            Administratori = models.Korisnik.objects.filter(id = 1) #znamo da je bar 1
+            popis = []
+            for admin in Administratori:
+                popis.append(admin.ime + " " + admin.prezime)
+
+            context["administratori"] = popis
+            print(context)
+            if (Predsjedavajuci):
+                context['korisnickoIme']=Predsjedavajuci.korisnickoIme
+                context['ime']=Predsjedavajuci.ime
+                context['prezime']=Predsjedavajuci.prezime
+                context['email']=Predsjedavajuci.email
+                context['uloga']=Predsjedavajuci.vrstaKorisnik.naziv
+                context['MaticnaUstanova']=Predsjedavajuci.korisnikUstanova.naziv
+                context['sekcija']=Predsjedavajuci.korisnikSekcija.naziv
         else: #nije admin
             return redirect('/') #redirect na homepage
 

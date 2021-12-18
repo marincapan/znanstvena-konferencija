@@ -223,9 +223,13 @@ def signin(request):
             if (email != ""):
                 #zahtjev za novom lozinkom
                 if (models.Korisnik.objects.filter(email = email).exists()):
+                    korisnik = models.Korisnik.objects.get(email = email)
+                    
                     #dodati enkripciju i slanje lozinke na mail
                     randPassword=get_random_string(length=16)
                     print(randPassword)
+                    korisnik.lozinka = randPassword
+                    korisnik.save()
                     messages.error(request, "Nova lozinka je poslana na e-mail.")
 
                 else:
