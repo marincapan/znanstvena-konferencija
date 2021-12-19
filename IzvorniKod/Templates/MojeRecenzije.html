@@ -142,10 +142,10 @@
                     aria-controls="recenzirani_collapse{{forloop.counter}}">
                     <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
                       {{recenzija.rad.naslov}}</div>
-                    {%if recenzija.rad.recenziranBool == 1%}
+                    {%if recenzija.rad.recenziranBool == 1 and recenzija.ocjena_id != 3%}
                     <span class="badge bg-success d-flex">Rad je recenziran.</span>
-                    {%else%}
-                    <span class="badge bg-danger d-flex">Ovo se nikada ne bi trebalo prikazati</span>
+                    {%elif recenzija.ocjena.id == 3%}
+                    <span class="badge bg-warning d-flex">Rad čeka doradu.</span>
                     {%endif%}
                   </button>
                 </h2>
