@@ -70,7 +70,7 @@
               {%if LoggedInUserRole == "Admin"%}
               <a href="/sloziobrazac" class="nav-link text-white">
                 <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
-                Složi obrazac
+                Administrator
               </a>
               {%elif LoggedInUserRole == "Recenzent"%}
               <a href="/mojerecenzije" class="nav-link text-white">
@@ -85,7 +85,7 @@
               {%else%}
               <a href="#" class="nav-link text-white">
                 <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
-                Predsjedavajuci
+                Predsjedavajući
               </a>
               {%endif%}
               

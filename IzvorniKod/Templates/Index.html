@@ -138,9 +138,13 @@
             <div class="carousel-item" style="background-image: image('../MK2ZK_App/static/bg.png')">
               <div class="carousel-container">
                 <div class="container">
-                  <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2>
-                  <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
-                  <a href="#" class="btn btn-primary animate__animated animate__fadeInUp scrollto">Saznaj više</a>
+                  <h2 class="animate__animated animate__fadeInDown">Otkrij nova, zanimljiva istraživanja</h2>
+                  <p class="animate__animated animate__fadeInUp">Priključi se, otkrij koje su najnovije teme i znanstvene rasprave u području tvog interesa.</p>
+                  {% if LoggedInUser %}
+                  <a href="javniradovi" class=" btn btn1 btn-primary animate__animated animate__fadeInUp scrollto">Pogledaj javno dostupne znanstvene radove</a>
+                  {% else %}
+                  <a href="info" class="btn btn-primary animate__animated animate__fadeInUp scrollto">Saznaj više</a>
+                  {% endif %}
                 </div>
               </div>
             </div>

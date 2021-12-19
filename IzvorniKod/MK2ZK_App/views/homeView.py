@@ -434,3 +434,32 @@ def info(request):
     print(context)
     return render(request, 'Info.html', context)
 
+def javniradovi(request):
+  context={}
+  if "LoggedInUserId" in request.session: #ulogirani smo
+    context["LoggedInUser"]=request.session['LoggedInUserId']
+  else: #nismo ulogirani
+    return redirect('signin')
+
+  if "LoggedInUserRole" in request.session:
+        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+
+  radovi = models.Rad.objects.all()
+  sekcije = models.Sekcija.objects.all()
+  korisnici = models.Korisnik.objects.all()
+
+  #brojac predanih radova
+  brojPredanihRadova = 0
+  
+  #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea
+  for rad in radovi:
+      rad.radSekcija_naziv = sekcije.get(sifSekcija=rad.radSekcija_id).naziv
+      if(rad.pdf != ""):
+        brojPredanihRadova += 1
+
+  context['javniBool'] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
+  context['Radovi'] = radovi
+  context['brojPredanihRadova'] = brojPredanihRadova
+
+  return render(request, 'JavniRadovi.html', context)
+
