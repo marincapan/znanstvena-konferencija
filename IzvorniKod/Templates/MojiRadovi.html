@@ -53,6 +53,7 @@
 
                       <div class="accordion" id="accordionRadovi">
                         {%for rad in fetchedRadovi%}
+                        {%if prosoDatum == 0 %}
                         <div class="accordion-item">
                           <h2 class="accordion-header" id="header{{forloop.counter}}">
                             <button class="accordion-button collapsed fs-5 acc-btn" type="button"
@@ -60,7 +61,7 @@
                               aria-expanded="true" aria-controls="collapse{{forloop.counter}}">
                               <div style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
                                 {{rad.naslov}}</div>
-                              {%if rad.pdf == "" %}
+                              {%if rad.pdf == "" and prosoDatum == 0%}
                               <span class="badge bg-danger d-flex">Rad nije predan!</span>
                               {%elif rad.recenziranBool == 1%}
                                 {%for recenzija in fetchedRecenzije%}
@@ -103,7 +104,7 @@
                                       {%endfor%}
                                     </div>
                                   </div>
-                                  {%if rad.pdf == ""%}
+                                  {%if rad.pdf == "" and prosoDatum == 0 %}
                                   <!-- rad nije predan, ponudi predaju rada -->
                                   <div class="col-12 col-lg-6">
                                     <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
@@ -122,7 +123,7 @@
                                           <input class="form-control file2" type="file" name="uploadedFile"
                                             accept="application/pdf" required>
                                           <button type="submit" id="file2" class="btn btn-outline-primary" name='DodajPDFPostojecem'
-                                            style="grid-column: 2;">Predaj</button>
+                                            style="grid-column: 2;" {%if prosoDatum == 1 %} disabled> Proslo vrijeme prijave! {%else%} Predaj {%endif%}</button>
                                         </div>
                                       </div>
                                     </form>
@@ -185,6 +186,10 @@
                             </div>
                           </div>
                         </div>
+                        {%elif rad.pdf == "" %}
+                          <div> Niste predali niti jedan rad prije kraja prijave
+                          </div>
+                        {%endif%}
                         {%endfor%}
                       </div>
                     </div>
@@ -192,7 +197,7 @@
                     <br>
                     <hr>
                     <br>
-
+                    {%if prosoDatum == 0 %}
                     <div id="dodavanjeRada">
                       <div class="text-center mb-5">
                         <h3>Predaja dodatnog rada</h3>
@@ -273,6 +278,11 @@
 
                       </form>
                     </div>
+                    {%else%}
+                    <div>
+                      PROSAO ROK PRIJAVE!
+                    </div>
+                    {%endif%}
                   </div>
 
                 </div>

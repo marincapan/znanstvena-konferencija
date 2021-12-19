@@ -42,8 +42,12 @@
             <div class="text-center mb-4">
               <h3>Potrebno recenzirati</h3>
             </div>
-
-            {%if fetchedRadovi.count == 0 %}
+            
+            {%if prosoDatum == 1 %}
+            <div class="text-center">
+              <h5>Prosao rok za recenziranje!!</h5>
+            </div>
+            {%elif fetchedRadovi.count == 0 %}
             <div class="text-center">
               <h5>Za sada nema dostupnih radova u Vašoj sekciji.</h5>
             </div>
@@ -51,6 +55,7 @@
 
             <div class="accordion" id="accordionRadovi">
               {%for rad in fetchedRadovi%}
+              {%if prosoDatum == 0%}
               <div class="accordion-item">
                 <h2 class="accordion-header" id="header{{forloop.counter}}">
                   <button class="accordion-button collapsed fs-5 acc-btn" type="button" data-bs-toggle="collapse"
@@ -116,6 +121,7 @@
                   </div>
                 </div>
               </div>
+              {%endif%}
               {%endfor%}
             </div>
           </div>
@@ -128,10 +134,15 @@
             <div class="text-center mb-4">
               <h3>Recenzirani radovi</h3>
             </div>
-            {%if not fetchedMyRecenzije%}
+            {%if not fetchedMyRecenzije and prosoDatum == 1%}
+            <div class="text-center">
+              <h5>Niste ocjenili niti jedan rad prije kraja roka.</h5>
+            </div>
+            {%elif not fetchedMyRecenzije%}
             <div class="text-center">
               <h5>Nemate postojeće recenzije.</h5>
             </div>
+            
             {%else%}
             <div class="accordion" id="accordionRadovi">
               {%for recenzija in fetchedMyRecenzije%}

@@ -15,6 +15,7 @@ from django.core import serializers
 from django.utils import (dateformat, formats)
 import zipfile
 import os
+from datetime import date
 
 def osobnipodaci(request):
     if request.method == "POST":
@@ -210,5 +211,5 @@ def mojiradovi(request):
             noviRad.save()
             return redirect('mojiradovi')
 
-    
+    context["prosoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokPrijave
     return render(request, 'MojiRadovi.html',context)

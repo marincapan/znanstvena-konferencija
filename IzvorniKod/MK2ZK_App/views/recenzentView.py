@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import date
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
@@ -76,5 +77,6 @@ def mojerecenzije(request):
     context['fetchedOcjene']=fetchOcjene
     context['fetchedRadovi']=fetchRadovi
     context['fetchedMyRecenzije']=fetchMyRecenzije
+    context["prosoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokRecenzenti
     
     return render(request, 'MojeRecenzije.html', context)
