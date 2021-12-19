@@ -19,5 +19,6 @@ urlpatterns = [
     path('pregled/radovi', predsjedavajuciView.radovi, name='radovi'),
     path('adminsucelje', adminView.adminsucelje, name='adminsucelje'),
     path('javniradovi', homeView.javniradovi, name='javniradovi'),
-    path('posaljiobavijest', predsjedavajuciView.obavijest, name='obavijest')
+    path('posaljiobavijest', predsjedavajuciView.obavijest, name='obavijest'),
+    path('predsjedavajuci', predsjedavajuciView.uprsucelje, name='predsjedavajuci')
 ]

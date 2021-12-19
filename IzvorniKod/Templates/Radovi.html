@@ -89,6 +89,16 @@
             </table>
 
           </div>
+
+          {% if LoggedInUserRole == 'Admin'%}
+          <div class="d-flex justify-content-end">
+            <div>
+              <br>
+              <small>Klikom na naslov rada pristupate sučelju za promjenu podataka vezanih za željeni rad.</small>
+            </div>
+          </div>
+          {%endif%}
+
         </div>
       </div>
     </div>

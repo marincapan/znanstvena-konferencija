@@ -299,7 +299,7 @@
                                 <div style="padding-bottom: 5px;" id="UserNameDiv">
 
                                   <div>
-                                  <form action="/sloziobrazac" method="post" enctype="multipart/form-data">
+                                  <form action="/adminsucelje" method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
 
                                     <div class="form-outline mb-2">
@@ -316,7 +316,7 @@
 
                                     <div>
                                         <ul class="fs-6 buttons">
-                                            <li class="fs-6"><input type="radio" name="fieldType" id="text" value="text"> običan tekst</li>
+                                            <li class="fs-6"><input type="radio" name="fieldType" id="text" value="text" checked="checked"> običan tekst</li>
                                             <li class="fs-6"><input type="radio" name="fieldType" id="date" value="date"> datum</li>
                                             <li class="fs-6"><input type="radio" name="fieldType" id="number" value="number"> broj</li>
                                         </ul>
@@ -333,12 +333,13 @@
 
                                 {%if DodatnaPolja%}<!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
 
-                                <br><hr><br>
+                                <hr>
 
                                 <div class="text-left mb-2">
-                                    <h2>Aktivna polja</h2>
+                                    <h5>Aktivna polja</h5>
                                 </div>
-                                    <form action="/sloziobrazac" method="POST" enctype="multipart/form-data">
+                                </div>
+                                    <form action="/adminsucelje" method="POST" enctype="multipart/form-data">
                                       {% csrf_token %}
 
                                       <p class="text-left text-muted mt-2 mb-0">Odaberite polja koja želite uključiti u obrazac za registraciju.</p>
@@ -348,11 +349,12 @@
                                         <div class="text-center text-muted mt-2 mb-0">Tip polja</div>
                                         <div class="text-center text-muted mt-2 mb-0">Je li polje u obrascu?</div>
                                       </div>
-
+                                      
                                       <div class="active-fields-container">
-                                        <hr style="width: 30%; height: 0.05rem;">
-                                        <hr style="width: 30%; height: 0.05rem; text-align: center;">
-                                      </div>
+                                        <hr style="width: 40%; height: 0.05rem;">
+                                        <hr style="width: 40%; height: 0.05rem; text-align: center;">
+                                        <hr style="width: 40%; height: 0.05rem;">
+                                    </div>
 
                                       <div class="container-of-containers">
                                         {%for polje in DodatnaPolja%}
@@ -380,7 +382,7 @@
 
                                       <br>
                                       <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                                        <button type="submit" class="btn btn-primary btn-lg" name='ActiveFields' value="Update" style="grid-column: 2;">Ažuriraj obrazac</button>
+                                        <button type="submit" class="btn btn-primary btn-md" name='ActiveFields' value="Update" style="grid-column: 2;">Ažuriraj obrazac</button>
                                       </div>
                                       {%endif%}
                                     </div>

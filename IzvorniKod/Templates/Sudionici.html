@@ -78,6 +78,16 @@
             </table>
 
           </div>
+
+          {% if LoggedInUserRole == 'Admin'%}
+          <div class="d-flex justify-content-end">
+            <div>
+              <br>
+              <small>Klikom na korisničko ime pristupate sučelju za promjenu osobnih podataka željenog korisnika.</small>
+            </div>
+          </div>
+          {%endif%}
+          
         </div>
       </div>
     </div>

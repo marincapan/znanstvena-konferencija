@@ -34,11 +34,8 @@
                     
                     
                       <div class="text-uppercase text-center mb-5">
-                        {%if LoggedInUserRole == "Sudionik"%}
-                        <h2>Moji radovi</h2>
-                        {% endif %}
                         {% if LoggedInUserRole == "Admin" %}
-                        <h2>Složi obrazac</h2>
+                        <h2>Uredi obrazac za registraciju</h2>
                         {% endif %}
                         <hr>
                       </div>
@@ -53,7 +50,7 @@
                           {% endfor %}
                       {% endif %}
                       
-                      <p class="text-center text-muted mt-5 mb-0">Ovdje možeš definirati novo polje za registracijski obrazac. </p>
+                      <p class="text-center text-muted mt-5 mb-0">Ovdje možete definirati novo polje za registracijski obrazac. </p>
                       <br>
                         
                       
@@ -69,7 +66,7 @@
                                         {% csrf_token %}
 
                                         <div class="form-outline mb-4">
-                                            <label class="fs-5" for="">Naziv novog polja za obrazac:</label>
+                                            <label class="fs-6 fw-bold for="">Naziv novog polja za obrazac:</label>
                                         </div>
 
                                         <div class="col-md-6 mb-4">
@@ -77,21 +74,21 @@
                                         </div>
                                         
                                         <div class="form-outline mb-4">
-                                            <label class="fs-5" for="">Odaberi tip podatka novog polja:</label>
+                                            <label class="fs-6 fw-bold for="">Odaberite tip podatka novog polja:</label>
                                         </div>
 
                                         <div>
-                                            <ul class="fs-5 buttons">
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="text" value="text"> običan tekst</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="date" value="date"> datum</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="number" value="number"> broj</li>
+                                            <ul class="fs-6 buttons">
+                                                <li class="fs-6"><input type="radio" name="fieldType" id="text" value="text" checked="checked"> običan tekst</li>
+                                                <li class="fs-6"><input type="radio" name="fieldType" id="date" value="date"> datum</li>
+                                                <li class="fs-6"><input type="radio" name="fieldType" id="number" value="number"> broj</li>
                                             </ul>
                                         </div>
 
                                         <br>
 
                                         <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                                            <button type="submit" class="btn btn-primary btn-lg" name='AddNewField' value="Update" style="grid-column: 2;">Dodaj novo polje</button>
+                                            <button type="submit" class="btn btn-primary btn-md" name='AddNewField' value="Update" style="grid-column: 2;">Dodaj novo polje</button>
                                         </div>
 
                                     
@@ -109,7 +106,7 @@
                                         <form action="/sloziobrazac" method="POST" enctype="multipart/form-data">
                                             {% csrf_token %}
 
-                                            <p class="text-center text-muted mt-5 mb-0">Odaberi polja koja želiš uključiti u obrazac za registraciju.</p>
+                                            <p class="text-center text-muted mt-5 mb-0">Odaberite polja koja želite uključiti u obrazac za registraciju.</p>
                                             
                                             <div class="active-fields-container">
                                                 <div class="text-center text-muted mt-5 mb-0">Naziv polja</div>
@@ -126,16 +123,16 @@
                                                 {%for polje in DodatnaPolja%}
                                             <div class="active-fields-container">
                                                 <div class="labels mb-0">
-                                                    <label class="fs-5" for="{{polje.imePolja}}">{{polje.imePolja}}
+                                                    <label class="fs-6" for="{{polje.imePolja}}">{{polje.imePolja}}
                                                 </div>
 
                                                 <div class="labels mb-0">
                                                   {%if polje.tipPolja.naziv == "text"%}
-                                                  <label class="fs-5" for="{{polje.imePolja}}"><i>obični tekst</i>
+                                                  <label class="fs-6" for="{{polje.imePolja}}"><i>obični tekst</i>
                                                   {%elif polje.tipPolja.naziv == "date"%}
-                                                  <label class="fs-5" for="{{polje.imePolja}}"><i>datum</i>
+                                                  <label class="fs-6" for="{{polje.imePolja}}"><i>datum</i>
                                                   {%elif polje.tipPolja.naziv == "number"%}
-                                                  <label class="fs-5" for="{{polje.imePolja}}"><i>broj</i>
+                                                  <label class="fs-6" for="{{polje.imePolja}}"><i>broj</i>
                                                   {%endif%}
                                                 </div>
                                                 

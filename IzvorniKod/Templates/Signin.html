@@ -49,7 +49,7 @@
               
                             <form action="/signin" method="post">
                               {% csrf_token %}
-                              <div class="fs-6 fw-bold text-center" id='greska'>
+                              <div class="fs-6 fw-bold text-center" style="color:#ce171a" id='greska'>
                                 {% if messages %}
                                 {% for message in messages %}
                                 {{ message }}

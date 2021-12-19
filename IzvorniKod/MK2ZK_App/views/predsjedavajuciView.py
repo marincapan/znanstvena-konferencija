@@ -122,7 +122,7 @@ def radovi(request):
         return redirect('signin')
     
     if "LoggedInUserRole" in request.session:
-        if request.session['LoggedInUserRole'] == "Admin" or models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool==True:
+        if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci" or models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool==True:
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin ili radovi nisu javni
             return redirect('/')
@@ -173,3 +173,38 @@ def obavijest(request):
 
     return render(request, 'PosaljiObavijest.html', context)
     
+def uprsucelje(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        if request.session['LoggedInUserRole'] == "Predsjedavajuci":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije predsjedavajuci
+            return redirect('/')
+
+    recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
+    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=1)
+    radovi = models.Rad.objects.all()
+
+    neodobreni = models.Korisnik.objects.filter(vrstaKorisnik_id=3, odobrenBool=False)
+    sekcije = models.Sekcija.objects.all()
+    ustanove = models.Ustanova.objects.all()
+
+    #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea
+    for recenzent in neodobreni:
+        recenzent.korisnikSekcija_naziv = sekcije.get(sifSekcija=recenzent.korisnikSekcija_id).naziv
+        recenzent.korisnikUstanova_naziv = ustanove.get(sifUstanova=recenzent.korisnikUstanova_id).naziv
+
+
+    context["Neodobreni"] = neodobreni
+
+    context["recenzenti_broj_odobrenih"] = recenzenti.filter(odobrenBool=True).count()
+    context["recenzenti_broj_neodobrenih"] = recenzenti.filter(odobrenBool=False).count()
+    context["sudionici_broj_odobrenih"] = sudionici.filter(odobrenBool=True).count()
+    context["sudionici_broj_neodobrenih"] = sudionici.filter(odobrenBool=False).count()
+    context["radovi_broj_recenziranih"] = radovi.filter(recenziranBool=True).count()
+    context["radovi_broj_nerecenziranih"] = radovi.filter(recenziranBool=False).count()
+
+    return render(request, 'Predsjedavajuci.html', context)

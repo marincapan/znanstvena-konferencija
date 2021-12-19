@@ -1,0 +1,198 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Upravljačko sučelje</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+
+  <!--tablice-->
+  <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" />
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+
+</head>
+
+<body>
+    <!--HEADER-->
+    {% include "./Header.html" %}
+    <!--HEADER-->
+
+    <div class="gradient-custom-3 " style="min-height: 100vh;">
+        <div class="container pt-5 pb-5">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+                
+                <div class="text-uppercase text-center mb-5">
+                    <div style="padding-bottom: 9px;" id="titleDiv">
+                      <div>
+                        <h2 style="display: inline;" id="myTitle">Upravljačko sučelje</h2>
+                      </div>
+                    </div>
+                  <hr>
+                </div>
+
+                <div class="container" >
+                    <div class="text-uppercase text-left mb-3">
+                      <div style="padding-bottom: 3px;" id="titleDiv">
+                        <div>
+                          <h4 style="display: inline;" id="myTitle">Odobravanje registracija recenzenata</h4>
+                        </div>
+                      </div>
+                      <hr>
+                    </div>
+
+                    <form>
+                    <div class="table-responsive container">
+                        <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaNeodobreni">
+                          <thead style="border-bottom: 1px;">
+                            <tr class="text-center">
+                              <th scope="col">#</th>
+                              <th scope="col">Korisničko ime</th>
+                              <th scope="col">Ime</th>
+                              <th scope="col">Prezime</th>
+                              <th scope="col">E-pošta</th>
+                              <th scope="col">Sekcija</th>
+                              <th scope="col">Ustanova</th>
+                              <th scope="col">Prihvati/Odbij</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for recenzent in Neodobreni %}
+                              <tr class="text-center">
+                                <th scope="row">{{recenzent.id}}</th>
+                                <td>{{recenzent.korisnickoIme}}</td>
+                                <td>{{recenzent.ime}}</td>
+                                <td>{{recenzent.prezime}}</td>
+                                <td>{{recenzent.email}}</td>
+                                <td>{{recenzent.korisnikSekcija_naziv}}</td>
+                                <td>{{recenzent.korisnikUstanova_naziv}}</td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm" disabled>Prihvati</button>
+                                    <button type="submit" class="btn btn-danger btn-sm form-control form-control-sm" disabled>Odbij</button>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+            
+                      </div>
+                      </form>
+
+                      <br><hr><br>
+
+                </div>
+
+                <div class="container" >
+                    <div class="text-uppercase text-left mb-3">
+                      <div style="padding-bottom: 3px;" id="titleDiv">
+                        <div>
+                          <h4 style="display: inline;" id="myTitle">Općenito</h4>
+                        </div>
+                      </div>
+                      <hr>
+                    </div>
+
+                   <ul>
+                    <li> <!-- Slanje obavijesti korisnicima -->
+                        <a href="/posaljiobavijest">
+                          <div class="text-left fw-bold mb-1 fs-5" id='Label'>Pošalji obavijest korisnicima</div>
+                        </a>
+                        <br>
+                      </li> <!-- Slanje obavijesti korisnicima -->
+
+                    <li>
+
+                    <div class="text-left fw-bold mb-1 fs-5" id='Label'>Pregled podataka o korisnicima i radovima</div>
+
+                    <div class="d-flex justify-content-end">
+                        <div>
+                          <small>Zeleni brojevi prikazuju broj odobrenih stavki, a crveni broj neodobrenih.</small>
+                        </div>
+                    </div>
+                    <div class="card" style="border-radius: 5px;">
+                        <ul class="list-group list-group-flush" style="border-radius: 5px;">
+                          <li class="list-group-item d-flex">
+                            <a href="pregled/recenzenti" class="stretched-link">Pregled recenzenata (odobrenih i neodobrenih) </a>
+                            <div class="d-flex align-self-center" style="margin-left: auto;"><span class="badge bg-success" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">{{recenzenti_broj_odobrenih}}</span>
+                                <span class="badge bg-danger" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">{{recenzenti_broj_neodobrenih}}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item d-flex">
+                            <a href="pregled/sudionici" class="stretched-link">Pregled sudionika</a>
+                            <div class="d-flex align-self-center" style="margin-left: auto;">
+                              <span class="badge bg-success" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">{{sudionici_broj_odobrenih}}</span>
+                              <span class="badge bg-danger" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">{{sudionici_broj_neodobrenih}}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item d-flex">
+                            <a href="pregled/radovi" class="stretched-link">Pregled radova</a> <br>
+                            <div class="d-flex align-self-center" style="margin-left: auto;">
+                              <span class="badge bg-success" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">{{radovi_broj_recenziranih}}</span>
+                              <span class="badge bg-danger" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">{{radovi_broj_nerecenziranih}}</span>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+                    </li>
+
+                   </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+<!--bitno za datatables-->
+<script>
+    $(document).ready( function () {
+      $('#tablicaNeodobreni').DataTable({
+        responsive: {
+          breakpoints: [
+            {name: 'bigdesktop', width: Infinity},
+            {name: 'meddesktop', width: 1480},
+            {name: 'smalldesktop', width: 1280},
+            {name: 'medium', width: 1188},
+            {name: 'tabletl', width: 1024},
+            {name: 'btwtabllandp', width: 848},
+            {name: 'tabletp', width: 768},
+            {name: 'mobilel', width: 480},
+            {name: 'mobilep', width: 320}
+          ]
+        },
+        language: {
+          lengthMenu: "Prikaži _MENU_ redaka po stranici",
+          zeroRecords: "Nema podataka",
+          info: "Prikazana je _PAGE_ od _PAGES_ stranica",
+          infoEmpty: "Nema podataka",
+          infoFiltered: "(filtrirano od _MAX_ ukupnih stavki)",
+          search: "Pretraži:",
+          paginate: {
+              first: "Prva",
+              last: "Zadnja",
+              next: "Sljedeća",
+              previous: "Prethodna"
+          }
+        }
+      });
+    } );
+  </script>
+
+
+</html>
