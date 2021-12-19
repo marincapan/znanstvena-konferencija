@@ -80,6 +80,14 @@ def adminsucelje(request):
     context={}
     context["javniBool"] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
     context["brojPredanihRadova"] = brojPredanihRadova
+
+    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
+
+    for polje in fetchedPolja:
+        print(polje.imePolja)
+
+    
+    
     if request.method == "POST":
       
         if 'NewUserName' in request.POST:
@@ -122,14 +130,56 @@ def adminsucelje(request):
                 konferencija.javniRadoviBool=True
                 konferencija.save()
             print(konferencija.javniRadoviBool)
+
+        if 'AddNewField' in request.POST:
+            print(request.POST)
+            fieldName = request.POST["fieldName"]
+            fieldType = request.POST["fieldType"]
+            newfield=models.TipPoljaObrasca.objects.get(naziv=fieldType)
+            if not models.DodatnaPoljaObrasca.objects.filter(imePolja=fieldName,tipPolja=newfield).exists():
+                newField=models.DodatnaPoljaObrasca(
+                    imePolja=fieldName,
+                    tipPolja=newfield
+                )
+                newField.save()
+            context['DodatnaPolja']=fetchedPolja
+            return redirect('adminsucelje')
+        if 'ActiveFields' in request.POST:
+            for polje in fetchedPolja:
+                try:
+                    checked = request.POST[polje.imePolja]
+                    checked = True 
+                except:
+                    checked = False
+                polje.active = checked
+                polje.save()
+
+        if 'AddNewSection' in request.POST:
+           
+            SectionName = request.POST["SectionName"]
+           
+            konferencija=models.Konferencija.objects.filter().first() 
+            if (not konferencija):
+                konferencija = models.Konferencija() #ako još nemamo podataka za konferenciju
+
+            if not models.Sekcija.objects.filter(naziv = SectionName).exists():
+                newSection=models.Sekcija(naziv = SectionName, konferencijaSekcija=konferencija)
+                newSection.save()
+                
+        context['DodatnaPolja']=fetchedPolja
              
         return redirect('adminsucelje')
-        
 
+    context['DodatnaPolja']=fetchedPolja
+    
     if "LoggedInUserId" in request.session: #ulogirani smo
         context["LoggedInUser"]=request.session['LoggedInUserId']
     else: #nismo ulogirani
         return redirect('signin')
+
+    fetchedSekcije=models.Sekcija.objects.filter().all()
+    if (fetchedSekcije.first()):
+        context['sekcije'] = fetchedSekcije
     
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Admin":

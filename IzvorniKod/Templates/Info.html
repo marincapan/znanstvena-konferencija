@@ -77,11 +77,12 @@
               <div class="col-sm">
                 <!-- Naziv konferencije -->
                 <div style="padding-bottom: 9px;" id="NazivDiv">
-                  <div class="fs-7">Naziv konferencije</div>
+                  <div class="fs-7">Naziv konferencije
                   {%if LoggedInUserRole == "Admin"%}
                   <span data-bs-toggle="tooltip" title="Uredi">
                     <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateNaziv()" id="UpdateNaziv" value="UpdateNaziv"><use xlink:href="#pencil-square"/></svg>
                   </span>
+                </div>
     
                   <div style="display: none; margin-left: 5px" id="formNazivChanges">
                     <button style="border: none; background: none" type="submit" form="NewNazivForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewNaziv'>
@@ -106,11 +107,12 @@
   
                 <!-- Datum konferencije -->
                 <div style="padding-bottom: 9px;" id="DatumDiv">
-                  <div class="fs-7">Datum konferencije </div>
+                  <div class="fs-7">Datum konferencije
                   {%if LoggedInUserRole == "Admin"%}
                   <span data-bs-toggle="tooltip" title="Uredi">
                     <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateDatum()" id="UpdateDatum" value="UpdateDatum"><use xlink:href="#pencil-square"/></svg>
                   </span>
+                </div>
   
                   <div style="display: none; margin-left: 5px" id="formDatumChanges">
                     <button style="border: none; background: none" type="submit" form="NewDatumForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewDatum'>
@@ -137,12 +139,12 @@
               <div class="col-sm">
                 <!-- Pocetak prijava na konferenciju-->
                 <div style="padding-bottom: 9px;" id="RokPocPrijavaDiv">
-                  <div class="fs-7">Početak prijava na konferenciju</div>
+                  <div class="fs-7">Početak prijava na konferenciju
                   {%if LoggedInUserRole == "Admin"%}
                   <span data-bs-toggle="tooltip" title="Uredi">
                     <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPocPrijava()" id="UpdateRokPocPrijava" value="UpdateRokPocPrijava"><use xlink:href="#pencil-square"/></svg>
                   </span>
-              
+                </div> 
                   <div style="display: none; margin-left: 5px" id="formRokPocPrijavaChanges">
                     <button style="border: none; background: none" type="submit" form="NewRokPocPrijavaForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewRokPocPrijava'>
                       <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
@@ -166,12 +168,12 @@
   
                 <!-- Rok za prijavu na konferenciju -->
                 <div style="padding-bottom: 9px;" id="RokPrijavaDiv">
-                  <div class="fs-7">Rok za prijavu na konferenciju</div>
+                  <div class="fs-7">Rok za prijavu na konferenciju
                   {%if LoggedInUserRole == "Admin"%}
                   <span data-bs-toggle="tooltip" title="Uredi">
                     <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPrijava()" id="UpdateRokPrijava" value="UpdateRokPrijava"><use xlink:href="#pencil-square"/></svg>
                   </span>
-  
+                </div>
                   <div style="display: none; margin-left: 5px" id="formRokPrijavaChanges">
                     <button style="border: none; background: none" type="submit" form="NewRokPrijavaForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewRokPrijava'>
                       <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
@@ -197,11 +199,12 @@
               <div class="col-sm">
                 <!-- Početak recenziranja -->
                 <div style="padding-bottom: 9px;" id="RokPocRecenzijaDiv">
-                  <div class="fs-7">Početak recenziranja radova</div>
+                  <div class="fs-7">Početak recenziranja radova
                   {%if LoggedInUserRole == "Admin"%}
                   <span data-bs-toggle="tooltip" title="Uredi">
                     <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPocRecenzija()" id="UpdateRokPocRecenzija" value="UpdateRokPocRecenzija"><use xlink:href="#pencil-square"/></svg>
                   </span>
+                </div>
             
                   <div style="display: none; margin-left: 5px" id="formRokPocRecenzijaChanges">
                     <button style="border: none; background: none" type="submit" form="NewRokPocRecenzijaForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewRokPocRecenzija'>
@@ -226,11 +229,12 @@
   
                 <!-- Rok za recenziranje  -->
                 <div style="padding-bottom: 9px;" id="RokRecenzentiDiv">
-                  <div class="fs-7">Rok za recenziranje radova</div>
+                  <div class="fs-7">Rok za recenziranje radova
                   {%if LoggedInUserRole == "Admin"%}
                   <span data-bs-toggle="tooltip" title="Uredi">
                     <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokRecenzenti()" id="UpdateRokRecenzenti" value="UpdateRokRecenzenti"><use xlink:href="#pencil-square"/></svg>
                   </span>
+                </div>
           
                   <div style="display: none; margin-left: 5px" id="formRokRecenzentiChanges">
                     <button style="border: none; background: none" type="submit" form="NewRokRecenzentiForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewRokRecenzenti'>
@@ -320,40 +324,8 @@
             </form>
           -->
         <br>
-        {%if LoggedInUserRole == "Admin"%} <!--admin uređuje sekcije i bira predsjedavajućeg-->
-
-        <hr>
-
-        <h2 class="text-uppercase  mb-5"id='sectionLabel'>Sekcije na konferenciji</h2>
-        {%if sekcije%}
-        
-        <ul type="text" id="section" name="section">
-        {%for sekcija in sekcije%}
-        <li  value="{{sekcija.naziv}}">{{sekcija.naziv}}</li>
-        
-        {%endfor%}
-        </ul>
-        
-        {% else %}
-        <div class="fs-6 fw-bold" > Još niste unijeli ni jednu sekciju na konferenciji.</div>
-        {%endif%} 
-
-        <div class="form-outline fs-5">
-          <label class="fs-6" for="">Unesi naziv nove sekcije na konferenciji</label>
-        </div>
-      <form action="/info" method="post" id='NewSection' enctype="multipart/form-data">
-
-      {% csrf_token %}
-      <div class="col-md-6 mb-4">
-        <input type="text" name="SectionName" id="SectionName" class="form-control form-control-lg" required>
-      </div>
-      <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-      <button type="submit" class="btn btn-primary btn-lg" name='AddNewSection' value="Update" style="grid-column: 2;">Dodaj novu sekciju</button>
-      </div>
-      </form>
            
-    </div>
-    {%endif%}      
+    </div>     
             
           </div>
         </div>
