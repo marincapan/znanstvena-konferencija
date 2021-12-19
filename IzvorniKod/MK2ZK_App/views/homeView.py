@@ -104,6 +104,14 @@ def signup(request):
                         messages.error(request, "Autori ne smiju imati istu adresu e-maila")
                         return redirect('signup')
 
+            #Nije pretjerano optimalno, but it gets the job done
+            for autor in autori:
+                if models.Autor.objects.filter(email=autor.email).exists():
+                    postojeciAutor = models.Autor.objects.get(email=autor.email)
+                    if postojeciAutor.ime != autor.ime or postojeciAutor.prezime != autor.prezime:
+                        messages.error(request, "E-mail adresa autora je zauzeta")
+                        return redirect('signup')
+
             #Ako ustanova ne postoji spremi ju, inace dohvati postojecu
             Ustanova = Ustanova = models.Ustanova(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
             if models.Ustanova.objects.filter(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz).exists():
