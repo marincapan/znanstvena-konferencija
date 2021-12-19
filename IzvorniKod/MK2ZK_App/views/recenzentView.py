@@ -44,7 +44,7 @@ def mojerecenzije(request):
         )
 
         rad.recenziranBool = True
-        if ocjena == 3: #id ocjene
+        if (ocjena == 3): #id ocjene
             rad.revizijaBool = True
         else:
             rad.revizijaBool = False

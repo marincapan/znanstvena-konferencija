@@ -170,9 +170,9 @@
                       </div>
                       <div class="col-12 col-lg-2">
                         <div class="btn-group-vertical">
-                          <a class="btn btn-primary" href="Radovi/{{rad.pdf}}" role="button">Otvori
+                          <a class="btn btn-primary" href="Radovi/{{recenzija.rad.pdf}}" role="button">Otvori
                             rad</a>
-                          <a class="btn btn-outline-primary" href="Radovi/{{rad.pdf}}" role="button"
+                          <a class="btn btn-outline-primary" href="Radovi/{{recenzija.rad.pdf}}" role="button"
                             download="{{rad.naslov}}">Preuzmi rad</a>
                         </div>
                       </div>
@@ -185,10 +185,12 @@
                         <strong>Ocjena:</strong>
                         {{recenzija.ocjena.znacenje}}
                       </div>
+                      {%if recenzija.ocjena.id != 1%}
                       <div>
                         <strong>Obrazloženje:</strong>
                         {{recenzija.obrazlozenje}}
                       </div>
+                      {%endif%}
                     </div>
                   </div>
 

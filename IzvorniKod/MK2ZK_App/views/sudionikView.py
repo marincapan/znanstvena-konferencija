@@ -109,6 +109,7 @@ def mojiradovi(request):
     recenzije = recenzije.filter(sifRecenzija__in = (x.sifRecenzija for x in najnovijeRecenzije))
 
     context['fetchedRecenzije']=recenzije
+    print(context)
     for rad in fetchedRadovi:
         context['pdf']=rad.pdf
 
@@ -132,7 +133,12 @@ def mojiradovi(request):
             uploadedFile = request.FILES["uploadedFile"]
             updateRad=models.Rad.objects.get(naslov=fileTitle)
             updateRad.pdf=uploadedFile
-            updateRad.revizijaBool=True
+            #najnovija recenzija nam treba
+            recenzija = models.Recenzija.objects.filter(rad = updateRad).order_by("-sifRecenzija").first()
+            print(recenzija.obrazlozenje)
+            
+            if (recenzija.ocjena.id == 3): #samo tada treba recenzent ponovno recenzirati
+                updateRad.revizijaBool=True
             updateRad.save()
             
             return redirect('mojiradovi')
