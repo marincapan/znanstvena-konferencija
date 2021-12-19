@@ -22,7 +22,10 @@ def pregled(request):
         context["LoggedInUser"]=request.session['LoggedInUserId']
     
     if "LoggedInUserRole" in request.session:
-        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin/predsjedavajuci
+            return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
     sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=1)
@@ -63,9 +66,12 @@ def sudionici(request):
     context={}
     if "LoggedInUserId" in request.session:
         context["LoggedInUser"]=request.session['LoggedInUserId']
-    
+
     if "LoggedInUserRole" in request.session:
-        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin/predsjedavajuci
+            return redirect('/')
 
     sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
     sekcije = models.Sekcija.objects.all()
@@ -141,4 +147,29 @@ def radovi(request):
     context["brojPredanihRadova"] = brojPredanihRadova
 
     return render(request, 'Radovi.html', context)
+
+def obavijest(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin/predsjedavajuci
+            return redirect('/')
+    
+    sekcije = models.Sekcija.objects.all()
+    ustanove = models.Ustanova.objects.all()
+
+    korisnici = models.Korisnik.objects.filter(vrstaKorisnik_id__in=[3,4]).filter(odobrenBool=True)
+
+    #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea
+    for korisnik in korisnici:
+        korisnik.korisnikSekcija_naziv = sekcije.get(sifSekcija=korisnik.korisnikSekcija_id).naziv
+        korisnik.korisnikUstanova_naziv = ustanove.get(sifUstanova=korisnik.korisnikUstanova_id).naziv
+    
+    context["Korisnici"] = korisnici
+
+    return render(request, 'PosaljiObavijest.html', context)
     
