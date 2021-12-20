@@ -56,47 +56,48 @@
                       <hr>
                     </div>
 
-                    <form>
-                    <div class="table-responsive container">
-                        <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaNeodobreni">
-                          <thead style="border-bottom: 1px;">
-                            <tr class="text-center">
-                              <th scope="col">#</th>
-                              <th scope="col">Korisničko ime</th>
-                              <th scope="col">Ime</th>
-                              <th scope="col">Prezime</th>
-                              <th scope="col">E-pošta</th>
-                              <th scope="col">Sekcija</th>
-                              <th scope="col">Ustanova</th>
-                              <th scope="col">Prihvati/Odbij</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {% for recenzent in Neodobreni %}
+                    
+                    <form action="/predsjedavajuci" method="POST">
+                      {% csrf_token %}
+                      <div class="table-responsive container">
+                          <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaNeodobreni">
+                            <thead style="border-bottom: 1px;">
                               <tr class="text-center">
-                                <th scope="row">{{recenzent.id}}</th>
-                                <td>{{recenzent.korisnickoIme}}</td>
-                                <td>{{recenzent.ime}}</td>
-                                <td>{{recenzent.prezime}}</td>
-                                <td>{{recenzent.email}}</td>
-                                <td>{{recenzent.korisnikSekcija_naziv}}</td>
-                                <td>{{recenzent.korisnikUstanova_naziv}}</td>
-                                <td>
-                                    <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm" disabled>Prihvati</button>
-                                    <button type="submit" class="btn btn-danger btn-sm form-control form-control-sm" disabled>Odbij</button>
-                                </td>
+                                <th scope="col">#</th>
+                                <th scope="col">Korisničko ime</th>
+                                <th scope="col">Ime</th>
+                                <th scope="col">Prezime</th>
+                                <th scope="col">E-pošta</th>
+                                <th scope="col">Sekcija</th>
+                                <th scope="col">Ustanova</th>
+                                <th scope="col">Prihvati/Odbij</th>
                               </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-            
-                      </div>
+                            </thead>
+                            <tbody>
+                              {% for recenzent in Neodobreni %}
+                                <tr class="text-center">
+                                  <th scope="row">{{recenzent.id}}</th>
+                                  <td>{{recenzent.korisnickoIme}}</td>
+                                  <td>{{recenzent.ime}}</td>
+                                  <td>{{recenzent.prezime}}</td>
+                                  <td>{{recenzent.email}}</td>
+                                  <td>{{recenzent.korisnikSekcija_naziv}}</td>
+                                  <td>{{recenzent.korisnikUstanova_naziv}}</td>
+                                  <td>
+                                      <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm" name="Prihvati{{recenzent.id}}">Prihvati</button>
+                                      <button type="submit" class="btn btn-danger btn-sm form-control form-control-sm" name="Odbij{{recenzent.id}}">Odbij</button>
+                                  </td>
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+              
+                        </div>
                       </form>
 
                       <br><hr><br>
 
                 </div>
-
                 <div class="container" >
                     <div class="text-uppercase text-left mb-3">
                       <div style="padding-bottom: 3px;" id="titleDiv">

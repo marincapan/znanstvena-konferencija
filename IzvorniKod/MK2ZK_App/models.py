@@ -34,7 +34,7 @@ class Korisnik(models.Model):
     prezime = models.CharField(max_length=50)
     email = models.CharField(max_length=50, unique=True)
     idSudionik = models.CharField(max_length=10)
-    odobrenBool = models.BooleanField(default=False)
+    odobrenBool = models.BooleanField(null=True)
     potvrdenBool = models.BooleanField(default=False)
     vrstaKorisnik = models.ForeignKey('Uloga',on_delete=models.CASCADE)
     korisnikUstanova = models.ForeignKey('Ustanova',on_delete=models.CASCADE, null=True)

@@ -28,7 +28,7 @@ def pregled(request):
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
-    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=1)
+    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
     radovi = models.Rad.objects.all()
 
     context["recenzenti_broj_odobrenih"] = recenzenti.filter(odobrenBool=True).count()
@@ -37,7 +37,6 @@ def pregled(request):
     context["sudionici_broj_neodobrenih"] = sudionici.filter(odobrenBool=False).count()
     context["radovi_broj_recenziranih"] = radovi.filter(recenziranBool=True).count()
     context["radovi_broj_nerecenziranih"] = radovi.filter(recenziranBool=False).count()
-
     return render(request, 'Pregled.html', context)
 
 def recenzenti(request):
@@ -188,9 +187,21 @@ def uprsucelje(request):
     sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=1)
     radovi = models.Rad.objects.all()
 
-    neodobreni = models.Korisnik.objects.filter(vrstaKorisnik_id=3, odobrenBool=False)
+    neodobreni = models.Korisnik.objects.filter(vrstaKorisnik_id=3, odobrenBool__isnull=True)
     sekcije = models.Sekcija.objects.all()
     ustanove = models.Ustanova.objects.all()
+    if request.method == "POST":
+        for recenzent in recenzenti:
+            if ("Prihvati" + str(recenzent.id)) in request.POST:
+                updateRecenzent=models.Korisnik.objects.get(id=recenzent.id)
+                updateRecenzent.odobrenBool=True
+                updateRecenzent.save()
+                return redirect("predsjedavajuci")
+            if ("Odbij" + str(recenzent.id)) in request.POST:
+                updateRecenzent=models.Korisnik.objects.get(id=recenzent.id)
+                updateRecenzent.odobrenBool=False
+                updateRecenzent.save()
+                return redirect("predsjedavajuci")
 
     #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea
     for recenzent in neodobreni:
