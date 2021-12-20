@@ -34,41 +34,8 @@
               <div style="padding-bottom: 9px;" id="titleDiv">
                 <div>
                   <h2 style="display: inline;" id="myTitle">O konferenciji</h2>
-                  
-                  <!-- u dokumentaciji piše da mijenja svaku stvar zasebno ako želi kao i za osobne podatke-->
-                  <!-- {% if LoggedInUser %}
-                  {%if LoggedInUserRole == "Admin"%}
-                  <span data-bs-toggle="tooltip" title="Uredi" id="UpdateTitle">
-                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateTitle()" value="UpdateTitle"><use xlink:href="#pencil-square"/></svg>
-                  </span>
-
-                  <div style="display: none; margin-left: 5px;" id="formTitleChange">
-                    <button style="border: none; background: none" onclick="" data-bs-toggle="tooltip" title="Spremi promjene" name='newTitle'>
-                      <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
-                    </button>
-                    <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                      <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelTitle()" id="CancelTitle" value="CancelTitle"><use xlink:href="#cancel-changes"/></svg>
-                    </span>
-                  </div>
-
-                  <form action="/info" method="post" id='NewTitleForm'>
-                    {% csrf_token %}
-                    <div>
-                      <div id="TitleColapse" class="collapse collapse-horizontal">
-                        <input type="text" class="form-control" id="Title" name="Title" Required>
-                      </div>
-                    </div>
-                    
-                  </form>
-
-                  {%endif%}
-                  {%endif%}
-                   -->
-
-
                 </div>
               </div>
-              
             <hr>
           </div>
         
@@ -76,14 +43,19 @@
             <div class="row">
               <div class="col-sm">
                 <!-- Naziv konferencije -->
+
+                <div>
+
                 <div style="padding-bottom: 9px;" id="NazivDiv">
                   <div class="fs-7">Naziv konferencije
+                    {%if LoggedInUserRole == "Admin"%}
+                    <span data-bs-toggle="tooltip" title="Uredi">
+                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateNaziv()" id="UpdateNaziv" value="UpdateNaziv"><use xlink:href="#pencil-square"/></svg>
+                    </span>
+                    {%endif%}
+                  </div>
+
                   {%if LoggedInUserRole == "Admin"%}
-                  <span data-bs-toggle="tooltip" title="Uredi">
-                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateNaziv()" id="UpdateNaziv" value="UpdateNaziv"><use xlink:href="#pencil-square"/></svg>
-                  </span>
-                </div>
-    
                   <div style="display: none; margin-left: 5px" id="formNazivChanges">
                     <button style="border: none; background: none" type="submit" form="NewNazivForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewNaziv'>
                       <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
@@ -92,8 +64,9 @@
                       <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateNaziv()" id="cancelNaziv" value="cancelNaziv"><use xlink:href="#cancel-changes"/></svg>
                     </span>
                   </div>
+                  {%endif%}
                 </div>
-                {%endif%}
+                
   
                 <div class="fs-6 fw-bold" id='naziv'>{% firstof konferencijaNaziv "Unesite naziv konferencije" %} </div>
                 <form action="/info" method="post" id='NewNazivForm'>
@@ -108,12 +81,14 @@
                 <!-- Datum konferencije -->
                 <div style="padding-bottom: 9px;" id="DatumDiv">
                   <div class="fs-7">Datum konferencije
+                    {%if LoggedInUserRole == "Admin"%}
+                    <span data-bs-toggle="tooltip" title="Uredi">
+                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateDatum()" id="UpdateDatum" value="UpdateDatum"><use xlink:href="#pencil-square"/></svg>
+                    </span>
+                    {%endif%}
+                  </div>
+
                   {%if LoggedInUserRole == "Admin"%}
-                  <span data-bs-toggle="tooltip" title="Uredi">
-                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateDatum()" id="UpdateDatum" value="UpdateDatum"><use xlink:href="#pencil-square"/></svg>
-                  </span>
-                </div>
-  
                   <div style="display: none; margin-left: 5px" id="formDatumChanges">
                     <button style="border: none; background: none" type="submit" form="NewDatumForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewDatum'>
                       <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
@@ -122,8 +97,9 @@
                       <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateDatum()" id="cancelDatum" value="cancelDatum"><use xlink:href="#cancel-changes"/></svg>
                     </span>
                   </div>
+                  {%endif%}
                 </div>
-                {%endif%}
+                
   
                 <div class="fs-6 fw-bold" id='datum'>{% firstof datum "Unesite datum konferencije" %}</div>
                 <form action="/info" method="post" id='NewDatumForm'>
@@ -133,6 +109,7 @@
                   </div>
                 </form>
                 <!-- Datum konferencije -->
+              </div>
   
               </div>
   
@@ -140,11 +117,14 @@
                 <!-- Pocetak prijava na konferenciju-->
                 <div style="padding-bottom: 9px;" id="RokPocPrijavaDiv">
                   <div class="fs-7">Početak prijava na konferenciju
+                    {%if LoggedInUserRole == "Admin"%}
+                    <span data-bs-toggle="tooltip" title="Uredi">
+                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPocPrijava()" id="UpdateRokPocPrijava" value="UpdateRokPocPrijava"><use xlink:href="#pencil-square"/></svg>
+                    </span>
+                    {%endif%}
+                  </div>
+                  
                   {%if LoggedInUserRole == "Admin"%}
-                  <span data-bs-toggle="tooltip" title="Uredi">
-                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPocPrijava()" id="UpdateRokPocPrijava" value="UpdateRokPocPrijava"><use xlink:href="#pencil-square"/></svg>
-                  </span>
-                </div> 
                   <div style="display: none; margin-left: 5px" id="formRokPocPrijavaChanges">
                     <button style="border: none; background: none" type="submit" form="NewRokPocPrijavaForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewRokPocPrijava'>
                       <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
@@ -153,8 +133,8 @@
                       <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateRokPocPrijava()" id="cancelRokPocPrijava" value="cancelRokPocPrijava"><use xlink:href="#cancel-changes"/></svg>
                     </span>
                   </div>
+                  {%endif%}
                 </div>
-                {%endif%}
                     
                 <div class="fs-6 fw-bold" id='RokPocPrijava'>{% firstof rokPocPrijava "Unesite datum početka prijava na konferenciju" %} </div> 
                 <form action="/info" method="post" id='NewRokPocPrijavaForm'>
@@ -169,11 +149,14 @@
                 <!-- Rok za prijavu na konferenciju -->
                 <div style="padding-bottom: 9px;" id="RokPrijavaDiv">
                   <div class="fs-7">Rok za prijavu na konferenciju
+                    {%if LoggedInUserRole == "Admin"%}
+                    <span data-bs-toggle="tooltip" title="Uredi">
+                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPrijava()" id="UpdateRokPrijava" value="UpdateRokPrijava"><use xlink:href="#pencil-square"/></svg>
+                    </span>
+                    {%endif%}
+                  </div>
+
                   {%if LoggedInUserRole == "Admin"%}
-                  <span data-bs-toggle="tooltip" title="Uredi">
-                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPrijava()" id="UpdateRokPrijava" value="UpdateRokPrijava"><use xlink:href="#pencil-square"/></svg>
-                  </span>
-                </div>
                   <div style="display: none; margin-left: 5px" id="formRokPrijavaChanges">
                     <button style="border: none; background: none" type="submit" form="NewRokPrijavaForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewRokPrijava'>
                       <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
@@ -182,8 +165,9 @@
                       <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateRokPrijava()" id="cancelRokPrijava" value="cancelRokPrijava"><use xlink:href="#cancel-changes"/></svg>
                     </span>
                   </div>
+                  {%endif%}
                 </div>
-                {%endif%}
+                
                     
                 <div class="fs-6 fw-bold" id='RokPrijava'>{% firstof rokPrijave "Unesite rok za prijavu konferencije" %} </div>
                 <form action="/info" method="post" id='NewRokPrijavaForm'>
@@ -200,12 +184,14 @@
                 <!-- Početak recenziranja -->
                 <div style="padding-bottom: 9px;" id="RokPocRecenzijaDiv">
                   <div class="fs-7">Početak recenziranja radova
+                    {%if LoggedInUserRole == "Admin"%}
+                    <span data-bs-toggle="tooltip" title="Uredi">
+                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPocRecenzija()" id="UpdateRokPocRecenzija" value="UpdateRokPocRecenzija"><use xlink:href="#pencil-square"/></svg>
+                    </span>
+                    {%endif%}
+                  </div>
+
                   {%if LoggedInUserRole == "Admin"%}
-                  <span data-bs-toggle="tooltip" title="Uredi">
-                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokPocRecenzija()" id="UpdateRokPocRecenzija" value="UpdateRokPocRecenzija"><use xlink:href="#pencil-square"/></svg>
-                  </span>
-                </div>
-            
                   <div style="display: none; margin-left: 5px" id="formRokPocRecenzijaChanges">
                     <button style="border: none; background: none" type="submit" form="NewRokPocRecenzijaForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewRokPocRecenzija'>
                       <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
@@ -214,8 +200,9 @@
                       <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateRokPocRecenzija()" id="cancelRokPocRecenzija" value="cancelRokPocRecenzija"><use xlink:href="#cancel-changes"/></svg>
                     </span>
                   </div>
+                  {%endif%}
                 </div>
-                {%endif%}
+                
                   
                 <div class="fs-6 fw-bold" id='RokPocRecenzija'>{% firstof rokPocRecenzija "Unesite datum početka recenziranja radova" %} </div>
                 <form action="/info" method="post" id='NewRokPocRecenzijaForm'>
@@ -230,12 +217,14 @@
                 <!-- Rok za recenziranje  -->
                 <div style="padding-bottom: 9px;" id="RokRecenzentiDiv">
                   <div class="fs-7">Rok za recenziranje radova
+                    {%if LoggedInUserRole == "Admin"%}
+                    <span data-bs-toggle="tooltip" title="Uredi">
+                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokRecenzenti()" id="UpdateRokRecenzenti" value="UpdateRokRecenzenti"><use xlink:href="#pencil-square"/></svg>
+                    </span>
+                    {%endif%}
+                  </div>
+
                   {%if LoggedInUserRole == "Admin"%}
-                  <span data-bs-toggle="tooltip" title="Uredi">
-                    <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateRokRecenzenti()" id="UpdateRokRecenzenti" value="UpdateRokRecenzenti"><use xlink:href="#pencil-square"/></svg>
-                  </span>
-                </div>
-          
                   <div style="display: none; margin-left: 5px" id="formRokRecenzentiChanges">
                     <button style="border: none; background: none" type="submit" form="NewRokRecenzentiForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewRokRecenzenti'>
                       <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
@@ -244,8 +233,9 @@
                       <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateRokRecenzenti()" id="cancelRokRecenzenti" value="cancelRokRecenzenti"><use xlink:href="#cancel-changes"/></svg>
                     </span>
                   </div>
+                  {%endif%}
                 </div>
-                {%endif%}
+                
                 
                 <div class="fs-6 fw-bold" id='RokRecenzenti'>{% firstof rokRecenzenti "Unesite datum roka za recenziranje radova" %} </div>
           
@@ -325,8 +315,7 @@
           -->
         <br>
            
-    </div>     
-            
+            </div>     
           </div>
         </div>
       </div>
