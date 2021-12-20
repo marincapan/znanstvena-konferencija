@@ -83,7 +83,7 @@ input[type='radio'],input[type='checkbox'] {
 
 .active-fields-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
     align-items: center;
     text-align: center;
     justify-items: center;

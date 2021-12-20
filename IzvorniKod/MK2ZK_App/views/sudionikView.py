@@ -13,6 +13,7 @@ from IzvorniKod.MK2ZK_App import models
 from django.db import IntegrityError 
 from django.core import serializers
 from django.utils import (dateformat, formats)
+from datetime import datetime
 import zipfile
 import os
 from datetime import date
@@ -41,6 +42,16 @@ def osobnipodaci(request):
             LoggedInUser.prezime = Lname
             LoggedInUser.save()
 
+        if 'NewUstanova' in request.POST:
+              Ustanova = request.POST['Ustanova']
+              LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+              LoggedInUser.korisnikUstanova.naziv = Ustanova
+              LoggedInUser.save()
+              Ustanova = LoggedInUser.korisnikUstanova
+              Ustanova.save()
+              print(LoggedInUser.korisnikUstanova.naziv)
+              print(Ustanova.naziv)
+
         if 'NewEmail' in request.POST:
             email = request.POST['email']
             LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
@@ -64,9 +75,38 @@ def osobnipodaci(request):
         context['uloga']=LoggedInUser.vrstaKorisnik.naziv
         context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
         context['sekcija']=LoggedInUser.korisnikSekcija.naziv
+       
+        if (context['LoggedInUserRole']=='Sudionik' or context['LoggedInUserRole']=='Recenzent'):
+            dodatnipodatci = {}
+            provjera = models.DodatnaPoljaObrasca.objects.first()
+            if (provjera): #ima dodatnih polja u obrascu
+                dodatno = models.DodatnaPoljaObrasca.objects.all()
+                for polje in dodatno:
+                    dodatno = models.DodatniPodatci.objects.filter(korisnik = LoggedInUser, poljeObrasca = polje).first()
+                    
+                    if dodatno:
+                        podatak = dodatno.podatak
+                        print(dodatno.podatak)
+                        if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
+                            #želimo naš format datuma
+                            print("tu")
+                            date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date()
+                            podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
+                        ime = dodatno.poljeObrasca.imePolja
+                        dodatnipodatci[ime] = podatak
+                  
+
+            context['dodatnipodatci'] = dodatnipodatci
+            print(dodatnipodatci)
+
 
         if context['LoggedInUserRole']=='Sudionik':
             context['SudionikID']=LoggedInUser.idSudionik
+            radovi = models.Rad.objects.filter(radKorisnik = LoggedInUser)
+            sekcije = [i.radSekcija for i in radovi]
+            sekcije = list(dict.fromkeys(sekcije)) #po 1 pojavljivanje svake sekcije
+            context['sekcije'] = sekcije
+            
         
     else:
         return redirect('signin')

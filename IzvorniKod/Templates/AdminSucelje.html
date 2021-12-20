@@ -348,11 +348,13 @@
                                         <div class="text-center text-muted mt-2 mb-0">Naziv polja</div>
                                         <div class="text-center text-muted mt-2 mb-0">Tip polja</div>
                                         <div class="text-center text-muted mt-2 mb-0">Je li polje u obrascu?</div>
+                                        <div class="text-center text-muted mt-2 mb-0">Je li polje obavezno?</div>
                                       </div>
                                       
                                       <div class="active-fields-container">
                                         <hr style="width: 40%; height: 0.05rem;">
                                         <hr style="width: 40%; height: 0.05rem; text-align: center;">
+                                        <hr style="width: 40%; height: 0.05rem;">
                                         <hr style="width: 40%; height: 0.05rem;">
                                     </div>
 
@@ -375,6 +377,9 @@
                                             
                                           <div class="checkboxes mb-0">
                                             <input type="checkbox" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.active == True%} checked {%endif%}>
+                                          </div>
+                                          <div class="checkboxes mb-0">
+                                            <input type="checkbox" name="{{polje.imePolja}}1" id="{{polje.imePolja}}1" {%if polje.obavezan == True%} checked {%endif%}>
                                           </div>
                                         </div>
                                         {%endfor%}

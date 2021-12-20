@@ -145,14 +145,24 @@ def adminsucelje(request):
             context['DodatnaPolja']=fetchedPolja
             return redirect('adminsucelje')
         if 'ActiveFields' in request.POST:
+
             for polje in fetchedPolja:
                 try:
                     checked = request.POST[polje.imePolja]
-                    checked = True 
+                    try:
+                        checked = True 
+                        obavezan = request.POST[polje.imePolja+"1"]
+                        obavezan = True
+                    except:
+                        obavezan = False
                 except:
+                    #ako polje nije u obrascu ne može biti obavezno, mozda neki error message ako tako označi korisnik
                     checked = False
+                    obavezan = False
                 polje.active = checked
+                polje.obavezan = obavezan
                 polje.save()
+            return redirect('adminsucelje')
 
         if 'AddNewSection' in request.POST:
            

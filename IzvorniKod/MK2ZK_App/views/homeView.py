@@ -44,8 +44,8 @@ def home(request):
     
     if (konferencija):
         #da bismo imali naš format imam ovaj rokPrijave1, a JS ne radi dobro s tim formatom pa tamo koristim drugi
-        konferencija.rokPrijave1 = dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y')) #dodati ovisno što će nam trebati na naslovnici
-        konferencija.rokRecenzenti1 = dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y'))
+        konferencija.rokPrijave1 = dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y.')) #dodati ovisno što će nam trebati na naslovnici
+        konferencija.rokRecenzenti1 = dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
         context["infoKonferencija"] = konferencija #trebat ce mozda za countdown ili neke druge podatke stavit na naslovnicu
     print(context)
     return render(request, 'Index.html',context)
@@ -113,7 +113,7 @@ def signup(request):
                         return redirect('signup')
 
             #Ako ustanova ne postoji spremi ju, inace dohvati postojecu
-            Ustanova = Ustanova = models.Ustanova(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
+            Ustanova = models.Ustanova(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
             if models.Ustanova.objects.filter(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz).exists():
                 Ustanova = models.Ustanova.objects.get(naziv=matustName,adresa=matustAdr,grad=matustCity,drzava=matustDrz)
             else:
@@ -168,15 +168,20 @@ def signup(request):
                 noviRad.autori.add(noviAutor)
 
             noviRad.save()
-
+            fetchedPolja=models.DodatnaPoljaObrasca.objects.filter(active = "True").all()
             for dodatnoPolje in fetchedPolja:
-                noviPodatak = request.POST[dodatnoPolje.imePolja]
-                noviDodatniPodatak = models.DodatniPodatci(
+                try:
+                    noviPodatak = request.POST[dodatnoPolje.imePolja]
+                    
+                   
+                    noviDodatniPodatak = models.DodatniPodatci(
                     podatak=noviPodatak,
                     korisnik=NoviKorisnik,
                     poljeObrasca=dodatnoPolje
                 )
-                noviDodatniPodatak.save()
+                    noviDodatniPodatak.save()
+                except:
+                    continue
                 
         
         #Ako obradjujemo recenzenta, radimo drugacije provjere

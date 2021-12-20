@@ -8,6 +8,11 @@ var lNameCollapse = document.getElementById("LNameCollapse");
 var bsLNameCollapse = new bootstrap.Collapse(lNameCollapse, {toggle: false});
 var emailCollapse = document.getElementById("EmailCollapse");
 var bsEmailCollapse = new bootstrap.Collapse(emailCollapse, {toggle: false});
+var UstanovaCollapse = document.getElementById("UstanovaCollapse");
+var bsUstanovaCollapse = new bootstrap.Collapse(UstanovaCollapse, {toggle: false});
+
+
+
 
 var user = document.getElementById("korisnickoIme");
 userCollapse.addEventListener('show.bs.collapse', function(){
@@ -49,6 +54,17 @@ emailCollapse.addEventListener('hidden.bs.collapse', function(){
               document.getElementById("EmailDiv").style.paddingBottom = "9px";
             });
 
+
+var Ustanova = document.getElementById("maticnaUstanova");
+UstanovaCollapse.addEventListener('show.bs.collapse', function(){
+              Ustanova.style.position = "absolute";
+              document.getElementById("UstanovaDiv").style.paddingBottom = "0px";
+            });
+UstanovaCollapse.addEventListener('hidden.bs.collapse', function(){
+              Ustanova.style.position = "relative";
+              document.getElementById("UstanovaDiv").style.paddingBottom = "9px";
+            });
+
 window.onload = function(){
               //document.getElementById("NewUserNameForm").style.display = "none";
               //document.getElementById("NewFNameForm").style.display = "none";
@@ -87,6 +103,14 @@ function UpdateEmail(){
               emailCollapse.style.position = "relative";
               bsEmailCollapse.toggle();
             }
+function UpdateUstanova(){
+                //document.getElementById("NewUstanovaForm").style.display = "inline";
+                document.getElementById("formUstanovaChanges").style.display = "inline";
+                document.getElementById("UpdateUstanova").style.display = "none";
+                
+                UstanovaCollapse.style.position = "relative";
+                bsUstanovaCollapse.toggle();
+              }
 function CancelUpdateUsername(){
               //document.getElementById("NewUserNameForm").style.display = "none";
               document.getElementById("formUserNameChanges").style.display = "none";
@@ -109,10 +133,17 @@ function CancelUpdateLName(){
               bsLNameCollapse.toggle();
             }
 
-            function CancelUpdateEmail(){
+function CancelUpdateEmail(){
               //document.getElementById("NewEmailForm").style.display = "none";
               document.getElementById("formEmailChanges").style.display = "none";
               document.getElementById("UpdateEmail").style.display = "inline";
               document.getElementById("email").style.display = "inline";
               bsEmailCollapse.toggle();
             }
+function CancelUpdateUstanova(){
+                //document.getElementById("NewUstanovaForm").style.display = "none";
+                document.getElementById("formUstanovaChanges").style.display = "none";
+                document.getElementById("UpdateUstanova").style.display = "inline";
+                document.getElementById("Ustanova").style.display = "inline";
+                bsUstanovaCollapse.toggle();
+              }             
