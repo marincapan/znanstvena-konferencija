@@ -1,8 +1,9 @@
 from collections import defaultdict
+from datetime import date, datetime
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
-from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
+from django.db.models.fields import DateField, DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
 from django.http.response import FileResponse, HttpResponse
 from django.shortcuts import render, redirect
@@ -63,6 +64,7 @@ def sloziobrazac(request):
         return redirect('sloziobrazac')
     context['DodatnaPolja']=fetchedPolja
     return render(request, 'SloziObrazac.html', context)
+
 def adminsucelje(request):
     radovi = models.Rad.objects.all()
     sekcije = models.Sekcija.objects.all()
@@ -89,6 +91,21 @@ def adminsucelje(request):
     
     
     if request.method == "POST":
+        if 'nazivKonferencije' in request.POST:
+            konferencija=models.Konferencija.objects.get(sifKonferencija=1)
+
+            konferencija.nazivKonferencije = request.POST["nazivKonferencije"]
+            konferencija.opisKonferencije = request.POST["opisKonferencije"]
+            konferencija.datumKonferencije = datetime.strptime(request.POST["datumKonferencije"], "%Y-%m-%d").date()
+            konferencija.rokPocPrijava = datetime.strptime(request.POST["pocetakPrijavaKonferencije"], "%Y-%m-%d").date()
+            konferencija.rokPrijave = datetime.strptime(request.POST["rokPrijava"], "%Y-%m-%d").date()
+            konferencija.rokPocRecenzija = datetime.strptime(request.POST["pocetakRecenzija"], "%Y-%m-%d").date()
+            konferencija.rokRecenzenti = datetime.strptime(request.POST["rokRecenzija"], "%Y-%m-%d").date()
+
+            konferencija.save()
+
+            messages.success(request, "Podaci o konferenciji su uspješno ažurirani!")
+            return redirect('adminsucelje')
       
         if 'NewUserName' in request.POST:
             Username = request.POST['Username']
@@ -214,7 +231,7 @@ def adminsucelje(request):
             return redirect('/') #redirect na homepage
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
-    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=1)
+    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
     radovi = models.Rad.objects.all()
     sekcije = models.Sekcija.objects.all()
     korisnici = models.Korisnik.objects.all()
@@ -227,6 +244,18 @@ def adminsucelje(request):
         rad.radKorisnik_prezime = korisnici.get(id=rad.radKorisnik_id).prezime
         if(rad.pdf != ""):
             brojPredanihRadova += 1
+
+    #konferencija je u bazi
+    konferencija=models.Konferencija.objects.first()
+    if konferencija:
+        context['konferencijaNaziv']=konferencija.nazivKonferencije
+        context['opis']=konferencija.opisKonferencije
+        context['datum'] = dateformat.format(konferencija.datumKonferencije, formats.get_format('Y-m-d'))
+        context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('Y-m-d'))
+        context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('Y-m-d'))
+        context['rokAdmin']=dateformat.format(konferencija.rokAdmin, formats.get_format('Y-m-d'))
+        context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('Y-m-d'))
+        context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('Y-m-d'))
 
     context["Radovi"] = radovi
     context["brojPredanihRadova"] = brojPredanihRadova

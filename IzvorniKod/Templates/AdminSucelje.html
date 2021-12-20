@@ -47,7 +47,7 @@
               {% endif %}
           </div>
 
-          <div class="container">
+          <div class="container mb-5">
             <div class="text-uppercase text-left mb-3">
               <div id="titleDiv">
                 <div>
@@ -111,10 +111,72 @@
             </div>
           </div>
 
-          <br>
-          <br>
+          <div class="container mb-5">
+            <div class="text-uppercase text-left mb-3">
+              <div id="titleDiv">
+                <div>
+                  <h4 id="myTitle">Podaci o konferenciji</h4>
+                </div>
+              </div>
+              <hr>
+            </div>
+            <form action="/adminsucelje" method="POST" id="podaciKonferencija">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-sm">
+                  <div class="mb-3" id="nazivWrapper">
+                    <label for="nazivKonferencije" class="form-label fw-bold">Naziv konferencije</label>
+                    <input type="text" class="form-control input-md" id="nazivKonferencije" name="nazivKonferencije"
+                      value="{{konferencijaNaziv}}" required>
+                  </div>
+                  <div class="mb-3" id="opisWrapper">
+                    <label for="opisKonferencije" class="form-label fw-bold">Opis konferencije</label>
+                    <textarea class="form-control input-lg" rows="3" id="opisKonferencije" name="opisKonferencije" required>{{opis}}</textarea>
+                  </div>
+                </div>
 
-          <div class="container">
+                <div class="col-sm">
+                  <div class="mb-3" id="datumWrapper">
+                    <label for="datumKonferencije" class="form-label fw-bold">Datum konferencije</label>
+                    <input type="date" class="form-control input-md" id="datumKonferencije" name="datumKonferencije"
+                      value="{{datum}}" required>
+                  </div>
+                  <div class="mb-3" id="pocetakPrijavaWrapper">
+                    <label for="pocetakPrijavaKonferencije" class="form-label fw-bold">Početak prijava</label>
+                    <input type="date" class="form-control input-md" id="pocetakPrijavaKonferencije" name="pocetakPrijavaKonferencije"
+                      value="{{rokPocPrijava}}" required>
+                  </div>
+                  <div class="mb-3" id="rokPrijavaWrapper">
+                    <label for="rokPrijava" class="form-label fw-bold">Rok za prijavu</label>
+                    <input type="date" class="form-control input-md" id="rokPrijava" name="rokPrijava"
+                      value="{{rokPrijave}}" required>
+                  </div>
+                </div>
+
+                <div class="col-sm">
+                  <div class="mb-3" id="pocetakRecenzijaWrapper">
+                    <label for="pocetakRecenzija" class="form-label fw-bold">Početak recenziranja</label>
+                    <input type="date" class="form-control input-md" id="pocetakRecenzija" name="pocetakRecenzija"
+                      value="{{rokPocRecenzija}}" required>
+                  </div>
+                  <div class="mb-3" id="rokRecenzijaWrapper">
+                    <label for="rokRecenzija" class="form-label fw-bold">Rok za recenziranje</label>
+                    <input type="date" class="form-control input-md" id="rokRecenzija" name="rokRecenzija"
+                    value="{{rokRecenzenti}}" required>                
+                  </div>
+                  <div class="mb-3" id="rokIzmjenaWrapper">
+                    <label for="rokIzmjena" class="form-label fw-bold">Rok za izmjenu obrasca</label>
+                    <input type="date" class="form-control input-md" id="rokIzmjena" name="rokIzmjena"
+                      value="{{rokAdmin}}" disabled>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Ažuriraj podatke</button>
+              <a href="/adminsucelje" class="btn btn-outline-secondary">Odbaci</a>
+            </form>
+          </div>
+
+          <div class="container mb-5">
             <div class="text-uppercase text-left mb-3">
               <div style="padding-bottom: 3px;" id="titleDiv">
                 <div>
@@ -283,9 +345,7 @@
             </div>
           </div>
 
-          <br>
-          <br>
-          <div class="container">
+          <div class="container mb-5">
             <div class="text-uppercase text-left mb-2">
               <div style="padding-bottom: 3px;" id="titleDiv">
                 <div>
@@ -307,11 +367,8 @@
             </ul>
           </div>
 
-          <br>
-          <br>
-
           <!-- OBRAZAC ZA REGISTRACIJU -->
-          <div class="container">
+          <div class="container mb-5">
             <div class="text-uppercase text-left mb-1">
               <div style="padding-bottom: 3px;" id="titleDiv">
                 <div>

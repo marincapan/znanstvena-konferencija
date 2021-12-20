@@ -412,7 +412,7 @@ def info(request):
        
 
     #konferencija je u bazi
-    konferencija=models.Konferencija.objects.filter().first()
+    konferencija=models.Konferencija.objects.first()
     if konferencija:
 
         context['konferencijaNaziv']=konferencija.nazivKonferencije
@@ -425,7 +425,7 @@ def info(request):
         context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('d.m.Y.'))
         context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('d.m.Y.'))
     
-    fetchedSekcije=models.Sekcija.objects.filter().all()
+    fetchedSekcije=models.Sekcija.objects.all()
     if (fetchedSekcije.first()):
         context['sekcije'] = fetchedSekcije
     if models.Korisnik.objects.filter(vrstaKorisnik = 2).exists():
