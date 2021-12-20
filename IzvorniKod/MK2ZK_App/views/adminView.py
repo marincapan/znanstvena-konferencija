@@ -28,6 +28,7 @@ def sloziobrazac(request):
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin
+            messages.error(request,"Nemaš prava za ovu stranicu!")
             return redirect('/') #redirect na homepage
 
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
@@ -211,6 +212,7 @@ def adminsucelje(request):
                 context['MaticnaUstanova']=Predsjedavajuci.korisnikUstanova.naziv
                 context['sekcija']=Predsjedavajuci.korisnikSekcija.naziv
         else: #nije admin
+            messages.error(request,"Nemaš prava za ovu stranicu!")
             return redirect('/') #redirect na homepage
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)

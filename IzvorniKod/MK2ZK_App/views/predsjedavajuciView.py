@@ -25,6 +25,7 @@ def pregled(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
+            messages.error(request,"Nemaš prava za ovu stranicu!")
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -45,7 +46,11 @@ def recenzenti(request):
         context["LoggedInUser"]=request.session['LoggedInUserId']
     
     if "LoggedInUserRole" in request.session:
-        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin/predsjedavajuci
+            messages.error(request,"Nemaš prava za ovu stranicu!")
+            return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
     sekcije = models.Sekcija.objects.all()
@@ -70,6 +75,7 @@ def sudionici(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
+            messages.error(request,"Nemaš prava za ovu stranicu!")
             return redirect('/')
 
     sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
@@ -124,6 +130,7 @@ def radovi(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci" or models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool==True:
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin ili radovi nisu javni
+            messages.error(request,"Nemaš prava za ovu stranicu!")
             return redirect('/')
 
 
@@ -156,6 +163,7 @@ def obavijest(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
+            messages.error(request,"Nemaš prava za ovu stranicu!")
             return redirect('/')
     
     sekcije = models.Sekcija.objects.all()
@@ -181,6 +189,7 @@ def uprsucelje(request):
         if request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije predsjedavajuci
+            messages.error(request,"Nemaš prava za ovu stranicu!")
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)

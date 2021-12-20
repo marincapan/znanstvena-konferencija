@@ -22,13 +22,16 @@ def mojerecenzije(request):
     context={}
     if "LoggedInUserId" in request.session: #ulogirani smo
         context["LoggedInUser"]=request.session['LoggedInUserId']
-        context["LoggedInUserRole"]=request.session['LoggedInUserRole']
     else: #nismo ulogirani
         return redirect('signin')
     
     LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
 
-    if LoggedInUser.vrstaKorisnik_id > 3: #1-admin 2-predsjedavajuci 3-recenzent 4-sudionik
+    if LoggedInUser.vrstaKorisnik_id==3 and LoggedInUser.odobrenBool==False:
+        messages.error(request,"Još nisi odobren kao recenzent!")
+        return redirect('home')
+    elif LoggedInUser.vrstaKorisnik_id > 3: #1-admin 2-predsjedavajuci 3-recenzent 4-sudionik
+        messages.error(request,"Nemaš prava za ovu stranicu!")
         return redirect('home') #nema ovlasti, trebalo bi dati poruku
 
     if request.method == "POST":
