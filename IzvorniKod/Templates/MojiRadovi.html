@@ -226,7 +226,14 @@
                             <input class="form-control file3" type="file" name="uploadedFile" accept="application/pdf" required>
                           </div>
                         </div>
-
+                        <div class="form-outline mb-4">
+                          <label class="fs-5" for="" id='sectionLabel'>Sekcija</label>
+                          <select type="text" id="section" name="section" class="form-control form-control-lg" required>
+                            {%for sekcija in sekcije%}
+                            <option value="{{sekcija.naziv}}">{{sekcija.naziv}}</option>
+                            {%endfor%}
+                          </select>
+                        </div>
                         <div class="fs-5">Podaci o autorima:</div>
                         <div class="row">
   

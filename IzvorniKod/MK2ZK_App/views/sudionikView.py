@@ -130,7 +130,10 @@ def mojiradovi(request):
     LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
 
     fetchedRadovi=models.Rad.objects.filter(radKorisnik=LoggedInUser)
+    sekcije = models.Sekcija.objects.all()
+    
     context['fetchedRadovi']=fetchedRadovi
+    context['sekcije']=sekcije
 
     #Recenzije svih radova koje je uploadao trenutni korisnik
     recenzije = models.Recenzija.objects.filter(rad__radKorisnik=LoggedInUser)
@@ -187,6 +190,7 @@ def mojiradovi(request):
             print(request.POST)
             fileTitle = request.POST["fileTitle"]
             uploadedFile = request.FILES["uploadedFile"]
+            section = request.POST['section']
 
             #Kopirano iz signupa
             brojAutora = int(request.POST['brojAutora'])
@@ -213,13 +217,14 @@ def mojiradovi(request):
                         return redirect('mojiradovi')
 
             #Kopirano iz signupa
+            Sekcija=models.Sekcija.objects.get(naziv=section)
             noviRad=models.Rad(
                 naslov=fileTitle,
                 pdf = uploadedFile,
-                radSekcija=LoggedInUser.korisnikSekcija,
+                radSekcija= Sekcija,
                 radKorisnik=LoggedInUser
             )
-            if not models.Rad.objects.filter(naslov = fileTitle,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser).exists():
+            if not models.Rad.objects.filter(naslov = fileTitle,radSekcija = Sekcija,radKorisnik = LoggedInUser).exists():
                 noviRad.save()
             else:
                 messages.error(request, "Rad je ranije predan! Nisu učinjene nikakve promjene.")
@@ -230,7 +235,7 @@ def mojiradovi(request):
             print(LoggedInUser.korisnikSekcija)
             print(LoggedInUser)
             print("----------")
-            noviRad=models.Rad.objects.get(naslov = fileTitle,radSekcija = LoggedInUser.korisnikSekcija,radKorisnik = LoggedInUser)
+            noviRad=models.Rad.objects.get(naslov = fileTitle,radSekcija = Sekcija,radKorisnik = LoggedInUser)
             
             #
             #Autor moze biti povezan na vise radova i zato ne moze imati atribut OZK jer se ne zna na koji rad se to odnosi
