@@ -1,271 +1,156 @@
 {% load static %}
 <!DOCTYPE html>
-    <html style="height: 100vh">
-        <head>
-            <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>Osobni podaci</title>
-            <meta name="description" content="">
-            <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-            <link rel="icon" href="{% static '/vectors/icon.svg' %}">
-            <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
-            <link href="{% static '/css/headers.css' %}" rel="stylesheet">
-            <!--nas css-->
-            <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
-            <!--nas css-->
-            <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-        </head>
+<html style="height: 100vh">
 
-        <body style="min-height: 100vh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Osobni podaci</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <!--nas css-->
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+</head>
 
-          <!--HEADER-->
-          {% include "./Header.html" %}
-          <!--HEADER-->
-          
-            <div class="gradient-custom-3 " style="min-height: 100vh;">
-              <div class="container pt-5 pb-5">
-                <div class="card" style="border-radius: 15px;">
-                  <div class="card-body p-5">
-                    <div class="text-uppercase text-center mb-5">
-                      <h2>Osobni podaci</h2>
-                      <hr>
-                    </div>
-                    
-                    <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
+<body style="min-height: 100vh">
+
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+  <div class="gradient-custom-3 " style="min-height: 100vh;">
+    <div class="container pt-5 pb-5">
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-5">
+          <div class="text-uppercase text-center mb-3">
+            <h2>Osobni podaci</h2>
+            <hr>
+          </div>
+
+          <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
                     jer se java script na dnu referira na njih-->
-  
-                    <!--Klasika za error messages-->
-                    {% if messages %}
-                        {% for message in messages %}
-                        <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    <!--Ako postoje informacije (Tj ako je ulogiran korisnik) prikazi ih-->
-                    <div class="container">
-                      <div class="row">
-                        <!--Osoba per se-->
-                        <div class="col-sm">
-                          {%if korisnickoIme%}
-                          <div style="padding-bottom: 9px;" id="UserNameDiv">
-                            <div>
-                              <div style="display: inline;" class="fs-5">Korisničko ime</div>
-                              <span data-bs-toggle="tooltip" title="Uredi" id="UpdateUserName">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateUserName()" value="UpdateUserName"><use xlink:href="#pencil-square"/></svg>
-                              </span>
 
-                              <div style="display: none; margin-left: 5px;" id="formUserNameChanges">
-                                <button style="border: none; background: none" type="submit" form="NewUserNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewUserName'>
-                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
-                                </button>
-                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateUsername()" id="cancelUsername" value="cancelUsername"><use xlink:href="#cancel-changes"/></svg>
-                                </span>
-                              </div>
-                            </div>
-                            
-                            <div class="fs-4 fw-bold" id='korisnickoIme'>{{korisnickoIme}}</div>
+          <!--Klasika za error messages-->
+          <div>
+            {% if messages %}
+            {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
+              {% endfor %}
+              {% endif %}
+          </div>
 
-                            <form action="/osobnipodaci" method="post" id='NewUserNameForm'>
-                              {% csrf_token %}
-                              <div>
-                                <div style="max-width: 15rem;" id="UserNameCollapse" class="collapse collapse-horizontal">
-                                  <input type="text" class="form-control" id="Username" name="Username" placeholder={{korisnickoIme}} Required>
-                                </div>
-                              </div>
-                              
-                            </form>
-                          </div>
-                          {%endif%}
-                          
-                          {%if ime%}
-                          <div style="padding-bottom: 9px;" id="FNameDiv">
-                            <div>
-                              <div style="display: inline;" class="fs-5">Ime</div>
-                              <span data-bs-toggle="tooltip" title="Uredi">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateFName()" id="UpdateFName" value="UpdateFName"><use xlink:href="#pencil-square"/></svg>
-                              </span>
 
-                              <div style="display: none; margin-left: 5px" id="formFNameChanges">
-                                <button style="border: none; background: none" type="submit" form="NewFNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewFName'>
-                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
-                                </button>
-                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateFName()" id="cancelFName" value="cancelFName"><use xlink:href="#cancel-changes"/></svg>
-                                </span>
-                              </div>
-                            </div>
-                            
-                            <div class="fs-4 fw-bold" id='ime'>{{ime}}</div>
-
-                            <form action="/osobnipodaci" method="post" id='NewFNameForm'>
-                              {% csrf_token %}
-                              <div style="max-width: 15rem;" id="FNameCollapse" class="collapse collapse-horizontal">
-                                <input type="text" class="form-control" id="Fname" name="Fname" placeholder={{ime}} Required>
-                              </div>                        
-                            </form>
-                          </div>
-                          {%endif%}
-        
-        
-                          {%if prezime%}
-                          <div style="padding-bottom: 9px;" id="LNameDiv">
-                            <div>
-                              <div style="display: inline;" class="fs-5">Prezime</div>
-                              <span data-bs-toggle="tooltip" title="Uredi">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateLName()" id="UpdateLName" value="UpdateLName"><use xlink:href="#pencil-square"/></svg>
-                              </span>
-
-                              <div style="display: none; margin-left: 5px" id="formLNameChanges">
-                                <button style="border: none; background: none" type="submit" form="NewLNameForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewLName'>
-                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
-                                </button>
-                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateLName()" id="cancelLName" value="cancelLName"><use xlink:href="#cancel-changes"/></svg>
-                                </span>
-                              </div>
-                            </div>
-                            
-                            <div class="fs-4 fw-bold" id='prezime'>{{prezime}}</div>
-                            
-                            <form action="/osobnipodaci" method="post" id='NewLNameForm'>
-                              {% csrf_token %}
-                              <div style="max-width: 15rem;" id="LNameCollapse" class="collapse collapse-horizontal">
-                                <input type="text" class="form-control" id="Lname" name="Lname" placeholder={{prezime}} Required>
-                              </div>
-                            </form>
-                          </div>
-                          {%endif%}
-        
-        
-                          {%if email%}
-                          <div style="padding-bottom: 9px;" id="EmailDiv">
-                            <div>
-                              <div style="display: inline;" class="fs-5">E-mail</div>
-                              <span data-bs-toggle="tooltip" title="Uredi">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail"><use xlink:href="#pencil-square"/></svg>
-                              </span>
-
-                              <div style="display: none; margin-left: 5px" id="formEmailChanges">
-                                <button style="border: none; background: none" type="submit" form="NewEmailForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewEmail'>
-                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
-                                </button>
-                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateEmail()" id="cancelEmail" value="cancelEmail"><use xlink:href="#cancel-changes"/></svg>
-                                </span>
-                              </div>
-                            </div>
-                            <div class="fs-4 fw-bold" id='email'>{{email}}</div>
-
-                            
-                            <form action="/osobnipodaci" method="post" id='NewEmailForm'>
-                              {% csrf_token %}
-                              <div style="max-width: 25rem;" id="EmailCollapse" class="collapse collapse-horizontal">
-                                <input type="text" class="form-control" id="email" name="email" placeholder={{email}} Required>
-                              </div>
-                            </form>
-                          </div>
-                          {%endif%}
-                          
-                          {%if LoggedInUserRole == 'Sudionik' or LoggedInUserRole == 'Recenzent'%}
-
-                          {%if MaticnaUstanova%}
-                          <!-- <div style="padding-bottom: 9px;">
-                            <div class="fs-5">Matična ustanova</div>
-                            <div class="fs-4 fw-bold" id='maticnaUstanova'>{{MaticnaUstanova}}</div>
-                          </div>
-                          {%endif%} --> 
-                          <div style="padding-bottom: 9px;" id="UstanovaDiv">
-                            <div>
-                              <div style="display: inline;" class="fs-5">Matična ustanova</div>
-                              <span data-bs-toggle="tooltip" title="Uredi">
-                                <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16" onclick="UpdateUstanova()" id="UpdateUstanova" value="UpdateUstanova"><use xlink:href="#pencil-square"/></svg>
-                              </span>
-
-                              <div style="display: none; margin-left: 5px" id="formUstanovaChanges">
-                                <button style="border: none; background: none" type="submit" form="NewUstanovaForm" data-bs-toggle="tooltip" title="Spremi promjene" name='NewUstanova'>
-                                  <svg style="margin-bottom: 6px;" width="16" height="16"><use xlink:href="#save-changes"/></svg>
-                                </button>
-                                <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                                  <svg style="margin-bottom: 6px;" type="button" width="16" height="16" onclick="CancelUpdateUstanova()" id="cancelUstanova" value="cancelUstanova"><use xlink:href="#cancel-changes"/></svg>
-                                </span>
-                              </div>
-                            </div>
-                            
-                            <div class="fs-4 fw-bold" id='maticnaUstanova'>{{MaticnaUstanova}}</div>
-                            
-                            <form action="/osobnipodaci" method="post" id='NewUstanovaForm'>
-                              {% csrf_token %}
-                              <div style="max-width: 15rem;" id="UstanovaCollapse" class="collapse collapse-horizontal">
-                                <input type="text" class="form-control" id="Ustanova" name="Ustanova" placeholder={{MaticnaUstanova}} Required>
-                              </div>
-                            </form>
-                          </div>
-                          {%endif%}
-
-                        </div>
-                        
-                        <!--Uloga, ustanova i sekcija-->
-                        <div class="col-sm">
-                          {%if uloga%}
-                          <div style="padding-bottom: 9px;">
-                            <div class="fs-5">Uloga</div>
-                            <div class="fs-4 fw-bold" id='uloga'>{{uloga}}</div>
-                          </div>
-                          {%endif%}
-        
-                          {%if dodatnipodatci %}
-                          <div class="fs-5">Dodatni podaci</div>
-                          {%for ime,podatak in dodatnipodatci.items %}
-                          <span class="fs-4"  value="{{ime}}">{{ime}}: </span>
-                          <span class="fs-4 fw-bold"  value="{{podatak}}">{% firstof podatak "Niste upisali podatak."%}</span>
-                          <br>
-                          {%endfor%}
-                          {%endif%}
-
-                          {%if LoggedInUserRole == 'Recenzent'%}
-                          {%if sekcija%}
-                          <div style="padding-bottom: 9px;">
-                            <div class="fs-5">Sekcija</div>
-                            <div class="fs-4 fw-bold" id='sekcija'>{{sekcija}}</div>
-                          </div>
-                          {%endif%}
-                          {% endif %}
-
-                          {%if LoggedInUserRole == 'Sudionik'%}
-                          {%if sekcije%}
-                              <div class="fs-5">Sekcije u kojima ste prijavili radove</div>
-                              
-                                {%for sekcija in sekcije%}
-                                <div class="fs-4 fw-bold"  value="{{sekcija.naziv}}">{{sekcija.naziv}}</div>
-                                {%endfor%}
-                              
-                          {% endif %}
-                   
-                            {%if SudionikID%}
-                            <div style="padding-bottom: 9px;">
-                              <div class="fs-5">Jedinstveni identifikator sudionika</div>
-                              <div class="fs-4 fw-bold" id="idsudionik">{{SudionikID}}</div>
-                            </div>
-                            {% endif %}
-                          {% endif %}
-                        </div>
-                      </div>
-                      
-                    </div>
+          <!--Ako postoje informacije (Tj ako je ulogiran korisnik) prikazi ih-->
+          <form action="/osobnipodaci" method="post" id='updateInfo'>
+            <div class="container">
+              {% csrf_token %}
+              <div class="row">
+                <!-- Korisnik per se -->
+                <div class="col-sm">
+                  {%if korisnickoIme%}
+                  <div class="mb-3" id="usernameWrapper">
+                    <label for="username" class="form-label fw-bold">Korisničko ime</label>
+                    <input type="text" class="form-control input-md" id="username" name="username"
+                      value="{{korisnickoIme}}" required>
                   </div>
+                  {%endif%}
+
+                  {%if ime%}
+                  <div class="mb-3" id="imeWrapper">
+                    <label for="ime" class="form-label fw-bold">Ime</label>
+                    <input type="text" class="form-control input-md" id="ime" name="ime" value="{{ime}}" required>
+                  </div>
+                  {%endif%}
+
+                  {%if prezime%}
+                  <div class="mb-3" id="prezimeWrapper">
+                    <label for="prezime" class="form-label fw-bold">Prezime</label>
+                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="{{prezime}}"
+                      required>
+                  </div>
+                  {%endif%}
+
+                  {%if email%}
+                  <div class="mb-3" id="emailWrapper">
+                    <label for="email" class="form-label fw-bold">E-mail</label>
+                    <input type="text" class="form-control input-lg" id="email" name="email" value="{{email}}" required>
+                  </div>
+                  {%endif%}
+                </div>
+
+                <!--Uloga, ustanova i sekcija-->
+                <div class="col-sm">
+                  {%if MaticnaUstanova%}
+                  <div class="mb-3" id="ustanovaWrapper">
+                    <label for="ustanova" class="form-label fw-bold">Matična ustanova</label>
+                    <input type="text" class="form-control" id="ustanova" name="ustanova" value="{{MaticnaUstanova}}"
+                      required>
+                  </div>
+                  {%endif%}
+
+                  {%if uloga%}
+                  <div class="mb-3" id="ulogaWrapper">
+                    <label for="uloga" class="form-label fw-bold">Uloga</label>
+                    <input type="text" class="form-control input-md" id="uloga" value="{{uloga}}" disabled>
+                  </div>
+                  {%endif%}
+
+                  {%if LoggedInUserRole == 'Recenzent'%}
+                  {%if sekcija%}
+                  <div class="mb-3" id="sekcijaWrapper">
+                    <label for="sekcija" class="form-label fw-bold">Sekcija</label>
+                    <input type="text" class="form-control input-md" id="sekcija" value="{{sekcija}}" disabled>
+                  </div>
+                  {%endif%}
+                  {% endif %}
+
+                  {%if SudionikID%}
+                  <div class="mb-3" id="sudionikIDWrapper">
+                    <label for="sudionikID" class="form-label fw-bold">ID sudionika</label>
+                    <input type="text" class="form-control input-md" id="sudionikID" value="{{SudionikID}}" disabled>
+                  </div>
+                  {% endif %}
                 </div>
               </div>
+              {%if dodatnipodatci %}
+              <hr>
+              <div class="row">
+                <div class="fs-5 fw-bold mb-3" >Dodatni podaci</div>
+
+                {%for ime,podatak in dodatnipodatci.items %}
+                <div class="mb-3" id="dodatniWrapper{{forloop.counter}}">
+                  <label for="dodatni{{forloop.counter}}" class="form-label fw-bold">{{ime}}</label>
+                  <input type="text" class="form-control input-md" id="dodatni{{forloop.counter}}" value="{{podatak}}" disabled>
+                </div>
+                {%endfor%}
+
+              </div>
+              {%endif%}
             </div>
 
-            <!--FOOTER-->
-            {% include "./Footer.html" %}
-            <!--FOOTER-->
+            <hr>
+            <button type="submit" class="btn btn-primary">Ažuriraj podatke</button>
+            <a href="/osobnipodaci" class="btn btn-outline-secondary">Odbaci</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        </body>
+  <!--FOOTER-->
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
 
-        <!--nas js-->
-        <script src="{% static '/js/hamburgerActions.js' %}"></script>
-        <script src="{% static '/js/updateOsobniPodaci.js' %}"></script>
-        <!--nas js-->
-    </html>
+</body>
+
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<script src="{% static '/js/updateOsobniPodaci.js' %}"></script>
+<!--nas js-->
+
+</html>
