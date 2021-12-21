@@ -26,9 +26,11 @@ def mojerecenzije(request):
         return redirect('signin')
     
     LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-
-    if LoggedInUser.vrstaKorisnik_id==3 and LoggedInUser.odobrenBool==False:
+    if LoggedInUser.vrstaKorisnik_id==3 and LoggedInUser.odobrenBool==None:
         messages.error(request,"Još nisi odobren kao recenzent!")
+        return redirect('home')
+    elif LoggedInUser.vrstaKorisnik_id==3 and LoggedInUser.odobrenBool==False:
+        messages.error(request,"Tvoj zahtjev za recenzenstvom je odbijen. Nije ti dopusteno recenzirati")
         return redirect('home')
     elif LoggedInUser.vrstaKorisnik_id > 3: #1-admin 2-predsjedavajuci 3-recenzent 4-sudionik
         messages.error(request,"Nemaš prava za ovu stranicu!")
