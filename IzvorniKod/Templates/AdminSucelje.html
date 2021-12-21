@@ -248,34 +248,41 @@
               <div class="col-sm">
                 <div class="text-left text-uppercase fw-bold mb-2" id='Label'>Dodaj novog administratora</div>
                 <hr width="70%">
-                <form id="addNewAdmin">
+                <form action="/adminsucelje" method="post" id="addNewAdmin">
+                  {% csrf_token %}
                   <div class="mb-1" id="imeWrapper">
                     <label for="ime" class="form-label">Ime</label>
-                    <input type="text" class="form-control input-md" id="ime" name="ime" value="" required>
+                    <input type="text" class="form-control input-md" id="adminime" name="adminime" value="" required>
                   </div>
 
                   <div class="mb-1" id="prezimeWrapper">
                     <label for="prezime" class="form-label">Prezime</label>
-                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="" required>
+                    <input type="text" class="form-control input-md" id="adminprezime" name="adminprezime" value="" required>
                   </div>
 
                   <div class="mb-1" id="usernameWrapper">
                     <label for="username" class="form-label">Korisničko ime</label>
-                    <input type="text" class="form-control input-md" id="username" name="username" value="" required>
+                    <input type="text" class="form-control input-md" id="adminusername" name="adminusername" value="" required>
                   </div>
 
                   <div class="mb-1" id="emailWrapper">
                     <label for="email" class="form-label">E-mail</label>
-                    <input type="text" class="form-control input-lg" id="email" name="email" value="" required>
+                    <input type="text" class="form-control input-lg" id="adminemail" name="adminemail" value="" required>
                   </div>
-                  <button type="submit" class="btn btn-primary">Dodaj administratora</button>
+
+                  <div class="mb-1" id="passwordWrapper">
+                    <label for="email" class="form-label">Lozinka</label>
+                    <input type="text" class="form-control input-lg" id="adminpassword" name="adminpassword" value="" required>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-md" name="AddNewAdmin" value="Update">Dodaj administratora</button>
                 </form>
               </div>
               
               <div class="col-sm">
                 <div class="text-left text-uppercase fw-bold mb-2" id='Label'>Postojeći administratori sustava:</div>
                 <hr width="70%">
-                {%if administratori%}
+                {%if AdministratoriPopis%}
                 <ul type="text" id="admin" name="admin">
                   {%for admin in AdministratoriPopis%}
                   <li value="{{admin.ime}}">{{admin.ime}} {{admin.prezime}}
