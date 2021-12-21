@@ -100,7 +100,6 @@ button.acc-btn {
     border-radius: 5rem;
     border: none;
     font-size: small;
-    padding: none;
     text-align: center;    
 }
 
@@ -282,4 +281,16 @@ button.acc-btn {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+/* razni inputi, tipa na stranici osobnipodaci */
+
+.input-md {
+  max-width: 240px;
+  width: 100%;
+}
+
+.input-lg {
+  max-width: 320px;
+  width: 100%;
 }

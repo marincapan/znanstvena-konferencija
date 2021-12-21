@@ -20,47 +20,48 @@ from datetime import date
 
 def osobnipodaci(request):
     if request.method == "POST":
-        if 'NewUserName' in request.POST:
-            Username = request.POST['Username']
-            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            LoggedInUser.korisnickoIme = Username
-            try:
-                LoggedInUser.save()
-            except IntegrityError:
-                messages.error(request, "To korisnicko ime je vec u uporabi")
-                return redirect('osobnipodaci')
+        LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        username = request.POST["username"]
+        ime = request.POST["ime"]
+        prezime = request.POST["prezime"]
+        email = request.POST["email"]
+        maticnaUstanova = request.POST["ustanova"]
 
-        if 'NewFName' in request.POST:
-            Fname = request.POST['Fname']
-            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            LoggedInUser.ime = Fname
-            LoggedInUser.save()
+        #Provjeri jesu li sva polja u redu prije spremanja u bazu
+        #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni korisnik
+        if models.Korisnik.objects.filter(korisnickoIme = username).exclude(id = LoggedInUser.id).exists():
+            messages.error(request, "Korisničko ime je zauzeto")
+            return redirect('osobnipodaci')
+        
+        #email - pogledaj postoji li netko s istim emailom, a da nije trenutni korisnik
+        if models.Korisnik.objects.filter(email = email).exclude(id = LoggedInUser.id).exists():
+            messages.error(request, "E-mail adresa je zauzeta")
+            return redirect('osobnipodaci')
 
-        if 'NewLName' in request.POST:
-            Lname = request.POST['Lname']
-            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            LoggedInUser.prezime = Lname
-            LoggedInUser.save()
+        #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
+        LoggedInUser.korisnickoIme = username
+        LoggedInUser.ime = ime
+        LoggedInUser.prezime = prezime
+        LoggedInUser.email = email
+        
+        #ustanova (ako je isti naziv kao i do sad, nema smisla updateati)
+        if maticnaUstanova != LoggedInUser.korisnikUstanova.naziv:
+            if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa).exists():
+                novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa)
+            else:
+                print("Tu sam 1")
+                novaUstanova = models.Ustanova(
+                    naziv = maticnaUstanova,
+                    grad = LoggedInUser.korisnikUstanova.grad,
+                    drzava = LoggedInUser.korisnikUstanova.drzava,
+                    adresa = LoggedInUser.korisnikUstanova.adresa
+                )
+                novaUstanova.save()
+                
+            LoggedInUser.korisnikUstanova = novaUstanova
 
-        if 'NewUstanova' in request.POST:
-              Ustanova = request.POST['Ustanova']
-              LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-              LoggedInUser.korisnikUstanova.naziv = Ustanova
-              LoggedInUser.save()
-              Ustanova = LoggedInUser.korisnikUstanova
-              Ustanova.save()
-              print(LoggedInUser.korisnikUstanova.naziv)
-              print(Ustanova.naziv)
-
-        if 'NewEmail' in request.POST:
-            email = request.POST['email']
-            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            LoggedInUser.email = email
-            try:
-                LoggedInUser.save()
-            except IntegrityError:
-                messages.error(request, "Ta email adresa je vec u uporabi")
-                return redirect('osobnipodaci')  
+        LoggedInUser.save()
+        messages.success(request, "Podaci uspješno promijenjeni")
         return redirect('osobnipodaci')
 
     if "LoggedInUserId" in request.session: #ulogirani smo
@@ -109,6 +110,7 @@ def osobnipodaci(request):
             
         
     else:
+        messages.info(request, "Trebate biti prijavljeni kako biste pristupili toj stranici.")
         return redirect('signin')
     
     return render(request, 'OsobniPodaci.html',context)

@@ -1,8 +1,9 @@
 from collections import defaultdict
+from datetime import date, datetime
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
-from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
+from django.db.models.fields import DateField, DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
 from django.http.response import FileResponse, HttpResponse
 from django.shortcuts import render, redirect
@@ -64,6 +65,7 @@ def sloziobrazac(request):
         return redirect('sloziobrazac')
     context['DodatnaPolja']=fetchedPolja
     return render(request, 'SloziObrazac.html', context)
+
 def adminsucelje(request):
     radovi = models.Rad.objects.all()
     sekcije = models.Sekcija.objects.all()
@@ -90,38 +92,50 @@ def adminsucelje(request):
     
     
     if request.method == "POST":
+        if 'nazivKonferencije' in request.POST: #podaci o konferenciji
+            konferencija=models.Konferencija.objects.get(sifKonferencija=1)
+
+            konferencija.nazivKonferencije = request.POST["nazivKonferencije"]
+            konferencija.opisKonferencije = request.POST["opisKonferencije"]
+            konferencija.datumKonferencije = datetime.strptime(request.POST["datumKonferencije"], "%Y-%m-%d").date()
+            konferencija.rokPocPrijava = datetime.strptime(request.POST["pocetakPrijavaKonferencije"], "%Y-%m-%d").date()
+            konferencija.rokPrijave = datetime.strptime(request.POST["rokPrijava"], "%Y-%m-%d").date()
+            konferencija.rokPocRecenzija = datetime.strptime(request.POST["pocetakRecenzija"], "%Y-%m-%d").date()
+            konferencija.rokRecenzenti = datetime.strptime(request.POST["rokRecenzija"], "%Y-%m-%d").date()
+
+            konferencija.save()
+
+            messages.success(request, "Podaci o konferenciji su uspješno ažurirani!")
+            return redirect('adminsucelje')
       
-        if 'NewUserName' in request.POST:
-            Username = request.POST['Username']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            Predsjedavajuci.korisnickoIme = Username
-            try:
-                Predsjedavajuci.save()
-            except IntegrityError:
-                messages.error(request, "To korisnicko ime je vec u uporabi")
-                return redirect('adminsucelje')
+        if 'username' in request.POST: #podaci o predsjedavajucem
+            predsjedavajuci = models.Korisnik.objects.get(id = 4) #HARDKODIRAN PREDSJEDAVAJUCI ID
+            username = request.POST["username"]
+            ime = request.POST["ime"]
+            prezime = request.POST["prezime"]
+            email = request.POST["email"]
 
-        if 'NewFName' in request.POST:
-            Fname = request.POST['Fname']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            Predsjedavajuci.ime = Fname
-            Predsjedavajuci.save()
+            #Provjeri jesu li sva polja u redu prije spremanja u bazu
+            #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni predsjedavajuci
+            if models.Korisnik.objects.filter(korisnickoIme = username).exclude(id = 4).exists(): #HARDKODIRAN PREDSJEDAVAJUCI ID
+                messages.error(request, "Korisničko ime je zauzeto")
+                return redirect('osobnipodaci')
+            
+            #email - pogledaj postoji li netko s istim emailom, a da nije trenutni predsjedavajuci
+            if models.Korisnik.objects.filter(email = email).exclude(id = 4).exists(): #HARDKODIRAN PREDSJEDAVAJUCI ID
+                messages.error(request, "E-mail adresa je zauzeta")
+                return redirect('osobnipodaci')
 
-        if 'NewLName' in request.POST:
-            Lname = request.POST['Lname']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            Predsjedavajuci.prezime = Lname
-            Predsjedavajuci.save()
+            #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
+            predsjedavajuci.korisnickoIme = username
+            predsjedavajuci.ime = ime
+            predsjedavajuci.prezime = prezime
+            predsjedavajuci.email = email
 
-        if 'NewEmail' in request.POST:
-            email = request.POST['email']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            Predsjedavajuci.email = email
-            try:
-                Predsjedavajuci.save()
-            except IntegrityError:
-                messages.error(request, "Ta email adresa je vec u uporabi")
-                return redirect('adminsucelje')
+            predsjedavajuci.save()
+            messages.success(request, "Podaci o predsjedavajućem uspješno promijenjeni")
+            return redirect('adminsucelje')
+            
         if "makePublic" in request.POST:
             konferencija=models.Konferencija.objects.get(sifKonferencija=1)
             if konferencija.javniRadoviBool==True:
@@ -216,7 +230,7 @@ def adminsucelje(request):
             return redirect('/') #redirect na homepage
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
-    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=1)
+    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
     radovi = models.Rad.objects.all()
     sekcije = models.Sekcija.objects.all()
     korisnici = models.Korisnik.objects.all()
@@ -229,6 +243,18 @@ def adminsucelje(request):
         rad.radKorisnik_prezime = korisnici.get(id=rad.radKorisnik_id).prezime
         if(rad.pdf != ""):
             brojPredanihRadova += 1
+
+    #konferencija je u bazi
+    konferencija=models.Konferencija.objects.first()
+    if konferencija:
+        context['konferencijaNaziv']=konferencija.nazivKonferencije
+        context['opis']=konferencija.opisKonferencije
+        context['datum'] = dateformat.format(konferencija.datumKonferencije, formats.get_format('Y-m-d'))
+        context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('Y-m-d'))
+        context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('Y-m-d'))
+        context['rokAdmin']=dateformat.format(konferencija.rokAdmin, formats.get_format('Y-m-d'))
+        context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('Y-m-d'))
+        context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('Y-m-d'))
 
     context["Radovi"] = radovi
     context["brojPredanihRadova"] = brojPredanihRadova
