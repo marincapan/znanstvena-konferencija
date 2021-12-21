@@ -216,6 +216,7 @@ def adminsucelje(request):
                 popis.append(admin.ime + " " + admin.prezime)
 
             context["administratori"] = popis
+            context["AdministratoriPopis"] = Administratori
             print(context)
             if (Predsjedavajuci):
                 context['korisnickoIme']=Predsjedavajuci.korisnickoIme
