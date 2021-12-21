@@ -231,28 +231,78 @@
             </form>
 
           </div>
-        </div>
+        
 
         <div class="container mb-5">
           <div class="text-uppercase text-left mb-2">
             <div style="padding-bottom: 3px;" id="titleDiv">
               <div>
-
                 <h4 style="display: inline;" id="myTitle">Upravljanje administratorima</h4>
               </div>
             </div>
             <hr>
           </div>
 
-          <div class="text-left fw-bold mb-1" id='Label'>Trenutno aktivni administratori:</div>
-          {%if administratori%}
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <div class="text-left text-uppercase fw-bold mb-2" id='Label'>Dodaj novog administratora</div>
+                <hr width="70%">
+                <form action="/adminsucelje" method="post" id="addNewAdmin">
+                  {% csrf_token %}
+                  <div class="mb-1" id="imeWrapper">
+                    <label for="ime" class="form-label">Ime</label>
+                    <input type="text" class="form-control input-md" id="adminime" name="adminime" value="" required>
+                  </div>
 
-          <ul type="text" id="admin" name="admin">
-            {%for admin in administratori%}
-            <li value="{{admin}}">{{admin}}</li>
-            {%endfor%}
-            {%endif%}
-          </ul>
+                  <div class="mb-1" id="prezimeWrapper">
+                    <label for="prezime" class="form-label">Prezime</label>
+                    <input type="text" class="form-control input-md" id="adminprezime" name="adminprezime" value="" required>
+                  </div>
+
+                  <div class="mb-1" id="usernameWrapper">
+                    <label for="username" class="form-label">Korisničko ime</label>
+                    <input type="text" class="form-control input-md" id="adminusername" name="adminusername" value="" required>
+                  </div>
+
+                  <div class="mb-1" id="emailWrapper">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="text" class="form-control input-lg" id="adminemail" name="adminemail" value="" required>
+                  </div>
+
+                  <div class="mb-1" id="passwordWrapper">
+                    <label for="email" class="form-label">Lozinka</label>
+                    <input type="text" class="form-control input-lg" id="adminpassword" name="adminpassword" value="" required>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-md" name="AddNewAdmin" value="Update">Dodaj administratora</button>
+                </form>
+              </div>
+              
+              <div class="col-sm">
+                <div class="text-left text-uppercase fw-bold mb-2" id='Label'>Postojeći administratori sustava:</div>
+                <hr width="70%">
+                {%if AdministratoriPopis%}
+                <ul type="text" id="admin" name="admin">
+                  {%for admin in AdministratoriPopis%}
+                  <li value="{{admin.ime}}">{{admin.ime}} {{admin.prezime}}
+                    <ul style="list-style-type: none;">
+                      <li>
+                        <p class="left mt-1 mb-0"> <span class="text-muted">Korisničko ime:</span> {{admin.korisnickoIme}}</p>
+                      </li>
+                      <li>
+                        <p class="left mt-1 mb-0"> <span class="text-muted">Adresa e-pošte:</span> {{admin.email}}</p>
+                      </li>
+                    </ul>
+                  </li>
+                  {%endfor%}
+                </ul>
+                {%endif%}
+              </div>
+            </div>
+          </div>
+
+          
         </div>
 
         <!-- OBRAZAC ZA REGISTRACIJU -->

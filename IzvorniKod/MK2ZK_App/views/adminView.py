@@ -16,7 +16,24 @@ from django.core import serializers
 from django.utils import (dateformat, formats)
 import zipfile
 import os
+<<<<<<< HEAD
+import requests
+from bs4 import BeautifulSoup
+import time
+import csv
+from datetime import date
+=======
 
+def increment_KorisnikID():
+  last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
+  if not last_korisnik:
+    return '0001'
+  korisnik_id = last_korisnik.idSudionik
+  korisnik_int = int(korisnik_id)
+  new_korisnik_int = korisnik_int + 1
+  new_korisnik_id =str(new_korisnik_int).zfill(4)
+  return new_korisnik_id
+>>>>>>> 34a3fd57c4f4c57a68dfacdb2cdd49823a3c57f1
 
 def sloziobrazac(request):
     context={}
@@ -119,12 +136,12 @@ def adminsucelje(request):
             #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni predsjedavajuci
             if models.Korisnik.objects.filter(korisnickoIme = username).exclude(id = 4).exists(): #HARDKODIRAN PREDSJEDAVAJUCI ID
                 messages.error(request, "Korisničko ime je zauzeto")
-                return redirect('osobnipodaci')
+                return redirect('adminsucelje')
             
             #email - pogledaj postoji li netko s istim emailom, a da nije trenutni predsjedavajuci
             if models.Korisnik.objects.filter(email = email).exclude(id = 4).exists(): #HARDKODIRAN PREDSJEDAVAJUCI ID
                 messages.error(request, "E-mail adresa je zauzeta")
-                return redirect('osobnipodaci')
+                return redirect('adminsucelje')
 
             #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
             predsjedavajuci.korisnickoIme = username
@@ -190,6 +207,47 @@ def adminsucelje(request):
             if not models.Sekcija.objects.filter(naziv = SectionName).exists():
                 newSection=models.Sekcija(naziv = SectionName, konferencijaSekcija=konferencija)
                 newSection.save()
+
+        if 'AddNewAdmin' in request.POST:
+
+            AdminName = request.POST['adminime']
+            AdminSurname = request.POST['adminprezime']
+            AdminUsername = request.POST['adminusername']
+            AdminEmail = request.POST['adminemail']
+            idKorisnika = increment_KorisnikID()
+            AdminPassword = request.POST['adminpassword']
+            
+            
+            #Provjeri jesu li sva polja u redu prije spremanja u bazu
+            #username - pogledaj postoji li netko s istim usernameom
+            if models.Korisnik.objects.filter(korisnickoIme = AdminUsername).exists():
+                messages.error(request, "Korisničko ime je zauzeto")
+                return redirect('adminsucelje')
+            
+            #email - pogledaj postoji li netko s istim emailom
+            if models.Korisnik.objects.filter(email = AdminEmail).exists():
+                messages.error(request, "E-mail adresa je zauzeta")
+                return redirect('adminsucelje')
+
+            #Generiraj password za korisnika
+            #randPassword=get_random_string(length=16)
+            #request.session['randPassword'] = randPassword
+
+            
+
+            #Probaj spremiti novog korisnika
+            try:
+                NoviKorisnik = models.Korisnik(korisnickoIme=AdminUsername,lozinka=AdminPassword,ime=AdminName,prezime=AdminSurname,email=AdminEmail,vrstaKorisnik=models.Uloga.objects.get(id=1), korisnikUstanova=models.Ustanova.objects.get(sifUstanova=1), korisnikSekcija=models.Sekcija.objects.get(sifSekcija=1))
+                NoviKorisnik.save()
+                messages.success(request, "Novi administrator uspjesno dodan u bazu")
+                return redirect('adminsucelje')
+            except IntegrityError:
+                messages.error(request, "Korisnicko ime ili email je vec u uporabi")
+                return redirect('adminsucelje')
+
+            
+
+            
                 
         context['DodatnaPolja']=fetchedPolja
              
@@ -210,12 +268,9 @@ def adminsucelje(request):
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
             Predsjedavajuci=models.Korisnik.objects.filter(id=4).first()
-            Administratori = models.Korisnik.objects.filter(id = 1) #znamo da je bar 1
-            popis = []
-            for admin in Administratori:
-                popis.append(admin.ime + " " + admin.prezime)
-
-            context["administratori"] = popis
+            Administratori = models.Korisnik.objects.filter(vrstaKorisnik_id = 1) #znamo da je bar 1
+            context["AdministratoriPopis"] = Administratori
+            
             print(context)
             if (Predsjedavajuci):
                 context['korisnickoIme']=Predsjedavajuci.korisnickoIme
@@ -260,3 +315,20 @@ def adminsucelje(request):
     context["brojPredanihRadova"] = brojPredanihRadova
 
     return render(request, 'AdminSucelje.html', context)
+def covidstats(request):
+    context = {}
+    url = "https://covid19.who.int/WHO-COVID-19-global-data.csv"
+    response = requests.get(url)
+    bytes=response.content
+    data=bytes.decode('UTF-8')
+    data=data.split("\n")
+    fetchUstanove = models.Ustanova.objects.all()
+    svedrzave=[]
+    for row in data:
+        date=row.split(",") #0 - Date_reported,1 - Country_code,2 - Country,3 - WHO_region,4 - New_cases,5 - Cumulative_cases,6 - New_deaths, 7- Cumulative_deaths
+        #for ustanova in fetchUstanove: #Ovo od komentirati kad imamo u bazi drzave na engleskom
+        #if ustanova.drzava in date:
+        if date[0]!="": #Kraj
+            context[str(date[2]) + "newCases"]=date[4] # npr za hrvatsku u kontext ide pod imenom "CroatianewCases"
+        
+    return render(request, 'covidStats.html', context)
