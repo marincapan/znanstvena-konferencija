@@ -131,7 +131,8 @@
                   </div>
                   <div class="mb-3" id="opisWrapper">
                     <label for="opisKonferencije" class="form-label fw-bold">Opis konferencije</label>
-                    <textarea class="form-control input-lg" rows="3" id="opisKonferencije" name="opisKonferencije" required>{{opis}}</textarea>
+                    <textarea class="form-control input-lg" rows="3" id="opisKonferencije" name="opisKonferencije"
+                      required>{{opis}}</textarea>
                   </div>
                 </div>
 
@@ -143,8 +144,8 @@
                   </div>
                   <div class="mb-3" id="pocetakPrijavaWrapper">
                     <label for="pocetakPrijavaKonferencije" class="form-label fw-bold">Početak prijava</label>
-                    <input type="date" class="form-control input-md" id="pocetakPrijavaKonferencije" name="pocetakPrijavaKonferencije"
-                      value="{{rokPocPrijava}}" required>
+                    <input type="date" class="form-control input-md" id="pocetakPrijavaKonferencije"
+                      name="pocetakPrijavaKonferencije" value="{{rokPocPrijava}}" required>
                   </div>
                   <div class="mb-3" id="rokPrijavaWrapper">
                     <label for="rokPrijava" class="form-label fw-bold">Rok za prijavu</label>
@@ -162,7 +163,7 @@
                   <div class="mb-3" id="rokRecenzijaWrapper">
                     <label for="rokRecenzija" class="form-label fw-bold">Rok za recenziranje</label>
                     <input type="date" class="form-control input-md" id="rokRecenzija" name="rokRecenzija"
-                    value="{{rokRecenzenti}}" required>                
+                      value="{{rokRecenzenti}}" required>
                   </div>
                   <div class="mb-3" id="rokIzmjenaWrapper">
                     <label for="rokIzmjena" class="form-label fw-bold">Rok za izmjenu obrasca</label>
@@ -186,356 +187,243 @@
               <hr>
             </div>
 
-            <div class="row">
-              {%if ime%}
-              <div class="col-sm">
-
-                <div style="padding-bottom: 9px;" id="FNameDiv">
-                  <div>
-                    <div style="display: inline;" class="fs-6">Ime</div>
-                    <span data-bs-toggle="tooltip" title="Uredi">
-                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16"
-                        onclick="UpdateFName()" id="UpdateFName" value="UpdateFName">
-                        <use xlink:href="#pencil-square" /></svg>
-                    </span>
-
-                    <div style="display: none; margin-left: 5px" id="formFNameChanges">
-                      <button style="border: none; background: none" type="submit" form="NewFNameForm"
-                        data-bs-toggle="tooltip" title="Spremi promjene" name='NewFName'>
-                        <svg style="margin-bottom: 6px;" width="16" height="16">
-                          <use xlink:href="#save-changes" /></svg>
-                      </button>
-                      <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                        <svg style="margin-bottom: 6px;" type="button" width="16" height="16"
-                          onclick="CancelUpdateFName()" id="cancelFName" value="cancelFName">
-                          <use xlink:href="#cancel-changes" /></svg>
-                      </span>
-                    </div>
+            <form action="/adminsucelje" method="post" id='updatePredsjedavajuciInfo'>
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-sm">
+                  {%if ime%}
+                  <div class="mb-3" id="imeWrapper">
+                    <label for="ime" class="form-label fw-bold">Ime</label>
+                    <input type="text" class="form-control input-md" id="ime" name="ime" value="{{ime}}" required>
                   </div>
+                  {%endif%}
 
-                  <div class="fs-5 fw-bold" id='ime'>{{ime}}</div>
-
-                  <form action="/adminsucelje" method="post" id='NewFNameForm'>
-                    {% csrf_token %}
-                    <div style="max-width: 15rem;" id="FNameCollapse" class="collapse collapse-horizontal">
-                      <input type="text" class="form-control" id="Fname" name="Fname" placeholder={{ime}} Required>
-                    </div>
-                  </form>
-                </div>
-                {%endif%}
-
-                {%if prezime%}
-
-                <div style="padding-bottom: 9px;" id="LNameDiv">
-                  <div>
-                    <div style="display: inline;" class="fs-6">Prezime</div>
-                    <span data-bs-toggle="tooltip" title="Uredi">
-                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16"
-                        onclick="UpdateLName()" id="UpdateLName" value="UpdateLName">
-                        <use xlink:href="#pencil-square" /></svg>
-                    </span>
-
-                    <div style="display: none; margin-left: 5px" id="formLNameChanges">
-                      <button style="border: none; background: none" type="submit" form="NewLNameForm"
-                        data-bs-toggle="tooltip" title="Spremi promjene" name='NewLName'>
-                        <svg style="margin-bottom: 6px;" width="16" height="16">
-                          <use xlink:href="#save-changes" /></svg>
-                      </button>
-                      <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                        <svg style="margin-bottom: 6px;" type="button" width="16" height="16"
-                          onclick="CancelUpdateLName()" id="cancelLName" value="cancelLName">
-                          <use xlink:href="#cancel-changes" /></svg>
-                      </span>
-                    </div>
+                  {%if prezime%}
+                  <div class="mb-3" id="prezimeWrapper">
+                    <label for="prezime" class="form-label fw-bold">Prezime</label>
+                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="{{prezime}}"
+                      required>
                   </div>
-
-                  <div class="fs-5 fw-bold" id='prezime'>{{prezime}}</div>
-
-
-                  <form action="/adminsucelje" method="post" id='NewLNameForm'>
-                    {% csrf_token %}
-                    <div style="max-width: 15rem;" id="LNameCollapse" class="collapse collapse-horizontal">
-                      <input type="text" class="form-control" id="Lname" name="Lname" placeholder={{prezime}} Required>
-                    </div>
-                  </form>
+                  {%endif%}
                 </div>
-                {%endif%}
 
+                <div class="col-sm">
+
+                  {%if korisnickoIme%}
+                  <div class="mb-3" id="usernameWrapper">
+                    <label for="username" class="form-label fw-bold">Korisničko ime</label>
+                    <input type="text" class="form-control input-md" id="username" name="username"
+                      value="{{korisnickoIme}}" required>
+                  </div>
+                  {%endif%}
+
+
+                  {%if email%}
+                  <div class="mb-3" id="emailWrapper">
+                    <label for="email" class="form-label fw-bold">E-mail</label>
+                    <input type="text" class="form-control input-lg" id="email" name="email" value="{{email}}" required>
+                  </div>
+                  {%endif%}
+                </div>
               </div>
-              <div class="col-sm">
+              <button type="submit" class="btn btn-primary">Ažuriraj podatke</button>
+              <a href="/adminsucelje" class="btn btn-outline-secondary">Odbaci</a>
+            </form>
 
-                {%if korisnickoIme%}
-                <div style="padding-bottom: 9px;" id="UserNameDiv">
-                  <div>
-                    <div style="display: inline;" class="fs-6">Korisničko ime</div>
-                    <span data-bs-toggle="tooltip" title="Uredi" id="UpdateUserName">
-                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16"
-                        onclick="UpdateUserName()" value="UpdateUserName">
-                        <use xlink:href="#pencil-square" /></svg>
-                    </span>
-
-                    <div style="display: none; margin-left: 5px;" id="formUserNameChanges">
-                      <button style="border: none; background: none" type="submit" form="NewUserNameForm"
-                        data-bs-toggle="tooltip" title="Spremi promjene" name='NewUserName'>
-                        <svg style="margin-bottom: 6px;" width="16" height="16">
-                          <use xlink:href="#save-changes" /></svg>
-                      </button>
-                      <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                        <svg style="margin-bottom: 6px;" type="button" width="16" height="16"
-                          onclick="CancelUpdateUsername()" id="cancelUsername" value="cancelUsername">
-                          <use xlink:href="#cancel-changes" /></svg>
-                      </span>
-                    </div>
-                  </div>
-
-
-                  <div class="fs-5 fw-bold" id='korisnickoIme'>{{korisnickoIme}}</div>
-
-                  <form action="/adminsucelje" method="post" id='NewUserNameForm'>
-                    {% csrf_token %}
-                    <div>
-                      <div style="max-width: 15rem;" id="UserNameCollapse" class="collapse collapse-horizontal">
-                        <input type="text" class="form-control" id="Username" name="Username"
-                          placeholder={{korisnickoIme}} Required>
-                      </div>
-                    </div>
-
-                  </form>
-                </div>
-                {%endif%}
-
-
-                {%if email%}
-                <div style="padding-bottom: 9px;" id="EmailDiv">
-                  <div>
-                    <div style="display: inline;" class="fs-6">E-mail</div>
-                    <span data-bs-toggle="tooltip" title="Uredi">
-                      <svg style="margin-bottom: 6px; margin-left: 10px" type="button" width="16" height="16"
-                        onclick="UpdateEmail()" id="UpdateEmail" value="UpdateEmail">
-                        <use xlink:href="#pencil-square" /></svg>
-                    </span>
-
-                    <div style="display: none; margin-left: 5px" id="formEmailChanges">
-                      <button style="border: none; background: none" type="submit" form="NewEmailForm"
-                        data-bs-toggle="tooltip" title="Spremi promjene" name='NewEmail'>
-                        <svg style="margin-bottom: 6px;" width="16" height="16">
-                          <use xlink:href="#save-changes" /></svg>
-                      </button>
-                      <span data-bs-toggle="tooltip" title="Odbaci promjene">
-                        <svg style="margin-bottom: 6px;" type="button" width="16" height="16"
-                          onclick="CancelUpdateEmail()" id="cancelEmail" value="cancelEmail">
-                          <use xlink:href="#cancel-changes" /></svg>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="fs-5 fw-bold" id='email'>{{email}}</div>
-
-
-                  <form action="/adminsucelje" method="post" id='NewEmailForm'>
-                    {% csrf_token %}
-                    <div style="max-width: 15rem;" id="EmailCollapse" class="collapse collapse-horizontal">
-                      <input type="text" class="form-control" id="email" name="email" placeholder={{email}} Required>
-                    </div>
-                  </form>
-                </div>
-                {%endif%}
-
-              </div>
-            </div>
           </div>
-
-          <div class="container mb-5">
-            <div class="text-uppercase text-left mb-2">
-              <div style="padding-bottom: 3px;" id="titleDiv">
-                <div>
-
-                  <h4 style="display: inline;" id="myTitle">Upravljanje administratorima</h4>
-                </div>
-              </div>
-              <hr>
-            </div>
-
-            <div class="text-left fw-bold mb-1" id='Label'>Trenutno aktivni administratori:</div>
-            {%if administratori%}
-
-            <ul type="text" id="admin" name="admin">
-              {%for admin in administratori%}
-              <li value="{{admin}}">{{admin}}</li>
-              {%endfor%}
-              {%endif%}
-            </ul>
-          </div>
-
-          <!-- OBRAZAC ZA REGISTRACIJU -->
-          <div class="container mb-5">
-            <div class="text-uppercase text-left mb-1">
-              <div style="padding-bottom: 3px;" id="titleDiv">
-                <div>
-                  <h4 style="display: inline;" id="myTitle">Upravljanje obrascem za registraciju</h4>
-                </div>
-              </div>
-              <hr>
-            </div>
-
-            <p class="left text-muted mt-3 mb-0">Ovdje možete definirati novo polje za registracijski obrazac. </p>
-            <br>
-
-            <div class="row">
-              <div class="col-sm">
-                <div style="padding-bottom: 5px;" id="UserNameDiv">
-                  <form action="/adminsucelje" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-
-                    <div class="form-outline mb-2">
-                      <label class="fs-6 fw-bold for=">Naziv novog polja za obrazac:</label>
-                    </div>
-
-                    <div class="col-md-6 mb-2">
-                      <input type="text" name="fieldName" id="fieldName" class="form-control form-control-lg" required>
-                    </div>
-
-                    <div class="form-outline mb-2">
-                      <label class="fs-6 fw-bold for=">Odaberite tip podatka novog polja:</label>
-                    </div>
-
-                    <div>
-                      <ul class="fs-6 buttons">
-                        <li class="fs-6"><input type="radio" name="fieldType" id="text" value="text" checked="checked">
-                          običan tekst</li>
-                        <li class="fs-6"><input type="radio" name="fieldType" id="date" value="date"> datum</li>
-                        <li class="fs-6"><input type="radio" name="fieldType" id="number" value="number"> broj
-                        </li>
-                      </ul>
-                    </div>
-
-                    <br>
-
-                    <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                      <button type="submit" class="btn btn-primary btn-md" name='AddNewField' value="Update"
-                        style="grid-column: 2;">Dodaj novo polje</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
-            {%if DodatnaPolja%}
-            <hr>
-            <div class="mt-4">
-              <div class="text-left mb-2">
-                <h5>Aktivna polja</h5>
-              </div>
-              <form action="/adminsucelje" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <p class="text-left text-muted mt-2 mb-0">Odaberite polja koja želite uključiti u obrazac za
-                  registraciju.</p>
-                <div class="active-fields-container">
-                  <div class="text-center text-muted mt-2 mb-0">Naziv polja</div>
-                  <div class="text-center text-muted mt-2 mb-0">Tip polja</div>
-                  <div class="text-center text-muted mt-2 mb-0">Je li polje u obrascu?</div>
-                  <div class="text-center text-muted mt-2 mb-0">Je li polje obavezno?</div>
-                </div>
-
-                <div class="active-fields-container">
-                  <hr style="width: 40%; height: 0.05rem;">
-                  <hr style="width: 40%; height: 0.05rem; text-align: center;">
-                  <hr style="width: 40%; height: 0.05rem;">
-                  <hr style="width: 40%; height: 0.05rem;">
-                </div>
-
-                <div class="container-of-containers">
-                  {%for polje in DodatnaPolja%}
-                  <div class="active-fields-container">
-                    <div class="labels mb-0">
-                      <label class="fs-6" for="{{polje.imePolja}}">{{polje.imePolja}}
-                    </div>
-
-                    <div class="labels mb-0">
-                      {%if polje.tipPolja.naziv == "text"%}
-                      <label class="fs-6" for="{{polje.imePolja}}"><i>obični tekst</i>
-                        {%elif polje.tipPolja.naziv == "date"%}
-                        <label class="fs-6" for="{{polje.imePolja}}"><i>datum</i>
-                          {%elif polje.tipPolja.naziv == "number"%}
-                          <label class="fs-6" for="{{polje.imePolja}}"><i>broj</i>
-                            {%endif%}
-                    </div>
-
-                    <div class="checkboxes mb-0">
-                      <input type="checkbox" name="{{polje.imePolja}}" id="{{polje.imePolja}}"
-                        {%if polje.active == True%} checked {%endif%}>
-                    </div>
-                    <div class="checkboxes mb-0">
-                      <input type="checkbox" name="{{polje.imePolja}}1" id="{{polje.imePolja}}1"
-                        {%if polje.obavezan == True%} checked {%endif%}>
-                    </div>
-                  </div>
-                  {%endfor%}
-                </div>
-                <br>
-                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                  <button type="submit" class="btn btn-primary btn-md" name='ActiveFields' value="Update"
-                    style="grid-column: 2;">Ažuriraj obrazac</button>
-                </div>
-              </form>
-            </div>
-            {%endif%}
-          </div>
-          <!-- OBRAZAC ZA REGISTRACIJU -->
-
-          <!-- SEKCIJE NA KONFERENCIJI -->
-          <div class="container">
-            <div class="text-uppercase text-left mb-1">
-              <div style="padding-bottom: 3px;" id="titleDiv">
-                <div>
-                  <br>
-                  <br>
-                  <h4 style="display: inline;" id="myTitle">Upravljanje sekcijama</h4>
-                </div>
-              </div>
-              <hr>
-            </div>
-
-            <div class="container">
-              <div class="row justify-content-between">
-
-                <div class="col col-md-8 mb-4">
-                  <div class="form-outline fs-5">
-                    <label class="fs-6 fw-bold" for="">Unesite naziv nove sekcije na konferenciji:</label>
-                  </div>
-                  <form action="/adminsucelje" method="post" id='NewSection' enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="col-md-6 mb-4">
-                      <input type="text" name="SectionName" id="SectionName" class="form-control form-control-lg"
-                        required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-md" name='AddNewSection' value="Update"
-                      style="grid-column: 1;">Dodaj novu sekciju</button>
-                  </form>
-                </div>
-
-                <div class="col col-md-4">
-                  <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Postojeće sekcije</div>
-                  {%if sekcije%}
-                  <ul type="text" id="section" name="section">
-                    {%for sekcija in sekcije%}
-                    <li value="{{sekcija.naziv}}">{{sekcija.naziv}}</li>
-                    {%endfor%}
-                  </ul>
-                  {% else %}
-                  <div class="fs-6 fw-bold"> Još niste unijeli ni jednu sekciju na konferenciji.</div>
-                  {% endif %}
-                </div>
-
-              </div>
-            </div>
-          </div>
-          <!-- SEKCIJE NA KONFERENCIJI -->
-
         </div>
+
+        <div class="container mb-5">
+          <div class="text-uppercase text-left mb-2">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+
+                <h4 style="display: inline;" id="myTitle">Upravljanje administratorima</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div class="text-left fw-bold mb-1" id='Label'>Trenutno aktivni administratori:</div>
+          {%if administratori%}
+
+          <ul type="text" id="admin" name="admin">
+            {%for admin in administratori%}
+            <li value="{{admin}}">{{admin}}</li>
+            {%endfor%}
+            {%endif%}
+          </ul>
+        </div>
+
+        <!-- OBRAZAC ZA REGISTRACIJU -->
+        <div class="container mb-5">
+          <div class="text-uppercase text-left mb-1">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <h4 style="display: inline;" id="myTitle">Upravljanje obrascem za registraciju</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <p class="left text-muted mt-3 mb-0">Ovdje možete definirati novo polje za registracijski obrazac. </p>
+          <br>
+
+          <div class="row">
+            <div class="col-sm">
+              <div style="padding-bottom: 5px;" id="UserNameDiv">
+                <form action="/adminsucelje" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <div class="form-outline mb-2">
+                    <label class="fs-6 fw-bold for=">Naziv novog polja za obrazac:</label>
+                  </div>
+
+                  <div class="col-md-6 mb-2">
+                    <input type="text" name="fieldName" id="fieldName" class="form-control form-control-lg" required>
+                  </div>
+
+                  <div class="form-outline mb-2">
+                    <label class="fs-6 fw-bold for=">Odaberite tip podatka novog polja:</label>
+                  </div>
+
+                  <div>
+                    <ul class="fs-6 buttons">
+                      <li class="fs-6"><input type="radio" name="fieldType" id="text" value="text" checked="checked">
+                        običan tekst</li>
+                      <li class="fs-6"><input type="radio" name="fieldType" id="date" value="date"> datum</li>
+                      <li class="fs-6"><input type="radio" name="fieldType" id="number" value="number"> broj
+                      </li>
+                    </ul>
+                  </div>
+
+                  <br>
+
+                  <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                    <button type="submit" class="btn btn-primary btn-md" name='AddNewField' value="Update"
+                      style="grid-column: 2;">Dodaj novo polje</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
+          {%if DodatnaPolja%}
+          <hr>
+          <div class="mt-4">
+            <div class="text-left mb-2">
+              <h5>Aktivna polja</h5>
+            </div>
+            <form action="/adminsucelje" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <p class="text-left text-muted mt-2 mb-0">Odaberite polja koja želite uključiti u obrazac za
+                registraciju.</p>
+              <div class="active-fields-container">
+                <div class="text-center text-muted mt-2 mb-0">Naziv polja</div>
+                <div class="text-center text-muted mt-2 mb-0">Tip polja</div>
+                <div class="text-center text-muted mt-2 mb-0">Je li polje u obrascu?</div>
+                <div class="text-center text-muted mt-2 mb-0">Je li polje obavezno?</div>
+              </div>
+
+              <div class="active-fields-container">
+                <hr style="width: 40%; height: 0.05rem;">
+                <hr style="width: 40%; height: 0.05rem; text-align: center;">
+                <hr style="width: 40%; height: 0.05rem;">
+                <hr style="width: 40%; height: 0.05rem;">
+              </div>
+
+              <div class="container-of-containers">
+                {%for polje in DodatnaPolja%}
+                <div class="active-fields-container">
+                  <div class="labels mb-0">
+                    <label class="fs-6" for="{{polje.imePolja}}">{{polje.imePolja}}
+                  </div>
+
+                  <div class="labels mb-0">
+                    {%if polje.tipPolja.naziv == "text"%}
+                    <label class="fs-6" for="{{polje.imePolja}}"><i>obični tekst</i>
+                      {%elif polje.tipPolja.naziv == "date"%}
+                      <label class="fs-6" for="{{polje.imePolja}}"><i>datum</i>
+                        {%elif polje.tipPolja.naziv == "number"%}
+                        <label class="fs-6" for="{{polje.imePolja}}"><i>broj</i>
+                          {%endif%}
+                  </div>
+
+                  <div class="checkboxes mb-0">
+                    <input type="checkbox" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.active == True%}
+                      checked {%endif%}>
+                  </div>
+                  <div class="checkboxes mb-0">
+                    <input type="checkbox" name="{{polje.imePolja}}1" id="{{polje.imePolja}}1"
+                      {%if polje.obavezan == True%} checked {%endif%}>
+                  </div>
+                </div>
+                {%endfor%}
+              </div>
+              <br>
+              <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                <button type="submit" class="btn btn-primary btn-md" name='ActiveFields' value="Update"
+                  style="grid-column: 2;">Ažuriraj obrazac</button>
+              </div>
+            </form>
+          </div>
+          {%endif%}
+        </div>
+        <!-- OBRAZAC ZA REGISTRACIJU -->
+
+        <!-- SEKCIJE NA KONFERENCIJI -->
+        <div class="container">
+          <div class="text-uppercase text-left mb-1">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <br>
+                <br>
+                <h4 style="display: inline;" id="myTitle">Upravljanje sekcijama</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div class="container">
+            <div class="row justify-content-between">
+
+              <div class="col col-md-8 mb-4">
+                <div class="form-outline fs-5">
+                  <label class="fs-6 fw-bold" for="">Unesite naziv nove sekcije na konferenciji:</label>
+                </div>
+                <form action="/adminsucelje" method="post" id='NewSection' enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="col-md-6 mb-4">
+                    <input type="text" name="SectionName" id="SectionName" class="form-control form-control-lg"
+                      required>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-md" name='AddNewSection' value="Update"
+                    style="grid-column: 1;">Dodaj novu sekciju</button>
+                </form>
+              </div>
+
+              <div class="col col-md-4">
+                <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Postojeće sekcije</div>
+                {%if sekcije%}
+                <ul type="text" id="section" name="section">
+                  {%for sekcija in sekcije%}
+                  <li value="{{sekcija.naziv}}">{{sekcija.naziv}}</li>
+                  {%endfor%}
+                </ul>
+                {% else %}
+                <div class="fs-6 fw-bold"> Još niste unijeli ni jednu sekciju na konferenciji.</div>
+                {% endif %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- SEKCIJE NA KONFERENCIJI -->
+
       </div>
     </div>
+  </div>
 
   </div>
 

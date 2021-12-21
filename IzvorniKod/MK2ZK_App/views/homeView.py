@@ -290,7 +290,7 @@ def info(request):
   
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
-        
+
     #konferencija je u bazi
     konferencija=models.Konferencija.objects.first()
     if konferencija:
@@ -301,7 +301,6 @@ def info(request):
         context['datum']=datum
         context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y.'))
         context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
-        context['rokAdmin']=dateformat.format(konferencija.rokAdmin, formats.get_format('d.m.Y.'))
         context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('d.m.Y.'))
         context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('d.m.Y.'))
     
@@ -311,10 +310,6 @@ def info(request):
     if models.Korisnik.objects.filter(vrstaKorisnik = 2).exists():
         predsjedavajuci = models.Korisnik.objects.get(vrstaKorisnik = 2)
         context[predsjedavajuci] = predsjedavajuci
-
-
-    
-
     
     print(context)
     return render(request, 'Info.html', context)

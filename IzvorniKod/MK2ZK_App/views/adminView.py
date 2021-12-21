@@ -91,7 +91,7 @@ def adminsucelje(request):
     
     
     if request.method == "POST":
-        if 'nazivKonferencije' in request.POST:
+        if 'nazivKonferencije' in request.POST: #podaci o konferenciji
             konferencija=models.Konferencija.objects.get(sifKonferencija=1)
 
             konferencija.nazivKonferencije = request.POST["nazivKonferencije"]
@@ -107,37 +107,34 @@ def adminsucelje(request):
             messages.success(request, "Podaci o konferenciji su uspješno ažurirani!")
             return redirect('adminsucelje')
       
-        if 'NewUserName' in request.POST:
-            Username = request.POST['Username']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            Predsjedavajuci.korisnickoIme = Username
-            try:
-                Predsjedavajuci.save()
-            except IntegrityError:
-                messages.error(request, "To korisnicko ime je vec u uporabi")
-                return redirect('adminsucelje')
+        if 'username' in request.POST: #podaci o predsjedavajucem
+            predsjedavajuci = models.Korisnik.objects.get(id = 4) #HARDKODIRAN PREDSJEDAVAJUCI ID
+            username = request.POST["username"]
+            ime = request.POST["ime"]
+            prezime = request.POST["prezime"]
+            email = request.POST["email"]
 
-        if 'NewFName' in request.POST:
-            Fname = request.POST['Fname']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            Predsjedavajuci.ime = Fname
-            Predsjedavajuci.save()
+            #Provjeri jesu li sva polja u redu prije spremanja u bazu
+            #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni predsjedavajuci
+            if models.Korisnik.objects.filter(korisnickoIme = username).exclude(id = 4).exists(): #HARDKODIRAN PREDSJEDAVAJUCI ID
+                messages.error(request, "Korisničko ime je zauzeto")
+                return redirect('osobnipodaci')
+            
+            #email - pogledaj postoji li netko s istim emailom, a da nije trenutni predsjedavajuci
+            if models.Korisnik.objects.filter(email = email).exclude(id = 4).exists(): #HARDKODIRAN PREDSJEDAVAJUCI ID
+                messages.error(request, "E-mail adresa je zauzeta")
+                return redirect('osobnipodaci')
 
-        if 'NewLName' in request.POST:
-            Lname = request.POST['Lname']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            Predsjedavajuci.prezime = Lname
-            Predsjedavajuci.save()
+            #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
+            predsjedavajuci.korisnickoIme = username
+            predsjedavajuci.ime = ime
+            predsjedavajuci.prezime = prezime
+            predsjedavajuci.email = email
 
-        if 'NewEmail' in request.POST:
-            email = request.POST['email']
-            Predsjedavajuci=models.Korisnik.objects.get(id=4)
-            Predsjedavajuci.email = email
-            try:
-                Predsjedavajuci.save()
-            except IntegrityError:
-                messages.error(request, "Ta email adresa je vec u uporabi")
-                return redirect('adminsucelje')
+            predsjedavajuci.save()
+            messages.success(request, "Podaci o predsjedavajućem uspješno promijenjeni")
+            return redirect('adminsucelje')
+            
         if "makePublic" in request.POST:
             konferencija=models.Konferencija.objects.get(sifKonferencija=1)
             if konferencija.javniRadoviBool==True:
