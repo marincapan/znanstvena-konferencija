@@ -76,10 +76,6 @@ def sloziobrazac(request):
     return render(request, 'SloziObrazac.html', context)
 
 def adminsucelje(request):
-    if 'randPassword' in request.session:
-        del request.session['randPassword']
-    #Password se pokazuje jedanput i vise nikad.
-    
     radovi = models.Rad.objects.all()
     sekcije = models.Sekcija.objects.all()
     korisnici = models.Korisnik.objects.all()
@@ -264,9 +260,9 @@ def adminsucelje(request):
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
             Predsjedavajuci=models.Korisnik.objects.filter(id=4).first()
-            Administratori = models.Korisnik.objects.filter(id = 1) #znamo da je bar 1
-
+            Administratori = models.Korisnik.objects.filter(vrstaKorisnik_id = 1) #znamo da je bar 1
             context["AdministratoriPopis"] = Administratori
+            
             print(context)
             if (Predsjedavajuci):
                 context['korisnickoIme']=Predsjedavajuci.korisnickoIme
