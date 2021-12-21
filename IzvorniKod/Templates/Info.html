@@ -28,69 +28,164 @@
 
   <div class="gradient-custom-3 " style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
+
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
 
+
           <div class="text-uppercase text-center mb-2">
-            <div style="padding-bottom: 9px;" id="titleDiv">
+            <div style="padding-bottom: 9px;">
               <div>
-                <h2 style="display: inline;" id="myTitle">O konferenciji</h2>
+                <h2 style="display: inline;">O konferenciji</h2>
               </div>
             </div>
             <hr>
           </div>
 
-          <div class="container">
-            <div class="row">
-              <div class="row">
-                <div class="col">
-                  <div>
-                    <b>Naziv:</b> {{konferencijaNaziv}}
-                  </div>
-                </div>
-                <div class="col">
-                  <div>
-                    <b>Datum održavanja:</b> {{datum}}
-                  </div>
-                </div>
-              </div>
-              <div class="row mt-2">
-                <div class="col">
-                  {{opis}}
-                </div>
-              </div>
-            </div>
+          <div class="container" id="infoId">
+            Sadržaj koji admin može mijenjati
+          </div>
+
+          {% if LoggedInUser %}
+            {%if LoggedInUserRole == "Admin" %}
             <hr>
-            <div class="row">
-              <div class="col">
-                <div>
-                  <div>
-                    <b>Početak prijava:</b> {{rokPocPrijava}}
+              <button class="btn btn-primary" onclick="OpenPopup()">Uredi</button>
+            {%endif%}
+          {%endif%}
+
+        </div>
+      </div>
+
+      <div class="div-with-timeline">
+        <div class="timeline">
+
+          <div class="timeline-container timeline-left">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{rokPocPrijava}}</h2>
+                    </div>
                   </div>
+                  <hr>
                 </div>
-                <div>
-                  <div>
-                    <b>Rok za predaju prijava:</b> {{rokPrijave}}
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div>
-                  <div>
-                    <b>Početak recenziranja radova:</b> {{rokPocRecenzija}}
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <b>Rok za recenziranje radova:</b> {{rokRecenzenti}}
-                  </div>
-                </div>
+      
+                <div class="container" style="text-align: center;"><h5>Početak prijava</h5></div>
               </div>
             </div>
           </div>
-        </div>
+  
+          <div class="timeline-container timeline-right">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{rokPrijave}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+                
+                <div class="container" style="text-align: center;"><h5>Rok za prijavu i predaju radova</h5></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="timeline-container timeline-left">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{rokPocRecenzija}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+      
+                <div class="container" style="text-align: center;"><h5>Početak recenziranja radova</h5></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-container timeline-right">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{rokRecenzenti}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+                
+                <div class="container" style="text-align: center;"><h5>Rok za recenziranje radova</h5></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-container timeline-left">
+            <div class="card" style="border-radius: 15px; border-color: #1c3a9c; border-width: 0.5rem;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{datum}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+      
+                <div class="container" style="text-align: center;"><h5>Konferencija</h5></div>
+              </div>
+            </div>
+          </div>
+  
+        </div> 
       </div>
+
+      <div id="update-card">
+        <div class="popup-screen">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+
+              <div class="text-uppercase text-center mb-2">
+                <div style="padding-bottom: 9px;">
+                  <div>
+                    <h2 style="display: inline;">Promijeni sadržaj</h2>
+                  </div>
+                </div>
+                <hr>
+              </div>
+        
+              <div class="container">
+                Ovdje prepravite sadržaj:
+                <form action="POST">
+                  <textarea type="text" class="form-control" id="editedText" name="editedText"></textarea>
+                </form>
+  
+              <div class="container btn-container">
+                <button class="btn btn-primary" onclick="UpdateContent()">Prihvati</button>
+                <button class="btn btn-outline-secondary" onclick="ClosePopup()">Odbaci</button>
+              </div>
+        
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
     </div>
+  </div>
+
   </div>
 
 
@@ -101,6 +196,10 @@
 
 
 </body>
+
+
+
+
 <!--nas js-->
 <script src="{% static '/js/hamburgerActions.js' %}"></script>
 <script src="{% static '/js/updateInfo.js' %}"></script>
