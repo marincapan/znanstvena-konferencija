@@ -15,7 +15,11 @@ from django.core import serializers
 from django.utils import (dateformat, formats)
 import zipfile
 import os
-
+import requests
+from bs4 import BeautifulSoup
+import time
+import csv
+from datetime import date
 
 def sloziobrazac(request):
     context={}
@@ -234,3 +238,20 @@ def adminsucelje(request):
     context["brojPredanihRadova"] = brojPredanihRadova
 
     return render(request, 'AdminSucelje.html', context)
+def covidstats(request):
+    context = {}
+    url = "https://covid19.who.int/WHO-COVID-19-global-data.csv"
+    response = requests.get(url)
+    bytes=response.content
+    data=bytes.decode('UTF-8')
+    data=data.split("\n")
+    fetchUstanove = models.Ustanova.objects.all()
+    svedrzave=[]
+    for row in data:
+        date=row.split(",") #0 - Date_reported,1 - Country_code,2 - Country,3 - WHO_region,4 - New_cases,5 - Cumulative_cases,6 - New_deaths, 7- Cumulative_deaths
+        #for ustanova in fetchUstanove: #Ovo od komentirati kad imamo u bazi drzave na engleskom
+        #if ustanova.drzava in date:
+        if date[0]!="": #Kraj
+            context[str(date[2]) + "newCases"]=date[4] # npr za hrvatsku u kontext ide pod imenom "CroatianewCases"
+        
+    return render(request, 'covidStats.html', context)
