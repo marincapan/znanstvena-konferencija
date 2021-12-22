@@ -84,7 +84,11 @@
 
                             <div class="form-outline mb-4">
                               <label class="form-label" for="">Država matične ustanove</label>
-                              <input type="text" id="matustDrz" name="matustDrz" class="form-control form-control-lg" required/>
+                              <select name="matustDrz" id="matustDrz" class="form-control form-control-lg" required>
+                                {%for drzava in Drzave%}
+                                  <option value="{{drzava}}" class="form-control form-control-lg">{{drzava}}</option>
+                                {%endfor%}
+                              </select>
                             </div>
 
                             {%if DodatnaPolja%}<!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
