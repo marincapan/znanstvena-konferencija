@@ -423,7 +423,7 @@
         <!-- OBRAZAC ZA REGISTRACIJU -->
 
         <!-- SEKCIJE NA KONFERENCIJI -->
-        <div class="container">
+        <div class="container mb-5">
           <div class="text-uppercase text-left mb-1">
             <div style="padding-bottom: 3px;" id="titleDiv">
               <div>
@@ -470,6 +470,163 @@
           </div>
         </div>
         <!-- SEKCIJE NA KONFERENCIJI -->
+
+
+        <!-- UREĐIVANJE NASLOVNE -->
+        <div class="container mb-5">
+          <div class="text-uppercase text-left mb-1">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <h4 style="display: inline;" id="myTitle">Uređivanje naslovne stranice</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <p class="left text-muted mt-3 mb-0">Ovdje možete dodavati članke za naslovnu stranicu. </p>
+          <br>
+
+          <div class="row">
+            <div class="col-sm">
+              <div style="padding-bottom: 5px;" id="">
+                <form action="/adminsucelje" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="mb-3" id="">
+                        <label for="clanakNaslov" class="form-label fw-bold">Unesite naslov članka:</label>
+                        <input type="text" class="form-control" id="clanakTitle" name="clanakTitle"
+                          value="" required>
+                      </div>
+                      <div class="mb-3" id="">
+                        <label for="clanakSadrzaj" class="form-label fw-bold">Unesite tekst članka:</label>
+                        <textarea class="form-control" rows="3" id="clanakText" name="clanakText"
+                          required></textarea>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <br>
+
+                  <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                    <button type="submit" class="btn btn-primary btn-md" name='AddArticle' value="Update"
+                      style="grid-column: 2;">Dodaj članak</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+          <!--ako postoje clanci, prikazi ih -->
+
+          {%if Clanci%}
+          <hr>
+          <div class="mt-4">
+            <div class="text-left mb-2">
+              <h5>Prikazani članci</h5>
+            </div>
+            <form action="/adminsucelje" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <p class="text-left text-muted mt-2 mb-0">Odaberite članke koje želite prikazati na naslovnoj stranici.</p>
+              <div class="active-fields-container">
+                <div class="text-center text-muted mt-2 mb-0">Naslov članka</div>
+                <div class="text-center text-muted mt-2 mb-0">Autor članka</div>
+                <div class="text-center text-muted mt-2 mb-0">Prikazuje li se članak?</div>
+              </div>
+
+              <div class="active-fields-container">
+                <hr style="width: 40%; height: 0.05rem;">
+                <hr style="width: 40%; height: 0.05rem; text-align: center;">
+                <hr style="width: 40%; height: 0.05rem;">
+              </div>
+
+              <div class="container-of-containers">
+                {%for clanak in Clanci%}
+                <div class="active-fields-container">
+
+                  <div class="labels mb-0">
+                    <label class="fs-6" for="{{clanak.naslov}}">{{clanak.naslov}}
+                  </div>
+
+                  <div class="labels mb-0">
+                    <label class="fs-6" for="{{clanak.autor.ime}}">{{clanak.autor.ime}}
+                  </div>
+                  
+                  <div class="checkboxes mb-0">
+                    <input type="checkbox" name="{{clanak.naslov}}" id="{{clanak.naslov}}" {%if clanak.active == True%}
+                      checked {%endif%}>
+                  </div>
+
+                </div>
+                {%endfor%}
+              </div>
+              <br>
+              <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                <button type="submit" class="btn btn-primary btn-md" name='ActiveArticles' value="Update"
+                  style="grid-column: 2;">Ažuriraj naslovnicu</button>
+              </div>
+            </form>
+          </div>
+          {%endif%}
+
+
+        </div>
+        <!-- UREĐIVANJE NASLOVNE -->
+
+        <!-- UREĐIVANJE INFO STRANICE -->
+        <div class="container mb-5">
+          <div class="text-uppercase text-left mb-1">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <h4 style="display: inline;" id="myTitle">Uređivanje info stranice</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <p class="left text-muted mt-3 mb-0">Ovdje možete uređivati naslov i sadržaj stranice <i>O konferenciji</i>.</p>
+          <br>
+
+          <div class="row">
+            <div class="col-sm">
+              <div style="padding-bottom: 5px;" id="">
+                <form action="/adminsucelje" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="mb-3" id="">
+                        <label for="clanakNaslov" class="form-label fw-bold">Naslov:</label>
+                        <input type="text" class="form-control" id="infoTitle" name="infoTitle"
+                          value="{{info.naslov}}" required>
+                      </div>
+                      <div class="mb-3" id="">
+                        <label for="clanakSadrzaj" class="form-label fw-bold">Sadržaj:</label>
+                        <textarea class="form-control" rows="3" id="infoText" name="infoText"
+                          required>{{info.tekst}}</textarea>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <br>
+
+                  <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                    <button type="submit" class="btn btn-primary btn-md" name='EditInfo' value="Update"
+                      style="grid-column: 2;">Ažuriraj info stranicu</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <!-- UREĐIVANJE INFO STRANICE -->
 
       </div>
     </div>

@@ -47,6 +47,11 @@ def home(request):
         konferencija.rokPrijave1 = dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y.')) #dodati ovisno što će nam trebati na naslovnici
         konferencija.rokRecenzenti1 = dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
         context["infoKonferencija"] = konferencija #trebat ce mozda za countdown ili neke druge podatke stavit na naslovnicu
+        
+    ##clanci
+    fetchedClanci = models.Clanak.objects.filter(active=True)
+    context['Clanci'] = fetchedClanci
+    
     print(context)
     return render(request, 'Index.html',context)
 
@@ -310,6 +315,10 @@ def info(request):
     if models.Korisnik.objects.filter(vrstaKorisnik = 2).exists():
         predsjedavajuci = models.Korisnik.objects.get(vrstaKorisnik = 2)
         context[predsjedavajuci] = predsjedavajuci
+    
+    info = models.Info.objects.first()
+    if info:
+        context['info'] = info
     
     print(context)
     return render(request, 'Info.html', context)
