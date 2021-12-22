@@ -263,6 +263,7 @@ def adminsucelje(request):
             messages.success(request, "Uspješno dodan novi članak")
             return redirect('adminsucelje')
 
+        ## Odabir aktivnih članaka
         if "ActiveArticles" in request.POST:
             for clanak in fetchedClanci:
                 try:
@@ -274,19 +275,17 @@ def adminsucelje(request):
                 clanak.save()
             return redirect('adminsucelje')
 
+        ## Uređivanje info o konferenciji
         if "EditInfo" in request.POST:
             InfoTitle = request.POST['infoTitle']
             InfoText = request.POST['infoText']
-            try:
-                infoObject = models.Info.objects.get(id = 1)
-                infoObject.naslov = InfoTitle
-                infoObject.tekst = InfoText
-                infoObject.autor = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])
-            except:
-                infoObject = models.Info(naslov=InfoTitle, tekst=InfoText, 
-                        autor=models.Korisnik.objects.get(id = request.session['LoggedInUserId']),
-                        konferencija=models.Konferencija.objects.get(sifKonferencija = 1)) 
-                        #HARDKODIRANO sifKonferencija = 1 jer se ne sprema kontekst konferencije u session (ako se ne varam)
+
+            infoObject = models.Info.objects.get(id = 1)
+            infoObject.naslov = InfoTitle
+            infoObject.tekst = InfoText
+            infoObject.autor = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])
+            
+            #HARDKODIRANO sifKonferencija = 1 jer se ne sprema kontekst konferencije u session (ako se ne varam)
             
             infoObject.save()
             context['info'] = info

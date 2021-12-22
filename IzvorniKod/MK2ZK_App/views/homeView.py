@@ -317,8 +317,7 @@ def info(request):
         context[predsjedavajuci] = predsjedavajuci
     
     info = models.Info.objects.first()
-    if info:
-        context['info'] = info
+    context['info'] = info
     
     print(context)
     return render(request, 'Info.html', context)
