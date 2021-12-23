@@ -36,22 +36,21 @@
           <div class="text-uppercase text-center mb-2">
             <div style="padding-bottom: 9px;">
               <div>
-                <h2 style="display: inline;">O konferenciji</h2>
+                <h2 style="display: inline;">{{info.naslov}}</h2>
               </div>
             </div>
             <hr>
           </div>
 
-          <div class="container" id="infoId">
-            Sadržaj koji admin može mijenjati
+          <div class="container">
+            {{info.tekst}}
           </div>
 
-          {% if LoggedInUser %}
-            {%if LoggedInUserRole == "Admin" %}
-            <hr>
-              <button class="btn btn-primary" onclick="OpenPopup()">Uredi</button>
-            {%endif%}
-          {%endif%}
+          
+
+          <hr>
+          <div class="text-muted"><i> {{info.autor.ime}}</i></div>
+
 
         </div>
       </div>
@@ -152,38 +151,6 @@
         </div> 
       </div>
 
-      <div id="update-card">
-        <div class="popup-screen">
-          <div class="card" style="border-radius: 15px;">
-            <div class="card-body p-5">
-
-              <div class="text-uppercase text-center mb-2">
-                <div style="padding-bottom: 9px;">
-                  <div>
-                    <h2 style="display: inline;">Promijeni sadržaj</h2>
-                  </div>
-                </div>
-                <hr>
-              </div>
-        
-              <div class="container">
-                Ovdje prepravite sadržaj:
-                <form action="POST">
-                  <textarea type="text" class="form-control" id="editedText" name="editedText"></textarea>
-                </form>
-  
-              <div class="container btn-container">
-                <button class="btn btn-primary" onclick="UpdateContent()">Prihvati</button>
-                <button class="btn btn-outline-secondary" onclick="ClosePopup()">Odbaci</button>
-              </div>
-        
-            </div>
-          </div>
-        </div>
-        
-      </div>
-
-    </div>
   </div>
 
   </div>
@@ -202,7 +169,6 @@
 
 <!--nas js-->
 <script src="{% static '/js/hamburgerActions.js' %}"></script>
-<script src="{% static '/js/updateInfo.js' %}"></script>
 <!--nas js-->
 
 </html>

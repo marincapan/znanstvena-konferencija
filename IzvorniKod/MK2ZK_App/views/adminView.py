@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import date, datetime
+from enum import auto
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
@@ -98,6 +99,11 @@ def adminsucelje(request):
     context["brojPredanihRadova"] = brojPredanihRadova
 
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
+    fetchedClanci = models.Clanak.objects.filter().all()
+
+    info = models.Info.objects.get(id = 1)
+    context['info'] = info
+    print("MOJ INFO:",info)
 
     for polje in fetchedPolja:
         print(polje.imePolja)
@@ -241,15 +247,60 @@ def adminsucelje(request):
                 messages.error(request, "Korisnicko ime ili email je vec u uporabi")
                 return redirect('adminsucelje')
 
+        ### Dodavanje novog članka
+        if "AddArticle" in request.POST:
+            ArticleTitle = request.POST['clanakTitle']
+            ArticleText = request.POST['clanakText']
+
+            if models.Clanak.objects.filter(naslov = ArticleTitle).exists():
+                messages.error(request, "Već postoji članak s ovim naslovom")
+                return redirect('adminsucelje')
+
+            newArticle = models.Clanak(naslov=ArticleTitle, tekst=ArticleText, autor=models.Korisnik.objects.get(id = request.session['LoggedInUserId']))
+            newArticle.save()
+            context['Clanci'] = fetchedClanci
+            messages.success(request, "Uspješno dodan novi članak")
+            return redirect('adminsucelje')
+
+        ## Odabir aktivnih članaka
+        if "ActiveArticles" in request.POST:
+            for clanak in fetchedClanci:
+                try:
+                    checked = request.POST[clanak.naslov]
+                    checked = True
+                except:
+                    checked = False
+                clanak.active = checked
+                clanak.save()
+            return redirect('adminsucelje')
+
+        ## Uređivanje info o konferenciji
+        if "EditInfo" in request.POST:
+            InfoTitle = request.POST['infoTitle']
+            InfoText = request.POST['infoText']
+
+            infoObject = models.Info.objects.get(id = 1)
+            infoObject.naslov = InfoTitle
+            infoObject.tekst = InfoText
+            infoObject.autor = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])
             
+            #HARDKODIRANO sifKonferencija = 1 jer se ne sprema kontekst konferencije u session (ako se ne varam)
+            
+            infoObject.save()
+            context['info'] = info
+            messages.success(request, "Uspješno ažurirane informacije o konferenciji")
+            return redirect('adminsucelje')
 
             
                 
         context['DodatnaPolja']=fetchedPolja
+        context['Clanci'] = fetchedClanci
              
         return redirect('adminsucelje')
 
+
     context['DodatnaPolja']=fetchedPolja
+    context['Clanci'] = fetchedClanci
     
     if "LoggedInUserId" in request.session: #ulogirani smo
         context["LoggedInUser"]=request.session['LoggedInUserId']
@@ -311,6 +362,7 @@ def adminsucelje(request):
     context["brojPredanihRadova"] = brojPredanihRadova
 
     return render(request, 'AdminSucelje.html', context)
+
 def covidstats(request):
     context = {}
     url = "https://covid19.who.int/WHO-COVID-19-global-data.csv"

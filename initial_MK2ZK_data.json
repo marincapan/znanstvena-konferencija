@@ -232,6 +232,16 @@
         "fields":{
             "naziv":"number"
         }
+    },
+    {
+        "model":"MK2ZK_App.Info",
+        "id":1,
+        "fields": {
+            "naslov":"O konferenciji",
+            "tekst": "Tekst o konferenciji",
+            "autor":1,
+            "konferencija":1
+        }
     }
 
 ]

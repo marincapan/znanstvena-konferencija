@@ -47,6 +47,11 @@ def home(request):
         konferencija.rokPrijave1 = dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y.')) #dodati ovisno što će nam trebati na naslovnici
         konferencija.rokRecenzenti1 = dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
         context["infoKonferencija"] = konferencija #trebat ce mozda za countdown ili neke druge podatke stavit na naslovnicu
+        
+    ##clanci
+    fetchedClanci = models.Clanak.objects.filter(active=True)
+    context['Clanci'] = fetchedClanci
+    
     print(context)
     return render(request, 'Index.html',context)
 
@@ -63,7 +68,26 @@ def signup(request):
     # #!!
     # context['sekcije']=fetchedSekcije.exclude(naziv="Admin Sekcija") #dodao sam ovo kako bih mogao implementirati select za sekcije
     # ##
+
+    #za obradu drzave
+    ######
+    module_dir = os.path.dirname(__file__)  # get current directory
+    path1 = os.path.join(module_dir, '../static/txt/SveDrzave.txt')
+    path2 = os.path.join(module_dir, '../static/txt/SveDrzaveHR.txt')
+
+    file1 = open(path1, "r", encoding='utf-8')
+    file2 = open(path2, "r", encoding='utf-8')
+
+    drzaveEng = file1.read().replace("\"","\'")
+    drzaveHrv = file2.read().replace("\"","\'")
+
+    drzaveEngList = drzaveEng[1:len(drzaveEng)-2].split("',\n '")
+    drzaveHrvList = drzaveHrv[1:len(drzaveHrv)-2].split("',\n '")
+    context["Drzave"] = drzaveHrvList[1:]
+    ######
+
     print(context)
+
     if request.method == "POST":        
         username = request.POST['Username']
         fName = request.POST['Fname']
@@ -72,9 +96,18 @@ def signup(request):
         matustName = request.POST['matustName']
         matustAdr = request.POST['matustAdr']
         matustCity = request.POST['matustCity']
-        matustDrz = request.POST['matustDrz']
+        #matustDrz = request.POST['matustDrz']
         uloga = request.POST['uloga']
         section = request.POST['section']
+
+        #za obradu drzave
+        ######
+        matustDrz = ""
+        matustDrzHrv = request.POST['matustDrz']
+        for i in range(len(drzaveHrvList)):
+            if drzaveHrvList[i] == matustDrzHrv:
+                matustDrz = drzaveEngList[i]
+        ######
 
         #Ove ifove treba optimizirati!
         #Ako obradjujemo sudionika, imamo dodatne podatke i treba napraviti odredjene provjere
@@ -312,6 +345,9 @@ def info(request):
     if models.Korisnik.objects.filter(vrstaKorisnik = 2).exists():
         predsjedavajuci = models.Korisnik.objects.get(vrstaKorisnik = 2)
         context[predsjedavajuci] = predsjedavajuci
+    
+    info = models.Info.objects.first()
+    context['info'] = info
     
     print(context)
     return render(request, 'Info.html', context)

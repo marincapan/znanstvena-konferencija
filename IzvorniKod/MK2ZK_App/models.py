@@ -103,3 +103,17 @@ class DodatniPodatci(models.Model):
 class Ocjena(models.Model):
     id = models.AutoField(primary_key=True)
     znacenje = models.CharField(max_length=500)
+
+class Clanak(models.Model):
+    id = models.AutoField(primary_key=True)
+    naslov = models.CharField(max_length=100)
+    tekst = models.CharField(max_length=1000)
+    active = models.BooleanField(default=False)
+    autor = models.ForeignKey("Korisnik",on_delete=models.CASCADE)
+
+class Info(models.Model):
+    id = models.AutoField(primary_key=True)
+    naslov = models.CharField(max_length=100)
+    tekst = models.CharField(max_length=5000)
+    autor = models.ForeignKey("Korisnik", on_delete=models.CASCADE)
+    konferencija = models.ForeignKey("Konferencija", on_delete=CASCADE)
