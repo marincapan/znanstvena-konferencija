@@ -168,9 +168,9 @@
         "id":4,
         "fields":{
             "korisnickoIme":"predsjedavajuci",
-            "lozinka":"12345678",
-            "ime":"N/A",
-            "prezime":"N/A",
+            "lozinka":"predsjedavajuci",
+            "ime":"predsjedavajuci",
+            "prezime":"predsjedavajuci",
             "email":"predsjedavajuci@konferencija.hr",
             "odobrenBool": "True",
             "potvrdenBool": "True",
