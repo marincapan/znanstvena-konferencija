@@ -68,19 +68,23 @@
                       {%if rad.pdf == "" and prosoDatum == 0%}
                       <span class="badge bg-danger d-flex">Rad nije predan!</span>
                       {%elif rad.recenziranBool == 1%}
-                      {%for recenzija in fetchedRecenzije%}
-                      {%if recenzija.rad == rad %}
-                      {%if recenzija.ocjena_id == 4 %}
-                      <span class="badge bg-danger d-flex">Rad je odbijen!</span>
-                      {%elif recenzija.ocjena_id == 3 %}
-                      <span class="badge bg-danger d-flex">Rad zahtijeva promjene!</span>
-                      {%elif recenzija.ocjena_id == 2 %}
-                      <span class="badge bg-warning d-flex">Rad zahtijeva manje promjene</span>
-                      {%elif recenzija.ocjena_id == 1 %}
-                      <span class="badge bg-success d-flex">Rad je recenziran</span>
-                      {%endif%}
-                      {%endif%}
-                      {%endfor%}
+                        {%if rad.revizijaBool == 1%}
+                        <span class="badge bg-primary d-flex">Rad nije revidiran</span>
+                        {%else%}
+                          {%for recenzija in fetchedRecenzije%}
+                          {%if recenzija.rad == rad %}
+                          {%if recenzija.ocjena_id == 4 %}
+                          <span class="badge bg-danger d-flex">Rad je odbijen!</span>
+                          {%elif recenzija.ocjena_id == 3 %}
+                          <span class="badge bg-danger d-flex">Rad zahtijeva promjene!</span>
+                          {%elif recenzija.ocjena_id == 2 %}
+                          <span class="badge bg-warning d-flex">Rad zahtijeva manje promjene</span>
+                          {%elif recenzija.ocjena_id == 1 %}
+                          <span class="badge bg-success d-flex">Rad je recenziran</span>
+                          {%endif%}
+                          {%endif%}
+                          {%endfor%}
+                        {%endif%}
                       {%else%}
                       <span class="badge bg-primary d-flex">Rad nije recenziran</span>
                       {%endif%}
@@ -177,12 +181,14 @@
                                   </div>
                                 </div>
                                 <!-- align-self-start/center/end -->
+                                {%if rad.revizijaBool == 0 %}
                                 <div class="btn-group">
                                   <input class="form-control file1" type="file" name="uploadedFile"
                                     accept="application/pdf" required>
                                   <button type="submit" id="file1" class=" btn btn-outline-primary"
                                     name='PonovniUnosPdf' style="grid-column: 2;">Predaj</button>
                                 </div>
+                                {%endif%}
                               </div>
                             </form>
                           </div>

@@ -47,6 +47,7 @@
               {% endif %}
           </div>
 
+          <!-- OPĆENITO -->
           <div class="container mb-5">
             <div class="text-uppercase text-left mb-3">
               <div id="titleDiv">
@@ -60,8 +61,8 @@
             <div class="row">
               <div class="col-sm">
                 <ul>
+                  <!-- Javni pristup radovima -->
                   <li>
-                    <!-- Javni pristup radovima -->
                     <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Upravljanje javnim pristupom
                       radovima</div>
                     {%if LoggedInUserRole == 'Admin'%}
@@ -85,7 +86,16 @@
                       {% endif %}
                     </form>
                     {%endif%}
-                  </li> <!-- Javni pristup radovima -->
+                  </li>
+                  <!-- Javni pristup radovima -->
+
+                  <br>
+                  <!-- COVID-19 statistika -->
+                  <li>
+                    <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pregled COVID-19 statistike</div>
+                    <a href="covidstats"><button class="btn btn-danger" name=""> COVID-19 statistika</button></a>
+                  </li>
+                  <!-- COVID-19 statistika -->
                 </ul>
               </div>
 
@@ -110,7 +120,9 @@
               </div>
             </div>
           </div>
+          <!-- OPĆENITO -->
 
+          <!-- PODACI O KONFERENCIJI -->
           <div class="container mb-5">
             <div class="text-uppercase text-left mb-3">
               <div id="titleDiv">
@@ -176,7 +188,9 @@
               <a href="/adminsucelje" class="btn btn-outline-secondary">Odbaci</a>
             </form>
           </div>
+          <!-- PODACI O KONFERENCIJI -->
 
+          <!-- UPRAVLJANJE PODACIMA O PREDSJEDAVAJUĆEM -->
           <div class="container mb-5">
             <div class="text-uppercase text-left mb-3">
               <div style="padding-bottom: 3px;" id="titleDiv">
@@ -231,8 +245,9 @@
             </form>
 
           </div>
+          <!-- UPRAVLJANJE PODACIMA O PREDSJEDAVAJUĆEM -->
         
-
+        <!-- UPRAVLJANJE ADMINIMA -->
         <div class="container mb-5">
           <div class="text-uppercase text-left mb-2">
             <div style="padding-bottom: 3px;" id="titleDiv">
@@ -304,6 +319,7 @@
 
           
         </div>
+        <!-- UPRAVLJANJE ADMINIMA -->
 
         <!-- OBRAZAC ZA REGISTRACIJU -->
         <div class="container mb-5">

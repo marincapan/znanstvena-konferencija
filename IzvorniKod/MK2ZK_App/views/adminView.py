@@ -365,6 +365,20 @@ def adminsucelje(request):
 
 def covidstats(request):
     context = {}
+
+    if "LoggedInUserId" in request.session: #ulogirani smo
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    else: #nismo ulogirani
+        return redirect('signin')
+    
+    if "LoggedInUserRole" in request.session:
+        if request.session['LoggedInUserRole'] == "Admin":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin
+            messages.error(request,"Nemaš prava za ovu stranicu!")
+            return redirect('/') #redirect na homepage
+
+            
     url = "https://covid19.who.int/WHO-COVID-19-global-data.csv"
     response = requests.get(url)
     bytes=response.content
@@ -379,4 +393,4 @@ def covidstats(request):
         if date[0]!="": #Kraj
             context[str(date[2]) + "newCases"]=date[4] # npr za hrvatsku u kontext ide pod imenom "CroatianewCases"
         
-    return render(request, 'covidStats.html', context)
+    return render(request, 'CovidStats.html', context)
