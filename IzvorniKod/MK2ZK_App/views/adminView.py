@@ -16,13 +16,10 @@ from django.core import serializers
 from django.utils import (dateformat, formats)
 import zipfile
 import os
-<<<<<<< HEAD
 import requests
-from bs4 import BeautifulSoup
 import time
 import csv
 from datetime import date
-=======
 
 def increment_KorisnikID():
   last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
@@ -33,7 +30,6 @@ def increment_KorisnikID():
   new_korisnik_int = korisnik_int + 1
   new_korisnik_id =str(new_korisnik_int).zfill(4)
   return new_korisnik_id
->>>>>>> 34a3fd57c4f4c57a68dfacdb2cdd49823a3c57f1
 
 def sloziobrazac(request):
     context={}

@@ -229,46 +229,48 @@ def signup(request):
 def signin(request):
     context = {}
     if request.method == "POST":
-        Username = request.POST['Username']
-        pass1 = request.POST['pass1']
-        email = request.POST['email']
-        try:
-            if (email != ""):
-                #zahtjev za novom lozinkom
-                if (models.Korisnik.objects.filter(email = email).exists()):
-                    korisnik = models.Korisnik.objects.get(email = email)
-                    
-                    #dodati enkripciju i slanje lozinke na mail
-                    randPassword=get_random_string(length=16)
-                    print(randPassword)
-                    korisnik.lozinka = randPassword
-                    korisnik.save()
-                    messages.error(request, "Nova lozinka je poslana na e-mail.")
+        #zaboravljena lozinka
+        if "email" in request.POST:
+            email = request.POST['email']
+            #zahtjev za novom lozinkom
+            if (models.Korisnik.objects.filter(email = email).exists()):
+                korisnik = models.Korisnik.objects.get(email = email)
+                
+                #dodati enkripciju i slanje lozinke na mail
+                randPassword=get_random_string(length=16)
+                print(randPassword)
+                korisnik.lozinka = randPassword
+                korisnik.save()
+                messages.error(request, "Nova lozinka je poslana na e-mail.")
 
+            else:
+                messages.error(request, "E-mail koji ste unijeli ne postoji u bazi.")
+                return redirect('signin')
+
+        #normalan login
+        else:
+            Username = request.POST['Username']
+            pass1 = request.POST['pass1']
+
+            try:
+                if (models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists()):
+                    LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
+                    print(LoggedInUser.vrstaKorisnik.naziv)
+                    request.session['LoggedInUserId']=LoggedInUser.id
+                    request.session
+                    request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
+                    #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
+                    if LoggedInUser.odobrenBool==False:
+                        messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
+                    return redirect('home')
                 else:
-                    
-                    messages.error(request, "E-mail koji ste unijeli ne postoji u bazi.")
+                
+                    messages.error(request, "Korisničko ime ili lozinka su krivi.")
                     return redirect('signin')
 
 
-            elif (models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists()):
-                LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
-                print(LoggedInUser.vrstaKorisnik.naziv)
-                request.session['LoggedInUserId']=LoggedInUser.id
-                request.session
-                request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
-                #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
-                if LoggedInUser.odobrenBool==False:
-                    messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
-                return redirect('home')
-            else:
-               
-                messages.error(request, "Korisničko ime ili lozinka su krivi.")
+            except:
                 return redirect('signin')
-
-
-        except:
-            return redirect('signin')
  
     if "randPassword" in request.session: #tek smo se registrirali
         context["randPassword"]=request.session["randPassword"]
