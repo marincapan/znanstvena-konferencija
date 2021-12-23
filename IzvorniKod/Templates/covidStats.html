@@ -40,7 +40,14 @@
                     <hr>
                   </div>
         
-                  <div class="container">blabla sadržaj
+                  <div class="container">
+                    {% for key,value in konfDrzave.items%}
+                      <h2>{{key}} {{value.0}} {{value.1}}</h2>
+                      <!--Key je drzava,value je lista 
+                      indeks 0 - datum dohvata podatka i indeks 1 - broj novih covid slucajeva tog datuma. 
+                      Pogledaj adminView covidstats() za koje se jos informacije mogu slati.
+                      Indeksiranje radi kao naznaceno-->
+                    {%endfor%}
                   </div>
         
         

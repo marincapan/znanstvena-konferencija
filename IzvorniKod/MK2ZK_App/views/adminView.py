@@ -385,12 +385,13 @@ def covidstats(request):
     data=bytes.decode('UTF-8')
     data=data.split("\n")
     fetchUstanove = models.Ustanova.objects.all()
-    svedrzave=[]
+    konfDrzave={}
     for row in data:
         date=row.split(",") #0 - Date_reported,1 - Country_code,2 - Country,3 - WHO_region,4 - New_cases,5 - Cumulative_cases,6 - New_deaths, 7- Cumulative_deaths
-        #for ustanova in fetchUstanove: #Ovo od komentirati kad imamo u bazi drzave na engleskom
-        #if ustanova.drzava in date:
-        if date[0]!="": #Kraj
-            context[str(date[2]) + "newCases"]=date[4] # npr za hrvatsku u kontext ide pod imenom "CroatianewCases"
-        
+        for ustanova in fetchUstanove:
+            if ustanova.drzava in date:
+                if date[0]!="": #Kraj
+                    konfDrzave[str(date[2])]=[date[0],date[4]] # Rijecnik s drzavom (Na engleskom zasad) i vrijednostima koje zelim prenijeti (zasad datum dohavacanja podataka i novih slucajeva)
+    context["konfDrzave"]=konfDrzave
+    print(context)    
     return render(request, 'CovidStats.html', context)
