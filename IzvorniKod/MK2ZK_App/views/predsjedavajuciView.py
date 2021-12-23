@@ -219,9 +219,8 @@ def uprsucelje(request):
 
 
     context["Neodobreni"] = neodobreni
-
     context["recenzenti_broj_odobrenih"] = recenzenti.filter(odobrenBool=True).count()
-    context["recenzenti_broj_neodobrenih"] = recenzenti.filter(odobrenBool=False).count()
+    context["recenzenti_broj_neodobrenih"] = recenzenti.filter(odobrenBool=None).count()
     context["sudionici_broj_odobrenih"] = sudionici.filter(odobrenBool=True).count()
     context["sudionici_broj_neodobrenih"] = sudionici.filter(odobrenBool=False).count()
     context["radovi_broj_recenziranih"] = radovi.filter(recenziranBool=True).count()
