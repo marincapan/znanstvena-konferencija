@@ -395,3 +395,141 @@ def covidstats(request):
     context["konfDrzave"]=konfDrzave
     print(context)    
     return render(request, 'CovidStats.html', context)
+
+
+def uredipodatke(request, korisnickoime):
+    korisnik = models.Korisnik.objects.filter(korisnickoIme = korisnickoime).first()
+    
+    if korisnik:
+        uloga = korisnik.vrstaKorisnik.naziv
+
+        if request.method == "POST":
+            username = request.POST["username"]
+            ime = request.POST["ime"]
+            prezime = request.POST["prezime"]
+            email = request.POST["email"]
+            maticnaUstanova = request.POST["ustanova"]
+
+        #Provjeri jesu li sva polja u redu prije spremanja u bazu
+        #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni korisnik
+            if models.Korisnik.objects.filter(korisnickoIme = username).exclude(id = korisnik.id).exists():
+                messages.error(request, "Korisničko ime je zauzeto")
+                
+                if (uloga == "Sudionik"):
+                    return redirect('pregled/sudionici/'+username)
+                if (uloga == "Recenzent"):
+                    return redirect('pregled/recenzneti/'+username)
+        
+        #email - pogledaj postoji li netko s istim emailom, a da nije trenutni korisnik
+            if models.Korisnik.objects.filter(email = email).exclude(id = korisnik.id).exists():
+                messages.error(request, "E-mail adresa je zauzeta")
+                
+                if (uloga == "Sudionik"):
+                    return redirect('pregled/sudionici/'+username)
+                if (uloga == "Recenzent"):
+                    return redirect('pregled/recenzneti/'+username)
+
+        #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
+            korisnik.korisnickoIme = username
+            korisnik.ime = ime
+            korisnik.prezime = prezime
+            korisnik.email = email
+        
+        #ustanova (ako je isti naziv kao i do sad, nema smisla updateati)
+            if maticnaUstanova != korisnik.korisnikUstanova.naziv:
+                if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = korisnik.korisnikUstanova.grad, drzava = korisnik.korisnikUstanova.drzava, adresa = korisnik.korisnikUstanova.adresa).exists():
+                    novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = korisnik.korisnikUstanova.grad, drzava = korisnik.korisnikUstanova.drzava, adresa = korisnik.korisnikUstanova.adresa)
+                else:
+                    #print("Tu sam 1")
+                    novaUstanova = models.Ustanova(
+                    naziv = maticnaUstanova,
+                    grad = korisnik.korisnikUstanova.grad,
+                    drzava = korisnik.korisnikUstanova.drzava,
+                    adresa = korisnik.korisnikUstanova.adresa
+                )
+                    novaUstanova.save()
+                
+                korisnik.korisnikUstanova = novaUstanova
+
+            korisnik.save()
+            messages.success(request, "Podaci uspješno promijenjeni")
+            uloga = korisnik.vrstaKorisnik.naziv
+            if (uloga == "Sudionik"):
+                url = "/pregled/sudionici/"+username
+              
+                return redirect(url)
+            if (uloga == "Recenzent"):
+                url = "/pregled/recenzenti/"+username
+                print(url)
+                return redirect(url)
+            else:
+        
+                messages.info(request, "Ne radi se o sudioniku/recenzentu.") #do ovoga ne bi smjelo ni doći
+                return redirect('pregled')
+
+
+        if "LoggedInUserId" in request.session: #ulogirani smo
+             korisnik2=models.Korisnik.objects.get(id=request.session["LoggedInUserId"]) #mora biti ili admin ili predsjedavajuci
+             uloga = korisnik2.vrstaKorisnik.naziv
+            
+             if (uloga == 'Admin' or uloga == 'Predsjedavajuci'):
+
+                context={}
+                
+                context['LoggedInUser']=request.session['LoggedInUserId']
+                context['LoggedInUserRole']=request.session['LoggedInUserRole']
+
+                context['korisnickoIme']=korisnik.korisnickoIme
+                context['ime']=korisnik.ime
+                context['prezime']=korisnik.prezime
+                context['email']=korisnik.email
+                context['uloga']=korisnik.vrstaKorisnik.naziv
+                context['MaticnaUstanova']=korisnik.korisnikUstanova.naziv
+                context['sekcija']=korisnik.korisnikSekcija.naziv
+       
+                if (context['uloga']=='Sudionik' or context['uloga']=='Recenzent'):
+                    dodatnipodatci = {}
+                    provjera = models.DodatnaPoljaObrasca.objects.first()
+                    if (provjera): #ima dodatnih polja u obrascu
+                        dodatno = models.DodatnaPoljaObrasca.objects.all()
+                        for polje in dodatno:
+                            dodatno = models.DodatniPodatci.objects.filter(korisnik = korisnik, poljeObrasca = polje).first()
+                    
+                            if dodatno:
+                                podatak = dodatno.podatak
+                            #print(dodatno.podatak)
+                                if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
+                                #želimo naš format datuma
+                                #print("tu")
+                                    date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date()
+                                    podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
+                                ime = dodatno.poljeObrasca.imePolja
+                                dodatnipodatci[ime] = podatak
+                  
+
+                    context['dodatnipodatci'] = dodatnipodatci
+                #print(dodatnipodatci)
+
+
+                if context['uloga']=='Sudionik':
+                    context['SudionikID']=korisnik.idSudionik
+                    radovi = models.Rad.objects.filter(radKorisnik = korisnik)
+                    sekcije = [i.radSekcija for i in radovi]
+                    sekcije = list(dict.fromkeys(sekcije)) #po 1 pojavljivanje svake sekcije
+                    context['sekcije'] = sekcije
+            
+             else:
+                messages.info(request, "Nemate ovlasti za pristup toj stranici.")
+                return redirect('home')
+
+            
+        
+        else:
+            messages.info(request, "Trebate biti prijavljeni kako biste pristupili toj stranici.")
+            return redirect('signin')
+
+    else:
+        messages.info(request, "Taj korisnik ne postoji u sustavu.") #do ovoga ne bi smjelo ni doći
+        return redirect('pregled')
+    
+    return render(request, 'UrediPodatke.html',context)

@@ -65,7 +65,7 @@
                 {% for sudionik in Sudionici %}
                   <tr class="text-center">
                     <th scope="row">{{sudionik.idSudionik}}</th>
-                    <td>{{sudionik.korisnickoIme}}</td>
+                    <td> <a href="sudionici/{{sudionik.korisnickoIme}}">{{sudionik.korisnickoIme}} </a> </td>
                     <td>{{sudionik.ime}}</td>
                     <td>{{sudionik.prezime}}</td>
                     <td>{{sudionik.email}}</td>

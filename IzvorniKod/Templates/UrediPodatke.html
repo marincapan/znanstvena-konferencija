@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html style="height: 100vh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Osobni podaci</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <!--nas css-->
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+
+<body style="min-height: 100vh">
+
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+  <div class="gradient-custom-3 " style="min-height: 100vh;">
+    <div class="container pt-5 pb-5">
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-5">
+          <div class="text-uppercase text-center mb-3">
+            {%if uloga == "Sudionik"%}
+            <h2>Podaci o sudioniku</h2>
+            {%elif uloga == "Recenzent"%}
+            <h2>Podaci o recenzentu</h2>
+            {%endif%}
+            <hr>
+          </div>
+
+          <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
+                    jer se java script na dnu referira na njih-->
+
+          <!--Klasika za error messages-->
+          <div>
+            {% if messages %}
+            {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
+              {% endfor %}
+              {% endif %}
+          </div>
+
+
+          <!--Ako postoje informacije (Tj ako je ulogiran korisnik) prikazi ih-->
+          
+          <form action= {%if uloga == "Sudionik"%} "/pregled/sudionici/{{korisnickoIme}}" {%elif uloga == "Recenzent"%} "/pregled/recenzenti/{{korisnickoIme}}" {%endif%}  method="post" id='updateInfo'>
+          
+            <div class="container">
+              {% csrf_token %}
+              <div class="row">
+                <!-- Korisnik per se -->
+                <div class="col-sm">
+                  {%if korisnickoIme%}
+                  <div class="mb-3" id="usernameWrapper">
+                    <label for="username" class="form-label fw-bold">Korisničko ime</label>
+                    <input type="text" class="form-control input-md" id="username" name="username"
+                      value="{{korisnickoIme}}" required>
+                  </div>
+                  {%endif%}
+
+                  {%if ime%}
+                  <div class="mb-3" id="imeWrapper">
+                    <label for="ime" class="form-label fw-bold">Ime</label>
+                    <input type="text" class="form-control input-md" id="ime" name="ime" value="{{ime}}" required>
+                  </div>
+                  {%endif%}
+
+                  {%if prezime%}
+                  <div class="mb-3" id="prezimeWrapper">
+                    <label for="prezime" class="form-label fw-bold">Prezime</label>
+                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="{{prezime}}"
+                      required>
+                  </div>
+                  {%endif%}
+
+                  {%if email%}
+                  <div class="mb-3" id="emailWrapper">
+                    <label for="email" class="form-label fw-bold">E-mail</label>
+                    <input type="text" class="form-control input-lg" id="email" name="email" value="{{email}}" required>
+                  </div>
+                  {%endif%}
+                </div>
+
+                <!--Uloga, ustanova i sekcija-->
+                <div class="col-sm">
+                  {%if MaticnaUstanova%}
+                  <div class="mb-3" id="ustanovaWrapper">
+                    <label for="ustanova" class="form-label fw-bold">Matična ustanova</label>
+                    <input type="text" class="form-control" id="ustanova" name="ustanova" value="{{MaticnaUstanova}}"
+                      required>
+                  </div>
+                  {%endif%}
+
+                  {%if uloga%}
+                  <div class="mb-3" id="ulogaWrapper">
+                    <label for="uloga" class="form-label fw-bold">Uloga</label>
+                    <input type="text" class="form-control input-md" id="uloga" value="{{uloga}}" disabled>
+                  </div>
+                  {%endif%}
+
+                  {%if uloga == 'Recenzent'%}
+                  {%if sekcija%}
+                  <div class="mb-3" id="sekcijaWrapper">
+                    <label for="sekcija" class="form-label fw-bold">Sekcija</label>
+                    <input type="text" class="form-control input-md" id="sekcija" value="{{sekcija}}" disabled>
+                  </div>
+                  {%endif%}
+                  {% endif %}
+
+                  {%if SudionikID%}
+                  <div class="mb-3" id="sudionikIDWrapper">
+                    <label for="sudionikID" class="form-label fw-bold">ID sudionika</label>
+                    <input type="text" class="form-control input-md" id="sudionikID" value="{{SudionikID}}" disabled>
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+              {%if dodatnipodatci %}
+              <hr>
+              <div class="row">
+                <div class="fs-5 fw-bold mb-3" >Dodatni podaci</div>
+
+                {%for ime,podatak in dodatnipodatci.items %}
+                <div class="mb-3" id="dodatniWrapper{{forloop.counter}}">
+                  <label for="dodatni{{forloop.counter}}" class="form-label fw-bold">{{ime}}</label>
+                  <input type="text" class="form-control input-md" id="dodatni{{forloop.counter}}" value="{{podatak}}" disabled>
+                </div>
+                {%endfor%}
+
+              </div>
+              {%endif%}
+            </div>
+
+            <hr>
+            <button type="submit" class="btn btn-primary">Ažuriraj podatke</button>
+            <a href= {%if uloga == "Sudionik"%} "/pregled/sudionici/{{korisnickoIme}}" {%elif uloga == "Recenzent"%} "/pregled/recenzenti/{{korisnickoIme}}" method="post" {%endif%} class="btn btn-outline-secondary">Odbaci</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--FOOTER-->
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
+
+</body>
+
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<!--nas js-->
+
+</html>

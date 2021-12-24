@@ -21,5 +21,10 @@ urlpatterns = [
     path('javniradovi', homeView.javniradovi, name='javniradovi'),
     path('posaljiobavijest', predsjedavajuciView.obavijest, name='obavijest'),
     path('predsjedavajuci', predsjedavajuciView.uprsucelje, name='predsjedavajuci'),
-    path('covidstats', adminView.covidstats, name='covidstats')
+    path('covidstats', adminView.covidstats, name='covidstats'),
+    path('pregled/recenzenti/<korisnickoime>', adminView.uredipodatke, name='uredipodatke1'),
+    path('pregled/sudionici/<korisnickoime>', adminView.uredipodatke, name='uredipodatke2')
+
+
+
 ]

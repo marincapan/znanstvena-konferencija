@@ -90,7 +90,7 @@ def osobnipodaci(request):
                         print(dodatno.podatak)
                         if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
                             #želimo naš format datuma
-                            print("tu")
+                            #print("tu")
                             date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date()
                             podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
                         ime = dodatno.poljeObrasca.imePolja

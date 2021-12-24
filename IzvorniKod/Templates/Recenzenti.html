@@ -67,7 +67,7 @@
                 {% for recenzent in Recenzenti %}
                   <tr class="text-center">
                     <th scope="row">{{recenzent.id}}</th>
-                    <td>{{recenzent.korisnickoIme}}</td>
+                    <td><a href="recenzenti/{{recenzent.korisnickoIme}}">{{recenzent.korisnickoIme}} </a></td>
                     <td>{{recenzent.ime}}</td>
                     <td>{{recenzent.prezime}}</td>
                     <td>{{recenzent.email}}</td>
