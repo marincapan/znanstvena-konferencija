@@ -428,6 +428,26 @@ def uredipodatke(request, korisnickoime):
                     return redirect('pregled/sudionici/'+username)
                 if (uloga == "Recenzent"):
                     return redirect('pregled/recenzneti/'+username)
+            
+            i = 1
+
+            provjera = models.DodatnaPoljaObrasca.objects.first()
+            if (provjera): #ima dodatnih polja u obrascu
+                dodatno = models.DodatnaPoljaObrasca.objects.all()
+                print(len(dodatno))
+            
+            for polje in dodatno:
+                    dodatno = models.DodatniPodatci.objects.filter(korisnik = korisnik, poljeObrasca = polje).first()
+                    
+                    if dodatno:
+                        print(dodatno.podatak)
+                        novo = request.POST["dodatni"+str(i)]
+                        #validacija unosa?
+
+                        i = i + 1
+                        print(novo)
+                        dodatno.podatak = novo
+                        dodatno.save()
 
         #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
             korisnik.korisnickoIme = username
@@ -501,8 +521,12 @@ def uredipodatke(request, korisnickoime):
                                 if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
                                 #želimo naš format datuma
                                 #print("tu")
-                                    date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date()
-                                    podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
+
+                                    try:
+                                        date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date() #validacija datuma?
+                                        podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
+                                    except:
+                                        podatak = dodatno.podatak
                                 ime = dodatno.poljeObrasca.imePolja
                                 dodatnipodatci[ime] = podatak
                   

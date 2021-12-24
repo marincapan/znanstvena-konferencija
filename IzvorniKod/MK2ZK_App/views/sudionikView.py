@@ -26,6 +26,8 @@ def osobnipodaci(request):
         prezime = request.POST["prezime"]
         email = request.POST["email"]
         maticnaUstanova = request.POST["ustanova"]
+        
+
 
         #Provjeri jesu li sva polja u redu prije spremanja u bazu
         #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni korisnik
@@ -37,6 +39,25 @@ def osobnipodaci(request):
         if models.Korisnik.objects.filter(email = email).exclude(id = LoggedInUser.id).exists():
             messages.error(request, "E-mail adresa je zauzeta")
             return redirect('osobnipodaci')
+        i = 1
+
+        provjera = models.DodatnaPoljaObrasca.objects.first()
+        if (provjera): #ima dodatnih polja u obrascu
+            dodatno = models.DodatnaPoljaObrasca.objects.all()
+            print(len(dodatno))
+            
+            for polje in dodatno:
+                    dodatno = models.DodatniPodatci.objects.filter(korisnik = LoggedInUser, poljeObrasca = polje).first()
+                    
+                    if dodatno:
+                        print(dodatno.podatak)
+                        novo = request.POST["dodatni"+str(i)]
+                        #validacija unosa?
+
+                        i = i + 1
+                        print(novo)
+                        dodatno.podatak = novo
+                        dodatno.save()
 
         #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
         LoggedInUser.korisnickoIme = username
@@ -91,8 +112,11 @@ def osobnipodaci(request):
                         if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
                             #želimo naš format datuma
                             #print("tu")
-                            date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date()
-                            podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
+                            try:
+                                date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date() #tako su spremljeni pri registraciji kasnije je vjerojatno drugi format pa nek ispisuje taj
+                                podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
+                            except:
+                                podatak = dodatno.podatak
                         ime = dodatno.poljeObrasca.imePolja
                         dodatnipodatci[ime] = podatak
                   

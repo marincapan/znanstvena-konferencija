@@ -125,7 +125,7 @@
                 {%for ime,podatak in dodatnipodatci.items %}
                 <div class="mb-3" id="dodatniWrapper{{forloop.counter}}">
                   <label for="dodatni{{forloop.counter}}" class="form-label fw-bold">{{ime}}</label>
-                  <input type="text" class="form-control input-md" id="dodatni{{forloop.counter}}" value="{{podatak}}" disabled>
+                  <input type="text" class="form-control input-md" id="dodatni{{forloop.counter}}" name="dodatni{{forloop.counter}}" value="{{podatak}}" >
                 </div>
                 {%endfor%}
 
