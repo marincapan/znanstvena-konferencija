@@ -296,10 +296,11 @@ def activate(request, uidb64, token):
         #print(postojeciKorisnik)
         postojeciKorisnik.save()
         signin(request)
-        # return redirect('home')
-        return HttpResponse('Hvala na potvrdi! Sada se možeš prijaviti u svoj račun!')
+        messages.info(request,'Hvala na potvrdi! Sada se možeš prijaviti u svoj račun!')
+        return redirect('signin')
     else:
-        return HttpResponse('Aktivacijska poveznica nije valjana!')
+        messages.info(request,'Ta aktivacijska poveznica nije valjana!')
+        return redirect('signin')
 
 def signin(request):
     context = {}
@@ -327,28 +328,23 @@ def signin(request):
             Username = request.POST['Username']
             pass1 = request.POST['pass1']
 
-            try:
-                if (models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists()):
-                    LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
+            if (models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists()):
+                LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
+                if LoggedInUser.potvrdenBool==False:
+                    messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
+                    print("flag")
+                    return redirect('signin')
+                else:
                     print(LoggedInUser.vrstaKorisnik.naziv)
                     request.session['LoggedInUserId']=LoggedInUser.id
-                    request.session
                     request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
                     #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
-                    if LoggedInUser.odobrenBool==False:
-                        messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
                     return redirect('home')
-                else:
-                
-                    messages.error(request, "Korisničko ime ili lozinka su krivi.")
-                    return redirect('signin')
-
-
-            except:
+            
+            else:
+                messages.error(request, "Korisničko ime ili lozinka su krivi.")
                 return redirect('signin')
- 
-    if "randPassword" in request.session: #tek smo se registrirali
-        context["randPassword"]=request.session["randPassword"]
+
     elif "LoggedInUserId" in request.session: #otprije smo registrirani
         return redirect('/')
         
