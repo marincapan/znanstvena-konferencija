@@ -93,6 +93,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'znanstvena.konferencija.tk@gmail.com'
 EMAIL_HOST_PASSWORD = '@ZK2021!a'
 EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = "Pametna ekipa <znanstvena.konferencija.tk@gmail.com>"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
