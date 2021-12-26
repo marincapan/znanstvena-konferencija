@@ -15,6 +15,8 @@ from django.core import serializers
 from django.utils import (dateformat, formats)
 import zipfile
 import os
+from django.core.mail import EmailMessage
+
 
 def increment_KorisnikID():
   last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
@@ -162,7 +164,8 @@ def signup(request):
             #Generiraj password za korisnika
             randPassword=get_random_string(length=16)
             request.session['randPassword'] = randPassword
-
+            email_message = EmailMessage('[ZK]', 'Tvoja lozinka je %s'%(randPassword), 'Pametna ekipa',  to=[email])
+            email_message.send()
             #Probaj spremiti novog korisnika
             try:
                 NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,idSudionik=idSudionik,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
@@ -236,7 +239,7 @@ def signup(request):
             #Generiraj password za korisnika
             randPassword=get_random_string(length=16)
             request.session['randPassword'] = randPassword
-
+            
             #Probaj spremiti novog korisnika
             try:
                 NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)

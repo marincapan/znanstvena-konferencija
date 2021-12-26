@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4@76gl#nzr4f^-ii2g%dai3$8pa-y9)h4brmhcnbw!nuk#4@hb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["159.89.99.177","localhost", "mk2zk.tk"]
+ALLOWED_HOSTS = ["159.89.99.177","localhost", "znanstvena-konferencija.tk", "127.0.0.1"]
 
 
 # Application definition
@@ -81,12 +81,18 @@ DATABASES = {
         'NAME': 'MK2ZK_DB',
         'USER': 'postgres',
         'PASSWORD': 'dogwoofwoof',
-        'HOST': 'mk2zk_db',
+        'HOST': 'localhost',
         'PORT': '5432'
     }
 }
 
-
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'znanstvena.konferencija.tk@gmail.com'
+EMAIL_HOST_PASSWORD = '@ZK2021!a'
+EMAIL_PORT = 587
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
