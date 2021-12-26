@@ -265,7 +265,7 @@ def signup(request):
                     poljeObrasca=dodatnoPolje
                 )
                 noviDodatniPodatak.save()
-        poruka = render_to_string('aktiviraj_email.html', {
+        poruka = render_to_string('AktivirajEmail.html', {
         'user': NoviKorisnik,
         'domain': '127.0.0.1:8000',
         'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
@@ -273,7 +273,7 @@ def signup(request):
             })
         to_email = email
         email = EmailMessage(
-           '[ZK] Tvoj račun je stvoren!', poruka, to=[to_email]
+           '[ZK] Tvoj račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
         )
         email.send()
         return redirect('signin')
@@ -313,12 +313,28 @@ def signin(request):
                 korisnik = models.Korisnik.objects.get(email = email)
                 
                 #dodati enkripciju i slanje lozinke na mail
+                """
                 randPassword=get_random_string(length=16)
                 print(randPassword)
                 korisnik.lozinka = randPassword
                 korisnik.save()
                 messages.error(request, "Nova lozinka je poslana na e-mail.")
+                """
 
+                subject = "[ZK] Promjena lozinke"
+                email_template_name = "PromijeniLozinkuEmail.html"
+                c = {
+                "email":korisnik.email,
+                'domain':'127.0.0.1:8000',
+                'site_name': 'Znanstvena konferencija',
+                "uid": urlsafe_base64_encode(force_bytes(korisnik.id)),
+                "user": korisnik,
+                'token': account_activation_token.make_token(korisnik),
+                'protocol': 'http',
+                }
+                email_message = render_to_string(email_template_name, c)
+                EmailMessage(subject, email_message, 'Pametna ekipa', [korisnik.email]).send()
+                messages.error(request, "Poveznica za promjenu lozinke je poslana na e-mail.")
             else:
                 messages.error(request, "E-mail koji ste unijeli ne postoji u bazi.")
                 return redirect('signin')
@@ -349,6 +365,13 @@ def signin(request):
         return redirect('/')
         
     return render(request, 'Signin.html',context)
+
+def new_password(request, uidb64, token):
+    return render(request, 'PromijeniLozinku.html')
+
+def reset_password(request):
+    return redirect('home') 
+    #treba promijeniti tako da se provjeri poklapaju li se lozinke te ju spremiti u bazu ili javiti grešku
 
 def signout(request):
     if 'LoggedInUserId' in request.session:
