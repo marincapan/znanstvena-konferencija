@@ -16,7 +16,15 @@ from django.utils import (dateformat, formats)
 import zipfile
 import os
 from django.core.mail import EmailMessage
-
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from IzvorniKod.MK2ZK_App.tokens import account_activation_token
+from django.core.mail import EmailMessage
 
 def increment_KorisnikID():
   last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
@@ -164,8 +172,9 @@ def signup(request):
             #Generiraj password za korisnika
             randPassword=get_random_string(length=16)
             request.session['randPassword'] = randPassword
-            email_message = EmailMessage('[ZK]', 'Tvoja lozinka je %s'%(randPassword), 'Pametna ekipa',  to=[email])
-            email_message.send()
+            #token = account_activation_token.make_token(user)
+            #email_message = EmailMessage('[ZK]', 'Tvoja lozinka je %s'%(randPassword), 'Pametna ekipa',  to=[email])
+            #email_message.send()
             #Probaj spremiti novog korisnika
             try:
                 NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,idSudionik=idSudionik,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
@@ -256,12 +265,42 @@ def signup(request):
                     poljeObrasca=dodatnoPolje
                 )
                 noviDodatniPodatak.save()
-        
+        poruka = render_to_string('aktiviraj_email.html', {
+        'user': NoviKorisnik,
+        'domain': '127.0.0.1:8000',
+        'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
+        'token':account_activation_token.make_token(NoviKorisnik),
+            })
+        to_email = email
+        email = EmailMessage(
+           '[ZK] Tvoj račun je stvoren!', poruka, to=[to_email]
+        )
+        email.send()
         return redirect('signin')
 
     
     return render(request, 'Signup.html',context)
-    
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        print(token)
+        print(uid)
+        postojeciKorisnik = models.Korisnik.objects.get(id=uid)
+        print(postojeciKorisnik.korisnickoIme)
+        print(account_activation_token.check_token(postojeciKorisnik, token))
+    except(TypeError, ValueError, OverflowError, models.Korisnik.DoesNotExist):
+        postojeciKorisnik = None
+    if postojeciKorisnik is not None and account_activation_token.check_token(postojeciKorisnik, token):
+        postojeciKorisnik.potvrdenBool = True
+        #print(postojeciKorisnik)
+        postojeciKorisnik.save()
+        signin(request)
+        # return redirect('home')
+        return HttpResponse('Hvala na potvrdi! Sada se možeš prijaviti u svoj račun!')
+    else:
+        return HttpResponse('Aktivacijska poveznica nije valjana!')
+
 def signin(request):
     context = {}
     if request.method == "POST":

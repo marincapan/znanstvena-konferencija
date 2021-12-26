@@ -23,8 +23,8 @@ urlpatterns = [
     path('predsjedavajuci', predsjedavajuciView.uprsucelje, name='predsjedavajuci'),
     path('covidstats', adminView.covidstats, name='covidstats'),
     path('pregled/recenzenti/<korisnickoime>', adminView.uredipodatke, name='uredipodatke1'),
-    path('pregled/sudionici/<korisnickoime>', adminView.uredipodatke, name='uredipodatke2')
-
+    path('pregled/sudionici/<korisnickoime>', adminView.uredipodatke, name='uredipodatke2'),
+    path('activate/<uidb64>/<token>',  homeView.activate, name='activate'),
 
 
 ]
