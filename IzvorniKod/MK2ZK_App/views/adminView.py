@@ -125,7 +125,7 @@ def adminsucelje(request):
             konferencija.save()
 
             messages.success(request, "Podaci o konferenciji su uspješno ažurirani!")
-            return redirect('adminsucelje')
+            return redirect('/adminsucelje#podatciOKonferenciji')
       
         if 'username' in request.POST: #podaci o predsjedavajucem
             predsjedavajuci = models.Korisnik.objects.get(id = 4) #HARDKODIRAN PREDSJEDAVAJUCI ID
@@ -153,7 +153,7 @@ def adminsucelje(request):
 
             predsjedavajuci.save()
             messages.success(request, "Podaci o predsjedavajućem uspješno promijenjeni")
-            return redirect('adminsucelje')
+            return redirect('/adminsucelje#upravljanjePredsjedavajućem')
             
         if "makePublic" in request.POST:
             konferencija=models.Konferencija.objects.get(sifKonferencija=1)
@@ -177,7 +177,7 @@ def adminsucelje(request):
                 )
                 newField.save()
             context['DodatnaPolja']=fetchedPolja
-            return redirect('adminsucelje')
+            return redirect('/adminsucelje#upravljanjeObrascem')
         if 'ActiveFields' in request.POST:
 
             for polje in fetchedPolja:
@@ -196,7 +196,7 @@ def adminsucelje(request):
                 polje.active = checked
                 polje.obavezan = obavezan
                 polje.save()
-            return redirect('adminsucelje')
+            return redirect('/adminsucelje#aktivnaPolja')
 
         if 'AddNewSection' in request.POST:
            
@@ -209,6 +209,7 @@ def adminsucelje(request):
             if not models.Sekcija.objects.filter(naziv = SectionName).exists():
                 newSection=models.Sekcija(naziv = SectionName, konferencijaSekcija=konferencija)
                 newSection.save()
+            return redirect("/adminsucelje#upravljanjeSekcijama")
 
         if 'AddNewAdmin' in request.POST:
 
@@ -242,10 +243,10 @@ def adminsucelje(request):
                 NoviKorisnik = models.Korisnik(korisnickoIme=AdminUsername,lozinka=AdminPassword,ime=AdminName,prezime=AdminSurname,email=AdminEmail,vrstaKorisnik=models.Uloga.objects.get(id=1), korisnikUstanova=models.Ustanova.objects.get(sifUstanova=1), korisnikSekcija=models.Sekcija.objects.get(sifSekcija=1))
                 NoviKorisnik.save()
                 messages.success(request, "Novi administrator uspjesno dodan u bazu")
-                return redirect('adminsucelje')
+                return redirect('/adminsucelje#upravljanjeAdministratorima')
             except IntegrityError:
                 messages.error(request, "Korisnicko ime ili email je vec u uporabi")
-                return redirect('adminsucelje')
+                return redirect('/adminsucelje#upravljanjeAdministratorima')
 
         ### Dodavanje novog članka
         if "AddArticle" in request.POST:
@@ -260,7 +261,7 @@ def adminsucelje(request):
             newArticle.save()
             context['Clanci'] = fetchedClanci
             messages.success(request, "Uspješno dodan novi članak")
-            return redirect('adminsucelje')
+            return redirect('/adminsucelje#uređivanjeNaslovne')
 
         ## Odabir aktivnih članaka
         if "ActiveArticles" in request.POST:
@@ -272,7 +273,7 @@ def adminsucelje(request):
                     checked = False
                 clanak.active = checked
                 clanak.save()
-            return redirect('adminsucelje')
+            return redirect('/adminsucelje#prikazaniČlanci')
 
         ## Uređivanje info o konferenciji
         if "EditInfo" in request.POST:
@@ -289,7 +290,7 @@ def adminsucelje(request):
             infoObject.save()
             context['info'] = info
             messages.success(request, "Uspješno ažurirane informacije o konferenciji")
-            return redirect('adminsucelje')
+            return redirect('/adminsucelje#uređivanjeInfo')
 
             
                 
@@ -360,6 +361,8 @@ def adminsucelje(request):
 
     context["Radovi"] = radovi
     context["brojPredanihRadova"] = brojPredanihRadova
+    if "jumpto" in request.session:
+        context["jumpto"]=request.session["jumpto"]
 
     return render(request, 'AdminSucelje.html', context)
 

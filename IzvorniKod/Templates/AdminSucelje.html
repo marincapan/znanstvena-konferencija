@@ -63,7 +63,7 @@
                 <ul>
                   <!-- Javni pristup radovima -->
                   <li>
-                    <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Upravljanje javnim pristupom
+                    <div class="text-uppercase text-left fw-bold mb-1">Upravljanje javnim pristupom
                       radovima</div>
                     {%if LoggedInUserRole == 'Admin'%}
                     <form action="adminsucelje" method="POST">
@@ -127,7 +127,7 @@
             <div class="text-uppercase text-left mb-3">
               <div id="titleDiv">
                 <div>
-                  <h4 id="myTitle">Podaci o konferenciji</h4>
+                  <h4 id="podatciOKonferenciji">Podaci o konferenciji</h4>
                 </div>
               </div>
               <hr>
@@ -195,7 +195,7 @@
             <div class="text-uppercase text-left mb-3">
               <div style="padding-bottom: 3px;" id="titleDiv">
                 <div>
-                  <h4 style="display: inline;" id="myTitle">Upravljanje podacima o predsjedavajućem konferencije</h4>
+                  <h4 style="display: inline;" id="upravljanjePredsjedavajućem">Upravljanje podacima o predsjedavajućem konferencije</h4>
                 </div>
               </div>
               <hr>
@@ -252,7 +252,7 @@
           <div class="text-uppercase text-left mb-2">
             <div style="padding-bottom: 3px;" id="titleDiv">
               <div>
-                <h4 style="display: inline;" id="myTitle">Upravljanje administratorima</h4>
+                <h4 style="display: inline;" id="upravljanjeAdministratorima">Upravljanje administratorima</h4>
               </div>
             </div>
             <hr>
@@ -326,7 +326,7 @@
           <div class="text-uppercase text-left mb-1">
             <div style="padding-bottom: 3px;" id="titleDiv">
               <div>
-                <h4 style="display: inline;" id="myTitle">Upravljanje obrascem za registraciju</h4>
+                <h4 style="display: inline;" id="upravljanjeObrascem">Upravljanje obrascem za registraciju</h4>
               </div>
             </div>
             <hr>
@@ -338,7 +338,7 @@
           <div class="row">
             <div class="col-sm">
               <div style="padding-bottom: 5px;" id="UserNameDiv">
-                <form action="/adminsucelje" method="post" enctype="multipart/form-data">
+                <form action="/adminsucelje" method="post" enctype="multipart/form-data" id='addFields'>
                   {% csrf_token %}
 
                   <div class="form-outline mb-2">
@@ -379,9 +379,9 @@
           <hr>
           <div class="mt-4">
             <div class="text-left mb-2">
-              <h5>Aktivna polja</h5>
+              <h5 id="aktivnaPolja">Aktivna polja</h5>
             </div>
-            <form action="/adminsucelje" method="POST" enctype="multipart/form-data">
+            <form action="/adminsucelje" method="POST" enctype="multipart/form-data" id='activeFieldsform'>
               {% csrf_token %}
               <p class="text-left text-muted mt-2 mb-0">Odaberite polja koja želite uključiti u obrazac za
                 registraciju.</p>
@@ -445,7 +445,7 @@
               <div>
                 <br>
                 <br>
-                <h4 style="display: inline;" id="myTitle">Upravljanje sekcijama</h4>
+                <h4 style="display: inline;" id="upravljanjeSekcijama">Upravljanje sekcijama</h4>
               </div>
             </div>
             <hr>
@@ -493,7 +493,7 @@
           <div class="text-uppercase text-left mb-1">
             <div style="padding-bottom: 3px;" id="titleDiv">
               <div>
-                <h4 style="display: inline;" id="myTitle">Uređivanje naslovne stranice</h4>
+                <h4 style="display: inline;" id="uređivanjeNaslovne">Uređivanje naslovne stranice</h4>
               </div>
             </div>
             <hr>
@@ -542,7 +542,7 @@
           <hr>
           <div class="mt-4">
             <div class="text-left mb-2">
-              <h5>Prikazani članci</h5>
+              <h5 id="prikazaniČlanci">Prikazani članci</h5>
             </div>
             <form action="/adminsucelje" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
@@ -597,7 +597,7 @@
           <div class="text-uppercase text-left mb-1">
             <div style="padding-bottom: 3px;" id="titleDiv">
               <div>
-                <h4 style="display: inline;" id="myTitle">Uređivanje info stranice</h4>
+                <h4 style="display: inline;" id="uređivanjeInfo">Uređivanje info stranice</h4>
               </div>
             </div>
             <hr>
@@ -658,7 +658,6 @@
   {% include "./Footer.html" %}
   <!--FOOTER-->
 </body>
-
 <!--nas js-->
 <script src="{% static '/js/hamburgerActions.js' %}"></script>
 <script src="{% static '/js/adminSucelje.js' %}"></script>
