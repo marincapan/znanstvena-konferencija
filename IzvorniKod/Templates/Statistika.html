@@ -1,0 +1,154 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Upravljačko sučelje</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+
+  <!--tablice-->
+  <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" />
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+
+</head>
+
+<body>
+    <!--HEADER-->
+    {% include "./Header.html" %}
+    <!--HEADER-->
+
+    <div class="gradient-custom-3 " style="min-height: 100vh;">
+        <div class="container pt-5 pb-5">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+                
+                <div class="text-uppercase text-center mb-5">
+                    <div style="padding-bottom: 9px;" id="titleDiv">
+                      <div>
+                        <h2 style="display: inline;" id="myTitle">Upravljačko sučelje</h2>
+                      </div>
+                    </div>
+                  <hr>
+                </div>
+
+                <div class="container" >
+                    <div class="text-uppercase text-left mb-3">
+                      <div style="padding-bottom: 3px;" id="titleDiv">
+                        <div>
+                          <h4 style="display: inline;" id="myTitle">Statistika prijavljenih</h4>
+                        </div>
+                      </div>
+                      <hr>
+                    </div>
+
+                    <h3>Sudionici ({{sudionici_svi}})</h3>
+                    <ul>
+                      <li>Registrirani: {{sudionici_neaktivni}}</li>
+                      <li>Potvrđeni: {{sudionici_aktivni}}</li>
+                    </ul>
+
+                    <h3>Recenzenti ({{recenzenti_svi}})</h3>
+                    <ul>
+                      <li>Registrirani: {{recenzenti_neaktivni}}</li>
+                      <li>Potvrđeni: {{recenzenti_aktivni}}</li>
+                    </ul>
+
+                    <h3>Radovi ({{radovi}})</h3>
+                    <ul>
+                      <li>Prijavljeni: {{prijavljeni_radovi}}</li>
+                      <li>Predani: {{predani_radovi}} </li>
+                      <li>Recenzirani: {{recenzirani_radovi}}</li>
+                      <li>Broj autora: {{autori}}</li>
+                      <!-- radovi po ocjenama/recenzijama -->
+                      <!-- radovi po državama -->
+                    </ul>
+
+                    <h3>Ustanove ({{sve_ustanove}}) </h3>
+                    <ul>
+                      <li>Ukupno različitih: {{ustanove}} </li>
+                      <!--broj ustanova po državama-->
+                    </ul>
+
+                    <h3>Sekcije ({{sve_sekcije}})</h3>
+                    <ul>
+                      {% for k,v in radovi_po_sekcijama.items %}
+                      <li>{{k}}: {{v}}</li>
+                      {% endfor %}
+                    </ul>
+
+                    <h3>Korisnici ({{korisnici}})</h3>
+                    <ul>
+                      {% for k,v in korisnici_po_ulogama.items %}
+                      <li>{{k}}: {{v}}</li>
+                      {% endfor %}
+                    </ul>
+                    
+                    <h3>Države ({{broj_drzava}})</h3>
+                    <ul>
+                      {% for k,v in sudionici_po_drzavama.items %} 
+                      <li>{{k}}: {{v}}</li>
+                      {% endfor %}
+                    </ul>
+                    
+                    
+
+                      <br><hr><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+<!--bitno za datatables-->
+<script>
+    $(document).ready( function () {
+      $('#tablicaNeodobreni').DataTable({
+        responsive: {
+          breakpoints: [
+            {name: 'bigdesktop', width: Infinity},
+            {name: 'meddesktop', width: 1480},
+            {name: 'smalldesktop', width: 1280},
+            {name: 'medium', width: 1188},
+            {name: 'tabletl', width: 1024},
+            {name: 'btwtabllandp', width: 848},
+            {name: 'tabletp', width: 768},
+            {name: 'mobilel', width: 480},
+            {name: 'mobilep', width: 320}
+          ]
+        },
+        language: {
+          lengthMenu: "Prikaži _MENU_ redaka po stranici",
+          zeroRecords: "Nema podataka",
+          info: "Prikazana je _PAGE_ od _PAGES_ stranica",
+          infoEmpty: "Nema podataka",
+          infoFiltered: "(filtrirano od _MAX_ ukupnih stavki)",
+          search: "Pretraži:",
+          paginate: {
+              first: "Prva",
+              last: "Zadnja",
+              next: "Sljedeća",
+              previous: "Prethodna"
+          }
+        }
+      });
+    } );
+  </script>
+
+
+</html>
