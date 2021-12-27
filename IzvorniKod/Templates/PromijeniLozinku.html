@@ -57,15 +57,17 @@
                   {% endfor %}
                   {% endif %}
                 </div>
-
+                <input type="text" name="usedEmail" value={{usedEmail}} hidden>
+                <input type="text" name="uid" value={{usedUid}} hidden>
+                <input type="text" name="token" value={{usedToken}} hidden>
                 <div class="form-outline mb-4">
                   <label class="form-label" for="">Nova lozinka</label>
-                  <input type="password" id="Password" name="Password" class="form-control form-control-lg" required />
+                  <input type="password" id="Password" name="pass1" class="form-control form-control-lg" required />
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="">Ponovljena lozinka</label>
-                  <input type="password" id="pass1" name="pass1" class="form-control form-control-lg" required />
+                  <input type="password" id="pass1" name="pass2" class="form-control form-control-lg" required />
                 </div>
 
                 <div class="form-outline mb-4">

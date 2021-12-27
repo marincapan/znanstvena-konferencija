@@ -293,6 +293,7 @@ def activate(request, uidb64, token):
         postojeciKorisnik = None
     if postojeciKorisnik is not None and account_activation_token.check_token(postojeciKorisnik, token):
         postojeciKorisnik.potvrdenBool = True
+        postojeciKorisnik
         #print(postojeciKorisnik)
         postojeciKorisnik.save()
         signin(request)
@@ -367,10 +368,45 @@ def signin(request):
     return render(request, 'Signin.html',context)
 
 def new_password(request, uidb64, token):
-    return render(request, 'PromijeniLozinku.html')
+    context={}
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        print(token)
+        print(uid)
+        postojeciKorisnik = models.Korisnik.objects.get(id=uid)
+        print(postojeciKorisnik.korisnickoIme)
+        print(account_activation_token.check_token(postojeciKorisnik, token))
+    except(TypeError, ValueError, OverflowError, models.Korisnik.DoesNotExist):
+        postojeciKorisnik = None
+    if postojeciKorisnik is not None and account_activation_token.check_token(postojeciKorisnik, token):
+        context["usedEmail"]=postojeciKorisnik.email
+        context["usedUid"]=uidb64
+        context["usedToken"]=token
+    return render(request, 'PromijeniLozinku.html',context)
 
 def reset_password(request):
-    return redirect('home') 
+    if request.method == "POST":
+        email=request.POST["usedEmail"]
+        uid=request.POST["uid"]
+        token=request.POST["token"]
+        redirectString="reset/"+str(uid)+"/"+str(token)
+        print(redirectString)
+        pass1=request.POST["pass1"]
+        pass2=request.POST["pass2"]
+        user=models.Korisnik.objects.get(email=email)
+        if not pass1==pass2:
+            messages.error(request,"Unesene lozinke se ne preklapaju")
+            return redirect(redirectString)
+        if user.lozinka==pass1:
+            messages.error(request,"Nova lozinka ne smije biti stara lozinka")
+            return redirect(redirectString)
+        else:
+            user.lozinka=pass1
+            user.save()
+            return redirect('signin')
+    #Ako nije POST
+    messages.error(request, "Nemaš pristup ovoj stranici")
+    return redirect('home')
     #treba promijeniti tako da se provjeri poklapaju li se lozinke te ju spremiti u bazu ili javiti grešku
 
 def signout(request):
