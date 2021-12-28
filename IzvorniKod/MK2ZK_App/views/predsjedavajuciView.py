@@ -241,12 +241,15 @@ def statistika(request):
             return redirect('/')
     
     sudionici_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=4).count()
-    sudionici_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4).filter(activeBool=True).count()
-    sudionici_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4).filter(activeBool=False).count()
+    sudionici_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,activeBool=True).count()
+    sudionici_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,activeBool=False).count()
 
-    recenzenti_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=3).filter(potvrdenBool=True).count()
-    recenzenti_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3).filter(potvrdenBool=True).filter(activeBool=True).count()
-    recenzenti_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3).filter(potvrdenBool=True).filter(activeBool=False).count()
+    recenzenti_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=True).count()
+    recenzenti_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=True).count()
+    recenzenti_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=False).count()
+    recenzenti_potvrdeni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,odobrenBool=True).count()
+    recenzenti_odbijeni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,odobrenBool=False).count()
+    recenzenti_wait = models.Korisnik.objects.filter(vrstaKorisnik_id=3,odobrenBool=None).count()
 
     radovi = models.Rad.objects.all().count()
     prijavljeni_radovi =  models.Rad.objects.filter(pdf__isnull=True).count()
@@ -286,13 +289,20 @@ def statistika(request):
     
     context["Drzave"] = drzaveHrvList[1:]
 
-    broj_drzava = len(drzaveHrvList[1:])
-
     sudionici_po_drzavama = {}
-    for jedna_drzava in drzaveHrvList[1:]:
-        if models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count() > 0:
-            sudionici_po_drzavama[jedna_drzava] = models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count()    
 
+    #Sta sam ti rekao da napravis
+    sviKorisnici=models.Korisnik.objects.all()
+    for korisnik in sviKorisnici:
+        if str(korisnik.korisnikUstanova.drzava) not in sudionici_po_drzavama:
+            sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]=1
+        else:
+            sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]+=1
+    #Whatever the fuck this is
+    #for jedna_drzava in drzaveHrvList[1:]:
+        #if models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count() > 0:
+            #sudionici_po_drzavama[jedna_drzava] = models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count()    
+    broj_drzava=len(sudionici_po_drzavama)
 
     context["sudionici_svi"] = sudionici_svi
     context["sudionici_aktivni"] = sudionici_aktivni
@@ -315,5 +325,8 @@ def statistika(request):
     context["radovi_po_sekcijama"] = radovi_po_sekcijama
     context["korisnici_po_ulogama"] = korisnici_po_ulogama
     context["sudionici_po_drzavama"] = sudionici_po_drzavama
+    context["recenzenti_potvrdeni"] = recenzenti_potvrdeni
+    context["recenzenti_odbijeni"] = recenzenti_odbijeni
+    context["recenzenti_wait"] = recenzenti_wait
 
     return render(request, 'Statistika.html', context)
