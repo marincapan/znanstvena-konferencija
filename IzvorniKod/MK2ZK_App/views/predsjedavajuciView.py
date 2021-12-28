@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
@@ -19,7 +20,10 @@ import os
 def pregled(request):
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
@@ -43,7 +47,10 @@ def pregled(request):
 def recenzenti(request):
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
@@ -69,7 +76,10 @@ def recenzenti(request):
 def sudionici(request):
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
 
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
@@ -121,8 +131,11 @@ def radovi(request):
         
 
     context={}
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     else: #nismo ulogirani
         return redirect('signin')
     
@@ -157,7 +170,10 @@ def radovi(request):
 def obavijest(request):
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
@@ -183,7 +199,10 @@ def obavijest(request):
 def uprsucelje(request):
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Predsjedavajuci":
@@ -231,7 +250,10 @@ def uprsucelje(request):
 def statistika(request):
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":

@@ -85,9 +85,13 @@ def osobnipodaci(request):
         messages.success(request, "Podaci uspješno promijenjeni")
         return redirect('osobnipodaci')
 
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
         context={}
+        context["LoggedInUser"]=korisnik.id #ulogirani smo
+        LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
         context['LoggedInUser']=request.session['LoggedInUserId']
         context['LoggedInUserRole']=request.session['LoggedInUserRole']
         context['korisnickoIme']=LoggedInUser.korisnickoIme
@@ -141,8 +145,11 @@ def osobnipodaci(request):
 
 def mojiradovi(request):
     context={}
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     else: #nismo ulogirani
         return redirect('signin')
     

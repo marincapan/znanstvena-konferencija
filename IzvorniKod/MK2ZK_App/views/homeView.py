@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
@@ -43,7 +44,10 @@ def home(request):
 
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=models.Korisnik.objects.get(id=request.session['LoggedInUserId']).id
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
@@ -58,6 +62,13 @@ def home(request):
         konferencija.rokRecenzenti1 = dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
         context["infoKonferencija"] = konferencija #trebat ce mozda za countdown ili neke druge podatke stavit na naslovnicu
         
+    sviKorisnici=models.Korisnik.objects.all()
+    for korisnik in sviKorisnici:
+        print(korisnik.korisnickoIme, korisnik.id in request.session)
+
+
+
+
     ##clanci
     fetchedClanci = models.Clanak.objects.filter(active=True)
     context['Clanci'] = fetchedClanci
@@ -67,9 +78,13 @@ def home(request):
 
 
 def signup(request):
-    if "LoggedInUserId" in request.session: #otprije smo registrirani
-        return redirect('/')
     context={}
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id #otprije smo registrirani
+        return redirect('/')
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     fetchedSekcije=models.Sekcija.objects.filter().all()
     if (fetchedSekcije.first()): #ako je admin unio sekcije
@@ -362,7 +377,11 @@ def signin(request):
                 messages.error(request, "Korisničko ime ili lozinka su krivi.")
                 return redirect('signin')
 
-    elif "LoggedInUserId" in request.session: #otprije smo registrirani
+    elif "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id #otprije smo registrirani
         return redirect('/')
         
     return render(request, 'Signin.html',context)
@@ -418,7 +437,10 @@ def signout(request):
 def info(request):
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
   
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
@@ -451,8 +473,11 @@ def info(request):
 
 def javniradovi(request):
   context={}
-  if "LoggedInUserId" in request.session: #ulogirani smo
-    context["LoggedInUser"]=request.session['LoggedInUserId']
+  if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
   else: #nismo ulogirani
     return redirect('signin')
 

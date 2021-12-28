@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, tzinfo
 from enum import auto
 from io import StringIO, BytesIO
 from typing import DefaultDict
@@ -20,7 +20,7 @@ import os
 import requests
 import time
 import csv
-from datetime import date
+from datetime import datetime, timezone
 
 def increment_KorisnikID():
   last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
@@ -34,8 +34,11 @@ def increment_KorisnikID():
 
 def sloziobrazac(request):
     context={}
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     else: #nismo ulogirani
         return redirect('signin')
     
@@ -303,8 +306,11 @@ def adminsucelje(request):
     context['DodatnaPolja']=fetchedPolja
     context['Clanci'] = fetchedClanci
     
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     else: #nismo ulogirani
         return redirect('signin')
 
@@ -369,8 +375,11 @@ def adminsucelje(request):
 def covidstats(request):
     context = {}
 
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     else: #nismo ulogirani
         return redirect('signin')
     
@@ -415,7 +424,6 @@ def covidstats(request):
     context["konfDrzave"]=konfDrzave
     print(context)    
     return render(request, 'CovidStats.html', context)
-
 
 def uredipodatke(request, korisnickoime):
     korisnik = models.Korisnik.objects.filter(korisnickoIme = korisnickoime).first()
@@ -508,13 +516,18 @@ def uredipodatke(request, korisnickoime):
                 return redirect('pregled')
 
 
-        if "LoggedInUserId" in request.session: #ulogirani smo
-             korisnik2=models.Korisnik.objects.get(id=request.session["LoggedInUserId"]) #mora biti ili admin ili predsjedavajuci
-             uloga = korisnik2.vrstaKorisnik.naziv
-            
-             if (uloga == 'Admin' or uloga == 'Predsjedavajuci'):
 
-                context={}
+        if "LoggedInUserId" in request.session:
+            korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+            korisnik.lastActive=datetime.now()
+            korisnik.save()
+            context={}
+            context["LoggedInUser"]=korisnik.id
+            korisnik2=models.Korisnik.objects.get(id=request.session["LoggedInUserId"]) #mora biti ili admin ili predsjedavajuci
+            uloga = korisnik2.vrstaKorisnik.naziv
+            
+            if (uloga == 'Admin' or uloga == 'Predsjedavajuci'):
+
                 
                 context['LoggedInUser']=request.session['LoggedInUserId']
                 context['LoggedInUserRole']=request.session['LoggedInUserRole']
@@ -562,7 +575,7 @@ def uredipodatke(request, korisnickoime):
                     sekcije = list(dict.fromkeys(sekcije)) #po 1 pojavljivanje svake sekcije
                     context['sekcije'] = sekcije
             
-             else:
+            else:
                 messages.info(request, "Nemate ovlasti za pristup toj stranici.")
                 return redirect('home')
 
@@ -577,3 +590,36 @@ def uredipodatke(request, korisnickoime):
         return redirect('pregled')
     
     return render(request, 'UrediPodatke.html',context)
+
+def aktivniKorisnici(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
+    else: #nismo ulogirani
+        return redirect('signin')
+    
+    if "LoggedInUserRole" in request.session:
+        if request.session['LoggedInUserRole'] == "Admin":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin
+            messages.error(request,"Nemaš prava za ovu stranicu!")
+            return redirect('/') #redirect na homepage
+
+    sviKorisnici=models.Korisnik.objects.all()
+    aktivniKorisnici=[]
+    date1=datetime(2020,6,25,8)
+    date2=datetime(2020,6,25,8,10)
+    diff=date2-date1
+    print(datetime.now())
+    print(date2)
+    print((date2-date1).total_seconds())
+    for korisnik in sviKorisnici:
+        if (datetime.now().replace(tzinfo=timezone.utc)- korisnik.lastActive ).total_seconds()<600:
+            aktivniKorisnici.append(korisnik)
+            
+    print(aktivniKorisnici)
+    context["aktivniKorisnici"]=aktivniKorisnici
+    return render(request, 'AktivniKorisnici.html', context)

@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
@@ -20,8 +20,11 @@ import os
 
 def mojerecenzije(request):
     context={}
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     else: #nismo ulogirani
         return redirect('signin')
     

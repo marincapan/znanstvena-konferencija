@@ -41,7 +41,7 @@ class Korisnik(models.Model):
     korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE, null=True)
     token=models.CharField(max_length=50)
     dodatniPodatak = ManyToManyField("DodatnaPoljaObrasca",through='DodatniPodatci')
-    activeBool=models.BooleanField(default=False)
+    lastActive=models.DateTimeField(null=True)
 
 class Uloga(models.Model):
     id = models.AutoField(primary_key=True)
