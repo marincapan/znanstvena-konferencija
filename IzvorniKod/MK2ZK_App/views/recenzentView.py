@@ -83,5 +83,6 @@ def mojerecenzije(request):
     context['fetchedRadovi']=fetchRadovi
     context['fetchedMyRecenzije']=fetchMyRecenzije
     context["prosoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokRecenzenti
+    context["poceoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokPocRecenzija
     
     return render(request, 'MojeRecenzije.html', context)
