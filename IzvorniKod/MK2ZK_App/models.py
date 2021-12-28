@@ -1,3 +1,4 @@
+from datetime import datetime
 from os import truncate
 from django.db import models
 from django.db.models.deletion import CASCADE
@@ -41,7 +42,7 @@ class Korisnik(models.Model):
     korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE, null=True)
     token=models.CharField(max_length=50)
     dodatniPodatak = ManyToManyField("DodatnaPoljaObrasca",through='DodatniPodatci')
-    lastActive=models.DateTimeField(null=True)
+    lastActive=models.DateTimeField(default=datetime(2020, 12, 28, 17, 30, 53))
 
 class Uloga(models.Model):
     id = models.AutoField(primary_key=True)

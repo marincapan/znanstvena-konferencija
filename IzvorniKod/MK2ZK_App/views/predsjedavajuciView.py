@@ -263,8 +263,8 @@ def statistika(request):
             return redirect('/')
     
     sudionici_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=4).count()
-    sudionici_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,activeBool=True).count()
-    sudionici_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,activeBool=False).count()
+    sudionici_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,potvrdenBool=True).count()
+    sudionici_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,potvrdenBool=False).count()
 
     recenzenti_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=True).count()
     recenzenti_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=True).count()
