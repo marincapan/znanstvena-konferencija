@@ -1,8 +1,10 @@
 from collections import defaultdict
 from datetime import datetime
+from difflib import SequenceMatcher
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
+from django.core.exceptions import ValidationError
 from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
 from django.http.response import FileResponse, HttpResponse
@@ -26,6 +28,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from IzvorniKod.MK2ZK_App.tokens import account_activation_token
 from django.core.mail import EmailMessage
+from django.contrib.auth.password_validation import *
 
 def increment_KorisnikID():
   last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
@@ -413,12 +416,35 @@ def reset_password(request):
         pass1=request.POST["pass1"]
         pass2=request.POST["pass2"]
         user=models.Korisnik.objects.get(email=email)
-        if not pass1==pass2:
+        validators = [MinimumLengthValidator,CommonPasswordValidator,NumericPasswordValidator]
+        print(user.ime + user.prezime)
+        userAttributes = [user.korisnickoIme,user.ime,user.prezime,user.ime + user.prezime,user.ime + user.korisnickoIme,user.korisnickoIme + user.prezime]
+        if not pass1==pass2: #Lozinke nisu iste
             messages.error(request,"Unesene lozinke se ne preklapaju")
             return redirect(redirectString)
-        if user.lozinka==pass1:
+        if user.lozinka==pass1: #Lozinka je ista staroj
             messages.error(request,"Nova lozinka ne smije biti stara lozinka")
             return redirect(redirectString)
+        for atr in userAttributes:
+            if SequenceMatcher(a=pass1.lower(), b=atr.lower()).quick_ratio() >= 0.7:
+                messages.error(request, "Lozinka je nesigurna jer je preslična jednom tvojim podatacima.")
+                return redirect(redirectString)
+        try:
+            for validator in validators:
+                validator().validate(pass1)
+        except ValidationError as e:
+            if str(e) == "['This password is too short. It must contain at least 8 characters.']":
+                messages.error(request, "Lozinka je prekratka. Molimo vas koristite minimalno 8 znakova")
+                return redirect(redirectString)
+            if str(e) == "['This password is too common.']":
+                messages.error(request, "Ova lozinka je prejednostavna")
+                return redirect(redirectString)
+            if str(e) == "['This password is entirely numeric.']":
+                messages.error(request, "Lozinka ne smije imati samo brojke")
+                return redirect(redirectString)
+            messages.error(request,str(e))
+            return redirect(redirectString)
+            
         else:
             user.lozinka=pass1
             user.save()

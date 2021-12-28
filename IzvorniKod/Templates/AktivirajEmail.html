@@ -1,7 +1,10 @@
 {% autoescape off %}
-Hi {{ user.ime }} {{ user.prezime }},
+Pozdrav {{ user.ime }} {{ user.prezime }},
 Tvoje korisničko ime je {{ user.korisnickoIme }},
 Tvoja lozinka je {{ user.lozinka }},
 Molim te povrdi svoj korsinički račun klikom na poveznicu: 
 http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Srdačno,
+Pametna Ekipa
 {% endautoescape %}
