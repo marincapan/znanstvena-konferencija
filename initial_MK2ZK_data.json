@@ -13,27 +13,9 @@
             "rokPocPrijava" : "2022-12-12"
         }
     },
-    {
-        "model":"MK2ZK_App.Ustanova",
-        "sifUstanova":1,
-        "fields":{
-            "naziv":"Admin Ustanova",
-            "grad":"Zagreb",
-            "drzava":"Hrvatska",
-            "adresa":"Unska 3"
-        }
-    },
-    {
-        "model":"MK2ZK_App.Sekcija",
-        "sifSekcija":1,
-        "fields":{
-            "naziv":"Admin Sekcija",
-            "konferencijaSekcija": 1
-        }
-    },
 	{
         "model":"MK2ZK_App.Sekcija",
-        "sifSekcija":2,
+        "sifSekcija":1,
         "fields":{
             "naziv":"Banana sekcija",
             "konferencijaSekcija": 1
@@ -41,7 +23,7 @@
     },
 	{
         "model":"MK2ZK_App.Sekcija",
-        "sifSekcija":3,
+        "sifSekcija":2,
         "fields":{
             "naziv":"Avokado sekcija",
             "konferencijaSekcija": 1
@@ -49,7 +31,7 @@
     },
     {
         "model":"MK2ZK_App.Sekcija",
-        "sifSekcija":4,
+        "sifSekcija":3,
         "fields":{
             "naziv":"Trešnja sekcija",
             "konferencijaSekcija": 1
@@ -123,8 +105,6 @@
             "odobrenBool": "True",
             "potvrdenBool": "True",
             "vrstaKorisnik": 1,
-            "korisnikUstanova" : 1,
-            "korisnikSekcija": 1,
             "lastActive": "2021-06-25 07:58:56"
         }
         
@@ -141,7 +121,6 @@
             "odobrenBool": "True",
             "potvrdenBool": "True",
             "vrstaKorisnik": 3,
-            "korisnikUstanova" : 1,
             "korisnikSekcija": 2,
             "lastActive": "2021-06-25 07:58:56"
         }
@@ -160,7 +139,6 @@
             "odobrenBool": "True",
             "potvrdenBool": "True",
             "vrstaKorisnik": 4,
-            "korisnikUstanova" : 1,
             "korisnikSekcija": 2,
             "lastActive": "2021-06-25 07:58:56"
         }
@@ -178,7 +156,6 @@
             "odobrenBool": "True",
             "potvrdenBool": "True",
             "vrstaKorisnik": 2,
-            "korisnikUstanova" : 1,
             "korisnikSekcija": 2,
             "lastActive": "2021-06-25 07:58:56"
         }

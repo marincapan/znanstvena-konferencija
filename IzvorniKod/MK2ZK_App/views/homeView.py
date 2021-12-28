@@ -111,9 +111,10 @@ def signup(request):
     context["Drzave"] = drzaveHrvList[1:]
     ######
 
-    print(context)
+    #print(context)
 
     if request.method == "POST":        
+        print(request.POST)
         username = request.POST['Username']
         fName = request.POST['Fname']
         lName = request.POST['Lname']
@@ -121,17 +122,16 @@ def signup(request):
         matustName = request.POST['matustName']
         matustAdr = request.POST['matustAdr']
         matustCity = request.POST['matustCity']
-        #matustDrz = request.POST['matustDrz']
+        matustDrz = request.POST['matustDrz']
         uloga = request.POST['uloga']
         section = request.POST['section']
-
         #za obradu drzave
         ######
-        matustDrz = ""
-        matustDrzHrv = request.POST['matustDrz']
-        for i in range(len(drzaveHrvList)):
-            if drzaveHrvList[i] == matustDrzHrv:
-                matustDrz = drzaveEngList[i]
+        #matustDrz = ""
+        #matustDrzHrv = request.POST['matustDrz']
+        #for i in range(len(drzaveHrvList)):
+            #if drzaveHrvList[i] == matustDrzHrv:
+                #matustDrz = drzaveEngList[i]
         ######
 
         #Ove ifove treba optimizirati!
