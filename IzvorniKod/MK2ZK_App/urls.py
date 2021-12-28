@@ -26,5 +26,6 @@ urlpatterns = [
     path('pregled/sudionici/<korisnickoime>', adminView.uredipodatke, name='uredipodatke2'),
     path('activate/<uidb64>/<token>',  homeView.activate, name='activate'), 
     path('reset/<uidb64>/<token>/', homeView.new_password, name='password_reset_confirm'), 
-    path('reset_password', homeView.reset_password, name='password_reset_save'), 
+    path('reset_password', homeView.reset_password, name='password_reset_save'),
+    path('statistika', predsjedavajuciView.statistika, name='statistika'), 
 ]

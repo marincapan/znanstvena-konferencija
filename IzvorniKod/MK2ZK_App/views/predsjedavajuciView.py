@@ -227,3 +227,93 @@ def uprsucelje(request):
     context["radovi_broj_nerecenziranih"] = radovi.filter(recenziranBool=False).count()
 
     return render(request, 'Predsjedavajuci.html', context)
+
+def statistika(request):
+    context={}
+    if "LoggedInUserId" in request.session:
+        context["LoggedInUser"]=request.session['LoggedInUserId']
+    
+    if "LoggedInUserRole" in request.session:
+        if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
+        else: #nije admin/predsjedavajuci
+            messages.error(request,"Nemaš prava za ovu stranicu!")
+            return redirect('/')
+    
+    sudionici_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=4).count()
+    sudionici_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4).filter(activeBool=True).count()
+    sudionici_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4).filter(activeBool=False).count()
+
+    recenzenti_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=3).filter(potvrdenBool=True).count()
+    recenzenti_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3).filter(potvrdenBool=True).filter(activeBool=True).count()
+    recenzenti_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3).filter(potvrdenBool=True).filter(activeBool=False).count()
+
+    radovi = models.Rad.objects.all().count()
+    prijavljeni_radovi =  models.Rad.objects.filter(pdf__isnull=True).count()
+    predani_radovi =  models.Rad.objects.filter(pdf__isnull=False).count()
+    recenzirani_radovi = models.Recenzija.objects.order_by().values_list('rad').distinct().count()
+
+    autori = models.Autor.objects.order_by().values_list('email').distinct().count()
+    recenzije = models.Recenzija.objects.all().count()
+
+    ustanove = models.Ustanova.objects.order_by().values_list('naziv').distinct().count()
+    sve_ustanove = models.Ustanova.objects.all().count()
+
+    sekcije = models.Sekcija.objects.all()
+    sve_sekcije = models.Sekcija.objects.all().count()
+    radovi_po_sekcijama={}
+    for sekcija in sekcije:
+        radovi_po_sekcijama[sekcija.naziv] = models.Rad.objects.filter(radSekcija=sekcija).count()
+
+    korisnici = models.Korisnik.objects.filter(vrstaKorisnik_id__in=[1,2,3,4]).count()
+    uloge = models.Uloga.objects.all()
+    korisnici_po_ulogama={}
+    for uloga in uloge:
+        korisnici_po_ulogama[uloga.naziv] = models.Korisnik.objects.filter(vrstaKorisnik=uloga).count()
+
+    module_dir = os.path.dirname(__file__)  # get current directory
+    path1 = os.path.join(module_dir, '../static/txt/SveDrzave.txt')
+    path2 = os.path.join(module_dir, '../static/txt/SveDrzaveHR.txt')
+
+    file1 = open(path1, "r", encoding='utf-8')
+    file2 = open(path2, "r", encoding='utf-8')
+
+    drzaveEng = file1.read().replace("\"","\'")
+    drzaveHrv = file2.read().replace("\"","\'")
+
+    drzaveEngList = drzaveEng[1:len(drzaveEng)-2].split("',\n '")
+    drzaveHrvList = drzaveHrv[1:len(drzaveHrv)-2].split("',\n '")
+    
+    context["Drzave"] = drzaveHrvList[1:]
+
+    broj_drzava = len(drzaveHrvList[1:])
+
+    sudionici_po_drzavama = {}
+    for jedna_drzava in drzaveHrvList[1:]:
+        if models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count() > 0:
+            sudionici_po_drzavama[jedna_drzava] = models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count()    
+
+
+    context["sudionici_svi"] = sudionici_svi
+    context["sudionici_aktivni"] = sudionici_aktivni
+    context["sudionici_neaktivni"] = sudionici_neaktivni
+    context["recenzenti_svi"] = recenzenti_svi
+    context["recenzenti_aktivni"] = recenzenti_aktivni
+    context["recenzenti_neaktivni"] = recenzenti_neaktivni
+    context["ustanove"] = ustanove
+    context["sve_ustanove"] = sve_ustanove
+    context["sekcije"] = sekcije
+    context["sve_sekcije"] = sve_sekcije
+    context["korisnici"] = korisnici
+    context["broj_drzava"] = broj_drzava
+    context["radovi"] = radovi
+    context["autori"] = autori
+    context["recenzije"] = recenzije
+    context["prijavljeni_radovi"] = prijavljeni_radovi
+    context["predani_radovi"] = predani_radovi
+    context["recenzirani_radovi"] = recenzirani_radovi
+    context["radovi_po_sekcijama"] = radovi_po_sekcijama
+    context["korisnici_po_ulogama"] = korisnici_po_ulogama
+    context["sudionici_po_drzavama"] = sudionici_po_drzavama
+
+    return render(request, 'Statistika.html', context)
