@@ -54,8 +54,11 @@
               <div class="text-center text-muted mb-4">
                 Ovdje se prikazuju radovi koje ste prijavili.
               </div>
-
-              {%if prosoDatum == 0 %}
+              {%if poceoDatum == 0%}
+              <div class="text-center fw-bold">
+                Prijave još nisu počele!
+              </div>
+              {%elif prosoDatum == 0 %}
               <div class="accordion" id="accordionRadovi">
                 {%for rad in fetchedRadovi%}
                 <div class="accordion-item">
@@ -220,8 +223,11 @@
               <p class="text-center text-muted mb-4">
                 Ovdje uneste ime, datoteku te autore dodatnog rada s kojim želite sudjelovati na konferenciji.
               </p>
-
-              {%if prosoDatum == 1 %}
+              {%if poceoDatum == 0%}
+              <div class="text-center fw-bold">
+                Prijave još nisu počele!
+              </div>
+              {%elif prosoDatum == 1 %}
               <div class="text-center fw-bold">
                 Rok za prijavu radova je istekao!
               </div>

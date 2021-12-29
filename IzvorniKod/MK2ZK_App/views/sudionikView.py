@@ -99,8 +99,10 @@ def osobnipodaci(request):
         context['prezime']=LoggedInUser.prezime
         context['email']=LoggedInUser.email
         context['uloga']=LoggedInUser.vrstaKorisnik.naziv
-        context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
-        context['sekcija']=LoggedInUser.korisnikSekcija.naziv
+        if LoggedInUser.korisnikUstanova:
+            context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
+        if LoggedInUser.korisnikSekcija:
+            context['sekcija']=LoggedInUser.korisnikSekcija.naziv
        
         if (context['LoggedInUserRole']=='Sudionik' or context['LoggedInUserRole']=='Recenzent'):
             dodatnipodatci = {}
@@ -290,4 +292,5 @@ def mojiradovi(request):
             return redirect('mojiradovi')
 
     context["prosoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokPrijave
+    context["poceoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokPocPrijava
     return render(request, 'MojiRadovi.html',context)

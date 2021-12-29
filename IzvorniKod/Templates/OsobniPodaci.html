@@ -100,7 +100,7 @@
                   </div>
                   {%endif%}
 
-                  {%if LoggedInUserRole == 'Recenzent'%}
+                  {%if LoggedInUserRole == 'Recenzent' or LoggedInUserRole == 'Sudionik'%}
                   {%if sekcija%}
                   <div class="mb-3" id="sekcijaWrapper">
                     <label for="sekcija" class="form-label fw-bold">Sekcija</label>

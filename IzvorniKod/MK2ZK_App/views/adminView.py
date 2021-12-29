@@ -332,7 +332,6 @@ def adminsucelje(request):
                 context['prezime']=Predsjedavajuci.prezime
                 context['email']=Predsjedavajuci.email
                 context['uloga']=Predsjedavajuci.vrstaKorisnik.naziv
-                context['MaticnaUstanova']=Predsjedavajuci.korisnikUstanova.naziv
                 context['sekcija']=Predsjedavajuci.korisnikSekcija.naziv
         else: #nije admin
             messages.error(request,"Nemaš prava za ovu stranicu!")
