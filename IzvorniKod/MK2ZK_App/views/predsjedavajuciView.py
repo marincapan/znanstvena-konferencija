@@ -9,6 +9,7 @@ from django.http.response import FileResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.core.mail.message import EmailMessage
 from django.utils.crypto import get_random_string
 from IzvorniKod.MK2ZK_App import models
 from django.db import IntegrityError 
@@ -169,6 +170,7 @@ def radovi(request):
 
 def obavijest(request):
     context={}
+    korisnici = models.Korisnik.objects.filter(vrstaKorisnik_id__in=[3,4]).filter(potvrdenBool=True)
     if "LoggedInUserId" in request.session:
         korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
         korisnik.lastActive=datetime.now()
@@ -182,10 +184,25 @@ def obavijest(request):
             messages.error(request,"Nemaš prava za ovu stranicu!")
             return redirect('/')
     
+    if request.method=="POST":
+        naslov=request.POST["naslovObavijesti"]
+        tekst=request.POST["tekstObavijesti"]
+        print(request.POST)
+        for korisnik in korisnici:
+            try:
+                if request.POST[str(korisnik.id)+"checked"]=='on':
+                    print("Poslao")
+                    to_email = korisnik.email
+                    email = EmailMessage(
+                        naslov, tekst, 'Pametna ekipa', to=[to_email]
+                    )
+                    email.send()
+            except:
+                continue
+        return redirect('obavijest')
     sekcije = models.Sekcija.objects.all()
     ustanove = models.Ustanova.objects.all()
 
-    korisnici = models.Korisnik.objects.filter(vrstaKorisnik_id__in=[3,4]).filter(odobrenBool=True)
 
     #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea
     for korisnik in korisnici:
