@@ -38,8 +38,8 @@ def pregled(request):
 
     context["recenzenti_broj_odobrenih"] = recenzenti.filter(odobrenBool=True).count()
     context["recenzenti_broj_neodobrenih"] = recenzenti.filter(odobrenBool=False).count()
-    context["sudionici_broj_odobrenih"] = sudionici.filter(odobrenBool=True).count()
-    context["sudionici_broj_neodobrenih"] = sudionici.filter(odobrenBool=False).count()
+    context["sudionici_broj_odobrenih"] = sudionici.filter(potvrdenBool=True).count()
+    context["sudionici_broj_neodobrenih"] = sudionici.filter(potvrdenBool=False).count()
     context["radovi_broj_recenziranih"] = radovi.filter(recenziranBool=True).count()
     context["radovi_broj_nerecenziranih"] = radovi.filter(recenziranBool=False).count()
     return render(request, 'Pregled.html', context)

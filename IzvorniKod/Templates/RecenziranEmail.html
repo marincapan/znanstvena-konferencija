@@ -1,0 +1,13 @@
+{% autoescape off %}
+Pozdrav {{user.korisnickoIme}},
+
+Tvoj rad, "{{rad.naslov}}" s autorima -{%for autor in rad.autori.all%} "{{autor.ime}} {{autor.prezime}}({{autor.email}})",{% endfor %} je upravo recenziran!
+
+Svoju recenziju možeš vidjeti na {{ protocol }}://{{ domain }} pod 'Moji radovi'
+
+Ako smatrate da ovaj mail nije namjenjen vama, slobodno ignorirajte ovaj mail.
+
+Srdačno,
+Pametna Ekipa
+
+{% endautoescape %}
