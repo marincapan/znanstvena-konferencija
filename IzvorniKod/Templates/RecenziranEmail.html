@@ -1,13 +1,11 @@
 {% autoescape off %}
-Pozdrav {{user.korisnickoIme}},
+Poštovani {{user.korisnickoIme}},
 
-Tvoj rad, "{{rad.naslov}}" s autorima -{%for autor in rad.autori.all%} "{{autor.ime}} {{autor.prezime}}({{autor.email}})",{% endfor %} je upravo recenziran!
+Vaš rad, "{{rad.naslov}}", čiji su autori: -{%for autor in rad.autori.all%} "{{autor.ime}} {{autor.prezime}}({{autor.email}})",{% endfor %} je upravo recenziran.
 
-Svoju recenziju možeš vidjeti na {{ protocol }}://{{ domain }} pod 'Moji radovi'
+Recenzija Vašeg rada dostupna je na poveznici: {{ protocol }}://{{ domain }} pod 'Moji radovi'.
 
-Ako smatrate da ovaj mail nije namjenjen vama, slobodno ignorirajte ovaj mail.
-
-Srdačno,
+Srdačan pozdrav,
 Pametna Ekipa
 
 {% endautoescape %}
