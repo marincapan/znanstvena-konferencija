@@ -7,7 +7,7 @@ Vaša lozinka je {{ user.lozinka }},
 
 Molimo Vas da potvrdite svoj korsinički račun klikom na poveznicu: 
 
-http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{{protocol}}://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 
 Srdačan pozdrav,
 Pametna Ekipa

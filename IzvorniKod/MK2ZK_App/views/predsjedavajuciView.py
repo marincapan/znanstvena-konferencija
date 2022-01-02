@@ -10,13 +10,17 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.core.mail.message import EmailMessage
+from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from IzvorniKod.MK2ZK_App import models
 from django.db import IntegrityError 
 from django.core import serializers
 from django.utils import (dateformat, formats)
 import zipfile
 import os
+from IzvorniKod.MK2ZK_App.tokens import account_activation_token
 
 def pregled(request):
     context={}
@@ -241,11 +245,39 @@ def uprsucelje(request):
                 updateRecenzent=models.Korisnik.objects.get(id=recenzent.id)
                 updateRecenzent.odobrenBool=True
                 updateRecenzent.save()
+                
+                poruka = render_to_string('RecenzentMail.html', {
+                'user': updateRecenzent,
+                'domain': '127.0.0.1:8000',
+                'uid':urlsafe_base64_encode(force_bytes(updateRecenzent.id)),
+                'token':account_activation_token.make_token(updateRecenzent),
+                'protocol':'http'
+                    })
+                to_email = updateRecenzent.email
+                email = EmailMessage(
+                '[ZK] Tvoj status prijave za recenzenstvom je ažuriran!', poruka, 'Pametna ekipa', to=[to_email]
+                )
+                email.send()
+
                 return redirect("predsjedavajuci")
             if ("Odbij" + str(recenzent.id)) in request.POST:
                 updateRecenzent=models.Korisnik.objects.get(id=recenzent.id)
                 updateRecenzent.odobrenBool=False
                 updateRecenzent.save()
+
+                poruka = render_to_string('RecenzentMail.html', {
+                'user': updateRecenzent,
+                'domain': '127.0.0.1:8000',
+                'uid':urlsafe_base64_encode(force_bytes(updateRecenzent.id)),
+                'token':account_activation_token.make_token(updateRecenzent),
+                'protocol':'http'
+                    })
+                to_email = updateRecenzent.email
+                email = EmailMessage(
+                '[ZK] Tvoj status prijave za recenzenstvom je ažuriran!', poruka, 'Pametna ekipa', to=[to_email]
+                )
+                email.send()
+
                 return redirect("predsjedavajuci")
 
     #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea

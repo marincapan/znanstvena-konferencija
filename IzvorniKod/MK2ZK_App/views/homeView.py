@@ -245,7 +245,18 @@ def signup(request):
                     noviDodatniPodatak.save()
                 except:
                     continue
-                
+                poruka = render_to_string('AktivirajEmail.html', {
+                    'user': NoviKorisnik,
+                    'domain': '127.0.0.1:8000',
+                    'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
+                    'token':account_activation_token.make_token(NoviKorisnik),
+                    'protocol':'http'
+                        })
+                to_email = email
+                email = EmailMessage(
+                '[ZK] Tvoj račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
+                )
+                email.send()
         
         #Ako obradjujemo recenzenta, radimo drugacije provjere
         elif(uloga == "Recenzent"):
@@ -265,7 +276,6 @@ def signup(request):
 
             #Generiraj password za korisnika
             randPassword=get_random_string(length=16)
-            request.session['randPassword'] = randPassword
             
             #Probaj spremiti novog korisnika
             try:
@@ -283,18 +293,8 @@ def signup(request):
                     poljeObrasca=dodatnoPolje
                 )
                 noviDodatniPodatak.save()
-        poruka = render_to_string('AktivirajEmail.html', {
-        'user': NoviKorisnik,
-        'domain': '127.0.0.1:8000',
-        'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
-        'token':account_activation_token.make_token(NoviKorisnik),
-            })
-        to_email = email
-        email = EmailMessage(
-           '[ZK] Tvoj račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
-        )
-        email.send()
-        return redirect('signin')
+        
+        return redirect('home')
 
     
     return render(request, 'Signup.html',context)
@@ -365,6 +365,13 @@ def signin(request):
 
             if (models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists()):
                 LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
+                if LoggedInUser.vrstaKorisnik.naziv=="Recenzent":
+                    if LoggedInUser.odobrenBool==None:
+                        messages.warning(request,"Vaš status recenzentstva još nije odlučen. Hvala vam na strpljenju")
+                        return redirect('home')
+                    if LoggedInUser.odobrenBool==False:
+                        messages.warning(request,"Vaš status recenzentstva je odbijen.")
+                        return redirect('home')
                 if LoggedInUser.potvrdenBool==False:
                     messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
                     print("flag")
