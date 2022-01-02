@@ -1,0 +1,11 @@
+before_script:
+  - cd /home/docker/znanstvenakonferencija
+deploying:
+  stage: deploy
+  only:
+      - main
+  
+  script:
+    - git reset --hard
+    - git pull origin main
+    - bash /home/docker/znanstvenakonferencija/IzvorniKod/docker-entrypoint.sh
