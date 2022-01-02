@@ -437,8 +437,8 @@ def uredipodatke(request, korisnickoime):
             email = request.POST["email"]
             maticnaUstanova = request.POST["ustanova"]
 
-        #Provjeri jesu li sva polja u redu prije spremanja u bazu
-        #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni korisnik
+            #Provjeri jesu li sva polja u redu prije spremanja u bazu
+            #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni korisnik
             if models.Korisnik.objects.filter(korisnickoIme = username).exclude(id = korisnik.id).exists():
                 messages.error(request, "Korisničko ime je zauzeto")
                 
@@ -447,7 +447,7 @@ def uredipodatke(request, korisnickoime):
                 if (uloga == "Recenzent"):
                     return redirect('pregled/recenzneti/'+username)
         
-        #email - pogledaj postoji li netko s istim emailom, a da nije trenutni korisnik
+            #email - pogledaj postoji li netko s istim emailom, a da nije trenutni korisnik
             if models.Korisnik.objects.filter(email = email).exclude(id = korisnik.id).exists():
                 messages.error(request, "E-mail adresa je zauzeta")
                 
@@ -463,26 +463,26 @@ def uredipodatke(request, korisnickoime):
                 dodatno = models.DodatnaPoljaObrasca.objects.all()
                 print(len(dodatno))
             
-            for polje in dodatno:
-                    dodatno = models.DodatniPodatci.objects.filter(korisnik = korisnik, poljeObrasca = polje).first()
-                    
-                    if dodatno:
-                        print(dodatno.podatak)
-                        novo = request.POST["dodatni"+str(i)]
-                        #validacija unosa?
+                for polje in dodatno:
+                        dodatno = models.DodatniPodatci.objects.filter(korisnik = korisnik, poljeObrasca = polje).first()
+                        
+                        if dodatno:
+                            print(dodatno.podatak)
+                            novo = request.POST["dodatni"+str(i)]
+                            #validacija unosa?
 
-                        i = i + 1
-                        print(novo)
-                        dodatno.podatak = novo
-                        dodatno.save()
+                            i = i + 1
+                            print(novo)
+                            dodatno.podatak = novo
+                            dodatno.save()
 
-        #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
+            #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
             korisnik.korisnickoIme = username
             korisnik.ime = ime
             korisnik.prezime = prezime
             korisnik.email = email
         
-        #ustanova (ako je isti naziv kao i do sad, nema smisla updateati)
+            #ustanova (ako je isti naziv kao i do sad, nema smisla updateati)
             if maticnaUstanova != korisnik.korisnikUstanova.naziv:
                 if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = korisnik.korisnikUstanova.grad, drzava = korisnik.korisnikUstanova.drzava, adresa = korisnik.korisnikUstanova.adresa).exists():
                     novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = korisnik.korisnikUstanova.grad, drzava = korisnik.korisnikUstanova.drzava, adresa = korisnik.korisnikUstanova.adresa)
@@ -517,9 +517,9 @@ def uredipodatke(request, korisnickoime):
 
 
         if "LoggedInUserId" in request.session:
-            korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            korisnik.lastActive=datetime.now()
-            korisnik.save()
+            User=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+            User.lastActive=datetime.now()
+            User.save()
             context={}
             context["LoggedInUser"]=korisnik.id
             korisnik2=models.Korisnik.objects.get(id=request.session["LoggedInUserId"]) #mora biti ili admin ili predsjedavajuci
@@ -536,8 +536,10 @@ def uredipodatke(request, korisnickoime):
                 context['prezime']=korisnik.prezime
                 context['email']=korisnik.email
                 context['uloga']=korisnik.vrstaKorisnik.naziv
-                context['MaticnaUstanova']=korisnik.korisnikUstanova.naziv
-                context['sekcija']=korisnik.korisnikSekcija.naziv
+                if not korisnik.korisnikUstanova==None:
+                    context['MaticnaUstanova']=korisnik.korisnikUstanova.naziv
+                if not korisnik.korisnikSekcija==None:
+                    context['sekcija']=korisnik.korisnikSekcija.naziv
        
                 if (context['uloga']=='Sudionik' or context['uloga']=='Recenzent'):
                     dodatnipodatci = {}
