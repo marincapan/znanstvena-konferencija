@@ -66,12 +66,30 @@ def mojerecenzije(request):
             'user': rad.radKorisnik,
             'rad': rad,
             'domain': '127.0.0.1:8000',
+            'protocol':'http',
+            'recenzija':novaRecenzija
             })
         to_email = rad.radKorisnik.email
         email = EmailMessage(
            '[ZK] Vaš rad je ocjenjen!', poruka, 'Pametna ekipa', to=[to_email]
         )
         email.send()
+
+        findOzk=models.AutorRad.objects.filter(Rad=rad)
+        for autor in findOzk:
+            if autor.OZK==True:
+                poruka = render_to_string('RecenziranEmail.html', {
+                    'user': rad.radKorisnik,
+                    'rad': rad,
+                    'domain': '127.0.0.1:8000',
+                    'protocol':'http',
+                    'recenzija':novaRecenzija
+                    })
+                to_email = rad.radKorisnik.email
+                email = EmailMessage(
+                '[ZK] Vaš rad je ocjenjen!', poruka, 'Pametna ekipa', to=[to_email]
+                )
+                email.send()
 
         return redirect('mojerecenzije')
     #radovi koji nemaju predan pdf se ne recenziraju, a također nas ne zanimaju radovi koji su recenzirani no ne trebaju reviziju (oni su tako i tako u recenzijama)

@@ -151,6 +151,8 @@ def signup(request):
                 autorIme = request.POST['autorFName' + i]
                 autorPrezime = request.POST['autorLName' + i]
                 autorEmail = request.POST['autorEmail' + i]
+                if "autorKontakt"+i in request.POST:
+                    OZKIndex=int(i)
                 """ #Autori za sad nemaju oznaku OZK because its bwoken
                 if "autorKontakt"+i in request.POST:
                     autor["Kontakt"] = True
@@ -229,8 +231,16 @@ def signup(request):
                 else:
                     noviAutor.save()
                 noviRad.autori.add(noviAutor)
-
             noviRad.save()
+
+            print(OZKIndex)
+            for index,autor in enumerate(autori):
+                if index==OZKIndex:
+                    autorrad=models.AutorRad.objects.get(Rad=noviRad,Autor=models.Autor.objects.get(ime=autor.ime,prezime=autor.prezime,email=autor.email))
+                    print(autorrad.id)
+                    autorrad.OZK=True
+                    autorrad.save()
+
             fetchedPolja=models.DodatnaPoljaObrasca.objects.filter(active = "True").all()
             for dodatnoPolje in fetchedPolja:
                 try:
@@ -245,19 +255,19 @@ def signup(request):
                     noviDodatniPodatak.save()
                 except:
                     continue
-                poruka = render_to_string('AktivirajEmail.html', {
-                    'user': NoviKorisnik,
-                    'domain': '127.0.0.1:8000',
-                    'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
-                    'token':account_activation_token.make_token(NoviKorisnik),
-                    'protocol':'http'
-                        })
-                to_email = email
-                email = EmailMessage(
-                '[ZK] Tvoj račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
-                )
-                email.send()
-        
+            poruka = render_to_string('AktivirajEmail.html', {
+                'user': NoviKorisnik,
+                'domain': '127.0.0.1:8000',
+                'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
+                'token':account_activation_token.make_token(NoviKorisnik),
+                'protocol':'http'
+                    })
+            to_email = email
+            email = EmailMessage(
+            '[ZK] Tvoj račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
+            )
+            email.send()
+            return redirect('signin')
         #Ako obradjujemo recenzenta, radimo drugacije provjere
         elif(uloga == "Recenzent"):
             #Ako ustanova ne postoji spremi ju, inace dohvati postojecu
@@ -293,8 +303,8 @@ def signup(request):
                     poljeObrasca=dodatnoPolje
                 )
                 noviDodatniPodatak.save()
+            return redirect('home')
         
-        return redirect('home')
 
     
     return render(request, 'Signup.html',context)
