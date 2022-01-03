@@ -29,6 +29,7 @@ from django.template.loader import render_to_string
 from IzvorniKod.MK2ZK_App.tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib.auth.password_validation import *
+import hashlib
 
 def increment_KorisnikID():
   last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
@@ -190,14 +191,22 @@ def signup(request):
                 Sekcija.save()
 
             #Generiraj password za korisnika
+
+
             randPassword=get_random_string(length=16)
-            request.session['randPassword'] = randPassword
-            #token = account_activation_token.make_token(user)
-            #email_message = EmailMessage('[ZK]', 'Tvoja lozinka je %s'%(randPassword), 'Pametna ekipa',  to=[email])
-            #email_message.send()
+            salt=os.urandom(32)
+            key=hashlib.pbkdf2_hmac(
+                'sha256',
+                randPassword.encode('utf-8'),
+                salt,
+                100000
+            )
+
+
+
             #Probaj spremiti novog korisnika
             try:
-                NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,idSudionik=idSudionik,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
+                NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=key,idSudionik=idSudionik,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija,salt=salt)
                 NoviKorisnik.save()
             except IntegrityError:
                 messages.error(request, "Korisnicko ime ili email je vec u uporabi")
@@ -257,6 +266,7 @@ def signup(request):
                     continue
             poruka = render_to_string('AktivirajEmail.html', {
                 'user': NoviKorisnik,
+                'lozinka': randPassword,
                 'domain': '127.0.0.1:8000',
                 'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
                 'token':account_activation_token.make_token(NoviKorisnik),
@@ -285,11 +295,10 @@ def signup(request):
                 Sekcija.save()
 
             #Generiraj password za korisnika
-            randPassword=get_random_string(length=16)
             
             #Probaj spremiti novog korisnika
             try:
-                NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
+                NoviKorisnik = models.Korisnik(korisnickoIme=username,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
                 NoviKorisnik.save()
             except IntegrityError:
                 messages.error(request, "Korisnicko ime ili email je vec u uporabi")
@@ -333,6 +342,7 @@ def activate(request, uidb64, token):
 
 def signin(request):
     context = {}
+    print(type(os.urandom(32)))
     if request.method == "POST":
         #zaboravljena lozinka
         if "email" in request.POST:
@@ -372,31 +382,56 @@ def signin(request):
         else:
             Username = request.POST['Username']
             pass1 = request.POST['pass1']
-
-            if (models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists()):
-                LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
-                if LoggedInUser.vrstaKorisnik.naziv=="Recenzent":
-                    if LoggedInUser.odobrenBool==None:
-                        messages.warning(request,"Vaš status recenzentstva još nije odlučen. Hvala vam na strpljenju")
-                        return redirect('home')
-                    if LoggedInUser.odobrenBool==False:
-                        messages.warning(request,"Vaš status recenzentstva je odbijen.")
-                        return redirect('home')
-                if LoggedInUser.potvrdenBool==False:
-                    messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
-                    print("flag")
-                    return redirect('signin')
-                else:
-                    print(LoggedInUser.vrstaKorisnik.naziv)
-                    request.session['LoggedInUserId']=LoggedInUser.id
-                    request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
-                    #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
-                    return redirect('home')
-            
+            #HARDKODIRAN PROLAZ ZA HARDKODIRANE KORISNIKE
+            if (Username=="admin" and pass1=="admin") or (Username=="recenzent" and pass1=="recenzent") or (Username=="sudionik" and pass1=="sudionik") or (Username=="predsjedavajuci" and pass1=="predsjedavajuci"):
+                LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username)
+                request.session['LoggedInUserId']=LoggedInUser.id
+                request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
+                #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
+                return redirect('home')
             else:
-                messages.error(request, "Korisničko ime ili lozinka su krivi.")
-                return redirect('signin')
+                try: #Privremeni TRY da ne izbaci gresku ako netko slucajno krivo napise predsjedavajuci
+                    if (models.Korisnik.objects.filter(korisnickoIme=Username).exists()):
+                        LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username)
+                        if not LoggedInUser.lozinka==None:
+                            salt=LoggedInUser.salt
+                            correctHash=LoggedInUser.lozinka
 
+                            givenHash=hashlib.pbkdf2_hmac(
+                                'sha256',
+                                pass1.encode('utf-8'),
+                                salt,
+                                100000
+                            )
+                            print("CORRECT HASH: ",correctHash,type(correctHash),"\n\n GIVEN HASH: ",givenHash,type(givenHash))
+                            if correctHash==str(givenHash):
+
+                                if LoggedInUser.vrstaKorisnik.naziv=="Recenzent":
+                                    if LoggedInUser.odobrenBool==None:
+                                        messages.warning(request,"Vaš status recenzentstva još nije odlučen. Hvala vam na strpljenju")
+                                        return redirect('home')
+                                    if LoggedInUser.odobrenBool==False:
+                                        messages.warning(request,"Vaš status recenzentstva je odbijen.")
+                                        return redirect('home')
+                                if LoggedInUser.potvrdenBool==False:
+                                    messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
+                                    print("flag")
+                                    return redirect('signin')
+                                else:
+                                    print(LoggedInUser.vrstaKorisnik.naziv)
+                                    request.session['LoggedInUserId']=LoggedInUser.id
+                                    request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
+                                    #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
+                                    return redirect('home')
+                            else:
+                                messages.error(request, "Unesena lozinka je kriva")
+                                return redirect('signin')
+                    else:
+                        messages.error(request, "Korisničko ime ne postoji")
+                        return redirect('signin')
+                except: #Privremeni EXCEPT da ne izbaci gresku ako netko slucajno krivo napise predsjedavajuci
+                    messages.error(request, "Krivo si napiso nesto")
+                    return redirect('signin')
     elif "LoggedInUserId" in request.session:
         korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
         korisnik.lastActive=datetime.now()
@@ -462,10 +497,18 @@ def reset_password(request):
             messages.error(request,str(e))
             return redirect(redirectString)
             
-        else:
-            user.lozinka=pass1
-            user.save()
-            return redirect('signin')
+        
+        salt=os.urandom(32)
+        key=hashlib.pbkdf2_hmac(
+            'sha256',
+            pass1.encode('utf-8'),
+            salt,
+            100000
+        )
+        user.lozinka=key
+        user.salt=salt
+        user.save()
+        return redirect('signin')
     #Ako nije POST
     messages.error(request, "Nemaš pristup ovoj stranici")
     return redirect('home')

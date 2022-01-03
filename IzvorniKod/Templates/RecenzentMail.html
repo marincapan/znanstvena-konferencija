@@ -3,7 +3,7 @@ Poštovani,
 
 Zaprimili smo vašu prijavu za recenzentsvom. Vaša prijava je: {%if user.odobrenBool == 1%}Prihvačena {%else%}Odbijena {%endif%}
 
-{%if user.odobrenBool == 1%}Potvrdite svoj račun na: {{protocol}}://{{ domain }}{% url 'activate' uidb64=uid token=token %} te se prijavite s lozinkom: {{user.lozinka}}{%endif%}
+{%if user.odobrenBool == 1%}Potvrdite svoj račun na: {{protocol}}://{{ domain }}{% url 'activate' uidb64=uid token=token %} te se prijavite s lozinkom: {{lozinka}}{%endif%}
 
 Hvala vam na vašoj i prijavi i sretno.
 

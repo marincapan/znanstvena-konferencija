@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
+import hashlib
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
@@ -244,10 +245,22 @@ def uprsucelje(request):
             if ("Prihvati" + str(recenzent.id)) in request.POST:
                 updateRecenzent=models.Korisnik.objects.get(id=recenzent.id)
                 updateRecenzent.odobrenBool=True
+                randPassword=get_random_string(length=16)
+                salt=os.urandom(32)
+                key=hashlib.pbkdf2_hmac(
+                    'sha256',
+                    randPassword.encode('utf-8'),
+                    salt,
+                    100000
+                )
+
+                updateRecenzent.lozinka=key
+                updateRecenzent.salt=salt
                 updateRecenzent.save()
                 
                 poruka = render_to_string('RecenzentMail.html', {
                 'user': updateRecenzent,
+                'lozinka': randPassword,
                 'domain': '127.0.0.1:8000',
                 'uid':urlsafe_base64_encode(force_bytes(updateRecenzent.id)),
                 'token':account_activation_token.make_token(updateRecenzent),

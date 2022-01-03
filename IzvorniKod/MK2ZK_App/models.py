@@ -30,7 +30,7 @@ class Autor(models.Model):
 class Korisnik(models.Model):
     id = models.AutoField(primary_key=True)
     korisnickoIme = models.CharField(max_length=50, unique=True) 
-    lozinka = models.CharField(max_length=50)
+    lozinka = models.CharField(max_length=500)
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
     email = models.CharField(max_length=50, unique=True)
@@ -43,6 +43,7 @@ class Korisnik(models.Model):
     token=models.CharField(max_length=50)
     dodatniPodatak = ManyToManyField("DodatnaPoljaObrasca",through='DodatniPodatci')
     lastActive=models.DateTimeField(default=datetime(2020, 12, 28, 17, 30, 53))
+    salt=models.BinaryField(null=True)
 
 class Uloga(models.Model):
     id = models.AutoField(primary_key=True)
