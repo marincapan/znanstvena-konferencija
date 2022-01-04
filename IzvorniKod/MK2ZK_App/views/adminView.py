@@ -124,7 +124,7 @@ def adminsucelje(request):
             konferencija.rokPrijave = datetime.strptime(request.POST["rokPrijava"], "%Y-%m-%d").date()
             konferencija.rokPocRecenzija = datetime.strptime(request.POST["pocetakRecenzija"], "%Y-%m-%d").date()
             konferencija.rokRecenzenti = datetime.strptime(request.POST["rokRecenzija"], "%Y-%m-%d").date()
-
+            konferencija.rokAdmin = datetime.strptime(request.POST["rokIzmjena"], "%Y-%m-%d").date()
             konferencija.save()
 
             messages.success(request, "Podaci o konferenciji su uspješno ažurirani!")
@@ -278,22 +278,22 @@ def adminsucelje(request):
                 clanak.save()
             return redirect('/adminsucelje#prikazaniČlanci')
 
-        ## Uređivanje info o konferenciji
-        if "EditInfo" in request.POST:
-            InfoTitle = request.POST['infoTitle']
-            InfoText = request.POST['infoText']
+        # ## Uređivanje info o konferenciji
+        # if "EditInfo" in request.POST:
+        #     InfoTitle = request.POST['infoTitle']
+        #     InfoText = request.POST['infoText']
 
-            infoObject = models.Info.objects.get(id = 1)
-            infoObject.naslov = InfoTitle
-            infoObject.tekst = InfoText
-            infoObject.autor = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])
+        #     infoObject = models.Info.objects.get(id = 1)
+        #     infoObject.naslov = InfoTitle
+        #     infoObject.tekst = InfoText
+        #     infoObject.autor = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])
             
-            #HARDKODIRANO sifKonferencija = 1 jer se ne sprema kontekst konferencije u session (ako se ne varam)
+        #     #HARDKODIRANO sifKonferencija = 1 jer se ne sprema kontekst konferencije u session (ako se ne varam)
             
-            infoObject.save()
-            context['info'] = info
-            messages.success(request, "Uspješno ažurirane informacije o konferenciji")
-            return redirect('/adminsucelje#uređivanjeInfo')
+        #     infoObject.save()
+        #     context['info'] = info
+        #     messages.success(request, "Uspješno ažurirane informacije o konferenciji")
+        #     return redirect('/adminsucelje#uređivanjeInfo')
 
             
                 

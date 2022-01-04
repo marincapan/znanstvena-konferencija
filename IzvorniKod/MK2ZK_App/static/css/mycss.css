@@ -294,7 +294,10 @@ button.acc-btn {
   max-width: 320px;
   width: 100%;
 }
-
+.opis{
+  max-width: 1040px;
+  width: 100%;
+}
 /* CSS ZA INFO PAGE */
 
 .div-with-timeline {
