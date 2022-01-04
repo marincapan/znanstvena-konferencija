@@ -27,6 +27,8 @@ def mojerecenzije(request):
         korisnik.lastActive=datetime.now()
         korisnik.save()
         context["LoggedInUser"]=korisnik.id
+        context['LoggedInUserRole']=request.session['LoggedInUserRole']
+
     else: #nismo ulogirani
         return redirect('signin')
     
