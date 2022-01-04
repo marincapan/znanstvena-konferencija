@@ -278,7 +278,14 @@ def mojiradovi(request):
 
             #Autori se povezuju s radom
             for autor in autori:
+
                 noviAutor = models.Autor(ime=autor.ime,prezime=autor.prezime,email=autor.email)
+                if models.Autor.objects.filter(email=autor.email).exists():
+                    postojeciAutor = models.Autor.objects.get(email=autor.email)
+                    if postojeciAutor.ime != autor.ime or postojeciAutor.prezime != autor.prezime:
+                        messages.error(request, "E-mail adresa autora je zauzeta")
+                        noviRad.delete()
+                        return redirect('mojiradovi')
                 #Ako autor vec postoji u bazi, samo ga dodaj na ovaj rad
                 if models.Autor.objects.filter(ime=autor.ime,prezime=autor.prezime,email=autor.email).exists():
                     noviAutor = models.Autor.objects.get(ime=autor.ime,prezime=autor.prezime,email=autor.email)
@@ -291,6 +298,6 @@ def mojiradovi(request):
             noviRad.save()
             return redirect('mojiradovi')
 
-    context["prosoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokPrijave
-    context["poceoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokPocPrijava
+    context["prosoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPrijave
+    context["poceoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPocPrijava
     return render(request, 'MojiRadovi.html',context)

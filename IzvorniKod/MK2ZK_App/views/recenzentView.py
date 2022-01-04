@@ -78,18 +78,19 @@ def mojerecenzije(request):
         findOzk=models.AutorRad.objects.filter(Rad=rad)
         for autor in findOzk:
             if autor.OZK==True:
-                poruka = render_to_string('RecenziranEmail.html', {
-                    'user': rad.radKorisnik,
-                    'rad': rad,
-                    'domain': '127.0.0.1:8000',
-                    'protocol':'http',
-                    'recenzija':novaRecenzija
-                    })
-                to_email = rad.radKorisnik.email
-                email = EmailMessage(
-                '[ZK] Vaš rad je ocjenjen!', poruka, 'Pametna ekipa', to=[to_email]
-                )
-                email.send()
+                if not autor.email==rad.radKorisnik.email:
+                    poruka = render_to_string('RecenziranEmail.html', {
+                        'user': autor,
+                        'rad': rad,
+                        'domain': '127.0.0.1:8000',
+                        'protocol':'http',
+                        'recenzija':novaRecenzija
+                        })
+                    to_email = autor.email
+                    email = EmailMessage(
+                    '[ZK] Vaš rad je ocjenjen!', poruka, 'Pametna ekipa', to=[to_email]
+                    )
+                    email.send()
 
         return redirect('mojerecenzije')
     #radovi koji nemaju predan pdf se ne recenziraju, a također nas ne zanimaju radovi koji su recenzirani no ne trebaju reviziju (oni su tako i tako u recenzijama)
@@ -115,7 +116,7 @@ def mojerecenzije(request):
     context['fetchedOcjene']=fetchOcjene
     context['fetchedRadovi']=fetchRadovi
     context['fetchedMyRecenzije']=fetchMyRecenzije
-    context["prosoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokRecenzenti
-    context["poceoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokPocRecenzija
+    context["prosoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokRecenzenti
+    context["poceoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPocRecenzija
     
     return render(request, 'MojeRecenzije.html', context)

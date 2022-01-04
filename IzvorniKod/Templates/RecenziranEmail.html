@@ -1,5 +1,5 @@
 {% autoescape off %}
-Poštovani {{user.korisnickoIme}},
+Poštovani,
 
 Vaš rad, "{{rad.naslov}}", čiji su autori: -{%for autor in rad.autori.all%} "{{autor.ime}} {{autor.prezime}}({{autor.email}})",{% endfor %} je upravo recenziran.
 

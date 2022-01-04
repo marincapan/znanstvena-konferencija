@@ -378,10 +378,11 @@ def statistika(request):
     #Sta sam ti rekao da napravis
     sviKorisnici=models.Korisnik.objects.all()
     for korisnik in sviKorisnici:
-        if str(korisnik.korisnikUstanova.drzava) not in sudionici_po_drzavama:
-            sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]=1
-        else:
-            sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]+=1
+        if not korisnik.korisnikUstanova==None:
+            if str(korisnik.korisnikUstanova.drzava) not in sudionici_po_drzavama:
+                sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]=1
+            else:
+                sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]+=1
     #Whatever the fuck this is
     #for jedna_drzava in drzaveHrvList[1:]:
         #if models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count() > 0:
