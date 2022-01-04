@@ -149,7 +149,7 @@ def radovi(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci" or models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool==True:
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin ili radovi nisu javni
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Radovi još nisu javno dostupni!")
             return redirect('/')
 
 

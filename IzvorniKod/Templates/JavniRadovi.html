@@ -28,59 +28,140 @@
 </head>
 
 <body>
-    <!--HEADER-->
-    {% include "./Header.html" %}
-    <!--HEADER-->
 
-    <div class="gradient-custom-3 " style="min-height: 100vh;">
-        <div class="container pt-5 pb-5">
-          <div class="card" style="border-radius: 15px;">
-            <div class="card-body p-5">
-    
-              <div class="text-uppercase text-center mb-5">
-                <div style="padding-bottom: 9px;" id="titleDiv">
-                  <div>
-                    <h2 style="display: inline;" id="myTitle">Pregled javnih radova</h2>
-                  </div>
-                </div>
-                <hr>
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+  <div class="gradient-custom-3 " style="min-height: 100vh;">
+    <div class="container pt-5 pb-5">
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-5">
+
+          <div class="text-uppercase text-center mb-5">
+            <div style="padding-bottom: 9px;" id="titleDiv">
+              <div>
+                <h2 style="display: inline;" id="myTitle">Pregled radova</h2>
               </div>
-              {% if javniBool == 1 %}
-              {% if brojPredanihRadova != 0 %}
-              <div class="table-responsive container mt-3 mb-3">
-                <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaRadovi">
-                  <thead style="border-bottom: 1px;">
-                    <tr class="text-center">
-                      <th scope="col">Naslov</th>
-                      <th scope="col">Sekcija</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      {% for rad in Radovi %}
-                      <tr class="text-center">
-                        <th scope="row">{{rad.naslov}}</th>
-                        <td>{{rad.radSekcija_naziv}}</td>
-                        <td>{{rad.radKorisnik_prezime}}</td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="container" >
+            <form action="radovi" method="POST">
+              {% csrf_token %}
+              {% if brojPredanihRadova != 0%}
+                <button type="submit" class="btn btn-primary" name="downloadAll">Preuzmi sve</button>
               {% else %}
-              <div class="container text-center">
-                <h4> Trenutačno nema dostupnih radova za pregled.</h4>
-              </div>
+                <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Niti jedan rad nije predan" disabled>Preuzmi sve</button>
               {% endif %}
-              {% else %}
-              <div class="container text-center">
-                  <h4> Trenutačno nema dostupnih radova za pregled.</h4>
-              </div>
-              {% endif %}
+            </form>
+          </div>
+          <div class="table-responsive container mt-3 mb-3">
+            <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaRadovi">
+              <thead style="border-bottom: 1px;">
+                <tr class="text-center">
+                  <th scope="col">#</th>
+                  <th scope="col">Naslov</th>
+                  <th scope="col">Predao</th>
+                  <th scope="col">Sekcija</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for rad in Radovi %}
+                {%if rad.recenziranBool == 1 and rad.revizijaBool == 0%}
+                  <tr class="text-center">
+                    <th scope="row">{{rad.sifRad}}</th>
+                    <td>{{rad.naslov}}</td>
+                    <td>{{rad.radKorisnik.prezime}}</td>
+                    <td>{{rad.radSekcija_naziv}}</td>
+                    <td>
+                      {% if rad.pdf != "" %}
+                        <a class="btn btn-sm btn-primary" href="/Radovi/{{rad.pdf}}" role="button" download="{{rad.naslov}}">Preuzmi</a>
+                      {% else %}
+                        <a class="btn btn-sm btn-danger" role="button">Nije predan</a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {%endif%}
+                {% endfor %}
+              </tbody>
+            </table>
+
+          </div>
+
+          {% if LoggedInUserRole == 'Admin'%}
+          <div class="d-flex justify-content-end">
+            <div>
+              <br>
+              <small>Klikom na naslov rada pristupate sučelju za promjenu podataka vezanih za željeni rad.</small>
             </div>
           </div>
-        </div>
+          {%endif%}
 
+        </div>
+      </div>
     </div>
+  </div>
+
+
+
+  <!--FOOTER-->
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
+
 
 </body>
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<script src="{% static '/js/updateInfo.js' %}"></script>
+<!-- postavlja tooltip -->
+<script>
+  window.onload = function(){
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+  }
+</script>
+<!--bitno za datatables-->
+<script>
+  $(document).ready( function () {
+    $('#tablicaRadovi').DataTable({
+      responsive: {
+        breakpoints: [
+          {name: 'bigdesktop', width: Infinity},
+          {name: 'meddesktop', width: 1480},
+          {name: 'smalldesktop', width: 1280},
+          {name: 'medium', width: 1188},
+          {name: 'tabletl', width: 1024},
+          {name: 'btwtabllandp', width: 848},
+          {name: 'tabletp', width: 768},
+          {name: 'mobilel', width: 480},
+          {name: 'mobilep', width: 320}
+        ]
+      },
+      "columnDefs": [ {
+          "targets": 4,
+          "orderable": false
+      }],
+      language: {
+        lengthMenu: "Prikaži _MENU_ redaka po stranici",
+        zeroRecords: "Nema podataka",
+        info: "Prikazana je _PAGE_ od _PAGES_ stranica",
+        infoEmpty: "Nema podataka",
+        infoFiltered: "(filtrirano od _MAX_ ukupnih stavki)",
+        search: "Pretraži:",
+        paginate: {
+            first: "Prva",
+            last: "Zadnja",
+            next: "Sljedeća",
+            previous: "Prethodna"
+        }
+      }
+    });
+  } );
+</script>
+<!--nas js-->
+
+</html>
