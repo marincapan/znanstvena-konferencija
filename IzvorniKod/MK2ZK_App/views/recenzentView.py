@@ -78,7 +78,7 @@ def mojerecenzije(request):
         findOzk=models.AutorRad.objects.filter(Rad=rad)
         for autor in findOzk:
             if autor.OZK==True:
-                if not autor.email==rad.radKorisnik.email:
+                if not autor.Autor.email==rad.radKorisnik.email:
                     poruka = render_to_string('RecenziranEmail.html', {
                         'user': autor,
                         'rad': rad,
@@ -86,7 +86,7 @@ def mojerecenzije(request):
                         'protocol':'http',
                         'recenzija':novaRecenzija
                         })
-                    to_email = autor.email
+                    to_email = autor.Autor.email
                     email = EmailMessage(
                     '[ZK] Vaš rad je ocjenjen!', poruka, 'Pametna ekipa', to=[to_email]
                     )

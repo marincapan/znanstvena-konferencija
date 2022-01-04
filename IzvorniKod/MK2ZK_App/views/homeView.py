@@ -112,7 +112,12 @@ def signup(request):
 
     drzaveEngList = drzaveEng[1:len(drzaveEng)-2].split("',\n '")
     drzaveHrvList = drzaveHrv[1:len(drzaveHrv)-2].split("',\n '")
-    context["Drzave"] = drzaveHrvList[1:]
+    dropDownDrzave = drzaveHrvList[1:]
+    dropDownDrzave.sort()
+    dropDownDrzave.remove("Hrvatska")
+    dropDownDrzave.remove("Ostalo")
+    dropDownDrzave[0]="Hrvatska"
+    context["Drzave"] = dropDownDrzave
     ######
 
     #print(context)
@@ -221,8 +226,9 @@ def signup(request):
             if not models.Rad.objects.filter(naslov=title, radSekcija=Sekcija, radKorisnik=NoviKorisnik).exists():
                 noviRad.save()
             else:
-                messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
-                return redirect('signup')
+                    messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
+                    NoviKorisnik.delete()
+                    return redirect('signup')
 
             noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
             
@@ -312,6 +318,7 @@ def signup(request):
                     poljeObrasca=dodatnoPolje
                 )
                 noviDodatniPodatak.save()
+            messages.info(request, "Hvala na prijavi! Predsjedavajući će pregledati vašu prijavu te javiti vam status recenzenstva preko unesenog maila. Hvala na strpljenju!")
             return redirect('home')
         
 
