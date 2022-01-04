@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 from io import StringIO, BytesIO
 from typing import DefaultDict
@@ -389,6 +389,14 @@ def statistika(request):
             #sudionici_po_drzavama[jedna_drzava] = models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count()    
     broj_drzava=len(sudionici_po_drzavama)
 
+    aktivniKorisnici=[]
+    for korisnik in sviKorisnici:
+        if (datetime.now().replace(tzinfo=timezone.utc)- korisnik.lastActive ).total_seconds()<600:
+            aktivniKorisnici.append(korisnik)
+            
+    print(aktivniKorisnici)
+    context["aktivniKorisnici"]=aktivniKorisnici
+    context["brojAktivni"]=len(aktivniKorisnici)
     context["sudionici_svi"] = sudionici_svi
     context["sudionici_aktivni"] = sudionici_aktivni
     context["sudionici_neaktivni"] = sudionici_neaktivni

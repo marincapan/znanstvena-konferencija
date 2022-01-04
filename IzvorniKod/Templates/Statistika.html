@@ -55,6 +55,13 @@
                       </div>
                       <hr>
                     </div>
+                    
+                    <h3>Aktivni Korisnici ({{brojAktivni}})</h3>
+                    <ul>
+                      {% for korisnik in aktivniKorisnici %} 
+                      <li>{{korisnik.korisnickoIme}}</li>
+                      {% endfor %}
+                    </ul>
 
                     <h3>Sudionici ({{sudionici_svi}})</h3>
                     <ul>

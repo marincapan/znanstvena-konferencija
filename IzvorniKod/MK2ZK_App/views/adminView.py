@@ -591,36 +591,3 @@ def uredipodatke(request, korisnickoime):
         return redirect('pregled')
     
     return render(request, 'UrediPodatke.html',context)
-
-def aktivniKorisnici(request):
-    context={}
-    if "LoggedInUserId" in request.session:
-        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-        korisnik.lastActive=datetime.now()
-        korisnik.save()
-        context["LoggedInUser"]=korisnik.id
-    else: #nismo ulogirani
-        return redirect('signin')
-    
-    if "LoggedInUserRole" in request.session:
-        if request.session['LoggedInUserRole'] == "Admin":
-            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
-        else: #nije admin
-            messages.error(request,"Nemaš prava za ovu stranicu!")
-            return redirect('/') #redirect na homepage
-
-    sviKorisnici=models.Korisnik.objects.all()
-    aktivniKorisnici=[]
-    date1=datetime(2020,6,25,8)
-    date2=datetime(2020,6,25,8,10)
-    diff=date2-date1
-    print(datetime.now())
-    print(date2)
-    print((date2-date1).total_seconds())
-    for korisnik in sviKorisnici:
-        if (datetime.now().replace(tzinfo=timezone.utc)- korisnik.lastActive ).total_seconds()<600:
-            aktivniKorisnici.append(korisnik)
-            
-    print(aktivniKorisnici)
-    context["aktivniKorisnici"]=aktivniKorisnici
-    return render(request, 'AktivniKorisnici.html', context)
