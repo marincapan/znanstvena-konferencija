@@ -210,7 +210,7 @@ def mojiradovi(request):
         if 'PonovniUnosPdf' in request.POST:
             fileTitle = request.POST["fileTitle"]
             uploadedFile = request.FILES["uploadedFile"]
-            updateRad=models.Rad.objects.get(naslov=fileTitle)
+            updateRad=models.Rad.objects.get(naslov=fileTitle, radKorisnik = LoggedInUser)
             updateRad.pdf=uploadedFile
             #najnovija recenzija nam treba
             recenzija = models.Recenzija.objects.filter(rad = updateRad).order_by("-sifRecenzija").first()

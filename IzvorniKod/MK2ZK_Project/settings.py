@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'MK2ZK_DB',
         'USER': 'postgres',
         'PASSWORD': 'dogwoofwoof',
-        'HOST': 'localhost',
+        'HOST': 'mk2zk_db',
         'PORT': '5432'
     }
 }

@@ -140,6 +140,11 @@
             </div>
             <form action="/adminsucelje" method="POST" id="podaciKonferencija">
               {% csrf_token %}
+              <div class="mb-3" id="opisWrapper">
+                <label for="opisKonferencije" class="form-label fw-bold">Opis konferencije</label>
+                <textarea class="form-control opis" rows="3" id="opisKonferencije" name="opisKonferencije"
+                  required>{{opis}}</textarea>
+              </div>
               <div class="row">
                 <div class="col-sm">
                   <div class="mb-3" id="nazivWrapper">
@@ -147,19 +152,16 @@
                     <input type="text" class="form-control input-md" id="nazivKonferencije" name="nazivKonferencije"
                       value="{{konferencijaNaziv}}" required>
                   </div>
-                  <div class="mb-3" id="opisWrapper">
-                    <label for="opisKonferencije" class="form-label fw-bold">Opis konferencije</label>
-                    <textarea class="form-control input-lg" rows="3" id="opisKonferencije" name="opisKonferencije"
-                      required>{{opis}}</textarea>
-                  </div>
-                </div>
-
-                <div class="col-sm">
                   <div class="mb-3" id="datumWrapper">
                     <label for="datumKonferencije" class="form-label fw-bold">Datum konferencije</label>
                     <input type="date" class="form-control input-md" id="datumKonferencije" name="datumKonferencije"
                       value="{{datum}}" required>
                   </div>
+                  
+                </div>
+
+                <div class="col-sm">
+                  
                   <div class="mb-3" id="pocetakPrijavaWrapper">
                     <label for="pocetakPrijavaKonferencije" class="form-label fw-bold">Početak prijava</label>
                     <input type="date" class="form-control input-md" id="pocetakPrijavaKonferencije"
@@ -186,7 +188,7 @@
                   <div class="mb-3" id="rokIzmjenaWrapper">
                     <label for="rokIzmjena" class="form-label fw-bold">Rok za izmjenu obrasca</label>
                     <input type="date" class="form-control input-md" id="rokIzmjena" name="rokIzmjena"
-                      value="{{rokAdmin}}" disabled>
+                      value="{{rokAdmin}}" >
                   </div>
                 </div>
               </div>
@@ -598,8 +600,8 @@
         </div>
         <!-- UREĐIVANJE NASLOVNE -->
 
-        <!-- UREĐIVANJE INFO STRANICE -->
-        <div class="container mb-5">
+       <!-- UREĐIVANJE INFO STRANICE -->
+        <!-- <div class="container mb-5">
           <div class="text-uppercase text-left mb-1">
             <div style="padding-bottom: 3px;" id="titleDiv">
               <div>
@@ -647,8 +649,8 @@
           </div>
 
 
-        </div>
-        <!-- UREĐIVANJE INFO STRANICE -->
+        </div> -->
+        UREĐIVANJE INFO STRANICE --> -->
 
       </div>
     </div>
