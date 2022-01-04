@@ -277,6 +277,7 @@ def signup(request):
             '[ZK] Tvoj račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
             )
             email.send()
+            messages.info(request, "Na adresu Vaše elektroničke pošte je poslan aktivacijski link i podatci za prijavu.")
             return redirect('signin')
         #Ako obradjujemo recenzenta, radimo drugacije provjere
         elif(uloga == "Recenzent"):
