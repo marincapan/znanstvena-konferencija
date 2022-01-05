@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = [i for i in os.getenv("ALLOWED_HOSTS").split(" ")]
+CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS = [i for i in os.getenv("ALLOWED_HOSTS").split(" ")]
 
 
 # Application definition
@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'IzvorniKod.MK2ZK_App'
+    'IzvorniKod.MK2ZK_App',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    '**corsheaders.middleware.CorsMiddleware**',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

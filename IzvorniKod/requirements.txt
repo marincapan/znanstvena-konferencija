@@ -4,3 +4,4 @@ python-dotenv
 psycopg2
 requests
 six
+django-cors-headers
