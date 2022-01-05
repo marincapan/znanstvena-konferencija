@@ -112,8 +112,15 @@ def signup(request):
 
     drzaveEngList = drzaveEng[1:len(drzaveEng)-2].split("',\n '")
     drzaveHrvList = drzaveHrv[1:len(drzaveHrv)-2].split("',\n '")
+    abeceda = "a*b*c*č*ć*d*đ*dž*e*f*g*h*i*j*k*l*lj*m*n*nj*o*p*r*s*š*t*u*v*w*z*ž"
+    abeceda = abeceda.split("*")
+    abeceda_dict = {i:abeceda.index(i) for i in abeceda}
     dropDownDrzave = drzaveHrvList[1:]
-    dropDownDrzave.sort()
+    
+    
+    dropDownDrzave = sorted(dropDownDrzave[0:238], 
+     key=lambda word: [abeceda_dict.get(c,ord(c)) for c in word.lower()])
+    
     dropDownDrzave.remove("Hrvatska")
     dropDownDrzave.remove("Ostalo")
     dropDownDrzave[0]="Hrvatska"
