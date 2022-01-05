@@ -41,11 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'IzvorniKod.MK2ZK_App',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
-    '**corsheaders.middleware.CorsMiddleware**',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
