@@ -64,7 +64,7 @@
             
                             <div class="form-outline mb-4">
                               <label class="form-label" for="">E-mail</label>
-                              <input type="text" id="email" name="email" class="form-control form-control-lg" required/>
+                              <input type="email" id="email" name="email" class="form-control form-control-lg" required/>
                             </div>
 
                             <div class="form-outline mb-4">
@@ -84,7 +84,11 @@
 
                             <div class="form-outline mb-4">
                               <label class="form-label" for="">Država matične ustanove</label>
-                              <input type="text" id="matustDrz" name="matustDrz" class="form-control form-control-lg" required/>
+                              <select name="matustDrz" id="matustDrz" class="form-control form-control-lg" required>
+                                {%for drzava in Drzave%}
+                                  <option value="{{drzava}}" class="form-control form-control-lg">{{drzava}}</option>
+                                {%endfor%}
+                              </select>
                             </div>
 
                             {%if DodatnaPolja%}<!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
@@ -145,7 +149,7 @@
                                     </div>
 
                                     <div id="autorPodaci" class="input-group col-md-10 col-10 mb-1">
-                                      <input type="text" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail" class="form-control form-control-lg" required/>
+                                      <input type="email" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail" class="form-control form-control-lg" required/>
                                       <div id="autorPodaciKontakt" class="input-group-text">
                                         <input type="radio" id="autorKontakt0" name="autorKontakt0" aria-label="Kontakt" class="form-check-input form-check-lg" required/>
                                         <label class="form-check-label" id="autorKontaktLabel0" style="margin-top:4px; margin-left:4px"for="autorKontakt0">Osoba za kontakt</label>

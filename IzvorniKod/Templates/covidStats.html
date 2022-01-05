@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>COVID-19 statistika</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+            <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
+            <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+            <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+            <!--nas css-->
+            <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+            <!--nas css-->
+            <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+  </head>
+
+        
+
+  <body>
+          <!--HEADER-->
+          {% include "./Header.html" %}
+          <!--HEADER-->
+          
+          <div class="gradient-custom-3 " style="min-height: 100vh;">
+            <div class="container pt-5 pb-5">
+        
+              <div class="card" style="border-radius: 15px;">
+                <div class="card-body p-5">
+        
+        
+                  <div class="text-uppercase text-center mb-2">
+                    <div style="padding-bottom: 9px;">
+                      <div>
+                        <h2 style="display: inline;">COVID-19 statistika</h2>
+                      </div>
+                    </div>
+                    <hr>
+                  </div>
+        
+                  <div class="container">
+                    {% for key,value in konfDrzave.items%}
+                      <h2>{{key}} {{value.0}} {{value.1}}</h2>
+                      <!--Key je drzava,value je lista 
+                      indeks 0 - datum dohvata podatka i indeks 1 - broj novih covid slucajeva tog datuma. 
+                      Pogledaj adminView covidstats() za koje se jos informacije mogu slati.
+                      Indeksiranje radi kao naznaceno-->
+                    {%endfor%}
+                  </div>
+        
+        
+                </div>
+              </div>
+        
+        
+          </div>
+          </div>
+
+          <!--FOOTER-->
+          {% include "./Footer.html" %}
+          <!--FOOTER-->
+
+  </body>
+        
+  <!--nas js-->
+  <script src="{% static '/js/hamburgerActions.js' %}"></script>
+  <script src="{% static '/js/newPassword.js' %}"></script>
+  <!--nas js-->
+</html>

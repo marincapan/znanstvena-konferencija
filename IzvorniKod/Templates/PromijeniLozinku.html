@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Prijava</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <!--nas css-->
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+
+
+
+<body>
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+
+  <!--Ako npr nakon sign up treba displayat "Uspjesno registrirani!"-->
+  <!-- to sam prebacila ispod u formi da pokazuje
+            {% if messages %}
+            {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+            {% endfor %}
+            {% endif %}  -->
+  <!---->
+  <!--Random šifra nakon prvog signupa. Vjerovatno ce bit prebacena na mail ali zasad je to ovo"-->
+  {%if randPassword%}
+  <h4>Your random pass word is: {{randPassword}}</h4>
+  {% endif %}
+  <!---->
+
+  <div class="gradient-custom-3">
+    <div class="mask">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Promjena lozinke</h2>
+
+              <form action="/reset_password" method="post">
+                {% csrf_token %}
+                <div class="fs-6 fw-bold text-center" style="color:#ce171a" id='greska'>
+                  {% if messages %}
+                  {% for message in messages %}
+                  {{ message }}
+                  {% endfor %}
+                  {% endif %}
+                </div>
+                <input type="text" name="usedEmail" value={{usedEmail}} hidden>
+                <input type="text" name="uid" value={{usedUid}} hidden>
+                <input type="text" name="token" value={{usedToken}} hidden>
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="">Nova lozinka</label>
+                  <input type="password" id="Password" name="pass1" class="form-control form-control-lg" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="">Ponovljena lozinka</label>
+                  <input type="password" id="pass1" name="pass2" class="form-control form-control-lg" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <button type="submit" class="btn btn-primary btn-lg form-control form-control-lg">Zamijeni</button>
+                </div>
+              </form>
+
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--FOOTER-->
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
+
+</body>
+
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<!--nas js-->
+
+</html>

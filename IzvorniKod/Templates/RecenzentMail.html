@@ -1,0 +1,15 @@
+{% autoescape off %}
+Poštovani,
+
+Zaprimili smo vašu prijavu za recenzentsvom. Vaša prijava je: {%if user.odobrenBool == 1%}Prihvačena {%else%}Odbijena {%endif%}
+
+{%if user.odobrenBool == 1%}Potvrdite svoj račun na: {{protocol}}://{{ domain }}{% url 'activate' uidb64=uid token=token %} te se prijavite s lozinkom: {{lozinka}}{%endif%}
+
+Hvala vam na vašoj i prijavi i sretno.
+
+Ukoliko smatrate da se ova poruka na odnosi na vas, zanemarite ovu poruku.
+
+Srdačan pozdrav,
+Pametna Ekipa
+
+{% endautoescape %}

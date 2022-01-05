@@ -1,7 +1,10 @@
 from collections import defaultdict
+from datetime import datetime
+from difflib import SequenceMatcher
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
+from django.core.exceptions import ValidationError
 from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
 from django.http.response import FileResponse, HttpResponse
@@ -15,6 +18,18 @@ from django.core import serializers
 from django.utils import (dateformat, formats)
 import zipfile
 import os
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from IzvorniKod.MK2ZK_App.tokens import account_activation_token
+from django.core.mail import EmailMessage
+from django.contrib.auth.password_validation import *
+import hashlib
 
 def increment_KorisnikID():
   last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
@@ -33,7 +48,10 @@ def home(request):
 
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=models.Korisnik.objects.get(id=request.session['LoggedInUserId']).id
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
@@ -47,14 +65,30 @@ def home(request):
         konferencija.rokPrijave1 = dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y.')) #dodati ovisno što će nam trebati na naslovnici
         konferencija.rokRecenzenti1 = dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
         context["infoKonferencija"] = konferencija #trebat ce mozda za countdown ili neke druge podatke stavit na naslovnicu
+        
+    sviKorisnici=models.Korisnik.objects.all()
+    for korisnik in sviKorisnici:
+        print(korisnik.korisnickoIme, korisnik.id in request.session)
+
+
+
+
+    ##clanci
+    fetchedClanci = models.Clanak.objects.filter(active=True)
+    context['Clanci'] = fetchedClanci
+    
     print(context)
     return render(request, 'Index.html',context)
 
 
 def signup(request):
-    if "LoggedInUserId" in request.session: #otprije smo registrirani
-        return redirect('/')
     context={}
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id #otprije smo registrirani
+        return redirect('/')
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     fetchedSekcije=models.Sekcija.objects.filter().all()
     if (fetchedSekcije.first()): #ako je admin unio sekcije
@@ -63,8 +97,33 @@ def signup(request):
     # #!!
     # context['sekcije']=fetchedSekcije.exclude(naziv="Admin Sekcija") #dodao sam ovo kako bih mogao implementirati select za sekcije
     # ##
-    print(context)
+
+    #za obradu drzave
+    ######
+    module_dir = os.path.dirname(__file__)  # get current directory
+    path1 = os.path.join(module_dir, '../static/txt/SveDrzave.txt')
+    path2 = os.path.join(module_dir, '../static/txt/SveDrzaveHR.txt')
+
+    file1 = open(path1, "r", encoding='utf-8')
+    file2 = open(path2, "r", encoding='utf-8')
+
+    drzaveEng = file1.read().replace("\"","\'")
+    drzaveHrv = file2.read().replace("\"","\'")
+
+    drzaveEngList = drzaveEng[1:len(drzaveEng)-2].split("',\n '")
+    drzaveHrvList = drzaveHrv[1:len(drzaveHrv)-2].split("',\n '")
+    dropDownDrzave = drzaveHrvList[1:]
+    dropDownDrzave.sort()
+    dropDownDrzave.remove("Hrvatska")
+    dropDownDrzave.remove("Ostalo")
+    dropDownDrzave[0]="Hrvatska"
+    context["Drzave"] = dropDownDrzave
+    ######
+
+    #print(context)
+
     if request.method == "POST":        
+        print(request.POST)
         username = request.POST['Username']
         fName = request.POST['Fname']
         lName = request.POST['Lname']
@@ -75,6 +134,14 @@ def signup(request):
         matustDrz = request.POST['matustDrz']
         uloga = request.POST['uloga']
         section = request.POST['section']
+        #za obradu drzave
+        ######
+        #matustDrz = ""
+        #matustDrzHrv = request.POST['matustDrz']
+        #for i in range(len(drzaveHrvList)):
+            #if drzaveHrvList[i] == matustDrzHrv:
+                #matustDrz = drzaveEngList[i]
+        ######
 
         #Ove ifove treba optimizirati!
         #Ako obradjujemo sudionika, imamo dodatne podatke i treba napraviti odredjene provjere
@@ -90,6 +157,8 @@ def signup(request):
                 autorIme = request.POST['autorFName' + i]
                 autorPrezime = request.POST['autorLName' + i]
                 autorEmail = request.POST['autorEmail' + i]
+                if "autorKontakt"+i in request.POST:
+                    OZKIndex=int(i)
                 """ #Autori za sad nemaju oznaku OZK because its bwoken
                 if "autorKontakt"+i in request.POST:
                     autor["Kontakt"] = True
@@ -127,12 +196,22 @@ def signup(request):
                 Sekcija.save()
 
             #Generiraj password za korisnika
+
+
             randPassword=get_random_string(length=16)
-            request.session['randPassword'] = randPassword
+            salt=os.urandom(32)
+            key=hashlib.pbkdf2_hmac(
+                'sha256',
+                randPassword.encode('utf-8'),
+                salt,
+                100000
+            )
+
+
 
             #Probaj spremiti novog korisnika
             try:
-                NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,idSudionik=idSudionik,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
+                NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=key,idSudionik=idSudionik,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija,salt=salt)
                 NoviKorisnik.save()
             except IntegrityError:
                 messages.error(request, "Korisnicko ime ili email je vec u uporabi")
@@ -147,8 +226,9 @@ def signup(request):
             if not models.Rad.objects.filter(naslov=title, radSekcija=Sekcija, radKorisnik=NoviKorisnik).exists():
                 noviRad.save()
             else:
-                messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
-                return redirect('signup')
+                    messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
+                    NoviKorisnik.delete()
+                    return redirect('signup')
 
             noviRad=models.Rad.objects.get(naslov=title, radSekcija=Sekcija,radKorisnik=NoviKorisnik)
             
@@ -166,8 +246,16 @@ def signup(request):
                 else:
                     noviAutor.save()
                 noviRad.autori.add(noviAutor)
-
             noviRad.save()
+
+            print(OZKIndex)
+            for index,autor in enumerate(autori):
+                if index==OZKIndex:
+                    autorrad=models.AutorRad.objects.get(Rad=noviRad,Autor=models.Autor.objects.get(ime=autor.ime,prezime=autor.prezime,email=autor.email))
+                    print(autorrad.id)
+                    autorrad.OZK=True
+                    autorrad.save()
+
             fetchedPolja=models.DodatnaPoljaObrasca.objects.filter(active = "True").all()
             for dodatnoPolje in fetchedPolja:
                 try:
@@ -182,8 +270,21 @@ def signup(request):
                     noviDodatniPodatak.save()
                 except:
                     continue
-                
-        
+            poruka = render_to_string('AktivirajEmail.html', {
+                'user': NoviKorisnik,
+                'lozinka': randPassword,
+                'domain': '127.0.0.1:8000',
+                'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
+                'token':account_activation_token.make_token(NoviKorisnik),
+                'protocol':'http'
+                    })
+            to_email = email
+            email = EmailMessage(
+            '[ZK] Tvoj račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
+            )
+            email.send()
+            messages.info(request, "Na adresu Vaše elektroničke pošte je poslan aktivacijski link i podatci za prijavu.")
+            return redirect('signin')
         #Ako obradjujemo recenzenta, radimo drugacije provjere
         elif(uloga == "Recenzent"):
             #Ako ustanova ne postoji spremi ju, inace dohvati postojecu
@@ -201,12 +302,10 @@ def signup(request):
                 Sekcija.save()
 
             #Generiraj password za korisnika
-            randPassword=get_random_string(length=16)
-            request.session['randPassword'] = randPassword
-
+            
             #Probaj spremiti novog korisnika
             try:
-                NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=randPassword,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
+                NoviKorisnik = models.Korisnik(korisnickoIme=username,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
                 NoviKorisnik.save()
             except IntegrityError:
                 messages.error(request, "Korisnicko ime ili email je vec u uporabi")
@@ -220,62 +319,208 @@ def signup(request):
                     poljeObrasca=dodatnoPolje
                 )
                 noviDodatniPodatak.save()
+            messages.info(request, "Hvala na prijavi! Predsjedavajući će pregledati vašu prijavu te javiti vam status recenzenstva preko unesenog maila. Hvala na strpljenju!")
+            return redirect('home')
         
-        return redirect('signin')
 
     
     return render(request, 'Signup.html',context)
-    
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        print(token)
+        print(uid)
+        postojeciKorisnik = models.Korisnik.objects.get(id=uid)
+        print(postojeciKorisnik.korisnickoIme)
+        print(account_activation_token.check_token(postojeciKorisnik, token))
+    except(TypeError, ValueError, OverflowError, models.Korisnik.DoesNotExist):
+        postojeciKorisnik = None
+    if postojeciKorisnik is not None and account_activation_token.check_token(postojeciKorisnik, token):
+        postojeciKorisnik.potvrdenBool = True
+        postojeciKorisnik
+        #print(postojeciKorisnik)
+        postojeciKorisnik.save()
+        signin(request)
+        messages.info(request,'Hvala na potvrdi! Sada se možeš prijaviti u svoj račun!')
+        return redirect('signin')
+    else:
+        messages.info(request,'Ta aktivacijska poveznica nije valjana!')
+        return redirect('signin')
+
 def signin(request):
     context = {}
+    print(type(os.urandom(32)))
     if request.method == "POST":
-        Username = request.POST['Username']
-        pass1 = request.POST['pass1']
-        email = request.POST['email']
-        try:
-            if (email != ""):
-                #zahtjev za novom lozinkom
-                if (models.Korisnik.objects.filter(email = email).exists()):
-                    korisnik = models.Korisnik.objects.get(email = email)
-                    
-                    #dodati enkripciju i slanje lozinke na mail
-                    randPassword=get_random_string(length=16)
-                    print(randPassword)
-                    korisnik.lozinka = randPassword
-                    korisnik.save()
-                    messages.error(request, "Nova lozinka je poslana na e-mail.")
+        #zaboravljena lozinka
+        if "email" in request.POST:
+            email = request.POST['email']
+            #zahtjev za novom lozinkom
+            if (models.Korisnik.objects.filter(email = email).exists()):
+                korisnik = models.Korisnik.objects.get(email = email)
+                
+                #dodati enkripciju i slanje lozinke na mail
+                """
+                randPassword=get_random_string(length=16)
+                print(randPassword)
+                korisnik.lozinka = randPassword
+                korisnik.save()
+                messages.error(request, "Nova lozinka je poslana na e-mail.")
+                """
 
-                else:
-                    
-                    messages.error(request, "E-mail koji ste unijeli ne postoji u bazi.")
-                    return redirect('signin')
-
-
-            elif (models.Korisnik.objects.filter(korisnickoIme=Username,lozinka=pass1).exists()):
-                LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username,lozinka=pass1)
-                print(LoggedInUser.vrstaKorisnik.naziv)
-                request.session['LoggedInUserId']=LoggedInUser.id
-                request.session
-                request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
-                #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
-                if LoggedInUser.odobrenBool==False:
-                    messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
-                return redirect('home')
+                subject = "[ZK] Promjena lozinke"
+                email_template_name = "PromijeniLozinkuEmail.html"
+                c = {
+                "email":korisnik.email,
+                'domain':'127.0.0.1:8000',
+                'site_name': 'Znanstvena konferencija',
+                "uid": urlsafe_base64_encode(force_bytes(korisnik.id)),
+                "user": korisnik,
+                'token': account_activation_token.make_token(korisnik),
+                'protocol': 'http',
+                }
+                email_message = render_to_string(email_template_name, c)
+                EmailMessage(subject, email_message, 'Pametna ekipa', [korisnik.email]).send()
+                messages.error(request, "Poveznica za promjenu lozinke je poslana na e-mail.")
             else:
-               
-                messages.error(request, "Korisničko ime ili lozinka su krivi.")
+                messages.error(request, "E-mail koji ste unijeli ne postoji u bazi.")
                 return redirect('signin')
 
+        #normalan login
+        else:
+            Username = request.POST['Username']
+            pass1 = request.POST['pass1']
+            #HARDKODIRAN PROLAZ ZA HARDKODIRANE KORISNIKE
+            if (Username=="admin" and pass1=="admin") or (Username=="recenzent" and pass1=="recenzent") or (Username=="sudionik" and pass1=="sudionik") or (Username=="predsjedavajuci" and pass1=="predsjedavajuci"):
+                LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username)
+                request.session['LoggedInUserId']=LoggedInUser.id
+                request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
+                #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
+                return redirect('home')
+            else:
+                try: #Privremeni TRY da ne izbaci gresku ako netko slucajno krivo napise predsjedavajuci
+                    if (models.Korisnik.objects.filter(korisnickoIme=Username).exists()):
+                        LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username)
+                        if not LoggedInUser.lozinka==None:
+                            salt=LoggedInUser.salt
+                            correctHash=LoggedInUser.lozinka
 
-        except:
-            return redirect('signin')
- 
-    if "randPassword" in request.session: #tek smo se registrirali
-        context["randPassword"]=request.session["randPassword"]
-    elif "LoggedInUserId" in request.session: #otprije smo registrirani
+                            givenHash=hashlib.pbkdf2_hmac(
+                                'sha256',
+                                pass1.encode('utf-8'),
+                                salt,
+                                100000
+                            )
+                            print("CORRECT HASH: ",correctHash,type(correctHash),"\n\n GIVEN HASH: ",givenHash,type(givenHash))
+                            if correctHash==str(givenHash):
+
+                                if LoggedInUser.vrstaKorisnik.naziv=="Recenzent":
+                                    if LoggedInUser.odobrenBool==None:
+                                        messages.warning(request,"Vaš status recenzentstva još nije odlučen. Hvala vam na strpljenju")
+                                        return redirect('home')
+                                    if LoggedInUser.odobrenBool==False:
+                                        messages.warning(request,"Vaš status recenzentstva je odbijen.")
+                                        return redirect('home')
+                                if LoggedInUser.potvrdenBool==False:
+                                    messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
+                                    print("flag")
+                                    return redirect('signin')
+                                else:
+                                    print(LoggedInUser.vrstaKorisnik.naziv)
+                                    request.session['LoggedInUserId']=LoggedInUser.id
+                                    request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
+                                    #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
+                                    return redirect('home')
+                            else:
+                                messages.error(request, "Unesena lozinka je kriva")
+                                return redirect('signin')
+                    else:
+                        messages.error(request, "Korisničko ime ne postoji")
+                        return redirect('signin')
+                except: #Privremeni EXCEPT da ne izbaci gresku ako netko slucajno krivo napise predsjedavajuci
+                    messages.error(request, "Krivo si napiso nesto")
+                    return redirect('signin')
+    elif "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id #otprije smo registrirani
         return redirect('/')
         
     return render(request, 'Signin.html',context)
+
+def new_password(request, uidb64, token):
+    context={}
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        print(token)
+        print(uid)
+        postojeciKorisnik = models.Korisnik.objects.get(id=uid)
+        print(postojeciKorisnik.korisnickoIme)
+        print(account_activation_token.check_token(postojeciKorisnik, token))
+    except(TypeError, ValueError, OverflowError, models.Korisnik.DoesNotExist):
+        postojeciKorisnik = None
+    if postojeciKorisnik is not None and account_activation_token.check_token(postojeciKorisnik, token):
+        context["usedEmail"]=postojeciKorisnik.email
+        context["usedUid"]=uidb64
+        context["usedToken"]=token
+    return render(request, 'PromijeniLozinku.html',context)
+
+def reset_password(request):
+    if request.method == "POST":
+        email=request.POST["usedEmail"]
+        uid=request.POST["uid"]
+        token=request.POST["token"]
+        redirectString="reset/"+str(uid)+"/"+str(token)
+        print(redirectString)
+        pass1=request.POST["pass1"]
+        pass2=request.POST["pass2"]
+        user=models.Korisnik.objects.get(email=email)
+        validators = [MinimumLengthValidator,CommonPasswordValidator,NumericPasswordValidator]
+        print(user.ime + user.prezime)
+        userAttributes = [user.korisnickoIme,user.ime,user.prezime,user.ime + user.prezime,user.ime + user.korisnickoIme,user.korisnickoIme + user.prezime]
+        if not pass1==pass2: #Lozinke nisu iste
+            messages.error(request,"Unesene lozinke se ne preklapaju")
+            return redirect(redirectString)
+        if user.lozinka==pass1: #Lozinka je ista staroj
+            messages.error(request,"Nova lozinka ne smije biti stara lozinka")
+            return redirect(redirectString)
+        for atr in userAttributes:
+            if SequenceMatcher(a=pass1.lower(), b=atr.lower()).quick_ratio() >= 0.7:
+                messages.error(request, "Lozinka je nesigurna jer je preslična jednom tvojim podatacima.")
+                return redirect(redirectString)
+        try:
+            for validator in validators:
+                validator().validate(pass1)
+        except ValidationError as e:
+            if str(e) == "['This password is too short. It must contain at least 8 characters.']":
+                messages.error(request, "Lozinka je prekratka. Molimo vas koristite minimalno 8 znakova")
+                return redirect(redirectString)
+            if str(e) == "['This password is too common.']":
+                messages.error(request, "Ova lozinka je prejednostavna")
+                return redirect(redirectString)
+            if str(e) == "['This password is entirely numeric.']":
+                messages.error(request, "Lozinka ne smije imati samo brojke")
+                return redirect(redirectString)
+            messages.error(request,str(e))
+            return redirect(redirectString)
+            
+        
+        salt=os.urandom(32)
+        key=hashlib.pbkdf2_hmac(
+            'sha256',
+            pass1.encode('utf-8'),
+            salt,
+            100000
+        )
+        user.lozinka=key
+        user.salt=salt
+        user.save()
+        return redirect('signin')
+    #Ako nije POST
+    messages.error(request, "Nemaš pristup ovoj stranici")
+    return redirect('home')
+    #treba promijeniti tako da se provjeri poklapaju li se lozinke te ju spremiti u bazu ili javiti grešku
 
 def signout(request):
     if 'LoggedInUserId' in request.session:
@@ -286,133 +531,16 @@ def signout(request):
 def info(request):
     context={}
     if "LoggedInUserId" in request.session:
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
   
     if "LoggedInUserRole" in request.session:
         context["LoggedInUserRole"]=request.session['LoggedInUserRole']
 
-    if request.method == "POST":
-        ##treba raditi validaciju jesu li datumi u dobrom formatu
-        if 'NewNaziv' in request.POST:
-            
-            Naziv = request.POST['Naziv']
-            konferencija=models.Konferencija.objects.filter().first() #Imamo li već neke podatke o konferenciji
-            if konferencija:
-                print(Naziv)
-                konferencija.nazivKonferencije = Naziv
-                konferencija.save()
-            else:
-                novakonferencija = models.Konferencija(nazivKonferencije=Naziv)
-                novakonferencija.save()
-        if 'NewOpis' in request.POST:
-            
-            Opis = request.POST['Opis']
-            konferencija=models.Konferencija.objects.filter().first() 
-            if konferencija:
-                
-                konferencija.opisKonferencije= Opis
-                konferencija.save()
-            else:
-                novakonferencija = models.Konferencija(opisKonferencije = Opis)
-                novakonferencija.save()
-        if 'NewDatum' in request.POST:
-            
-            Datum = request.POST['Datum']
-            konferencija=models.Konferencija.objects.filter().first() 
-            if konferencija:
-                
-                konferencija.datumKonferencije=Datum
-                konferencija.save()
-            else:
-                novakonferencija = models.Konferencija(datumKonferencije = Datum)
-                novakonferencija.save()
-        if 'NewRokPocPrijava' in request.POST:
-            
-            RokPocPrijava = request.POST['RokPocPrijava']
-            konferencija=models.Konferencija.objects.filter().first() 
-            if konferencija:
-                
-                konferencija.rokPocPrijava= RokPocPrijava
-                konferencija.save()
-            else:
-                novakonferencija = models.Konferencija(RokPocPrijava= RokPocPrijava)
-                novakonferencija.save()
-        if 'NewRokPrijava' in request.POST:
-            
-            RokPrijava = request.POST['RokPrijava']
-            konferencija=models.Konferencija.objects.filter().first() 
-            if konferencija:
-    
-                konferencija.rokPrijave= RokPrijava
-                konferencija.save()
-            else:
-                novakonferencija = models.Konferencija(rokPrijave= RokPrijava)
-                novakonferencija.save()
-        if 'NewRokPocRecenzija' in request.POST:
-            
-            RokPocRecenzija= request.POST['RokPocRecenzija']
-            konferencija=models.Konferencija.objects.filter().first() 
-            if konferencija:
-    
-                konferencija.rokRecenzenti= RokPocRecenzija
-                konferencija.save()
-            else:
-                novakonferencija = models.Konferencija(rokRecenzenti= RokPocRecenzija)
-                novakonferencija.save()
-        if 'NewRokRecenzenti' in request.POST:
-            
-            RokRecenzenti= request.POST['RokRecenzenti']
-            konferencija=models.Konferencija.objects.filter().first() 
-            if konferencija:
-    
-                konferencija.rokRecenzenti= RokRecenzenti
-                konferencija.save()
-            else:
-                novakonferencija = models.Konferencija(rokRecenzenti= RokRecenzenti)
-                novakonferencija.save()
-        
-        if 'NewRokAdmin' in request.POST:
-                    
-            RokAdmin= request.POST['RokAdmin']
-            konferencija=models.Konferencija.objects.filter().first() 
-            if konferencija:
-            
-                konferencija.rokAdmin= RokAdmin
-                konferencija.save()
-            else:
-                novakonferencija = models.Konferencija(rokAdmin= RokAdmin)
-                novakonferencija.save()
-        if 'AddNewSection' in request.POST:
-           
-            SectionName = request.POST["SectionName"]
-           
-            konferencija=models.Konferencija.objects.filter().first() 
-            if (not konferencija):
-                konferencija = models.Konferencija() #ako još nemamo podataka za konferenciju
-
-            if not models.Sekcija.objects.filter(naziv = SectionName).exists():
-                newSection=models.Sekcija(naziv = SectionName, konferencijaSekcija=konferencija)
-                newSection.save()
-            # context['sekcije']=models.Sekcija.objects.filter().all() #za prikaz sekcija
-            # return redirect('info')
-        if 'AddNewPreds' in request.POST:
-             username = request.POST['Username']
-             fName = request.POST['Fname']
-             lName = request.POST['Lname']
-             email = request.POST['email']
-
-             predsjedavajuci=models.Korisnik.objects.filter(vrstaKorisnik = models.Uloga.objects.get(naziv = "Predsjedavajuci")).first() 
-             if (not predsjedavajuci):
-                #lozinku mu treba napraviti
-                #poslati podatke na mail
-                predsjedavajuci = models.Korisnik(korisnickoIme = username, ime = fName, prezime = lName, email = email,vrstaKorisnik = models.Uloga.objects.get(naziv = "Predsjedavajuci")) #ako još nemamo podataka za predsjedavajuceg
-                predsjedavajuci.save()
-
-            
-       
-
     #konferencija je u bazi
-    konferencija=models.Konferencija.objects.filter().first()
+    konferencija=models.Konferencija.objects.first()
     if konferencija:
 
         context['konferencijaNaziv']=konferencija.nazivKonferencije
@@ -421,28 +549,29 @@ def info(request):
         context['datum']=datum
         context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('d.m.Y.'))
         context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
-        context['rokAdmin']=dateformat.format(konferencija.rokAdmin, formats.get_format('d.m.Y.'))
         context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('d.m.Y.'))
         context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('d.m.Y.'))
     
-    fetchedSekcije=models.Sekcija.objects.filter().all()
+    fetchedSekcije=models.Sekcija.objects.all()
     if (fetchedSekcije.first()):
         context['sekcije'] = fetchedSekcije
     if models.Korisnik.objects.filter(vrstaKorisnik = 2).exists():
         predsjedavajuci = models.Korisnik.objects.get(vrstaKorisnik = 2)
         context[predsjedavajuci] = predsjedavajuci
-
-
     
-
+    info = models.Info.objects.first()
+    context['info'] = info
     
     print(context)
     return render(request, 'Info.html', context)
 
 def javniradovi(request):
   context={}
-  if "LoggedInUserId" in request.session: #ulogirani smo
-    context["LoggedInUser"]=request.session['LoggedInUserId']
+  if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
   else: #nismo ulogirani
     return redirect('signin')
 

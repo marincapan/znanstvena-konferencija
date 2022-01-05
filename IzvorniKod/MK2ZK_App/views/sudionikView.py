@@ -20,52 +20,78 @@ from datetime import date
 
 def osobnipodaci(request):
     if request.method == "POST":
-        if 'NewUserName' in request.POST:
-            Username = request.POST['Username']
-            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            LoggedInUser.korisnickoIme = Username
-            try:
-                LoggedInUser.save()
-            except IntegrityError:
-                messages.error(request, "To korisnicko ime je vec u uporabi")
-                return redirect('osobnipodaci')
+        LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        username = request.POST["username"]
+        ime = request.POST["ime"]
+        prezime = request.POST["prezime"]
+        email = request.POST["email"]
+        maticnaUstanova = request.POST["ustanova"]
+        
 
-        if 'NewFName' in request.POST:
-            Fname = request.POST['Fname']
-            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            LoggedInUser.ime = Fname
-            LoggedInUser.save()
 
-        if 'NewLName' in request.POST:
-            Lname = request.POST['Lname']
-            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            LoggedInUser.prezime = Lname
-            LoggedInUser.save()
+        #Provjeri jesu li sva polja u redu prije spremanja u bazu
+        #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni korisnik
+        if models.Korisnik.objects.filter(korisnickoIme = username).exclude(id = LoggedInUser.id).exists():
+            messages.error(request, "Korisničko ime je zauzeto")
+            return redirect('osobnipodaci')
+        
+        #email - pogledaj postoji li netko s istim emailom, a da nije trenutni korisnik
+        if models.Korisnik.objects.filter(email = email).exclude(id = LoggedInUser.id).exists():
+            messages.error(request, "E-mail adresa je zauzeta")
+            return redirect('osobnipodaci')
+        i = 1
 
-        if 'NewUstanova' in request.POST:
-              Ustanova = request.POST['Ustanova']
-              LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-              LoggedInUser.korisnikUstanova.naziv = Ustanova
-              LoggedInUser.save()
-              Ustanova = LoggedInUser.korisnikUstanova
-              Ustanova.save()
-              print(LoggedInUser.korisnikUstanova.naziv)
-              print(Ustanova.naziv)
+        provjera = models.DodatnaPoljaObrasca.objects.first()
+        if (provjera): #ima dodatnih polja u obrascu
+            dodatno = models.DodatnaPoljaObrasca.objects.all()
+            print(len(dodatno))
+            
+            for polje in dodatno:
+                    dodatno = models.DodatniPodatci.objects.filter(korisnik = LoggedInUser, poljeObrasca = polje).first()
+                    
+                    if dodatno:
+                        print(dodatno.podatak)
+                        novo = request.POST["dodatni"+str(i)]
+                        #validacija unosa?
 
-        if 'NewEmail' in request.POST:
-            email = request.POST['email']
-            LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-            LoggedInUser.email = email
-            try:
-                LoggedInUser.save()
-            except IntegrityError:
-                messages.error(request, "Ta email adresa je vec u uporabi")
-                return redirect('osobnipodaci')  
+                        i = i + 1
+                        print(novo)
+                        dodatno.podatak = novo
+                        dodatno.save()
+
+        #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
+        LoggedInUser.korisnickoIme = username
+        LoggedInUser.ime = ime
+        LoggedInUser.prezime = prezime
+        LoggedInUser.email = email
+        
+        #ustanova (ako je isti naziv kao i do sad, nema smisla updateati)
+        if maticnaUstanova != LoggedInUser.korisnikUstanova.naziv:
+            if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa).exists():
+                novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa)
+            else:
+                print("Tu sam 1")
+                novaUstanova = models.Ustanova(
+                    naziv = maticnaUstanova,
+                    grad = LoggedInUser.korisnikUstanova.grad,
+                    drzava = LoggedInUser.korisnikUstanova.drzava,
+                    adresa = LoggedInUser.korisnikUstanova.adresa
+                )
+                novaUstanova.save()
+                
+            LoggedInUser.korisnikUstanova = novaUstanova
+
+        LoggedInUser.save()
+        messages.success(request, "Podaci uspješno promijenjeni")
         return redirect('osobnipodaci')
 
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
         context={}
+        context["LoggedInUser"]=korisnik.id #ulogirani smo
+        LoggedInUser=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
         context['LoggedInUser']=request.session['LoggedInUserId']
         context['LoggedInUserRole']=request.session['LoggedInUserRole']
         context['korisnickoIme']=LoggedInUser.korisnickoIme
@@ -73,8 +99,10 @@ def osobnipodaci(request):
         context['prezime']=LoggedInUser.prezime
         context['email']=LoggedInUser.email
         context['uloga']=LoggedInUser.vrstaKorisnik.naziv
-        context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
-        context['sekcija']=LoggedInUser.korisnikSekcija.naziv
+        if LoggedInUser.korisnikUstanova:
+            context['MaticnaUstanova']=LoggedInUser.korisnikUstanova.naziv
+        if LoggedInUser.korisnikSekcija:
+            context['sekcija']=LoggedInUser.korisnikSekcija.naziv
        
         if (context['LoggedInUserRole']=='Sudionik' or context['LoggedInUserRole']=='Recenzent'):
             dodatnipodatci = {}
@@ -89,9 +117,12 @@ def osobnipodaci(request):
                         print(dodatno.podatak)
                         if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
                             #želimo naš format datuma
-                            print("tu")
-                            date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date()
-                            podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
+                            #print("tu")
+                            try:
+                                date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date() #tako su spremljeni pri registraciji kasnije je vjerojatno drugi format pa nek ispisuje taj
+                                podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
+                            except:
+                                podatak = dodatno.podatak
                         ime = dodatno.poljeObrasca.imePolja
                         dodatnipodatci[ime] = podatak
                   
@@ -109,14 +140,18 @@ def osobnipodaci(request):
             
         
     else:
+        messages.info(request, "Trebate biti prijavljeni kako biste pristupili toj stranici.")
         return redirect('signin')
     
     return render(request, 'OsobniPodaci.html',context)
 
 def mojiradovi(request):
     context={}
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
     else: #nismo ulogirani
         return redirect('signin')
     
@@ -175,7 +210,7 @@ def mojiradovi(request):
         if 'PonovniUnosPdf' in request.POST:
             fileTitle = request.POST["fileTitle"]
             uploadedFile = request.FILES["uploadedFile"]
-            updateRad=models.Rad.objects.get(naslov=fileTitle)
+            updateRad=models.Rad.objects.get(naslov=fileTitle, radKorisnik = LoggedInUser)
             updateRad.pdf=uploadedFile
             #najnovija recenzija nam treba
             recenzija = models.Recenzija.objects.filter(rad = updateRad).order_by("-sifRecenzija").first()
@@ -243,7 +278,14 @@ def mojiradovi(request):
 
             #Autori se povezuju s radom
             for autor in autori:
+
                 noviAutor = models.Autor(ime=autor.ime,prezime=autor.prezime,email=autor.email)
+                if models.Autor.objects.filter(email=autor.email).exists():
+                    postojeciAutor = models.Autor.objects.get(email=autor.email)
+                    if postojeciAutor.ime != autor.ime or postojeciAutor.prezime != autor.prezime:
+                        messages.error(request, "E-mail adresa autora je zauzeta")
+                        noviRad.delete()
+                        return redirect('mojiradovi')
                 #Ako autor vec postoji u bazi, samo ga dodaj na ovaj rad
                 if models.Autor.objects.filter(ime=autor.ime,prezime=autor.prezime,email=autor.email).exists():
                     noviAutor = models.Autor.objects.get(ime=autor.ime,prezime=autor.prezime,email=autor.email)
@@ -256,5 +298,6 @@ def mojiradovi(request):
             noviRad.save()
             return redirect('mojiradovi')
 
-    context["prosoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokPrijave
+    context["prosoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPrijave
+    context["poceoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPocPrijava
     return render(request, 'MojiRadovi.html',context)

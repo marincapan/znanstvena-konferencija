@@ -54,8 +54,11 @@
               <div class="text-center text-muted mb-4">
                 Ovdje se prikazuju radovi koje ste prijavili.
               </div>
-
-              {%if prosoDatum == 0 %}
+              {%if poceoDatum == 0%}
+              <div class="text-center fw-bold">
+                Prijave još nisu počele!
+              </div>
+              {%elif prosoDatum == 0 %}
               <div class="accordion" id="accordionRadovi">
                 {%for rad in fetchedRadovi%}
                 <div class="accordion-item">
@@ -68,19 +71,23 @@
                       {%if rad.pdf == "" and prosoDatum == 0%}
                       <span class="badge bg-danger d-flex">Rad nije predan!</span>
                       {%elif rad.recenziranBool == 1%}
-                      {%for recenzija in fetchedRecenzije%}
-                      {%if recenzija.rad == rad %}
-                      {%if recenzija.ocjena_id == 4 %}
-                      <span class="badge bg-danger d-flex">Rad je odbijen!</span>
-                      {%elif recenzija.ocjena_id == 3 %}
-                      <span class="badge bg-danger d-flex">Rad zahtijeva promjene!</span>
-                      {%elif recenzija.ocjena_id == 2 %}
-                      <span class="badge bg-warning d-flex">Rad zahtijeva manje promjene</span>
-                      {%elif recenzija.ocjena_id == 1 %}
-                      <span class="badge bg-success d-flex">Rad je recenziran</span>
-                      {%endif%}
-                      {%endif%}
-                      {%endfor%}
+                        {%if rad.revizijaBool == 1%}
+                        <span class="badge bg-primary d-flex">Rad nije revidiran</span>
+                        {%else%}
+                          {%for recenzija in fetchedRecenzije%}
+                          {%if recenzija.rad == rad %}
+                          {%if recenzija.ocjena_id == 4 %}
+                          <span class="badge bg-danger d-flex">Rad je odbijen!</span>
+                          {%elif recenzija.ocjena_id == 3 %}
+                          <span class="badge bg-danger d-flex">Rad zahtijeva promjene!</span>
+                          {%elif recenzija.ocjena_id == 2 %}
+                          <span class="badge bg-warning d-flex">Rad zahtijeva manje promjene</span>
+                          {%elif recenzija.ocjena_id == 1 %}
+                          <span class="badge bg-success d-flex">Rad je recenziran</span>
+                          {%endif%}
+                          {%endif%}
+                          {%endfor%}
+                        {%endif%}
                       {%else%}
                       <span class="badge bg-primary d-flex">Rad nije recenziran</span>
                       {%endif%}
@@ -177,12 +184,14 @@
                                   </div>
                                 </div>
                                 <!-- align-self-start/center/end -->
+                                {%if rad.revizijaBool == 0 %}
                                 <div class="btn-group">
                                   <input class="form-control file1" type="file" name="uploadedFile"
                                     accept="application/pdf" required>
                                   <button type="submit" id="file1" class=" btn btn-outline-primary"
                                     name='PonovniUnosPdf' style="grid-column: 2;">Predaj</button>
                                 </div>
+                                {%endif%}
                               </div>
                             </form>
                           </div>
@@ -214,8 +223,11 @@
               <p class="text-center text-muted mb-4">
                 Ovdje uneste ime, datoteku te autore dodatnog rada s kojim želite sudjelovati na konferenciji.
               </p>
-
-              {%if prosoDatum == 1 %}
+              {%if poceoDatum == 0%}
+              <div class="text-center fw-bold">
+                Prijave još nisu počele!
+              </div>
+              {%elif prosoDatum == 1 %}
               <div class="text-center fw-bold">
                 Rok za prijavu radova je istekao!
               </div>
@@ -263,7 +275,7 @@
                       </div>
 
                       <div id="autorPodaci" class="input-group col-md-10 col-10 mb-1">
-                        <input type="text" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail"
+                        <input type="email" id="autorEmail0" name="autorEmail0" aria-label="E-mail" placeholder="E-mail"
                           class="form-control form-control-lg" required />
                         <div id="autorPodaciKontakt" class="input-group-text">
                           <input type="radio" id="autorKontakt0" name="autorKontakt0" aria-label="Kontakt"

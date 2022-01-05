@@ -1,8 +1,9 @@
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
+from django.core.mail.message import EmailMessage
 from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
 from django.db.models.expressions import RawSQL
@@ -10,6 +11,7 @@ from django.http.response import FileResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from IzvorniKod.MK2ZK_App import models
 from django.db import IntegrityError 
@@ -20,8 +22,13 @@ import os
 
 def mojerecenzije(request):
     context={}
-    if "LoggedInUserId" in request.session: #ulogirani smo
-        context["LoggedInUser"]=request.session['LoggedInUserId']
+    if "LoggedInUserId" in request.session:
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
+        korisnik.lastActive=datetime.now()
+        korisnik.save()
+        context["LoggedInUser"]=korisnik.id
+        context['LoggedInUserRole']=request.session['LoggedInUserRole']
+
     else: #nismo ulogirani
         return redirect('signin')
     
@@ -57,10 +64,39 @@ def mojerecenzije(request):
 
         rad.save()
         novaRecenzija.save()
+        poruka = render_to_string('RecenziranEmail.html', {
+            'user': rad.radKorisnik,
+            'rad': rad,
+            'domain': '127.0.0.1:8000',
+            'protocol':'http',
+            'recenzija':novaRecenzija
+            })
+        to_email = rad.radKorisnik.email
+        email = EmailMessage(
+           '[ZK] Vaš rad je ocjenjen!', poruka, 'Pametna ekipa', to=[to_email]
+        )
+        email.send()
+
+        findOzk=models.AutorRad.objects.filter(Rad=rad)
+        for autor in findOzk:
+            if autor.OZK==True:
+                if not autor.Autor.email==rad.radKorisnik.email:
+                    poruka = render_to_string('RecenziranEmail.html', {
+                        'user': autor,
+                        'rad': rad,
+                        'domain': '127.0.0.1:8000',
+                        'protocol':'http',
+                        'recenzija':novaRecenzija
+                        })
+                    to_email = autor.Autor.email
+                    email = EmailMessage(
+                    '[ZK] Vaš rad je ocjenjen!', poruka, 'Pametna ekipa', to=[to_email]
+                    )
+                    email.send()
 
         return redirect('mojerecenzije')
     #radovi koji nemaju predan pdf se ne recenziraju, a također nas ne zanimaju radovi koji su recenzirani no ne trebaju reviziju (oni su tako i tako u recenzijama)
-    fetchRadovi = models.Rad.objects.exclude(pdf="").exclude(recenziranBool = True, revizijaBool = False)
+    fetchRadovi = models.Rad.objects.filter(radSekcija=LoggedInUser.korisnikSekcija).exclude(pdf="").exclude(recenziranBool = True, revizijaBool = False)
     fetchOcjene = models.Ocjena.objects.all()
     #ne zanimaju nas radovi koji zahtijevaju reviziju, oni se nalaze u fetchRadovi i ne prikazuju se kao "Recenzirani radovi"
     fetchMyRecenzije = models.Recenzija.objects.filter(recenzent=LoggedInUser).exclude(rad__revizijaBool = True)
@@ -82,6 +118,7 @@ def mojerecenzije(request):
     context['fetchedOcjene']=fetchOcjene
     context['fetchedRadovi']=fetchRadovi
     context['fetchedMyRecenzije']=fetchMyRecenzije
-    context["prosoDatum"]=date.today()>models.Konferencija.objects.get(sifKonferencija=1).rokRecenzenti
+    context["prosoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokRecenzenti
+    context["poceoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPocRecenzija
     
     return render(request, 'MojeRecenzije.html', context)
