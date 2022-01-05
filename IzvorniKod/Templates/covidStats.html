@@ -36,18 +36,24 @@
                       <div>
                         <h2 style="display: inline;">COVID-19 statistika</h2>
                       </div>
+                      {% if LoggedInUserRole == 'Admin'%}
+                        <a href="/adminsucelje" class="btn btn-outline-secondary">Vrati se na admin sučelje</a>
+                        {%else%}
+                        <a href="/predsjedavajuci" class="btn btn-outline-secondary">Vrati se na upravljačko sučelje</a>
+                        {%endif%}
                     </div>
                     <hr>
                   </div>
-        
+                  
+                  <p class="text-left text-muted mb-2">Ovdje možete vidjeti broj novozaraženih s COVID-19 u državama iz kojih dolaze sudionici i recenzenti.</p>
+
                   <div class="container">
-                    {% for key,value in konfDrzave.items%}
-                      <h2>{{key}} {{value.0}} {{value.1}}</h2>
-                      <!--Key je drzava,value je lista 
-                      indeks 0 - datum dohvata podatka i indeks 1 - broj novih covid slucajeva tog datuma. 
-                      Pogledaj adminView covidstats() za koje se jos informacije mogu slati.
-                      Indeksiranje radi kao naznaceno-->
-                    {%endfor%}
+
+                  <div><b>Zadnje ažuriranje podataka: {%for value in konfDrzave.values%}{%if forloop.first%} {{value.0}} {%endif%}{%endfor%}</b></div>
+                  <br>
+                  
+                  <canvas id="myChart" style="width:100%;"></canvas>
+
                   </div>
         
         
@@ -63,9 +69,41 @@
           <!--FOOTER-->
 
   </body>
-        
+  
+  <!--za graf-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <!--za graf-->
+  
   <!--nas js-->
   <script src="{% static '/js/hamburgerActions.js' %}"></script>
   <script src="{% static '/js/newPassword.js' %}"></script>
   <!--nas js-->
+
+  <script>
+    var drzave = {{konfDrzave | safe}};
+    var xValues = [];
+    var yValues = [];
+
+    for (var key in drzave) {
+      xValues.push(key);
+      yValues.push(drzave[key][1]);
+    }
+
+    var barColors = "#1c3a9c";
+
+    new Chart("myChart", {
+      type: "bar",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {
+          display: false}
+      }
+    });
+  </script>
 </html>

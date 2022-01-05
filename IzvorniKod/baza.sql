@@ -154,14 +154,3 @@ CREATE TABLE Clanak
 	prisutan BOOLEAN,
 	FOREIGN KEY (autor) REFERENCES Korisnik(ID)
 );
-
-CREATE TABLE Info
-(
-	ID INT, 
-	naslov VARCHAR,
-	tekst VARCHAR,
-	autor INT,
-	konferencija INT,
-	FOREIGN KEY (autor) REFERENCES Korisnik(ID),
-	FOREIGN KEY (konferencija) REFERENCES Konferencija(ID)
-);

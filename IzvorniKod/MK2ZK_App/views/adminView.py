@@ -104,9 +104,8 @@ def adminsucelje(request):
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     fetchedClanci = models.Clanak.objects.filter().all()
 
-    info = models.Info.objects.get(id = 1)
+    info = models.Konferencija.objects.get(sifKonferencija = 1).opisKonferencije
     context['info'] = info
-    print("MOJ INFO:",info)
 
     for polje in fetchedPolja:
         print(polje.imePolja)
@@ -386,7 +385,7 @@ def covidstats(request):
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemaš ovlasti za ovu stranicu!")
             return redirect('/') #redirect na homepage
 
             
@@ -419,7 +418,8 @@ def covidstats(request):
                 drzavaENG=drzaveEngList[indexHRV]
                 if drzavaENG in date:
                     if date[0]!="": #Kraj
-                        konfDrzave[str(ustanova.drzava)]=[date[0],date[4]] # Rijecnik s drzavom (Na engleskom zasad) i vrijednostima koje zelim prenijeti (zasad datum dohavacanja podataka i novih slucajeva)
+                        konfDrzave[str(ustanova.drzava)]=[date[0],date[4]]
+                        print(date) # Rijecnik s drzavom (Na engleskom zasad) i vrijednostima koje zelim prenijeti (zasad datum dohavacanja podataka i novih slucajeva)
     context["konfDrzave"]=konfDrzave
     print(context)    
     return render(request, 'CovidStats.html', context)

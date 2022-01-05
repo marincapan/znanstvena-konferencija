@@ -1,13 +1,13 @@
 {% autoescape off %}
 Poštovani,
 
-Zaprimili smo zahtjev za promjenu lozinke Vašeg korisničkog računa. Kako bi pokrenuli postupak za promjenu lozinke kliknite na poveznicu:
+Zaprimljen je zahtjev za promjenu lozinke Vašeg korisničkog računa. Za dobivanje nove lozinke kliknite na poveznicu:
 
 {{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
 
-Ova poveznica se može iskoristiti samo jednom. Ukoliko Vam se ukaže potreba za ponovnom promjenom loznke, molimo posjetite {{ protocol }}://{{domain}} i pošaljite novi zahtjev.
+Ova poveznica može se iskoristiti samo jednom. Poželite li ponovno promijeniti lozinku, molimo posjetite {{ protocol }}://{{domain}} i pošaljite novi zahtjev.
 
-Ukoliko niste zatražili novu lozinku, zanemarite ovu poruku.
+Zanemarite ovu poruku ako niste zatražili novu lozinku.
 
 Srdačan pozdrav,
 Pametna Ekipa

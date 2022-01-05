@@ -170,7 +170,7 @@ def signup(request):
             for i in range(brojAutora-1):
                 for j in range(i+1, brojAutora):
                     if autori[i].email == autori[j].email: #dva autora imaju isti email
-                        messages.error(request, "Autori ne smiju imati istu adresu e-maila")
+                        messages.error(request, "Autori ne smiju imati istu adresu e-pošte!")
                         return redirect('signup')
 
             #Nije pretjerano optimalno, but it gets the job done
@@ -178,7 +178,7 @@ def signup(request):
                 if models.Autor.objects.filter(email=autor.email).exists():
                     postojeciAutor = models.Autor.objects.get(email=autor.email)
                     if postojeciAutor.ime != autor.ime or postojeciAutor.prezime != autor.prezime:
-                        messages.error(request, "E-mail adresa autora je zauzeta")
+                        messages.error(request, "Adresa e-pošte autora je zauzeta!")
                         return redirect('signup')
 
             #Ako ustanova ne postoji spremi ju, inace dohvati postojecu
@@ -214,7 +214,7 @@ def signup(request):
                 NoviKorisnik = models.Korisnik(korisnickoIme=username,lozinka=key,idSudionik=idSudionik,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija,salt=salt)
                 NoviKorisnik.save()
             except IntegrityError:
-                messages.error(request, "Korisnicko ime ili email je vec u uporabi")
+                messages.error(request, "Korisničko ime ili adresa e-pošte već se koristi!")
                 return redirect('signup')
 
             #Provjeri je li rad ranije prijavljen
@@ -226,7 +226,7 @@ def signup(request):
             if not models.Rad.objects.filter(naslov=title, radSekcija=Sekcija, radKorisnik=NoviKorisnik).exists():
                 noviRad.save()
             else:
-                    messages.error(request, "Rad s tim naslovom na toj sekciji već postoji")
+                    messages.error(request, "Rad s tim naslovom u toj sekciji već postoji!")
                     NoviKorisnik.delete()
                     return redirect('signup')
 
@@ -283,7 +283,7 @@ def signup(request):
             '[ZK] Tvoj račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
             )
             email.send()
-            messages.info(request, "Na adresu Vaše elektroničke pošte je poslan aktivacijski link i podatci za prijavu.")
+            messages.info(request, "Na adresu e-pošte pošte poslan je aktivacijski link i podaci za prijavu.")
             return redirect('signin')
         #Ako obradjujemo recenzenta, radimo drugacije provjere
         elif(uloga == "Recenzent"):
@@ -308,7 +308,7 @@ def signup(request):
                 NoviKorisnik = models.Korisnik(korisnickoIme=username,ime=fName,prezime=lName,email=email,vrstaKorisnik=models.Uloga.objects.get(naziv=uloga), korisnikUstanova=Ustanova, korisnikSekcija=Sekcija)
                 NoviKorisnik.save()
             except IntegrityError:
-                messages.error(request, "Korisnicko ime ili email je vec u uporabi")
+                messages.error(request, "Korisničko ime ili adresa e-pošte već se koristi!")
                 return redirect('signup')
                 
             for dodatnoPolje in fetchedPolja:
@@ -319,7 +319,7 @@ def signup(request):
                     poljeObrasca=dodatnoPolje
                 )
                 noviDodatniPodatak.save()
-            messages.info(request, "Hvala na prijavi! Predsjedavajući će pregledati vašu prijavu te javiti vam status recenzenstva preko unesenog maila. Hvala na strpljenju!")
+            messages.info(request, "Hvala na prijavi! Predsjedavajući će pregledati vašu prijavu te Vas obavijestiti o potvrdi recenziranja e-mailom. Hvala na strpljenju!")
             return redirect('home')
         
 
@@ -342,10 +342,10 @@ def activate(request, uidb64, token):
         #print(postojeciKorisnik)
         postojeciKorisnik.save()
         signin(request)
-        messages.info(request,'Hvala na potvrdi! Sada se možeš prijaviti u svoj račun!')
+        messages.info(request,'Hvala na potvrdi! Sada se možete prijaviti!')
         return redirect('signin')
     else:
-        messages.info(request,'Ta aktivacijska poveznica nije valjana!')
+        messages.info(request,'Aktivacijska poveznica nije valjana!')
         return redirect('signin')
 
 def signin(request):
@@ -365,7 +365,7 @@ def signin(request):
                 print(randPassword)
                 korisnik.lozinka = randPassword
                 korisnik.save()
-                messages.error(request, "Nova lozinka je poslana na e-mail.")
+                messages.error(request, "Nova lozinka poslana je na adresu e-pošte.")
                 """
 
                 subject = "[ZK] Promjena lozinke"
@@ -381,9 +381,9 @@ def signin(request):
                 }
                 email_message = render_to_string(email_template_name, c)
                 EmailMessage(subject, email_message, 'Pametna ekipa', [korisnik.email]).send()
-                messages.error(request, "Poveznica za promjenu lozinke je poslana na e-mail.")
+                messages.error(request, "Poveznica za promjenu lozinke poslana je na adresu e-pošte.")
             else:
-                messages.error(request, "E-mail koji ste unijeli ne postoji u bazi.")
+                messages.error(request, "Adresa e-pošte koji ste unijeli ne postoji u bazi!")
                 return redirect('signin')
 
         #normalan login
@@ -416,13 +416,13 @@ def signin(request):
 
                                 if LoggedInUser.vrstaKorisnik.naziv=="Recenzent":
                                     if LoggedInUser.odobrenBool==None:
-                                        messages.warning(request,"Vaš status recenzentstva još nije odlučen. Hvala vam na strpljenju")
+                                        messages.warning(request,"Vaš zahtjev za recenziranjem još nije odobren. Hvala Vam na strpljenju.")
                                         return redirect('home')
                                     if LoggedInUser.odobrenBool==False:
-                                        messages.warning(request,"Vaš status recenzentstva je odbijen.")
+                                        messages.warning(request,"Vaš zahtjev za recenziranjem je odbijen!")
                                         return redirect('home')
                                 if LoggedInUser.potvrdenBool==False:
-                                    messages.warning(request,"Vaš account još nije potvređen, molimo pogledajte vaš email")
+                                    messages.warning(request,"Vaš račun još nije potvrđen, molimo pogledajte adresu e-pošte!")
                                     print("flag")
                                     return redirect('signin')
                                 else:
@@ -432,13 +432,13 @@ def signin(request):
                                     #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
                                     return redirect('home')
                             else:
-                                messages.error(request, "Unesena lozinka je kriva")
+                                messages.error(request, "Unesena lozinka nije ispravna!")
                                 return redirect('signin')
                     else:
-                        messages.error(request, "Korisničko ime ne postoji")
+                        messages.error(request, "Korisničko ime ne postoji!")
                         return redirect('signin')
                 except: #Privremeni EXCEPT da ne izbaci gresku ako netko slucajno krivo napise predsjedavajuci
-                    messages.error(request, "Krivo si napiso nesto")
+                    messages.error(request, "Uneseni podaci su neispravni!")
                     return redirect('signin')
     elif "LoggedInUserId" in request.session:
         korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
@@ -480,27 +480,27 @@ def reset_password(request):
         print(user.ime + user.prezime)
         userAttributes = [user.korisnickoIme,user.ime,user.prezime,user.ime + user.prezime,user.ime + user.korisnickoIme,user.korisnickoIme + user.prezime]
         if not pass1==pass2: #Lozinke nisu iste
-            messages.error(request,"Unesene lozinke se ne preklapaju")
+            messages.error(request,"Unesene se lozinke ne preklapaju!")
             return redirect(redirectString)
         if user.lozinka==pass1: #Lozinka je ista staroj
-            messages.error(request,"Nova lozinka ne smije biti stara lozinka")
+            messages.error(request,"Nova lozinka ne smije biti stara lozinka.")
             return redirect(redirectString)
         for atr in userAttributes:
             if SequenceMatcher(a=pass1.lower(), b=atr.lower()).quick_ratio() >= 0.7:
-                messages.error(request, "Lozinka je nesigurna jer je preslična jednom tvojim podatacima.")
+                messages.error(request, "Lozinka je nesigurna jer je preslična Vašim osobnim podacima.")
                 return redirect(redirectString)
         try:
             for validator in validators:
                 validator().validate(pass1)
         except ValidationError as e:
             if str(e) == "['This password is too short. It must contain at least 8 characters.']":
-                messages.error(request, "Lozinka je prekratka. Molimo vas koristite minimalno 8 znakova")
+                messages.error(request, "Lozinka mora sadržavati minimalno 8 znakova.")
                 return redirect(redirectString)
             if str(e) == "['This password is too common.']":
-                messages.error(request, "Ova lozinka je prejednostavna")
+                messages.error(request, "Lozinka je prejednostavna.")
                 return redirect(redirectString)
             if str(e) == "['This password is entirely numeric.']":
-                messages.error(request, "Lozinka ne smije imati samo brojke")
+                messages.error(request, "Lozinka ne smije imati samo brojeve.")
                 return redirect(redirectString)
             messages.error(request,str(e))
             return redirect(redirectString)
@@ -518,7 +518,7 @@ def reset_password(request):
         user.save()
         return redirect('signin')
     #Ako nije POST
-    messages.error(request, "Nemaš pristup ovoj stranici")
+    messages.error(request, "Nemate pristup ovoj stranici!")
     return redirect('home')
     #treba promijeniti tako da se provjeri poklapaju li se lozinke te ju spremiti u bazu ili javiti grešku
 
@@ -551,6 +551,7 @@ def info(request):
         context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('d.m.Y.'))
         context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('d.m.Y.'))
         context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('d.m.Y.'))
+        context['info'] = models.Konferencija.objects.get(sifKonferencija = 1).opisKonferencije
     
     fetchedSekcije=models.Sekcija.objects.all()
     if (fetchedSekcije.first()):
@@ -559,8 +560,6 @@ def info(request):
         predsjedavajuci = models.Korisnik.objects.get(vrstaKorisnik = 2)
         context[predsjedavajuci] = predsjedavajuci
     
-    info = models.Info.objects.first()
-    context['info'] = info
     
     print(context)
     return render(request, 'Info.html', context)
