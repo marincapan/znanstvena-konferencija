@@ -275,7 +275,7 @@ def signup(request):
             poruka = render_to_string('AktivirajEmail.html', {
                 'user': NoviKorisnik,
                 'lozinka': randPassword,
-                'domain': os.getenv("DOMAIN")
+                'domain': os.getenv("DOMAIN"),
                 'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
                 'token':account_activation_token.make_token(NoviKorisnik),
                 'protocol': os.getenv("PROTOCOL")
