@@ -67,8 +67,8 @@ def mojerecenzije(request):
         poruka = render_to_string('RecenziranEmail.html', {
             'user': rad.radKorisnik,
             'rad': rad,
-            'domain': '127.0.0.1:8000',
-            'protocol':'http',
+            'domain': os.getenv("DOMAIN"),
+            'protocol':os.getenv("PROTOCOL"),
             'recenzija':novaRecenzija
             })
         to_email = rad.radKorisnik.email
@@ -84,8 +84,8 @@ def mojerecenzije(request):
                     poruka = render_to_string('RecenziranEmail.html', {
                         'user': autor,
                         'rad': rad,
-                        'domain': '127.0.0.1:8000',
-                        'protocol':'http',
+                        'domain': os.getenv("DOMAIN"),
+                        'protocol': os.getenv("PROTOCOL"),
                         'recenzija':novaRecenzija
                         })
                     to_email = autor.Autor.email

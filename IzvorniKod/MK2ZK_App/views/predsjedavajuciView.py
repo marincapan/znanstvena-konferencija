@@ -261,10 +261,10 @@ def uprsucelje(request):
                 poruka = render_to_string('RecenzentMail.html', {
                 'user': updateRecenzent,
                 'lozinka': randPassword,
-                'domain': '127.0.0.1:8000',
+                'domain': os.getenv("DOMAIN"),
                 'uid':urlsafe_base64_encode(force_bytes(updateRecenzent.id)),
                 'token':account_activation_token.make_token(updateRecenzent),
-                'protocol':'http'
+                'protocol': os.getenv("PROTOCOL")
                     })
                 to_email = updateRecenzent.email
                 email = EmailMessage(
@@ -280,10 +280,10 @@ def uprsucelje(request):
 
                 poruka = render_to_string('RecenzentMail.html', {
                 'user': updateRecenzent,
-                'domain': '127.0.0.1:8000',
+                'domain': os.getenv("DOMAIN"),
                 'uid':urlsafe_base64_encode(force_bytes(updateRecenzent.id)),
                 'token':account_activation_token.make_token(updateRecenzent),
-                'protocol':'http'
+                'protocol': os.getenv("PROTOCOL")
                     })
                 to_email = updateRecenzent.email
                 email = EmailMessage(

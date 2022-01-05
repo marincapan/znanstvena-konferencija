@@ -30,6 +30,8 @@ from IzvorniKod.MK2ZK_App.tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib.auth.password_validation import *
 import hashlib
+from dotenv import load_dotenv
+load_dotenv()
 
 def increment_KorisnikID():
   last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
@@ -273,10 +275,10 @@ def signup(request):
             poruka = render_to_string('AktivirajEmail.html', {
                 'user': NoviKorisnik,
                 'lozinka': randPassword,
-                'domain': '127.0.0.1:8000',
+                'domain': os.getenv("DOMAIN")
                 'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
                 'token':account_activation_token.make_token(NoviKorisnik),
-                'protocol':'http'
+                'protocol': os.getenv("PROTOCOL")
                     })
             to_email = email
             email = EmailMessage(
@@ -372,12 +374,12 @@ def signin(request):
                 email_template_name = "PromijeniLozinkuEmail.html"
                 c = {
                 "email":korisnik.email,
-                'domain':'127.0.0.1:8000',
+                'domain': os.getenv("DOMAIN"),
                 'site_name': 'Znanstvena konferencija',
                 "uid": urlsafe_base64_encode(force_bytes(korisnik.id)),
                 "user": korisnik,
                 'token': account_activation_token.make_token(korisnik),
-                'protocol': 'http',
+                'protocol': os.getenv("PROTOCOL")
                 }
                 email_message = render_to_string(email_template_name, c)
                 EmailMessage(subject, email_message, 'Pametna ekipa', [korisnik.email]).send()
