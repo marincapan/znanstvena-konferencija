@@ -1,25 +1,174 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>
-        Trešnja (latinski: Prunus avium), listopadna je vrsta drveća iz porodice Rosaceae.
-    </p>
-    <p>
-        Stablo trešnje naraste do 20 m, prsnog promjera do 70 cm.
-    </p>
 
-    <p>
-        Kora je sivo-crvenkaste boje, sjajna, glatka, ljušti se u obliku koncentričnih krugova. Pri dnu debla stvara se tamni lub, koji se uzdužno raspucava. Izbojci su s jedne strane sivkasti, dok su s druge strane smeđkasti.
-        Pupovi su jajoliko čunjasti, na vrhu ušiljeni, obavijeni većim brojem smeđkastih ljuskica, čiji su rubovi sivkasti. Smješteni su naizmjenično i često nagomilani.
-        Listovi su eliptični do obrnuto jajoliki, na vrhu ušiljeni, a na bazi suženi, rubovi su napiljeni. Listovi su dugi do 12 cm, s donje strane posuti rijetkim bijelim dlačicama. Na prijelazu od plojke do peteljke lista vide se dvije crvenkaste žlijezde. Prije otpadanja listovi pocrvene.
-        Cvjetovi rastu prije listanja, na prošlogodišnjim izbojcima. Bijele su boje, rastu gusto nagomilani, vise na dugim stapkama, a cvat je u obliku gronje.
-        Plod je trešnja, jestiva tamnocrvena koštunica s debelim, mesnatim i sočnim usplođem.
-    </p>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>O konferenciji</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <!--nas css-->
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+
+</head>
+
+
+<body>
+
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+  <div class="gradient-custom-3 " style="min-height: 100vh;">
+    <div class="container pt-5 pb-5">
+
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-5">
+
+
+          <div class="text-uppercase text-center mb-2">
+            <div style="padding-bottom: 9px;">
+              <div>
+                <h2 style="display: inline;">O konferenciji</h2>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div class="container text-center" style = "font-size:larger;">
+            {{opis}}
+          </div>
+
+          
+
+          <hr>
+          <!-- <div class="text-muted"><i> {{info.autor.ime}}</i></div> -->
+
+
+        </div>
+      </div>
+
+      <div class="div-with-timeline">
+        <div class="timeline">
+
+          <div class="timeline-container timeline-left">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{rokPocPrijava}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+      
+                <div class="container" style="text-align: center;"><h5>Početak prijava</h5></div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="timeline-container timeline-right">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{rokPrijave}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+                
+                <div class="container" style="text-align: center;"><h5>Rok za prijavu i predaju radova</h5></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="timeline-container timeline-left">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{rokPocRecenzija}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+      
+                <div class="container" style="text-align: center;"><h5>Početak recenziranja radova</h5></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-container timeline-right">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{rokRecenzenti}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+                
+                <div class="container" style="text-align: center;"><h5>Rok za recenziranje radova</h5></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-container timeline-left">
+            <div class="card" style="border-radius: 15px; border-color: #1c3a9c; border-width: 0.5rem;">
+              <div class="card-body p-5">
+      
+                <div class="text-uppercase text-center mb-2">
+                  <div style="padding-bottom: 9px;">
+                    <div>
+                      <h2 style="display: inline;">{{datum}}</h2>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+      
+                <div class="container" style="text-align: center;"><h5>Konferencija</h5></div>
+              </div>
+            </div>
+          </div>
+  
+        </div> 
+      </div>
+
+  </div>
+
+  </div>
+
+
+
+  <!--FOOTER-->
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
+
+
 </body>
+
+
+
+
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<!--nas js-->
+
 </html>

@@ -5,180 +5,25 @@
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <title>
-              {%if LoggedInUserRole == "Admin"%}
               Složi obrazac
-              {%else%}
-              Moji radovi
-              {%endif%}
             </title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="icon" href="{% static '/vectors/icon.svg' %}">
             <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
             <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+            <!--nas css-->
+            <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+            <!--nas css-->
             <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
         </head>
-
-        <style>
-          @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-              font-size: 3.5rem;
-            }
-          }
-
-          /*Bitno za animaciju rotacije hamburger menija*/
-          @keyframes rotation{
-            from {transform: rotate(0deg);}
-            to {transform: rotate(90deg);}
-          }   
-            .gradient-custom-3 {
-              /* fallback for old browsers */
-              background: #8fb5cc;
-  
-              /* Chrome 10-25, Safari 5.1-6 */
-              background: -webkit-linear-gradient(to right, #f2f2f2, #8FB5CC);
-  
-              /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-              background: linear-gradient(to right, #f2f2f2, #8FB5CC);
-            }
-  
-            .card {
-              background-color: #f2f2f2;
-            }
-
-            .btn-primary {
-                background-color: #1c3a9c;
-                border-color: #1c3a9c;
-            }
-
-            .btn-primary:hover {
-                background-color: #c1666b;
-                border-color: #c1666b;
-            }
-            .btn-outline-primary:hover {
-                background-color: #c1666b;
-                border-color: #c1666b;
-            }
-
-            .list-group-item:hover {
-                background-color: #8fb5cc;
-                color: black;
-                font-weight: bold;
-            }
-
-            .buttons {
-                list-style-type: none;
-            }
-
-            input[type='radio'],input[type='checkbox'] { 
-                transform: scale(1.25); 
-            }
-
-            .active-fields-container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                align-items: center;
-                text-align: center;
-                justify-items: center;
-            }
-
-            button.acc-btn {
-              display: grid;
-              grid-template-columns: 1fr max-content max-content;
-              align-items: center;
-              grid-gap: 10px;
-            }
-
-          </style>
 
 
         <body style="min-width: 500px">
 
-            <!--Vektorske grafike za header-->
-            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                <!-- gumb za Naslovnicu-->
-                <symbol id="home" viewBox="0 0 16 16">
-                  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
-                </symbol>
-                <!-- gumb za Prijavu -->
-                <symbol id="people-circle" viewBox="0 0 16 16">
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                </symbol>
-                <!-- gumb za uređivanje osobnih podataka -->
-                <symbol id="pencil-square" viewBox="0 0 16 16">
-                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                </symbol>
-                <!-- gumb za spremanje uređenih podataka -->
-                <symbol id="save-changes" viewBox="0 0 16 16">
-                  <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.5h2a.5.5 0 0 1 .354.854l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5A.5.5 0 0 1 5.5 6.5h2V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
-                </symbol>
-                <!-- gumb za otkazivanje spremanja podataka -->
-                <symbol id="cancel-changes" viewBox="0 0 16 16">
-                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                </symbol>
-                <!-- gumb za hamburger meni -->
-                <symbol id="hamburger" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                </symbol>
-                <!-- gumb ? -->
-                <symbol id="sci-con" viewBox="0 0 29 29">
-                    
-                </symbol>
-              </svg>
-
-              <!--Nema potrebe za provjerom jer se podrazumijeva da je korisnik ulogiran-->
-
-              <header>
-                <nav class="navbar navbar-expand-lg bg-dark bg-gradient">
-                  <div class="container">
-                    <a class="navbar-brand" href="/">
-                      <img src="{% static '/vectors/SciConIcon.svg' %}" alt="SciCon" width="64" height="64">
-                    </a>
-                    <button class="navbar-toggler" id="navbarToggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                      <svg class="navbar-toggler-icon" id="navbarTogglerIcon" width="24" height="24" style="-webkit-filter: invert(100%); filter: invert(100%);"><use xlink:href="#hamburger"/></svg>
-                    </button>
-                    <div class="collapse navbar-collapse" style="justify-content: flex-end;" id="navbarContent">
-                      <ul class="navbar-nav" style="text-align: center;">
-                        <li class="nav-item">
-                          <a href="/" class="nav-link text-white">
-                            <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
-                            <div style="display:inline; ">Naslovna</div>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a href="info" class="nav-link text-white">
-                            <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
-                            O konferenciji
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          {%if LoggedInUserRole == "Admin"%}
-                          <a href="sloziobrazac" class="nav-link text-white">
-                            <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
-                            Složi obrazac
-                          </a>
-                          {%else%}
-                          <a href="mojiradovi" class="nav-link text-white">
-                            <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
-                            Moji radovi
-                          </a>
-                          {%endif%}
-                        </li>
-                        <li>
-                            <!--Za ovo smo rekli da se otvori meni gdje korisnik bira?-->
-                          <a href="signout" class="nav-link text-white">
-                            <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
-                            Odjava
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </nav>
-            </header>
+            <!--HEADER-->
+            {% include "./Header.html" %}
+            <!--HEADER-->
 
 
             <div class="gradient-custom-3 " style="min-height: 100vh;">
@@ -189,11 +34,8 @@
                     
                     
                       <div class="text-uppercase text-center mb-5">
-                        {%if LoggedInUserRole == "Sudionik"%}
-                        <h2>Moji radovi</h2>
-                        {% endif %}
                         {% if LoggedInUserRole == "Admin" %}
-                        <h2>Složi obrazac</h2>
+                        <h2>Uredi obrazac za registraciju</h2>
                         {% endif %}
                         <hr>
                       </div>
@@ -208,12 +50,7 @@
                           {% endfor %}
                       {% endif %}
                       
-                      {%if LoggedInUserRole == "Sudionik"%}
-                      <p class="text-center text-muted mt-5 mb-0">Ovdje unesi datoteku i ime rada s kojim želiš sudjelovati na konferenciji. </p>
-                      {% endif %}
-                      {%if LoggedInUserRole == "Admin"%}
-                      <p class="text-center text-muted mt-5 mb-0">Ovdje možeš definirati novo polje za registracijski obrazac. </p>
-                      {% endif %}
+                      <p class="text-center text-muted mt-5 mb-0">Ovdje možete definirati novo polje za registracijski obrazac. </p>
                       <br>
                         
                       
@@ -229,7 +66,7 @@
                                         {% csrf_token %}
 
                                         <div class="form-outline mb-4">
-                                            <label class="fs-5" for="">Naziv novog polja za obrazac:</label>
+                                            <label class="fs-6 fw-bold" for="">Naziv novog polja za obrazac:</label>
                                         </div>
 
                                         <div class="col-md-6 mb-4">
@@ -237,21 +74,21 @@
                                         </div>
                                         
                                         <div class="form-outline mb-4">
-                                            <label class="fs-5" for="">Odaberi tip podatka novog polja:</label>
+                                            <label class="fs-6 fw-bold" for="">Odaberite tip podatka novog polja:</label>
                                         </div>
 
                                         <div>
-                                            <ul class="fs-5 buttons">
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="text" value="text"> TEXT</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="date" value="date"> DATE</li>
-                                                <li class="fs-5"><input type="radio" name="fieldType" id="number" value="number"> NUMBER</li>
+                                            <ul class="fs-6 buttons">
+                                                <li class="fs-6"><input type="radio" name="fieldType" id="text" value="text" checked="checked"> običan tekst</li>
+                                                <li class="fs-6"><input type="radio" name="fieldType" id="date" value="date"> datum</li>
+                                                <li class="fs-6"><input type="radio" name="fieldType" id="number" value="number"> broj</li>
                                             </ul>
                                         </div>
 
                                         <br>
 
                                         <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                                            <button type="submit" class="btn btn-primary btn-lg" name='AddNewField' value="Update" style="grid-column: 2;">Dodaj novo polje</button>
+                                            <button type="submit" class="btn btn-primary btn-md" name='AddNewField' value="Update" style="grid-column: 2;">Dodaj novo polje</button>
                                         </div>
 
                                     
@@ -269,10 +106,11 @@
                                         <form action="/sloziobrazac" method="POST" enctype="multipart/form-data">
                                             {% csrf_token %}
 
-                                            <p class="text-center text-muted mt-5 mb-0">Odaberi polja koja želiš uključiti u obrazac za registraciju.</p>
+                                            <p class="text-center text-muted mt-5 mb-0">Odaberite polja koja želite uključiti u obrazac za registraciju.</p>
                                             
                                             <div class="active-fields-container">
                                                 <div class="text-center text-muted mt-5 mb-0">Naziv polja</div>
+                                                <div class="text-center text-muted mt-5 mb-0">Tip polja</div>
                                                 <div class="text-center text-muted mt-5 mb-0">Je li polje u obrascu?</div>
                                             </div>
 
@@ -285,7 +123,17 @@
                                                 {%for polje in DodatnaPolja%}
                                             <div class="active-fields-container">
                                                 <div class="labels mb-0">
-                                                    <label class="fs-5" for="{{polje.imePolja}}">{{polje.imePolja}}
+                                                    <label class="fs-6" for="{{polje.imePolja}}">{{polje.imePolja}}
+                                                </div>
+
+                                                <div class="labels mb-0">
+                                                  {%if polje.tipPolja.naziv == "text"%}
+                                                  <label class="fs-6" for="{{polje.imePolja}}"><i>obični tekst</i>
+                                                  {%elif polje.tipPolja.naziv == "date"%}
+                                                  <label class="fs-6" for="{{polje.imePolja}}"><i>datum</i>
+                                                  {%elif polje.tipPolja.naziv == "number"%}
+                                                  <label class="fs-6" for="{{polje.imePolja}}"><i>broj</i>
+                                                  {%endif%}
                                                 </div>
                                                 
                                                 <div class="checkboxes mb-0">
@@ -312,74 +160,20 @@
                             </div>
                         </div>
                       </div>
-                      <!--
-                      <br>
-                        
-                    </div>
-                   </div>
+
+                  </div>
                 </div>
+              </div>
             </div>
-  
 
-            
-
-             {%if LoggedInUserRole == "Admin"%}
-                <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="text" name="fieldName" id="fieldName" placeholder="Ime novog fielda">
-                    <br>
-                    <input type="radio" name="fieldType" id="int">INT
-                    <br>
-                    <input type="radio" name="fieldType" id="char">CHAR(lenght=50)
-                    <br>
-                    <input type="radio" name="fieldType" id="longchar">LONGCHAR(lenght=500)
-                    <br>
-                    <input type="radio" name="fieldType" id="longchar">BOOLEAN
-                    <br>
-                    <input type="submit" value="Update" name='AddNewField'>
-                </form>
-                <h4> Aktivna polja </h4>
-                {%if DodatnaPolja%}
-                <form action="/mojiradovi" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {%for polje in DodatnaPolja%}
-                        <input type="checkbox" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.active == True%} checked {%endif%}>
-                        <label for="{{polje.imePolja}}">{{polje.imePolja}}
-                        <br> 
-                    {%endfor%}
-                    <input type="submit" value="Update" name='ActiveFields'>
-                {%endif%}
-            {% endif %} -->
-
-
-            <footer class="py-2 my-2 container">
-                <ul class="nav justify-content-center border-bottom pb-1 mb-1">
-                  <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Naslovna</a></li>
-                  <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">O konferenciji</a></li>
-                </ul>
-                <p class="text-center text-muted">© 2021 Pametna ekipa</p>
-              </footer>
+            <!--FOOTER-->
+            {% include "./Footer.html" %}
+            <!--FOOTER-->
 
         </body>
 
-        <!-- Kopiraj ovaj dio javascripta za hamburger animacije -->
-        <script type="text/javascript">
-          var navbarCollapse = document.getElementById("navbarContent");
-              
-          navbarCollapse.addEventListener('show.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="rotation 0.5s both";
-          });
-          navbarCollapse.addEventListener('shown.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="none";
-            document.getElementById("navbarTogglerIcon").style.transform="rotate(90deg)";
-          });
-          navbarCollapse.addEventListener('hide.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="rotation 0.35s reverse";
-          });
-          navbarCollapse.addEventListener('hidden.bs.collapse', function(){
-            document.getElementById("navbarTogglerIcon").style.animation="none";
-            document.getElementById("navbarTogglerIcon").style.transform="rotate(0deg)";
-          });
-        </script>
+    <!--nas js-->
+    <script src="{% static '/js/hamburgerActions.js' %}"></script>
+    <!--nas js-->
   
     </html>

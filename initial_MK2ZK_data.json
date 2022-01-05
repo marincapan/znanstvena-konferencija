@@ -6,32 +6,27 @@
             "nazivKonferencije":"Konferencija",
             "opisKonferencije":"Inital znanstvena konferencija",
             "datumKonferencije":"2022-12-12",
-            "rokPrijave":"2022-12-12",
-            "rokRecenzenti":"2022-12-12",
-            "rokAdmin":"2022-12-12"
+            "rokPrijave":"2022-01-01",
+            "rokRecenzenti":"2022-01-02",
+            "rokAdmin":"2022-12-12",
+            "rokPocRecenzija" : "2022-12-12",
+            "rokPocPrijava" : "2022-12-12"
         }
     },
     {
         "model":"MK2ZK_App.Ustanova",
         "sifUstanova":1,
         "fields":{
-            "naziv":"Admin Ustanova",
+            "naziv":"FER",
             "grad":"Zagreb",
             "drzava":"Hrvatska",
             "adresa":"Unska 3"
         }
     },
-    {
-        "model":"MK2ZK_App.Sekcija",
-        "sifSekcija":1,
-        "fields":{
-            "naziv":"Admin Sekcija",
-            "konferencijaSekcija": 1
-        }
-    },
+
 	{
         "model":"MK2ZK_App.Sekcija",
-        "sifSekcija":2,
+        "sifSekcija":1,
         "fields":{
             "naziv":"Banana sekcija",
             "konferencijaSekcija": 1
@@ -39,7 +34,7 @@
     },
 	{
         "model":"MK2ZK_App.Sekcija",
-        "sifSekcija":3,
+        "sifSekcija":2,
         "fields":{
             "naziv":"Avokado sekcija",
             "konferencijaSekcija": 1
@@ -47,7 +42,7 @@
     },
     {
         "model":"MK2ZK_App.Sekcija",
-        "sifSekcija":4,
+        "sifSekcija":3,
         "fields":{
             "naziv":"Trešnja sekcija",
             "konferencijaSekcija": 1
@@ -119,10 +114,98 @@
             "prezime":"admin",
             "email":"adminMK2ZK@konferencija.hr",
             "odobrenBool": "True",
+            "potvrdenBool": "True",
             "vrstaKorisnik": 1,
-            "korisnikUstanova" : 1,
-            "korisnikSekcija": 1
+            "lastActive": "2021-06-25 07:58:56"
         }
+        
+    },
+    {
+        "model":"MK2ZK_App.Korisnik",
+        "id":2,
+        "fields":{
+            "korisnickoIme":"recenzent",
+            "lozinka":"recenzent",
+            "ime":"recenzent",
+            "prezime":"recenzent",
+            "email":"recenzentMK2ZK@konferencija.hr",
+            "odobrenBool": "True",
+            "potvrdenBool": "True",
+            "vrstaKorisnik": 3,
+            "korisnikSekcija": 2,
+            "korisnikUstanova" : 1,
+            "lastActive": "2021-06-25 07:58:56"
+        }
+        
+    },
+    {
+        "model":"MK2ZK_App.Korisnik",
+        "id":3,
+        "fields":{
+            "korisnickoIme":"sudionik",
+            "lozinka":"sudionik",
+            "ime":"sudionik",
+            "prezime":"sudionik",
+            "email":"sudionikMK2ZK@konferencija.hr",
+            "idSudionik": "0001",
+            "odobrenBool": "True",
+            "potvrdenBool": "True",
+            "vrstaKorisnik": 4,
+            "korisnikSekcija": 2,
+            "korisnikUstanova" : 1,
+            "lastActive": "2021-06-25 07:58:56"
+        }
+        
+    },
+	{
+        "model":"MK2ZK_App.Korisnik",
+        "id":4,
+        "fields":{
+            "korisnickoIme":"predsjedavajuci",
+            "lozinka":"predsjedavajuci",
+            "ime":"predsjedavajuci",
+            "prezime":"predsjedavajuci",
+            "email":"predsjedavajuci@konferencija.hr",
+            "odobrenBool": "True",
+            "potvrdenBool": "True",
+            "vrstaKorisnik": 2,
+            "korisnikSekcija": 2,
+            "korisnikUstanova" : 1,
+            "lastActive": "2021-06-25 07:58:56"
+        }
+        
+    },
+    {
+        "model":"MK2ZK_App.Autor",
+        "sifAutor":1,
+        "fields":{
+            "ime":"Petar",
+            "prezime":"Perić",
+            "email": "TestAutor@MK2ZK.hr"
+        }
+        
+    },
+    {
+        "model":"MK2ZK_App.Autor",
+        "sifAutor":2,
+        "fields":{
+            "ime":"Metar",
+            "prezime":"Merić",
+            "email": "TestAutor2@MK2ZK.hr"
+        }
+        
+    },
+    {
+        "model":"MK2ZK_App.Rad",
+        "sifRad":1,
+        "fields":{
+            "naslov":"Test Rad 1",
+            "recenziranBool":"False",
+            "radSekcija": 2,
+            "radKorisnik":3,
+            "autori":[1,2]
+        }
+        
     },
     {
         "model":"MK2ZK_App.TipPoljaObrasca",
@@ -143,6 +226,16 @@
         "id":1,
         "fields":{
             "naziv":"number"
+        }
+    },
+    {
+        "model":"MK2ZK_App.Info",
+        "id":1,
+        "fields": {
+            "naslov":"O konferenciji",
+            "tekst": "Tekst o konferenciji",
+            "autor":1,
+            "konferencija":1
         }
     }
 

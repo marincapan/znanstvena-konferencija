@@ -1,0 +1,14 @@
+{% autoescape off %}
+Poštovani {{ user.ime }} {{ user.prezime }},
+
+Vaše korisničko ime je {{ user.korisnickoIme }},
+
+Vaša lozinka je {{ lozinka }},
+
+Molimo Vas da potvrdite svoj korsinički račun klikom na poveznicu: 
+
+{{protocol}}://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Srdačan pozdrav,
+Pametna Ekipa
+{% endautoescape %}

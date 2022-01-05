@@ -1,3 +1,4 @@
+from datetime import datetime
 from os import truncate
 from django.db import models
 from django.db.models.deletion import CASCADE
@@ -24,32 +25,25 @@ class Autor(models.Model):
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
     email = models.CharField(max_length=50,unique=True)
-    OZK = models.BooleanField(default=False)
 
-def increment_KorisnikID():
-  last_korisnik = Korisnik.objects.all().order_by('id').last()
-  if not last_korisnik:
-    return '0000'
-  korisnik_id = last_korisnik.idSudionik
-  korisnik_int = int(korisnik_id)
-  new_korisnik_int = korisnik_int + 1
-  new_korisnik_id =str(new_korisnik_int).zfill(4)
-  return new_korisnik_id
 
 class Korisnik(models.Model):
     id = models.AutoField(primary_key=True)
     korisnickoIme = models.CharField(max_length=50, unique=True) 
-    lozinka = models.CharField(max_length=50)
+    lozinka = models.CharField(max_length=500)
     ime = models.CharField(max_length=50)
     prezime = models.CharField(max_length=50)
     email = models.CharField(max_length=50, unique=True)
-    idSudionik = models.CharField(max_length=10, default=increment_KorisnikID)
-    odobrenBool = models.BooleanField(default=False)
+    idSudionik = models.CharField(max_length=10)
+    odobrenBool = models.BooleanField(null=True)
+    potvrdenBool = models.BooleanField(default=False)
     vrstaKorisnik = models.ForeignKey('Uloga',on_delete=models.CASCADE)
-    korisnikUstanova = models.ForeignKey('Ustanova',on_delete=models.CASCADE)
-    korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE)
+    korisnikUstanova = models.ForeignKey('Ustanova',on_delete=models.CASCADE, null=True)
+    korisnikSekcija = models.ForeignKey('Sekcija',on_delete=models.CASCADE, null=True)
     token=models.CharField(max_length=50)
     dodatniPodatak = ManyToManyField("DodatnaPoljaObrasca",through='DodatniPodatci')
+    lastActive=models.DateTimeField(default=datetime(2020, 12, 28, 17, 30, 53))
+    salt=models.BinaryField(null=True)
 
 class Uloga(models.Model):
     id = models.AutoField(primary_key=True)
@@ -66,6 +60,7 @@ class Rad(models.Model):
     radSekcija = models.ForeignKey("Sekcija", on_delete=models.CASCADE)
     radKorisnik = models.ForeignKey("Korisnik", on_delete=models.CASCADE)
     autori = models.ManyToManyField(Autor,through="AutorRad")
+    revizijaBool = models.BooleanField(default=False)
 
 class AutorRad(models.Model):
     Autor = models.ForeignKey("Autor", on_delete=models.CASCADE)
@@ -80,6 +75,9 @@ class Konferencija(models.Model):
     rokPrijave = models.DateField()
     rokRecenzenti = models.DateField()
     rokAdmin = models.DateField()
+    rokPocRecenzija = models.DateField()
+    rokPocPrijava = models.DateField()
+    javniRadoviBool= models.BooleanField(default=False)
 
 class TipPoljaObrasca(models.Model):
     id = models.AutoField(primary_key=True)
@@ -107,3 +105,17 @@ class DodatniPodatci(models.Model):
 class Ocjena(models.Model):
     id = models.AutoField(primary_key=True)
     znacenje = models.CharField(max_length=500)
+
+class Clanak(models.Model):
+    id = models.AutoField(primary_key=True)
+    naslov = models.CharField(max_length=100)
+    tekst = models.CharField(max_length=1000)
+    active = models.BooleanField(default=False)
+    autor = models.ForeignKey("Korisnik",on_delete=models.CASCADE)
+
+class Info(models.Model):
+    id = models.AutoField(primary_key=True)
+    naslov = models.CharField(max_length=100)
+    tekst = models.CharField(max_length=5000)
+    autor = models.ForeignKey("Korisnik", on_delete=models.CASCADE)
+    konferencija = models.ForeignKey("Konferencija", on_delete=CASCADE)

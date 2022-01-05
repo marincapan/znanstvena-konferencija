@@ -1,0 +1,125 @@
+{% load static %}
+
+<!--Vektorske grafike za header-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <!-- gumb za Naslovnicu-->
+  <symbol id="home" viewBox="0 0 16 16">
+    <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+  </symbol>
+  <!-- gumb za Prijavu -->
+  <symbol id="people-circle" viewBox="0 0 16 16">
+    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+  </symbol>
+  <!-- gumb za uređivanje osobnih podataka -->
+  <symbol id="pencil-square" viewBox="0 0 16 16">
+    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+  </symbol>
+  <!-- gumb za spremanje uređenih podataka -->
+  <symbol id="save-changes" viewBox="0 0 16 16">
+    <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.5h2a.5.5 0 0 1 .354.854l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5A.5.5 0 0 1 5.5 6.5h2V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+  </symbol>
+  <!-- gumb za otkazivanje spremanja podataka -->
+  <symbol id="cancel-changes" viewBox="0 0 16 16">
+    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+  </symbol>
+  <!-- gumb za hamburger meni -->
+  <symbol id="hamburger" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+  </symbol>
+  <symbol id="person-plus" viewBox="0 0 16 16">
+    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+    <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+  </symbol>
+  <symbol id="person-dash" viewBox="0 0 16 16">
+    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+    <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+  </symbol>
+  <!-- gumb ? -->
+  <symbol id="sci-con" viewBox="0 0 29 29">
+  </symbol>
+</svg>
+
+<header>
+  <nav class="navbar navbar-expand-lg bg-dark bg-gradient">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="{% static '/vectors/SciConIcon.svg' %}" alt="SciCon" width="64" height="64">
+      </a>
+      <button class="navbar-toggler" id="navbarToggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <svg class="navbar-toggler-icon" id="navbarTogglerIcon" width="24" height="24" style="-webkit-filter: invert(100%); filter: invert(100%);"><use xlink:href="#hamburger"/></svg>
+      </button>
+      <div class="collapse navbar-collapse" style="justify-content: flex-end;" id="navbarContent">
+        <ul class="navbar-nav" style="text-align: center;">
+          <li class="nav-item">
+            <a href="/" class="nav-link text-white">
+              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
+              <div style="display:inline; ">Naslovna</div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/info" class="nav-link text-white">
+              <img src="{% static '/vectors/InfoButton.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+              O konferenciji
+            </a>
+          </li>
+          <li class="nav-item">
+            {% if LoggedInUser %}
+              {%if LoggedInUserRole == "Admin"%}
+              <a href="/adminsucelje" class="nav-link text-white">
+                <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                Administrator
+              </a>
+              {%elif LoggedInUserRole == "Recenzent"%}
+              <a href="/mojerecenzije" class="nav-link text-white">
+                <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                Moje recenzije
+              </a>
+              {%elif LoggedInUserRole == "Sudionik"%}
+              <a href="/mojiradovi" class="nav-link text-white">
+                <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                Moji radovi
+              </a>
+              {%else%}
+              <a href="/predsjedavajuci" class="nav-link text-white">
+                <img src="{% static '/vectors/BookIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                Predsjedavajući
+              </a>
+              {%endif%}
+              
+            {% else %}
+              <a href="/signin" class="nav-link text-white">
+                  <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+                  Prijava 
+              </a>
+            {% endif %}
+          </li>
+          {%if LoggedInUser %}
+          <li>
+            <a href="/osobnipodaci" class="nav-link text-white">
+              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+              Osobni podaci
+          </a>
+          </li>
+          {%endif%}
+          <li>
+              <!--Za ovo smo rekli da se otvori meni gdje korisnik bira?-->
+              {% if LoggedInUser %}
+              <a href="/signout" class="nav-link text-white">
+                <img src="{% static '/vectors/LogoutIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                  Odjava
+              </a>
+              {% else %}
+              <a href="/signup" class="nav-link text-white">
+                  <img src="{% static '/vectors/RegisterIcon.svg' %}" class="bi d-block mx-auto mb-1" width="24" height="24">
+                  Registracija
+              </a>
+              {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

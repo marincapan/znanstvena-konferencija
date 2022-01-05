@@ -1,0 +1,15 @@
+{% autoescape off %}
+Poštovani,
+
+Vaš rad, "{{rad.naslov}}", čiji su autori: -{%for autor in rad.autori.all%} "{{autor.ime}} {{autor.prezime}}({{autor.email}})",{% endfor %} je upravo recenziran.
+
+Ocjena : {{recenzija.ocjena.znacenje}}
+
+{%if recenzija.obrazlozenje%}Obrazloženje : {{recenzija.obrazlozenje}} {%endif%}
+
+Recenzija Vašeg rada dostupna je i na poveznici: {{ protocol }}://{{ domain }} pod 'Moji radovi'.
+
+Srdačan pozdrav,
+Pametna Ekipa
+
+{% endautoescape %}

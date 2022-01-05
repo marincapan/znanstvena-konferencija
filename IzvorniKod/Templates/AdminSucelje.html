@@ -1,0 +1,673 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Administracijsko sučelje</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <!--nas css-->
+
+</head>
+
+<body>
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+  <div class="gradient-custom-3 " style="min-height: 100vh;">
+    <div class="container pt-5 pb-5">
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-5">
+
+          <div class="text-uppercase text-center mb-5">
+            <div id="titleDiv">
+              <div>
+                <h2 id="myTitle">Administracijsko sučelje</h2>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div>
+            <!--Klasika za error messages-->
+            {% if messages %}
+            {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
+              {% endfor %}
+              {% endif %}
+          </div>
+
+          <!-- OPĆENITO -->
+          <div class="container mb-5">
+            <div class="text-uppercase text-left mb-3">
+              <div id="titleDiv">
+                <div>
+                  <h4 id="myTitle">Općenito</h4>
+                </div>
+              </div>
+              <hr>
+            </div>
+
+            <div class="row">
+              <div class="col-sm">
+                <ul>
+                  <!-- Javni pristup radovima -->
+                  <li>
+                    <div class="text-uppercase text-left fw-bold mb-1">Upravljanje javnim pristupom
+                      radovima</div>
+                    {%if LoggedInUserRole == 'Admin'%}
+                    <form action="adminsucelje" method="POST">
+                      {% csrf_token %}
+                      {% if brojPredanihRadova != 0%}
+                      {% if javniBool == 0 %}
+                      <div class="text-left text-muted mb-2">Trenutno nije omogućen javni pristup radovima.</div>
+                      <button type="submit" class="btn btn-primary" name="makePublic"> Dodaj javni pristup svim
+                        radovima </button>
+                      {% else %}
+                      <div class="text-left text-muted mb-2">Javni pristup radovima je omogućen.</div>
+                      <button type="submit" class="btn btn-primary" name="makePublic"> Ukloni javni pristup svim
+                        radovima </button>
+                      {% endif %}
+                      {% else %}
+                      <div class="text-left text-muted mb-2">Trenutno nema predanih radova kojima možete dati javni
+                        pristup.</div>
+                      <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Niti jedan rad nije predan" disabled>Nema predanih radova</button>
+                      {% endif %}
+                    </form>
+                    {%endif%}
+                  </li>
+                  <!-- Javni pristup radovima -->
+
+                  <br>
+                  <!-- COVID-19 statistika -->
+                  <li>
+                    <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pregled COVID-19 statistike</div>
+                    <a href="covidstats"><button class="btn btn-danger" name=""> COVID-19 statistika</button></a>
+                  </li>
+                  <!-- COVID-19 statistika -->
+                </ul>
+              </div>
+
+              <div class="col-sm">
+                <ul>
+                  <li>
+                    <!-- Slanje obavijesti korisnicima -->
+                    <a href="/posaljiobavijest">
+                      <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pošalji obavijest putem e-pošte
+                      </div>
+                    </a>
+                    <br>
+                  </li> <!-- Slanje obavijesti korisnicima -->
+                  <li>
+                    <!-- Pregled korisnika i radova -->
+                    <a href="/pregled">
+                      <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pregled korisnika i radova</div>
+                    </a>
+                    <br>
+                  </li> <!-- Slanje obavijesti korisnicima -->
+                  <li> <!-- Otvaranje stranice statistike -->
+                    <a href="/statistika">
+                      <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pogledaj statistiku prijava</div>
+                    </a>
+                    <br>
+                  </li> <!-- Otvaranje stranice statistike -->
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- OPĆENITO -->
+
+          <!-- PODACI O KONFERENCIJI -->
+          <div class="container mb-5">
+            <div class="text-uppercase text-left mb-3">
+              <div id="titleDiv">
+                <div>
+                  <h4 id="podatciOKonferenciji">Podaci o konferenciji</h4>
+                </div>
+              </div>
+              <hr>
+            </div>
+            <form action="/adminsucelje" method="POST" id="podaciKonferencija">
+              {% csrf_token %}
+              <div class="mb-3" id="opisWrapper">
+                <label for="opisKonferencije" class="form-label fw-bold">Opis konferencije</label>
+                <textarea class="form-control opis" rows="5" id="opisKonferencije" name="opisKonferencije"
+                  required>{{opis}}</textarea>
+              </div>
+              <div class="row">
+                <div class="col-sm">
+                  <div class="mb-3" id="nazivWrapper">
+                    <label for="nazivKonferencije" class="form-label fw-bold">Naziv konferencije</label>
+                    <input type="text" class="form-control input-md" id="nazivKonferencije" name="nazivKonferencije"
+                      value="{{konferencijaNaziv}}" required>
+                  </div>
+                  <div class="mb-3" id="datumWrapper">
+                    <label for="datumKonferencije" class="form-label fw-bold">Datum konferencije</label>
+                    <input type="date" class="form-control input-md" id="datumKonferencije" name="datumKonferencije"
+                      value="{{datum}}" required>
+                  </div>
+                  
+                </div>
+
+                <div class="col-sm">
+                  
+                  <div class="mb-3" id="pocetakPrijavaWrapper">
+                    <label for="pocetakPrijavaKonferencije" class="form-label fw-bold">Početak prijava</label>
+                    <input type="date" class="form-control input-md" id="pocetakPrijavaKonferencije"
+                      name="pocetakPrijavaKonferencije" value="{{rokPocPrijava}}" required>
+                  </div>
+                  <div class="mb-3" id="rokPrijavaWrapper">
+                    <label for="rokPrijava" class="form-label fw-bold">Rok za prijavu</label>
+                    <input type="date" class="form-control input-md" id="rokPrijava" name="rokPrijava"
+                      value="{{rokPrijave}}" required>
+                  </div>
+                </div>
+
+                <div class="col-sm">
+                  <div class="mb-3" id="pocetakRecenzijaWrapper">
+                    <label for="pocetakRecenzija" class="form-label fw-bold">Početak recenziranja</label>
+                    <input type="date" class="form-control input-md" id="pocetakRecenzija" name="pocetakRecenzija"
+                      value="{{rokPocRecenzija}}" required>
+                  </div>
+                  <div class="mb-3" id="rokRecenzijaWrapper">
+                    <label for="rokRecenzija" class="form-label fw-bold">Rok za recenziranje</label>
+                    <input type="date" class="form-control input-md" id="rokRecenzija" name="rokRecenzija"
+                      value="{{rokRecenzenti}}" required>
+                  </div>
+                  <div class="mb-3" id="rokIzmjenaWrapper">
+                    <label for="rokIzmjena" class="form-label fw-bold">Rok za izmjenu obrasca</label>
+                    <input type="date" class="form-control input-md" id="rokIzmjena" name="rokIzmjena"
+                      value="{{rokAdmin}}" >
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Ažuriraj podatke</button>
+              <a href="/adminsucelje" class="btn btn-outline-secondary">Odbaci</a>
+            </form>
+          </div>
+          <!-- PODACI O KONFERENCIJI -->
+
+          <!-- UPRAVLJANJE PODACIMA O PREDSJEDAVAJUĆEM -->
+          <div class="container mb-5">
+            <div class="text-uppercase text-left mb-3">
+              <div style="padding-bottom: 3px;" id="titleDiv">
+                <div>
+                  <h4 style="display: inline;" id="upravljanjePredsjedavajućem">Upravljanje podacima o predsjedavajućem konferencije</h4>
+                </div>
+              </div>
+              <hr>
+            </div>
+
+            <form action="/adminsucelje" method="post" id='updatePredsjedavajuciInfo'>
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-sm">
+                  {%if ime%}
+                  <div class="mb-3" id="imeWrapper">
+                    <label for="ime" class="form-label fw-bold">Ime</label>
+                    <input type="text" class="form-control input-md" id="ime" name="ime" value="{{ime}}" required>
+                  </div>
+                  {%endif%}
+
+                  {%if prezime%}
+                  <div class="mb-3" id="prezimeWrapper">
+                    <label for="prezime" class="form-label fw-bold">Prezime</label>
+                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="{{prezime}}"
+                      required>
+                  </div>
+                  {%endif%}
+                </div>
+
+                <div class="col-sm">
+
+                  {%if korisnickoIme%}
+                  <div class="mb-3" id="usernameWrapper">
+                    <label for="username" class="form-label fw-bold">Korisničko ime</label>
+                    <input type="text" class="form-control input-md" id="username" name="username"
+                      value="{{korisnickoIme}}" required>
+                  </div>
+                  {%endif%}
+
+
+                  {%if email%}
+                  <div class="mb-3" id="emailWrapper">
+                    <label for="email" class="form-label fw-bold">E-mail</label>
+                    <input type="text" class="form-control input-lg" id="email" name="email" value="{{email}}" required>
+                  </div>
+                  {%endif%}
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Ažuriraj podatke</button>
+              <a href="/adminsucelje" class="btn btn-outline-secondary">Odbaci</a>
+            </form>
+
+          </div>
+          <!-- UPRAVLJANJE PODACIMA O PREDSJEDAVAJUĆEM -->
+        
+        <!-- UPRAVLJANJE ADMINIMA -->
+        <div class="container mb-5">
+          <div class="text-uppercase text-left mb-2">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <h4 style="display: inline;" id="upravljanjeAdministratorima">Upravljanje administratorima</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <div class="text-left text-uppercase fw-bold mb-2" id='Label'>Dodaj novog administratora</div>
+                <hr width="70%">
+                <form action="/adminsucelje" method="post" id="addNewAdmin">
+                  {% csrf_token %}
+                  <div class="mb-1" id="imeWrapper">
+                    <label for="ime" class="form-label">Ime</label>
+                    <input type="text" class="form-control input-md" id="adminime" name="adminime" value="" required>
+                  </div>
+
+                  <div class="mb-1" id="prezimeWrapper">
+                    <label for="prezime" class="form-label">Prezime</label>
+                    <input type="text" class="form-control input-md" id="adminprezime" name="adminprezime" value="" required>
+                  </div>
+
+                  <div class="mb-1" id="usernameWrapper">
+                    <label for="username" class="form-label">Korisničko ime</label>
+                    <input type="text" class="form-control input-md" id="adminusername" name="adminusername" value="" required>
+                  </div>
+
+                  <div class="mb-1" id="emailWrapper">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="text" class="form-control input-lg" id="adminemail" name="adminemail" value="" required>
+                  </div>
+
+                  <div class="mb-1" id="passwordWrapper">
+                    <label for="email" class="form-label">Lozinka</label>
+                    <input type="text" class="form-control input-lg" id="adminpassword" name="adminpassword" value="" required>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-md" name="AddNewAdmin" value="Update">Dodaj administratora</button>
+                </form>
+              </div>
+              
+              <div class="col-sm">
+                <div class="text-left text-uppercase fw-bold mb-2" id='Label'>Postojeći administratori sustava:</div>
+                <hr width="70%">
+                {%if AdministratoriPopis%}
+                <ul type="text" id="admin" name="admin">
+                  {%for admin in AdministratoriPopis%}
+                  <li value="{{admin.ime}}">{{admin.ime}} {{admin.prezime}}
+                    <ul style="list-style-type: none;">
+                      <li>
+                        <p class="left mt-1 mb-0"> <span class="text-muted">Korisničko ime:</span> {{admin.korisnickoIme}}</p>
+                      </li>
+                      <li>
+                        <p class="left mt-1 mb-0"> <span class="text-muted">Adresa e-pošte:</span> {{admin.email}}</p>
+                      </li>
+                    </ul>
+                  </li>
+                  {%endfor%}
+                </ul>
+                {%endif%}
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+        <!-- UPRAVLJANJE ADMINIMA -->
+
+        <!-- OBRAZAC ZA REGISTRACIJU -->
+        <div class="container mb-5">
+          <div class="text-uppercase text-left mb-1">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <h4 style="display: inline;" id="upravljanjeObrascem">Upravljanje obrascem za registraciju</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <p class="left text-muted mt-3 mb-0">Ovdje možete definirati novo polje za registracijski obrazac. </p>
+          <br>
+
+          <div class="row">
+            <div class="col-sm">
+              <div style="padding-bottom: 5px;" id="UserNameDiv">
+                <form action="/adminsucelje" method="post" enctype="multipart/form-data" id='addFields'>
+                  {% csrf_token %}
+
+                  <div class="form-outline mb-2">
+                    <label class="fs-6 fw-bold for=">Naziv novog polja za obrazac:</label>
+                  </div>
+
+                  <div class="col-md-6 mb-2">
+                    <input type="text" name="fieldName" id="fieldName" class="form-control form-control-lg" required>
+                  </div>
+
+                  <div class="form-outline mb-2">
+                    <label class="fs-6 fw-bold for=">Odaberite tip podatka novog polja:</label>
+                  </div>
+
+                  <div>
+                    <ul class="fs-6 buttons">
+                      <li class="fs-6"><input type="radio" name="fieldType" id="text" value="text" checked="checked">
+                        običan tekst</li>
+                      <li class="fs-6"><input type="radio" name="fieldType" id="date" value="date"> datum</li>
+                      <li class="fs-6"><input type="radio" name="fieldType" id="number" value="number"> broj
+                      </li>
+                    </ul>
+                  </div>
+
+                  <br>
+
+                  <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                    <button type="submit" class="btn btn-primary btn-md" name='AddNewField' value="Update"
+                      style="grid-column: 2;">Dodaj novo polje</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!--Ako postoji u bazi dodatna polja ispisi ih u formu-->
+          {%if DodatnaPolja%}
+          <hr>
+          <div class="mt-4">
+            <div class="text-left mb-2">
+              <h5 id="aktivnaPolja">Aktivna polja</h5>
+            </div>
+            <form action="/adminsucelje" method="POST" enctype="multipart/form-data" id='activeFieldsform'>
+              {% csrf_token %}
+              <p class="text-left text-muted mt-2 mb-0">Odaberite polja koja želite uključiti u obrazac za
+                registraciju.</p>
+              <div class="active-fields-container">
+                <div class="text-center text-muted mt-2 mb-0">Naziv polja</div>
+                <div class="text-center text-muted mt-2 mb-0">Tip polja</div>
+                <div class="text-center text-muted mt-2 mb-0">Je li polje u obrascu?</div>
+                <div class="text-center text-muted mt-2 mb-0">Je li polje obavezno?</div>
+              </div>
+
+              <div class="active-fields-container">
+                <hr style="width: 40%; height: 0.05rem;">
+                <hr style="width: 40%; height: 0.05rem; text-align: center;">
+                <hr style="width: 40%; height: 0.05rem;">
+                <hr style="width: 40%; height: 0.05rem;">
+              </div>
+
+              <div class="container-of-containers">
+                {%for polje in DodatnaPolja%}
+                <div class="active-fields-container">
+                  <div class="labels mb-0">
+                    <label class="fs-6" for="{{polje.imePolja}}">{{polje.imePolja}}
+                  </div>
+
+                  <div class="labels mb-0">
+                    {%if polje.tipPolja.naziv == "text"%}
+                    <label class="fs-6" for="{{polje.imePolja}}"><i>obični tekst</i>
+                      {%elif polje.tipPolja.naziv == "date"%}
+                      <label class="fs-6" for="{{polje.imePolja}}"><i>datum</i>
+                        {%elif polje.tipPolja.naziv == "number"%}
+                        <label class="fs-6" for="{{polje.imePolja}}"><i>broj</i>
+                          {%endif%}
+                  </div>
+
+                  <div class="checkboxes mb-0">
+                    <input type="checkbox" name="{{polje.imePolja}}" id="{{polje.imePolja}}" {%if polje.active == True%}
+                      checked {%endif%}>
+                  </div>
+                  <div class="checkboxes mb-0">
+                    <input type="checkbox" name="{{polje.imePolja}}1" id="{{polje.imePolja}}1"
+                      {%if polje.obavezan == True%} checked {%endif%}>
+                  </div>
+                </div>
+                {%endfor%}
+              </div>
+              <br>
+              <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                <button type="submit" class="btn btn-primary btn-md" name='ActiveFields' value="Update"
+                  style="grid-column: 2;">Ažuriraj obrazac</button>
+              </div>
+            </form>
+          </div>
+          {%endif%}
+        </div>
+        <!-- OBRAZAC ZA REGISTRACIJU -->
+
+        <!-- SEKCIJE NA KONFERENCIJI -->
+        <div class="container mb-5">
+          <div class="text-uppercase text-left mb-1">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <br>
+                <br>
+                <h4 style="display: inline;" id="upravljanjeSekcijama">Upravljanje sekcijama</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div class="container">
+            <div class="row justify-content-between">
+
+              <div class="col col-md-8 mb-4">
+                <div class="form-outline fs-5">
+                  <label class="fs-6 fw-bold" for="">Unesite naziv nove sekcije na konferenciji:</label>
+                </div>
+                <form action="/adminsucelje" method="post" id='NewSection' enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="col-md-6 mb-4">
+                    <input type="text" name="SectionName" id="SectionName" class="form-control form-control-lg"
+                      required>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-md" name='AddNewSection' value="Update"
+                    style="grid-column: 1;">Dodaj novu sekciju</button>
+                </form>
+              </div>
+
+              <div class="col col-md-4">
+                <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Postojeće sekcije</div>
+                {%if sekcije%}
+                <ul type="text" id="section" name="section">
+                  {%for sekcija in sekcije%}
+                  <li value="{{sekcija.naziv}}">{{sekcija.naziv}}</li>
+                  {%endfor%}
+                </ul>
+                {% else %}
+                <div class="fs-6 fw-bold"> Još niste unijeli ni jednu sekciju na konferenciji.</div>
+                {% endif %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- SEKCIJE NA KONFERENCIJI -->
+
+
+        <!-- UREĐIVANJE NASLOVNE -->
+        <div class="container mb-5">
+          <div class="text-uppercase text-left mb-1">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <h4 style="display: inline;" id="uređivanjeNaslovne">Uređivanje naslovne stranice</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <p class="left text-muted mt-3 mb-0">Ovdje možete dodavati članke za naslovnu stranicu. </p>
+          <br>
+
+          <div class="row">
+            <div class="col-sm">
+              <div style="padding-bottom: 5px;" id="">
+                <form action="/adminsucelje" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="mb-3" id="">
+                        <label for="clanakNaslov" class="form-label fw-bold">Unesite naslov članka:</label>
+                        <input type="text" class="form-control" id="clanakTitle" name="clanakTitle"
+                          value="" required>
+                      </div>
+                      <div class="mb-3" id="">
+                        <label for="clanakSadrzaj" class="form-label fw-bold">Unesite tekst članka:</label>
+                        <textarea class="form-control" rows="3" id="clanakText" name="clanakText"
+                          required></textarea>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <br>
+
+                  <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                    <button type="submit" class="btn btn-primary btn-md" name='AddArticle' value="Update"
+                      style="grid-column: 2;">Dodaj članak</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+          <!--ako postoje clanci, prikazi ih -->
+
+          {%if Clanci%}
+          <hr>
+          <div class="mt-4">
+            <div class="text-left mb-2">
+              <h5 id="prikazaniČlanci">Prikazani članci</h5>
+            </div>
+            <form action="/adminsucelje" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <p class="text-left text-muted mt-2 mb-0">Odaberite članke koje želite prikazati na naslovnoj stranici.</p>
+              <div class="active-fields-container">
+                <div class="text-center text-muted mt-2 mb-0">Naslov članka</div>
+                <div class="text-center text-muted mt-2 mb-0">Autor članka</div>
+                <div class="text-center text-muted mt-2 mb-0">Prikazuje li se članak?</div>
+              </div>
+
+              <div class="active-fields-container">
+                <hr style="width: 40%; height: 0.05rem;">
+                <hr style="width: 40%; height: 0.05rem; text-align: center;">
+                <hr style="width: 40%; height: 0.05rem;">
+              </div>
+
+              <div class="container-of-containers">
+                {%for clanak in Clanci%}
+                <div class="active-fields-container">
+
+                  <div class="labels mb-0">
+                    <label class="fs-6" for="{{clanak.naslov}}">{{clanak.naslov}}
+                  </div>
+
+                  <div class="labels mb-0">
+                    <label class="fs-6" for="{{clanak.autor.ime}}">{{clanak.autor.ime}}
+                  </div>
+                  
+                  <div class="checkboxes mb-0">
+                    <input type="checkbox" name="{{clanak.naslov}}" id="{{clanak.naslov}}" {%if clanak.active == True%}
+                      checked {%endif%}>
+                  </div>
+
+                </div>
+                {%endfor%}
+              </div>
+              <br>
+              <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                <button type="submit" class="btn btn-primary btn-md" name='ActiveArticles' value="Update"
+                  style="grid-column: 2;">Ažuriraj naslovnicu</button>
+              </div>
+            </form>
+          </div>
+          {%endif%}
+
+
+        </div>
+        <!-- UREĐIVANJE NASLOVNE -->
+
+       <!-- UREĐIVANJE INFO STRANICE -->
+        <!-- <div class="container mb-5">
+          <div class="text-uppercase text-left mb-1">
+            <div style="padding-bottom: 3px;" id="titleDiv">
+              <div>
+                <h4 style="display: inline;" id="uređivanjeInfo">Uređivanje info stranice</h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <p class="left text-muted mt-3 mb-0">Ovdje možete uređivati naslov i sadržaj stranice <i>O konferenciji</i>.</p>
+          <br>
+
+          <div class="row">
+            <div class="col-sm">
+              <div style="padding-bottom: 5px;" id="">
+                <form action="/adminsucelje" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="mb-3" id="">
+                        <label for="clanakNaslov" class="form-label fw-bold">Naslov:</label>
+                        <input type="text" class="form-control" id="infoTitle" name="infoTitle"
+                          value="{{info.naslov}}" required>
+                      </div>
+                      <div class="mb-3" id="">
+                        <label for="clanakSadrzaj" class="form-label fw-bold">Sadržaj:</label>
+                        <textarea class="form-control" rows="3" id="infoText" name="infoText"
+                          required>{{info.tekst}}</textarea>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <br>
+
+                  <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
+                    <button type="submit" class="btn btn-primary btn-md" name='EditInfo' value="Update"
+                      style="grid-column: 2;">Ažuriraj info stranicu</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+
+
+
+
+  <!--FOOTER-->
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
+</body>
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<script src="{% static '/js/adminSucelje.js' %}"></script>
+<!--nas js-->
+
+</html>
