@@ -5,3 +5,6 @@ psycopg2
 requests
 six
 django-cors-headers
+django-cors-middleware
+whitenoise
+django-htmlmin
