@@ -543,7 +543,7 @@ def info(request):
     konferencija=models.Konferencija.objects.first()
     if konferencija:
 
-        context['konferencijaNaziv']=konferencija.nazivKonferencije
+        context['naziv']=konferencija.nazivKonferencije
         context['opis']=konferencija.opisKonferencije
         datum = dateformat.format(konferencija.datumKonferencije, formats.get_format('d.m.Y.'))
         context['datum']=datum

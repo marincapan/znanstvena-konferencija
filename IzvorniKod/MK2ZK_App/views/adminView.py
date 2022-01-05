@@ -418,7 +418,8 @@ def covidstats(request):
                 drzavaENG=drzaveEngList[indexHRV]
                 if drzavaENG in date:
                     if date[0]!="": #Kraj
-                        konfDrzave[str(ustanova.drzava)]=[date[0],date[4]]
+                        datum =  datetime.strptime(date[0], '%Y-%m-%d').date()
+                        konfDrzave[str(ustanova.drzava)]=[dateformat.format(datum, formats.get_format('d.m.Y.')),date[4]]
                         print(date) # Rijecnik s drzavom (Na engleskom zasad) i vrijednostima koje zelim prenijeti (zasad datum dohavacanja podataka i novih slucajeva)
     context["konfDrzave"]=konfDrzave
     print(context)    
