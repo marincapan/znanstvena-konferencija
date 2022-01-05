@@ -28,8 +28,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS = [i for i in os.getenv("ALLOWED_HOSTS").split(" ")]
-
+ALLOWED_HOSTS = [i for i in os.getenv("ALLOWED_HOSTS").split(" ")]
+CSRF_TRUSTED_ORIGINS = [i for i in os.getenv("CSRF_TRUSTED_ORIGINS").split(" ")]
 
 # Application definition
 
