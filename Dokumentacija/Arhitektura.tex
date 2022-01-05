@@ -57,19 +57,23 @@
 			\item Poljeobrasca
 			\item Recenzija
 			\item Ustanova
+			\item Članak
 		\end{packed_item}
 		
 			\subsection{Opis tablica}
 			
 				\textbf{Korisnik}
 				\newline
-				\indent Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, adresu e-pošte, lozinku, ime, prezime te ulogu korisnika u sustavu. Atributi token i potvrdioPrijava služe kako bi se za sudionike i recenzente provjerilo jesu li potvrdili prijavu (nakon čega se mogu prijaviti u sustav). Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
+				\indent Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, adresu e-pošte, lozinku, ime, prezime te ulogu korisnika u sustavu. Atributi token i potvrdioPrijava služe kako bi se za korisnike provjerilo jesu li potvrdili prijavu (nakon čega se mogu prijaviti u sustav). Atribut salt se koristi pri hashiranju lozinki, a za zadnjaaktivnost označava datum i vrijeme zadnjeg pristupa aplikaciji. Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
 					\item Many-to-One s entitetom Ustanova preko atributa ID
 					\item Many-to-One s entitetom Sekcija preko atributa ID
 					\item Many-to-One s entitetom Uloga preko atributa ID
 					\item One-to-Many s entitetom Recenzija preko atributa ID (Recenzija.recezentID)
 					\item Many-to-Many s entitetom DodatnoPoljeObrasca preko atributa ID (DodatniPodatak.korisnikID; ta je veza na ER dijagramu imenovana kao DodatniPodatak pa se može reći da je entitet Korisnik u vezi One-to-Many s entitetom DodatniPodatak preko atributa ID)
 					\item One-to-Many s entitetom Rad preko atributa ID (Rad.prijavioID)
+					
+					\item One-to-Many s entitetom Clanak preko atributa ID (Clanak.autorID)
+					
 				\end{packed_item}
 				\begin{longtblr}[
 					label=none,
@@ -84,8 +88,10 @@
 					korisnickoIme	& VARCHAR & korisnički identifikator  kojeg korisnik koristi pri prijavi u sustav	\\ \hline 
 					email & VARCHAR & adresa e-pošte korisnika  \\ \hline 
 					lozinka & VARCHAR & hash lozinke  \\ \hline 
+					salt & BYTEA & dodatak lozinci pri hashiranju  \\ \hline
 					ime & VARCHAR	&  	ime korisnika	\\ \hline 
 					prezime & VARCHAR & prezime korisnika  \\ \hline 
+					zadnjaaktivnost & TIMESTAMP & trenutak posljednje aktivnosti na aplikaciji  \\ \hline 
 					sudionikID & INT & jedinstvena oznaka sudionika (ID\_XXXX, 
 					pri čemu je XXXX redni broj prijave)\\ \hline 
 					odobren & BOOLEAN & oznaka je li predsjedavajući konferencije odobrio recenzenta\\ \hline 
@@ -182,11 +188,36 @@
 					
 				\end{longtblr}
 			
+					\textbf{Članak}
+				\newline
+				\indent Ovaj entitet predstavlja članke na naslovnici. Članke postavlja (jedan) administrator i na jednoj konferenciji ih može biti više. Identifikator entiteta je atribut ID. Entitet sadrži informaciju o naslovu članka, tekst članka i u vezi je
+				\begin{packed_item}
+					\item Many-to-One s entitetom Konferencija preko atributa ID
+					\item Many-to-One s entitetom Korisnik preko atributa ID
+				\end{packed_item} 
+				\begin{longtblr}[
+					label=none,
+					entry=none
+					]{
+						width = \textwidth,
+						colspec={|X[7,l]|X[6, l]|X[20, l]|}, 
+						rowhead = 1,
+					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+					\hline \multicolumn{3}{|c|}{\textbf{Clanak}}	 \\ \hline[3pt]
+					\SetCell{LightGreen}ID & INT	&  	jedinstveni brojčani identifikator	\\ \hline
+					naslov	& VARCHAR &   naslov članka	\\ \hline
+					tekst	& VARCHAR &   tekst članka	\\ \hline 
+					\SetCell{LightBlue} sifKonferencija	& INT &   jedinstveni brojčani identifikator konferencije (Konferencija.ID)	\\ \hline
+					\SetCell{LightBlue} autorID	& INT &   jedinstveni brojčani identifikator autora članka (Korisnik.ID)	\\ \hline
+					
+				\end{longtblr}
+			
 				\textbf{Konferencija}
 				\newline
-				\indent Ovaj entitet sadrži važne informacije o znanstvenoj konferenciji koju modeliramo. Atributi su: identifikator konferencije (ID), naziv konferencije, opis, datum održavanja, rok za prijave, rok za administracijske promjene, rok za recenzente. Entitet je u vezi
+				\indent Ovaj entitet sadrži važne informacije o znanstvenoj konferenciji koju modeliramo. Atributi su: identifikator konferencije (ID), naziv konferencije, opis, datum održavanja, informacija jesu li radovi javno dostupni, rok za pocetak prijava, rok za pocetak recenziranja, rok za prijave, rok za administracijske promjene, rok za recenzente. Entitet je u vezi
 				\begin{packed_item}
 					\item One-to-Many s entitetom Sekcija preko atributa ID (Sekcija.sifKonferencija)
+					\item One-to-Many s entitetom Clanak preko atributa ID (Clanak.sifKonferencija)
 					
 				\end{packed_item}
 				\begin{longtblr}[
@@ -201,6 +232,7 @@
 					\SetCell{LightGreen}ID & INT	& jedinstveni brojčani identifikator	\\ \hline
 					naziv	& VARHCAR & naziv konferencije  	\\ \hline 
 					opis & VARCHAR &  opis konferencije \\ \hline
+					javniradovi & BOOLEAN &  informacija o javnoj dostupnosti radova na aplikaciji  \\ \hline
 					datum & DATE &  datum održavanja konferencije \\ \hline 
 					rokPrijava & TIMESTAMP &  rok za prijavu na konferenciju i učitanje rada u sustav \\ \hline 
 					rokAdmin & TIMESTAMP &  rok do kojeg administrator može mijenjati obrazac za prijavu \\ \hline 
@@ -284,7 +316,7 @@
 			
 				\textbf{Rad}
 				\newline
-				\indent Ovaj entitet sadrži informacije o prijavljenim radovima: ID rada, naslov, poveznicu s pdf dokumentom, je li rad recenziran, u koju je sekciju prijavljen i koji korisnik ga je prijavio. Entitet je u vezi:
+				\indent Ovaj entitet sadrži informacije o prijavljenim radovima: ID rada, naslov, poveznicu s pdf dokumentom, je li rad recenziran, treba li rad reviziju, u koju je sekciju prijavljen i koji korisnik ga je prijavio. Entitet je u vezi:
 				\begin{packed_item}
 					\item One-to-One s entitetom Recenzija preko atributa ID (Recenzija.sifRad)
 					\item Many-to-One s entitetom Sekcija preko atributa ID
@@ -304,6 +336,7 @@
 					naslov	& VARCHAR &   naslov rada	\\ \hline 
 					pdf & VARCHAR &  poveznica s pdf dokumentom rada \\ \hline 
 					recenziran & BOOLEAN	& oznaka je li rad recenziran 		\\ \hline 
+					revizija & BOOLEAN	& oznaka treba li rad revidirati 		\\ \hline 
 					\SetCell{LightBlue} sifSekcija	& INT & jedinstveni brojčani identifikator sekcije u koju je rad prijavljen(Sekcija.ID)   	\\ \hline 
 					\SetCell{LightBlue} prijavioID	& INT & jedinstveni brojčani identifikator sudionika koji je prijavio rad (Korisnik.ID) \\\hline 
 				\end{longtblr}
