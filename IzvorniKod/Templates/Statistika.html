@@ -376,10 +376,10 @@
   new Chart("myChartRecenzenti", {
     type: "bar",
     data: {
-      labels: ["Registrirani", "Potvrđeni","Čekaju odobrenje","Odobreni","Odbijeni"],
+      labels: ["Nepotvrđeni", "Potvrđeni","Čekaju odobrenje","Odobreni","Odbijeni"],
       datasets: [{
         backgroundColor: ["darkblue", "yellowgreen", "orange", "green", "darkred"],
-        data: [{{recenzenti_svi}}, {{recenzenti_aktivni}}, {{recenzenti_wait}}, {{recenzenti_potvrdeni}}, {{recenzenti_odbijeni}}]
+        data: [{{recenzenti_neaktivni}}, {{recenzenti_aktivni}}, {{recenzenti_wait}}, {{recenzenti_potvrdeni}}, {{recenzenti_odbijeni}}]
       }]
     },
     options: {

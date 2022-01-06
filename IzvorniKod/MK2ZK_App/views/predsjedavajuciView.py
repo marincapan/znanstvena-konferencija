@@ -328,7 +328,7 @@ def statistika(request):
     sudionici_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,potvrdenBool=True).count()
     sudionici_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,potvrdenBool=False).count()
 
-    recenzenti_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=True).count()
+    recenzenti_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=3).count()
     recenzenti_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=True).count()
     recenzenti_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=False).count()
     recenzenti_potvrdeni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,odobrenBool=True).count()
