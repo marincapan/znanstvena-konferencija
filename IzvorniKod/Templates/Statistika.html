@@ -28,7 +28,7 @@
 
 </head>
 
-<body>
+<body style="min-width: 576px;">
     <!--HEADER-->
     {% include "./Header.html" %}
     <!--HEADER-->
@@ -61,25 +61,25 @@
                     
                         <div class="row">
                             {%for korisnik in aktivniKorisnici %}
-                            <div class="col-lg-3 col-md-6 col-12 mt-4 pt-2">
+                            <div class="col-lg-3 col-6 mt-4 pt-2">
                                 <div class="mt-4 pt-2">
                                     <div class="team position-relative d-block text-center">
                                         <div class="position-relative d-block">
                                           {%if korisnik.vrstaKorisnik.naziv == "Admin" %}
                                           <div class="res-circle content d-inline-block" style="background-color: #1c3a9c;">
-                                            <div class="circle-txt" style="font-weight:bold; font-size:x-large">A</div>
+                                            <div class="circle-txt">A</div>
                                           </div>
                                           {%elif korisnik.vrstaKorisnik.naziv == "Recenzent" %}
                                           <div class="res-circle content d-inline-block" style="background-color: #c1666b;">
-                                            <div class="circle-txt" style="font-weight:bold; font-size:x-large">R</div>
+                                            <div class="circle-txt">R</div>
                                           </div>
                                           {%elif korisnik.vrstaKorisnik.naziv == "Sudionik" %} 
                                           <div class="res-circle content d-inline-block" style="background-color: #8fb5cc;">
-                                            <div class="circle-txt" style="font-weight:bold; font-size:x-large">S</div>
+                                            <div class="circle-txt">S</div>
                                           </div>
                                           {%else%}
                                           <div class="res-circle content d-inline-block" style="background-color: yellowgreen;">
-                                            <div class="circle-txt" style="font-weight:bold; font-size:x-large">P</div>
+                                            <div class="circle-txt">P</div>
                                           </div>
                                           {%endif%}
 
@@ -95,129 +95,98 @@
                             {%endfor%}
                         </div><!--end row-->
                     </div>
-
-                    <div class="container" style="display: flex">
-
-                      <div class="container mt-100 mt-60 mb-5">
-                        <div class="row">
-                          <div class="col-12 text-center">
-                              <div class="section-title">
-                                  <h3 class="title">Sudionici ({{sudionici_svi}})</h3>
-                                  <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj sudionika.</p>
-                              </div>
-                          </div><!--end col-->
-                      </div><!--end row-->
-  
-                      <div class="container mb-2">
-                        <canvas id="myChartSudionici" style="width:100%;"></canvas>
+                    
+                    <div class="container">
+                      <div class="row row-cols-2">
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title">Sudionici ({{sudionici_svi}})</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj sudionika.</p>
+                          </div>
+                    
+                          <div class="container mb-2">
+                            <canvas id="myChartSudionici" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                        <!--end col-->
+                    
+                    
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title">Recenzenti ({{recenzenti_svi}})</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj recenzenata te njihove trenutne
+                              statuse.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartRecenzenti" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                        <!--end col-->
                       </div>
-  
+                      <!--end row-->
+                    
+                      <div class="row row-cols-2">
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title">Radovi ({{radovi}})</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj radova te njihove statuse, kao i broj
+                              autora.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartRadovi" style="width:100%;"></canvas>
+                          </div>
+                          <!--end col-->
+                        </div>
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title">Sekcije ({{sve_sekcije}})</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj radova po sekcijama.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartSekcije" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                        <!--end col-->
                       </div>
-
-                      <div class="container mt-100 mt-60 mb-5" >
-                        <div class="row">
-                          <div class="col-12 text-center">
-                              <div class="section-title">
-                                  <h3 class="title">Recenzenti ({{recenzenti_svi}})</h3>
-                                  <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj recenzenata te njihove trenutne statuse.</p>
-                              </div>
-                          </div><!--end col-->
-                      </div><!--end row-->
-  
-                      <div class="container mb-2">
-                        <canvas id="myChartRecenzenti" style="width:100%;"></canvas>
+                      <!--end row-->
+                    
+                      <div class="row row-cols-2">
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title">Države ({{broj_drzava}})</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj korisnika koji dolaze iz pojedinih
+                              država.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartDrzave" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                    
+                        <!--end col-->
+                    
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title">Korisnici ({{korisnici}})</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj korisnika po ulogama.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartKorisnici" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                        <!--end col-->
                       </div>
-  
+                      <!--end row-->
+                    
+                      <div class="row justify-content-center">
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="content py-2 bg-white border-bottom rounded d-inline-block" style="padding: 0.5rem;">
+                            <h3 class="title mb-2">Ustanove ({{sve_ustanove}})</h3>
+                            <p class="mb-0">Ukupan broj različitih ustanova: </p>
+                            <h4><strong>{{ustanove}}</strong></h4>
+                          </div>
+                        </div>
+                        <!--end col-->
                       </div>
-
-                    </div>
-
-                    <div class="container" style="display: flex">
-
-                      <div class="container mt-100 mt-60 mb-5">
-                        <div class="row">
-                          <div class="col-12 text-center">
-                              <div class="section-title">
-                                  <h3 class="title">Radovi ({{radovi}})</h3>
-                                  <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj radova te njihove statuse, kao i broj autora.</p>
-                              </div>
-                          </div><!--end col-->
-                      </div><!--end row-->
-  
-                      <div class="container mb-2">
-                        <canvas id="myChartRadovi" style="width:100%;"></canvas>
-                      </div>
-  
-                      </div>
-
-
-                      <div class="container mt-100 mt-60 mb-5" >
-                        <div class="row">
-                          <div class="col-12 text-center">
-                              <div class="section-title">
-                                  <h3 class="title">Sekcije ({{sve_sekcije}})</h3>
-                                  <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj radova po sekcijama.</p>
-                              </div>
-                          </div><!--end col-->
-                      </div><!--end row-->
-  
-                      <div class="container mb-2">
-                        <canvas id="myChartSekcije" style="width:100%;"></canvas>
-                      </div>
-  
-                      </div>
-
-                    </div>
-
-
-                    <div class="container" style="display: flex">
-
-                      <div class="container mt-100 mt-60 mb-5">
-                        <div class="row">
-                          <div class="col-12 text-center">
-                              <div class="content py-2 bg-white border-bottom rounded d-inline-block" style="padding: 0.5rem;">
-                                  <h3 class="title mb-2">Ustanove ({{sve_ustanove}})</h3>
-                                  <p class="mb-0">Ukupan broj različitih ustanova: </p>
-                                  <h4><strong>{{ustanove}}</strong></h4>
-                              </div>
-                          </div><!--end col-->
-                      </div><!--end row-->
-  
-                      </div>
-
-                      <div class="container mt-100 mt-60 mb-5" >
-                        <div class="row">
-                          <div class="col-12 text-center">
-                              <div class="section-title">
-                                  <h3 class="title">Korisnici ({{korisnici}})</h3>
-                                  <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj korisnika po ulogama.</p>
-                              </div>
-                          </div><!--end col-->
-                      </div><!--end row-->
-  
-                      <div class="container mb-2">
-                        <canvas id="myChartKorisnici" style="width:100%;"></canvas>
-                      </div>
-  
-                      </div>
-
-                    </div>
-
-
-                    <div class="container mt-100 mt-60 mb-5">
-                      <div class="row" style="flex-flow: column wrap;">
-                        <div class="col-12 text-center">
-                            <div class="section-title">
-                                <h3 class="title">Države ({{broj_drzava}})</h3>
-                                <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj korisnika koji dolaze iz pojedinih država.</p>
-                            </div>
-                        </div><!--end col-->
-                    </div><!--end row-->
-
-                    <div class="container mb-2">
-                      <canvas id="myChartDrzave" style="width:100%;"></canvas>
-                    </div>
-
                     </div>
                     
                 </div>

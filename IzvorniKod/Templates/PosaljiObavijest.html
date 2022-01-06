@@ -26,7 +26,7 @@
       
       </head>
 
-    <body>
+    <body style="min-width: 576px">
         <!--HEADER-->
         {% include "./Header.html" %}
         <!--HEADER-->
@@ -52,9 +52,9 @@
                         <div class="text-left mb-2"> Tekst obavijesti.</div>
                         <textarea class="form-control md-textarea" id="tekstObavijesti" rows="12" name="tekstObavijesti" placeholder="Unesite tekst obavijesti ovdje"></textarea>
                         <br><hr><br>
+                        <button type="button" id="checkall" style ="float: right;" class ="btn btn-md btn-primary mb-3" onclick=checkAll()>Odaberi sve</button>
                         <div class="text-left mb-2"> Odaberite korisnike kojima poslati obavijest.</div>
                         <div class="table-responsive container">
-                          <button type="button" id="checkall" style ="float: right;" class ="btn btn-md btn-primary" onclick=checkAll()>Odaberi sve</button>
                           
 
                             <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaKorisnici">
@@ -142,19 +142,21 @@
   </script>
   <script>
     function checkAll(){
+      //Ako nije stisnut gumb znaci da nismo checkali pa se ravnamo po tome umjesto da stalno toggleamo checkboxeve
+      var checked = document.getElementById("checkall").innerHTML == "Odaberi sve";
       {%for korisnik in Korisnici%}
         var korisnik = {{ korisnik.id|safe }};
         console.log(String(korisnik)+ "checked");
-        if(document.getElementById(String(korisnik)+ "checked").checked==false){
+        if(checked){
           document.getElementById(String(korisnik)+ "checked").checked=true;
         }else{
           document.getElementById(String(korisnik)+ "checked").checked=false;
         }
       {%endfor%}
-      if (document.getElementById("checkall").innerHTML == "Poništiti Odabir"){
-        document.getElementById("checkall").innerHTML = "Odaberi sve";
+      if (checked){
+        document.getElementById("checkall").innerHTML = "Poništi Odabir";
       }else{
-      document.getElementById("checkall").innerHTML = "Poništiti Odabir";
+      document.getElementById("checkall").innerHTML = "Odaberi sve";
       }
     }
   </script>
