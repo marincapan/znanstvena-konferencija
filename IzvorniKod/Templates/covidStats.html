@@ -83,13 +83,24 @@
     var drzave = {{konfDrzave | safe}};
     var xValues = [];
     var yValues = [];
+    var brojac = 0;
 
     for (var key in drzave) {
       xValues.push(key);
       yValues.push(drzave[key][1]);
+      brojac++;
     }
 
-    var barColors = "#1c3a9c";
+  //za razlicite boje stupaca
+  var barColors = [];
+  for(var j = 0; j < brojac; j++) {
+    var letters = "0123456789ABCDEF";
+    var color = '#';
+    for (var i = 0; i < 6; i++)
+       color += letters[(Math.floor(Math.random() * 16))];
+    barColors.push(color);
+  }
+  //za razlicite boje stupaca
 
     new Chart("myChart", {
       type: "bar",
