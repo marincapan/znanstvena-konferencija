@@ -453,3 +453,24 @@ button.acc-btn {
 .btn-container {
   padding: 1rem;
 }
+
+.res-circle {
+  width: 20%;
+  border-radius: 50%;
+  line-height: 0;
+  position: relative;
+  color: white;
+}
+
+.res-circle::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.circle-txt {
+  position: absolute;
+  bottom: 50%;
+  width: 100%;
+  text-align: center;
+}

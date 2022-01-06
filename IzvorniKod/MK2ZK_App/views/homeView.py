@@ -390,7 +390,7 @@ def signin(request):
                 EmailMessage(subject, email_message, 'Pametna ekipa', [korisnik.email]).send()
                 messages.error(request, "Poveznica za promjenu lozinke poslana je na adresu e-pošte.")
             else:
-                messages.error(request, "Adresa e-pošte koji ste unijeli ne postoji u bazi!")
+                messages.error(request, "Adresa e-pošte koju ste unijeli ne postoji u bazi!")
                 return redirect('signin')
 
         #normalan login
