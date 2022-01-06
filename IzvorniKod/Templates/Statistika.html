@@ -41,7 +41,7 @@
                 <div class="text-uppercase text-center mb-5">
                     <div style="padding-bottom: 9px;" id="titleDiv">
                       <div>
-                        <h2 style="display: inline;" id="myTitle">Statistika prijavljenih korisnika</h2>
+                        <h2 style="display: inline;" id="myTitle">Statistika prijava</h2>
                       </div>
                       <a href="/adminsucelje" class="btn btn-outline-secondary">Vrati se na admin sučelje</a>
                     </div>
@@ -132,20 +132,42 @@
 
                     </div>
 
-                    
+                    <div class="container" style="display: flex">
 
-                    
+                      <div class="container mt-100 mt-60 mb-5">
+                        <div class="row">
+                          <div class="col-12 text-center">
+                              <div class="section-title">
+                                  <h3 class="title">Radovi ({{radovi}})</h3>
+                                  <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj radova te njihove statuse, kao i broj autora.</p>
+                              </div>
+                          </div><!--end col-->
+                      </div><!--end row-->
+  
+                      <div class="container mb-2">
+                        <canvas id="myChartRadovi" style="width:100%;"></canvas>
+                      </div>
+  
+                      </div>
 
+                      <div class="container mt-100 mt-60 mb-5" >
+                        <div class="row">
+                          <div class="col-12 text-center">
+                              <div class="section-title">
+                                  <h3 class="title">Korisnici ({{korisnici}})</h3>
+                                  <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj korisnika po ulogama.</p>
+                              </div>
+                          </div><!--end col-->
+                      </div><!--end row-->
+  
+                      <div class="container mb-2">
+                        <canvas id="myChartKorisnici" style="width:100%;"></canvas>
+                      </div>
+  
+                      </div>
 
-                    <h3>Radovi ({{radovi}})</h3>
-                    <ul>
-                      <li>Prijavljeni: {{prijavljeni_radovi}}</li>
-                      <li>Predani: {{predani_radovi}} </li>
-                      <li>Recenzirani: {{recenzirani_radovi}}</li>
-                      <li>Broj autora: {{autori}}</li>
-                      <!-- radovi po ocjenama/recenzijama -->
-                      <!-- radovi po državama -->
-                    </ul>
+                    </div>
+
 
                     <h3>Ustanove ({{sve_ustanove}}) </h3>
                     <ul>
@@ -236,6 +258,61 @@
 <!--za grafove-->
 <script>
 
+  var korisnici = {{korisnici_po_ulogama|safe}};
+  var xValues = []
+  var yValues = []
+
+  for (key in korisnici) {
+    xValues.push(key);
+    yValues.push(korisnici[key]);
+  }
+
+  new Chart("myChartKorisnici", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: ["darkblue", "yellowgreen","#c1666b", "#8fb5cc"],
+        data: yValues
+      }]
+    },
+    options: {
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+
+  new Chart("myChartRadovi", {
+    type: "bar",
+    data: {
+      labels: ["Prijavljeni", "Predani","Recenzirani","Broj različitih autora"],
+      datasets: [{
+        backgroundColor: ["darkblue", "yellowgreen","green", "lightblue"],
+        data: [{{prijavljeni_radovi}}, {{predani_radovi}}, {{recenzirani_radovi}}, {{autori}}]
+      }]
+    },
+    options: {
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+
   new Chart("myChartRecenzenti", {
     type: "bar",
     data: {
@@ -258,6 +335,7 @@
       }
     }
   });
+
   new Chart("myChartSudionici", {
     type: "bar",
     data: {
@@ -281,15 +359,25 @@
     }
   });
   var drzave = {{sudionici_po_drzavama | safe}};
-  var xValues = [];
-  var yValues = [];
+  xValues = [];
+  yValues = [];
+  var barColors = [];
+  var brDrzava = {{broj_drzava}};
 
   for (var key in drzave) {
     xValues.push(key);
     yValues.push(drzave[key]);
   }
 
-  var barColors = "#1c3a9c";
+  //za razlicite boje stupaca
+  for(var j = 0; j < brDrzava; j++) {
+    var letters = "0123456789ABCDEF";
+    var color = '#';
+    for (var i = 0; i < 6; i++)
+       color += letters[(Math.floor(Math.random() * 16))];
+    barColors.push(color);
+  }
+  //za razlicite boje stupaca
 
   new Chart("myChartDrzave", {
     type: "bar",
