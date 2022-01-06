@@ -150,6 +150,41 @@
   
                       </div>
 
+
+                      <div class="container mt-100 mt-60 mb-5" >
+                        <div class="row">
+                          <div class="col-12 text-center">
+                              <div class="section-title">
+                                  <h3 class="title">Sekcije ({{sve_sekcije}})</h3>
+                                  <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj radova po sekcijama.</p>
+                              </div>
+                          </div><!--end col-->
+                      </div><!--end row-->
+  
+                      <div class="container mb-2">
+                        <canvas id="myChartSekcije" style="width:100%;"></canvas>
+                      </div>
+  
+                      </div>
+
+                    </div>
+
+
+                    <div class="container" style="display: flex">
+
+                      <div class="container mt-100 mt-60 mb-5">
+                        <div class="row">
+                          <div class="col-12 text-center">
+                              <div class="content py-2 bg-white border-bottom rounded d-inline-block" style="padding: 0.5rem;">
+                                  <h3 class="title mb-2">Ustanove ({{sve_ustanove}})</h3>
+                                  <p class="mb-0">Ukupan broj različitih ustanova: </p>
+                                  <h4><strong>{{ustanove}}</strong></h4>
+                              </div>
+                          </div><!--end col-->
+                      </div><!--end row-->
+  
+                      </div>
+
                       <div class="container mt-100 mt-60 mb-5" >
                         <div class="row">
                           <div class="col-12 text-center">
@@ -169,25 +204,13 @@
                     </div>
 
 
-                    <h3>Ustanove ({{sve_ustanove}}) </h3>
-                    <ul>
-                      <li>Ukupno različitih: {{ustanove}} </li>
-                      <!--broj ustanova po državama-->
-                    </ul>
-
                     <h3>Sekcije ({{sve_sekcije}})</h3>
                     <ul>
-                      {% for k,v in radovi_po_sekcijama.items %}
+                      {% for k,v in .items %}
                       <li>{{k}}: {{v}}</li>
                       {% endfor %}
                     </ul>
 
-                    <h3>Korisnici ({{korisnici}})</h3>
-                    <ul>
-                      {% for k,v in korisnici_po_ulogama.items %}
-                      <li>{{k}}: {{v}}</li>
-                      {% endfor %}
-                    </ul>
 
                     <div class="container mt-100 mt-60 mb-5">
                       <div class="row" style="flex-flow: column wrap;">
@@ -258,9 +281,54 @@
 <!--za grafove-->
 <script>
 
+  var sekcije = {{radovi_po_sekcijama|safe}};
+  var xValues = [];
+  var yValues = [];
+  var brSekcija = {{sve_sekcije}};
+
+  for (key in sekcije) {
+    xValues.push(key);
+    yValues.push(sekcije[key]);
+  }
+
+  //za razlicite boje stupaca
+  var barColors = [];
+  for(var j = 0; j < brSekcija; j++) {
+    var letters = "0123456789ABCDEF";
+    var color = '#';
+    for (var i = 0; i < 6; i++)
+       color += letters[(Math.floor(Math.random() * 16))];
+    barColors.push(color);
+  }
+  //za razlicite boje stupaca
+
+  new Chart("myChartSekcije", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+
+
   var korisnici = {{korisnici_po_ulogama|safe}};
-  var xValues = []
-  var yValues = []
+  xValues = [];
+  yValues = [];
 
   for (key in korisnici) {
     xValues.push(key);
@@ -361,7 +429,6 @@
   var drzave = {{sudionici_po_drzavama | safe}};
   xValues = [];
   yValues = [];
-  var barColors = [];
   var brDrzava = {{broj_drzava}};
 
   for (var key in drzave) {
@@ -370,6 +437,7 @@
   }
 
   //za razlicite boje stupaca
+  var barColors = [];
   for(var j = 0; j < brDrzava; j++) {
     var letters = "0123456789ABCDEF";
     var color = '#';
