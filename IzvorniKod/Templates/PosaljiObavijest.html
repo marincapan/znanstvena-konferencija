@@ -31,29 +31,41 @@
         {% include "./Header.html" %}
         <!--HEADER-->
 
+        
+
         <div class="gradient-custom-3 " style="min-height: 100vh;">
             <div class="container pt-5 pb-5">
+
+            <!-- MESSAGES -->
+            {% include "./Messages.html" %}
+            <!-- MESSAGES -->
+              
               <div class="card" style="border-radius: 15px;">
                 <div class="card-body p-5">
                     
                     <div class="text-uppercase text-center mb-5">
                         <div style="padding-bottom: 9px;" id="titleDiv">
-                          <div>
+                          <div class="mb-2">
                             <h2 style="display: inline;" id="myTitle">Pošalji obavijest korisnicima</h2>
                           </div>
+                          <a href="/adminsucelje" class="btn btn-outline-secondary">Vrati se na admin sučelje</a>
                         </div>
                       <hr>
                     </div>
 
                     <form action="/posaljiobavijest" method="post" enctype="multipart/form-data" id="SendEmail">
                       {%csrf_token%}
-                        <div class="text-left mb-2"> Naslov obavijesti.</div>
+                      <div class="mb-3">
+                        <div class="form-label fw-bold"> Naslov obavijesti:</div>
                         <input class="form-control md-textarea" id="naslovObavijesti" name="naslovObavijesti" placeholder="Unesite naslov obavijesti ovdje">
-                        <div class="text-left mb-2"> Tekst obavijesti.</div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="form-label fw-bold"> Tekst obavijesti:</div>
                         <textarea class="form-control md-textarea" id="tekstObavijesti" rows="12" name="tekstObavijesti" placeholder="Unesite tekst obavijesti ovdje"></textarea>
+                      </div>
                         <br><hr><br>
                         <button type="button" id="checkall" style ="float: right;" class ="btn btn-md btn-primary mb-3" onclick=checkAll()>Odaberi sve</button>
-                        <div class="text-left mb-2"> Odaberite korisnike kojima poslati obavijest.</div>
+                        <div class="left text-muted mt-3 mb-0"> Odaberite korisnike kojima želite poslati obavijest.</div>
                         <div class="table-responsive container">
                           
 
@@ -154,7 +166,7 @@
         }
       {%endfor%}
       if (checked){
-        document.getElementById("checkall").innerHTML = "Poništi Odabir";
+        document.getElementById("checkall").innerHTML = "Poništi odabir";
       }else{
       document.getElementById("checkall").innerHTML = "Odaberi sve";
       }

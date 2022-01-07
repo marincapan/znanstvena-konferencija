@@ -46,7 +46,7 @@ def sloziobrazac(request):
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/') #redirect na homepage
 
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
@@ -333,7 +333,7 @@ def adminsucelje(request):
                 context['uloga']=Predsjedavajuci.vrstaKorisnik.naziv
                 context['sekcija']=Predsjedavajuci.korisnikSekcija.naziv
         else: #nije admin
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/') #redirect na homepage
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -385,7 +385,7 @@ def covidstats(request):
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin
-            messages.error(request,"Nemaš ovlasti za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/') #redirect na homepage
 
             
@@ -578,7 +578,7 @@ def uredipodatke(request, korisnickoime):
                     context['sekcije'] = sekcije
             
             else:
-                messages.info(request, "Nemate ovlasti za pristup toj stranici.")
+                messages.info(request, "Nemate ovlasti za pristup ovoj stranici!")
                 return redirect('home')
 
             

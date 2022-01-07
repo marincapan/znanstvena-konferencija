@@ -28,6 +28,11 @@
 
   <div class="gradient-custom-3 " style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
+      
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
 
@@ -36,16 +41,6 @@
             <h2>Moji radovi</h2>
             <hr>
           </div>
-
-          <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
-                      jer se java script na dnu referira na njih-->
-
-          <!--Klasika za error messages-->
-          {% if messages %}
-          {% for message in messages %}
-          <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
-            {% endfor %}
-            {% endif %}
 
             <div id="pregledRadova">
               <div class="text-center">

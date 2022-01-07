@@ -388,7 +388,7 @@ def signin(request):
                 }
                 email_message = render_to_string(email_template_name, c)
                 EmailMessage(subject, email_message, 'Pametna ekipa', [korisnik.email]).send()
-                messages.error(request, "Poveznica za promjenu lozinke poslana je na adresu e-pošte.")
+                messages.success(request, "Poveznica za promjenu lozinke poslana je na adresu e-pošte.")
             else:
                 messages.error(request, "Adresa e-pošte koju ste unijeli ne postoji u bazi!")
                 return redirect('signin')
@@ -525,7 +525,7 @@ def reset_password(request):
         user.save()
         return redirect('signin')
     #Ako nije POST
-    messages.error(request, "Nemate pristup ovoj stranici!")
+    messages.error(request, "Nemate ovlasti za pristup ovoj stranici!")
     return redirect('home')
     #treba promijeniti tako da se provjeri poklapaju li se lozinke te ju spremiti u bazu ili javiti grešku
 

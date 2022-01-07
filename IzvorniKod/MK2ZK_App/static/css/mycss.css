@@ -502,3 +502,38 @@ button.acc-btn {
     font-size: medium;
   }
 }
+
+.success {
+  background-color: rgb(74, 138, 74);
+  color: white;
+}
+
+.warning {
+  background-color: rgb(223, 223, 109);
+  color: white;
+}
+
+.error {
+  background-color: rgb(170, 46, 46);
+  color: white;
+}
+
+.info {
+  background-color: #1c3a9c;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}

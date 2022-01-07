@@ -35,12 +35,17 @@
 
     <div class="gradient-custom-3 " style="min-height: 100vh;">
         <div class="container pt-5 pb-5">
+
+          <!-- MESSAGES -->
+          {% include "./Messages.html" %}
+          <!-- MESSAGES -->
+
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
                 
                 <div class="text-uppercase text-center mb-5">
                     <div style="padding-bottom: 9px;" id="titleDiv">
-                      <div>
+                      <div class="mb-2">
                         <h2 style="display: inline;" id="myTitle">Statistika prijava</h2>
                       </div>
                       <a href="/adminsucelje" class="btn btn-outline-secondary">Vrati se na admin sučelje</a>
@@ -279,7 +284,8 @@
       scales: {
         yAxes: [{
             ticks: {
-                beginAtZero: true
+              precision: 0,
+              beginAtZero: true
             }
         }]
       }
@@ -306,13 +312,15 @@
       }]
     },
     options: {
+      responsive: true,
       legend: {
         display: false
       },
       scales: {
         yAxes: [{
             ticks: {
-                beginAtZero: true
+              precision: 0,
+              beginAtZero: true
             }
         }]
       }
@@ -329,13 +337,15 @@
       }]
     },
     options: {
+      responsive: true,
       legend: {
         display: false
       },
       scales: {
-        xAxes: [{
+        yAxes: [{
             ticks: {
-                beginAtZero: true
+              precision: 0,
+              beginAtZero: true
             }
         }]
       }
@@ -352,13 +362,15 @@
       }]
     },
     options: {
+      responsive: true,
       legend: {
         display: false
       },
       scales: {
-        xAxes: [{
+        yAxes: [{
             ticks: {
-                beginAtZero: true
+              precision: 0,
+              beginAtZero: true
             }
         }]
       }
@@ -375,13 +387,15 @@
       }]
     },
     options: {
+      responsive: true,
       legend: {
         display: false
       },
       scales: {
         yAxes: [{
             ticks: {
-                beginAtZero: true
+              precision: 0,
+              beginAtZero: true
             }
         }]
       }
@@ -418,13 +432,15 @@
       }]
     },
     options: {
+      responsive: true,
       legend: {
         display: false
       },
       scales: {
         yAxes: [{
             ticks: {
-                beginAtZero: true
+              precision: 0,
+              beginAtZero: true
             }
         }]
       }

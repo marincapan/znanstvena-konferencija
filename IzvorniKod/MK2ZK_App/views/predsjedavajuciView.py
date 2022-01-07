@@ -4,6 +4,7 @@ import hashlib
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
+from django.core.mail import message
 from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
 from django.http.response import FileResponse, HttpResponse
@@ -35,7 +36,7 @@ def pregled(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -62,7 +63,7 @@ def recenzenti(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -91,7 +92,7 @@ def sudionici(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
 
     sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
@@ -186,7 +187,7 @@ def obavijest(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
     
     if request.method=="POST":
@@ -202,8 +203,10 @@ def obavijest(request):
                         naslov, tekst, 'Pametna ekipa', to=[to_email]
                     )
                     email.send()
+                    messages.success(request, "Obavijest je uspješno poslana.")
             except:
-                continue
+                messages.error(request, "Došlo je do pogreške. Molimo pokušajte ponovno.")
+                break
         return redirect('obavijest')
     sekcije = models.Sekcija.objects.all()
     ustanove = models.Ustanova.objects.all()
@@ -230,7 +233,7 @@ def uprsucelje(request):
         if request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -321,7 +324,7 @@ def statistika(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
     
     sudionici_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=4).count()

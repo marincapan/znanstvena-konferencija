@@ -40,7 +40,7 @@ def mojerecenzije(request):
         messages.error(request,"Tvoj zahtjev za recenzenstvom je odbijen. Nije ti dopusteno recenzirati")
         return redirect('home')
     elif LoggedInUser.vrstaKorisnik_id > 3: #1-admin 2-predsjedavajuci 3-recenzent 4-sudionik
-        messages.error(request,"Nemaš prava za ovu stranicu!")
+        messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
         return redirect('home') #nema ovlasti, trebalo bi dati poruku
 
     if request.method == "POST":

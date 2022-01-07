@@ -33,13 +33,26 @@
             {% include "./Header.html" %}
             <!--HEADER-->
 
-            <!--Ako npr nakon sign in treba displayat "Vaš account jos nije potvrden. Molimo potvrdite svoj account"-->
-            {% if messages %}
-                {% for message in messages %}
-                <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-                {% endfor %}
-            {% endif %}
-            <!---->
+
+       {% if messages %}
+      <div class="gradient-custom-3">
+        
+        <div class="container pt-3 pb-1">
+          <!--Klasika za error messages-->
+          
+          {% for message in messages %}
+          <div class="alert {{ message.tags }}">
+            <span class="closebtn" onclick="this.parentElement.parentElement.style.display='none';">&times;</span> 
+            {{message}}
+          </div>
+            {% endfor %}
+            
+            <!--Klasika za error messages-->
+        </div>
+      </div>
+
+        {% endif %}
+        
 
             <!-- ======= Hero Section ======= -->
       <section id="hero">
@@ -135,7 +148,7 @@
         </div>
       </section><!-- End Hero -->
 
-      <div class="gradient-custom-3 card-container" style="min-height: 100vh; flex-direction: column;">
+      <div class="card-container gradient-custom-3" style="min-height: 100vh; flex-direction: column;">
 
         {% for clanak in Clanci %}
         <div class="container pt-5 pb-5 card-item">
@@ -167,7 +180,7 @@
 
         {%endfor%}
 
-      </div>
+    </div>
       <!--FOOTER-->
       {% include "./Footer.html" %}
       <!--FOOTER-->

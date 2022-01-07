@@ -24,8 +24,13 @@
   {% include "./Header.html" %}
   <!--HEADER-->
 
-  <div class="gradient-custom-3 " style="min-height: 100vh;">
+  <div class="gradient-custom-3" style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
+
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
 
@@ -39,12 +44,6 @@
           </div>
 
           <div>
-            <!--Klasika za error messages-->
-            {% if messages %}
-            {% for message in messages %}
-            <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
-              {% endfor %}
-              {% endif %}
           </div>
 
           <!-- OPĆENITO -->
@@ -168,7 +167,7 @@
                       name="pocetakPrijavaKonferencije" value="{{rokPocPrijava}}" required>
                   </div>
                   <div class="mb-3" id="rokPrijavaWrapper">
-                    <label for="rokPrijava" class="form-label fw-bold">Rok za prijavu</label>
+                    <label for="rokPrijava" class="form-label fw-bold">Rok za prijavu i predaju radova</label>
                     <input type="date" class="form-control input-md" id="rokPrijava" name="rokPrijava"
                       value="{{rokPrijave}}" required>
                   </div>
@@ -188,7 +187,7 @@
                   <div class="mb-3" id="rokIzmjenaWrapper">
                     <label for="rokIzmjena" class="form-label fw-bold">Rok za izmjenu obrasca</label>
                     <input type="date" class="form-control input-md" id="rokIzmjena" name="rokIzmjena"
-                      value="{{rokAdmin}}" >
+                      value="{{rokAdmin}}">
                   </div>
                 </div>
               </div>

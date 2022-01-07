@@ -28,13 +28,17 @@
   <div class="gradient-custom-3 " style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
 
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
 
 
           <div class="text-uppercase text-center mb-2">
             <div style="padding-bottom: 9px;">
-              <div>
+              <div class="mb-2">
                 <h2 style="display: inline;">COVID-19 statistika</h2>
               </div>
               {% if LoggedInUserRole == 'Admin'%}
@@ -115,8 +119,17 @@
       }]
     },
     options: {
+      responsive: true,
       legend: {
         display: false
+      },
+    scales: {
+        yAxes: [{
+            ticks: {
+              precision: 0,
+              beginAtZero: true
+            }
+        }]
       }
     }
   });
