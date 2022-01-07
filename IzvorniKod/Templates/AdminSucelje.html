@@ -338,7 +338,7 @@
             </div>
             <hr>
           </div>
-
+          
           <p class="left text-muted mt-3 mb-0">Ovdje možete definirati novo polje za registracijski obrazac. </p>
           <br>
 
@@ -485,7 +485,7 @@
                   {%endfor%}
                 </ul>
                 {% else %}
-                <div class="fs-6 fw-bold"> Još niste unijeli ni jednu sekciju na konferenciji.</div>
+                <div class="fs-6 fw-bold"> Još niste unijeli nijednu sekciju na konferenciji.</div>
                 {% endif %}
               </div>
 
@@ -599,56 +599,6 @@
         </div>
         <!-- UREĐIVANJE NASLOVNE -->
 
-       <!-- UREĐIVANJE INFO STRANICE -->
-        <!-- <div class="container mb-5">
-          <div class="text-uppercase text-left mb-1">
-            <div style="padding-bottom: 3px;" id="titleDiv">
-              <div>
-                <h4 style="display: inline;" id="uređivanjeInfo">Uređivanje info stranice</h4>
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <p class="left text-muted mt-3 mb-0">Ovdje možete uređivati naslov i sadržaj stranice <i>O konferenciji</i>.</p>
-          <br>
-
-          <div class="row">
-            <div class="col-sm">
-              <div style="padding-bottom: 5px;" id="">
-                <form action="/adminsucelje" method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-
-                  <div class="row">
-                    <div class="col-sm">
-                      <div class="mb-3" id="">
-                        <label for="clanakNaslov" class="form-label fw-bold">Naslov:</label>
-                        <input type="text" class="form-control" id="infoTitle" name="infoTitle"
-                          value="{{info.naslov}}" required>
-                      </div>
-                      <div class="mb-3" id="">
-                        <label for="clanakSadrzaj" class="form-label fw-bold">Sadržaj:</label>
-                        <textarea class="form-control" rows="3" id="infoText" name="infoText"
-                          required>{{info.tekst}}</textarea>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <br>
-
-                  <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                    <button type="submit" class="btn btn-primary btn-md" name='EditInfo' value="Update"
-                      style="grid-column: 2;">Ažuriraj info stranicu</button>
-                  </div>
-                </form>
-
-              </div>
-            </div>
-          </div>
-
-
-        </div> -->
 
       </div>
     </div>
