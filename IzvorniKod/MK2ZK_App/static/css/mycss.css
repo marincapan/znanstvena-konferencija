@@ -537,3 +537,26 @@ button.acc-btn {
 .closebtn:hover {
   color: black;
 }
+
+.myimage {
+  width: 100vw;
+}
+
+@media screen and (max-width: 542.99px) {
+  .myimage {
+    width: calc(100vw * 4);
+  }
+}
+
+@media screen and (min-width: 543px) and (max-width: 814.99px) {
+  .myimage {
+    width: calc(100vw * 3);
+  }
+}
+
+@media screen and (min-width: 815px) and (max-width: 1152px) {
+  .myimage {
+    width: calc(100vw * 2);
+  }
+}
+
