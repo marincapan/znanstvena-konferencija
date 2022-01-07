@@ -468,6 +468,25 @@
 			
 			\textit{Potrebno je priložiti dijagram stanja i opisati ga. Dovoljan je jedan dijagram stanja koji prikazuje \textbf{značajan dio funkcionalnosti} sustava. Na primjer, stanja korisničkog sučelja i tijek korištenja neke ključne funkcionalnosti jesu značajan dio sustava, a registracija i prijava nisu. }
 			
+			Dijagram stanja opisuje dinamičko ponašanje (dijela) sustava. Prikazuje stanja objekata te prijelaze iz jednog stanja u drugo temeljeno na događajima (ako su ispunjeni uvjeti prijelaza).
+			Radi preglednosti prikazat će se dijagram stanja za svaku vrstu korisnika zasebno.
+			
+			Na slici 4.6 prikazan je dijagram stanja za prijavljenog sudionika konferencije. On ima pristup naslovnici, vlastitim radovima, informacijama o konferenciji i osobnim podatcima. Sudionik također može pristupiti stranici s javnim radovima, koje može pregledati i/ili preuzeti (ako su dostupni). Ako želi može uređivati osobne podatke, predati prijavljeni rad, predati dodatni rad (nakon predaje prvog i u skladu s rokovima). Po potrebi može revidirati rad.
+			
+			Na slici 4.7 prikazan je dijagram stanja za prijavljenog recenzenta. On ima pristup naslovnici,
+			dostupnim javnim radovima, informacijama o konferenciji, vlastitim recenzijama i osobnim podatcima. Može urediti osobne podatke, recenzirati radove iz sekcije u kojoj se prijavio (u skladu s rokovima).
+			
+			\begin{figure}[H]
+				\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Dijagram stanja - Sudionik.png} 
+				\centering
+				\caption{Dijagram stanja, Sudionik}
+				\label{fig:stanje1}
+			\end{figure}
+			
+			
+			
+			
+			
 			
 			\eject 
 		
@@ -479,13 +498,13 @@
 			 
 			 Budući da su u sustavu 4 vrste korisnika (administrator, predsjedavajući konferencije, sudionik, recenzent) prikazat će se za svakog 1 dijagram aktivnosti vezan uz njegovu značajnu aktivnost.
 			 
-			 Dijagram 4.6 opisuje značajnu recenzentovu aktivnost: recenziranje radova. Korisnik se prvo treba prijaviti u sustav, zatim pristupiti dijelu aplikacije za recenziranje "Moje Recenzije". Sustav provjerava je li istekao rok za recenziranje i ukoliko je o tome obavještava recenzenta. Ukoliko nije, recenzent može recenzirati: po želji otvoriti ili preuzeti rad ili odmah odabrati ocjenu. Ovisno o ocjeni unosi obrazloženje i predaje recenziju koja se pohranjuje u bazu te se šalje obavijest elektroničkom poštom onom korisniku čiji je rad recenziran.
+			 Dijagram 4. opisuje značajnu recenzentovu aktivnost: recenziranje radova. Korisnik se prvo treba prijavti u sustav, zatim pristupiti dijelu aplikacije za recenziranje "Moje Recenzije". Sustav provjerava je li istekao rok za recenziranje i ukoliko je o tome obavještava recenzenta. Ukoliko nije, recenzent može recenzirati: po želji otvoriti ili preuzeti rad ili odmah odabrati ocjenu. Ovisno o ocjeni unosi obrazloženje i predaje recenziju koja se pohranjuje u bazu te se šalje obavijest elektroničkom poštom onom korisniku čiji je rad recenziran.
 			 
-			 Dijagram 4.7 opisuje značajnu aktivnost sudionika: predaja rada. Radi se o predaji rada kojeg je sudionik prijavio pri registraciji. Prvo se treba prijaviti u sustav te u dijelu aplikacije "Moji radovi" može vidjeti podatke koje je unio za taj rad i učitati dokument u pdf formatu (ukoliko nije istekao rok za predaju radova). Dokument se zatim pohranjuje u bazu podataka.
+			 Dijagram 4. opisuje značajnu aktivnost sudionika: predaja rada. Radi se o predaji rada kojeg je sudionik prijavio pri registraciji. Prvo se treba prijaviti u sustav te u dijelu aplikacije "Moji radovi" može vidjeti podatke koje je unio za taj rad i učitati dokument u pdf formatu (ukoliko nije istekao rok za predaju radova). Dokument se zatim pohranjuje u bazu podataka.
 			 
-			 Dijagram 4.8 opisuje značajnu administratorovu aktivnost: uređivanje informacija (podataka) o konferenciji. Korisnik se treba prijaviti, pristupiti administratorskom sučelju te mijenjati podatke po želji. Može odustati od unosa ili ažurirati podatke. Po ažuriranju dobiva obavijest da su ažurirani, a nakon odustajanja se može predomisliti i ipak nešto urediti. Podatci se unose u bazu podataka tek kad se provjeri semantika datuma, primjerice da rok za početak prijava nije nakon roka za kraj prijava. Ukoliko je logika datuma narušena administratora se o tome obavještava.
+			 Dijagram 4. opisuje značajnu administratorovu aktivnost: uređivanje informacija (podataka) o konferenciji. Korisnik se treba prijaviti, pristupiti administratorskom sučelju te mijenjati podatke po želji. Može odustati od unosa ili ažurirati podatke. Po ažuriranju dobiva obavijest da su ažurirani, a nakon odustajanja se može predomisliti i ipak nešto urediti. Podatci se unose u bazu podataka tek kad se provjeri semantika datuma, primjerice da rok za početak prijava nije nakon roka za kraj prijava. Ukoliko je logika datuma narušena administratora se o tome obavještava.
 			 
-			 Dijagram 4.9 opisuje značajnu aktivnost predsjedjedavajućeg konferenecije: slanje obavijesti odabranim korisnicima. Da bi poslao obavijest mora se prijaviti te na upravljačkom sučelju odabrati "Pošalji obavijest korisnicima". Zatim (ukoliko postoje potvrđeni korisnici u sustavu) može unijeti tekst i naslov obavijesti te odabrati 1, nekoliko ili sve korisnike. Obavijest se šalje elektroničkom poštom, a predsjedavajući prima obavijest da je poruka poslana.
+			 Dijagram 4. opisuje značajnu aktivnost predsjedjedavajućeg konferenecije: slanje obavijesti odabranim korisnicima. Da bi poslao obavijest mora se prijaviti te na upravljačkom sučelju odabrati "Pošalji obavijest korisnicima". Zatim (ukoliko postoje potvrđeni korisnici u sustavu) može unijeti tekst i naslov obavijesti te odabrati 1, nekoliko ili sve korisnike. Obavijest se šalje elektroničkom poštom, a predsjedavajući prima obavijest da je poruka poslana.
 			 
 			 \begin{figure}[H]
 			 	\includegraphics[width = 15cm, keepaspectratio]{dijagrami/Dijagram aktivnosti - Recenziranje rada.png} 
