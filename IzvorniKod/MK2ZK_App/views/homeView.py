@@ -598,7 +598,9 @@ def javniradovi(request):
         brojPredanihRadova += 1
 
   context['javniBool'] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
+ 
   context['Radovi'] = radovi
+  print(context["Radovi"])
   context['brojPredanihRadova'] = brojPredanihRadova
 
   return render(request, 'JavniRadovi.html', context)

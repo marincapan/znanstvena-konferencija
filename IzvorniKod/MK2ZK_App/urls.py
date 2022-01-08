@@ -24,6 +24,7 @@ urlpatterns = [
     path('covidstats', adminView.covidstats, name='covidstats'),
     path('pregled/recenzenti/<korisnickoime>', adminView.uredipodatke, name='uredipodatke1'),
     path('pregled/sudionici/<korisnickoime>', adminView.uredipodatke, name='uredipodatke2'),
+    path('pregled/radovi/<sifrada>', adminView.uredirad, name='uredirad'),
     path('activate/<uidb64>/<token>',  homeView.activate, name='activate'), 
     path('reset/<uidb64>/<token>/', homeView.new_password, name='password_reset_confirm'), 
     path('reset_password', homeView.reset_password, name='password_reset_save'),

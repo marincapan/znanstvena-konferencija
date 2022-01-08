@@ -500,7 +500,7 @@ def uredipodatke(request, korisnickoime):
                 korisnik.korisnikUstanova = novaUstanova
 
             korisnik.save()
-            messages.success(request, "Podaci uspješno promijenjeni")
+            messages.success(request, "Podaci uspješno promijenjeni.")
             uloga = korisnik.vrstaKorisnik.naziv
             if (uloga == "Sudionik"):
                 url = "/pregled/sudionici/"+username
@@ -592,3 +592,49 @@ def uredipodatke(request, korisnickoime):
         return redirect('pregled')
     
     return render(request, 'UrediPodatke.html',context)
+
+def uredirad(request, sifrada):
+    context = {}
+    rad = models.Rad.objects.filter(sifRad = sifrada).first()
+
+    if rad:
+
+        if request.method == "POST":
+            pass
+
+        if "LoggedInUserId" in request.session:
+            User = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])
+            User.lastActive = datetime.now()
+            User.save()
+
+            context={}
+            context["LoggedInUser"] = User.id
+            uloga = User.vrstaKorisnik.naziv
+
+            if (uloga == 'Admin' or uloga == 'Predsjedavajuci'): #samo admin i preds imaju pristup uredjivanju
+                context['LoggedInUser']=request.session['LoggedInUserId']
+                context['LoggedInUserRole']=request.session['LoggedInUserRole']
+                context["rad"] = rad
+
+                context["recenzije"] = models.Recenzija.objects.filter(rad = rad.sifRad)
+
+                autori = []
+                autorRadQuery = models.AutorRad.objects.filter(Rad = rad.sifRad)
+                for autorRad in autorRadQuery:
+                    autori.append(autorRad.Autor)
+                context["autori"] = autori
+
+
+            else: #samo admin i preds imaju pristup uredjivanju
+                messages.info(request, "Nemate ovlasti za pristup ovoj stranici!")
+                return redirect('home')
+
+        else: #potreban login za pristup
+            messages.info(request, "Trebate biti prijavljeni kako biste pristupili ovoj stranici.")
+            return redirect("signin")
+            
+    else:
+        messages.info(request, "Taj rad ne postoji u sustavu.")
+        return redirect("pregled")
+
+    return render(request, "UrediRad.html", context)
