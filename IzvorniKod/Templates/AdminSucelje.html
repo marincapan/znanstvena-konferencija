@@ -67,7 +67,7 @@
                     {%if LoggedInUserRole == 'Admin'%}
                     <form action="adminsucelje" method="POST">
                       {% csrf_token %}
-                      {% if brojPredanihRadova != 0%}
+                      {% if brojDobrihRadova != 0%}
                       {% if javniBool == 0 %}
                       <div class="text-left text-muted mb-2">Trenutno nije omogućen javni pristup radovima.</div>
                       <button type="submit" class="btn btn-primary" name="makePublic"> Dodaj javni pristup svim
@@ -79,8 +79,7 @@
                       <a href="/javniradovi" class="btn btn-secondary">Javni radovi</a>
                       {% endif %}
                       {% else %}
-                      <div class="text-left text-muted mb-2">Trenutno nema predanih radova kojima možete dati javni
-                        pristup.</div>
+                      <div class="text-left text-muted mb-2">Trenutno nema radova spremnih za javnu objavu.</div>
                       <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="Niti jedan rad nije predan" disabled>Nema predanih radova</button>
                       {% endif %}
@@ -293,10 +292,10 @@
                     <input type="text" class="form-control input-lg" id="adminemail" name="adminemail" value="" required>
                   </div>
 
-                  <div class="mb-1" id="passwordWrapper">
+                  <!-- <div class="mb-1" id="passwordWrapper">
                     <label for="email" class="form-label">Lozinka</label>
                     <input type="text" class="form-control input-lg" id="adminpassword" name="adminpassword" value="" required>
-                  </div>
+                  </div> -->
 
                   <button type="submit" class="btn btn-primary btn-md" name="AddNewAdmin" value="Update">Dodaj administratora</button>
                 </form>

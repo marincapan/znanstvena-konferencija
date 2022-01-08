@@ -56,9 +56,10 @@
                     </div>
                   <hr>
                 </div>
-
+                
                 <div class="container" >
                     <div class="container mt-100 mt-60 mb-5">
+                      {% if LoggedInUserRole == 'Admin'%}
                         <div class="row">
                             <div class="col-12 text-center">
                                 <div class="section-title">
@@ -67,6 +68,7 @@
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
+                      
                     
                         <div class="row">
                             {%for korisnik in aktivniKorisnici %}
@@ -104,6 +106,7 @@
                             {%endfor%}
                         </div><!--end row-->
                     </div>
+                    {%endif%}
                     
                     <div class="container">
                       <div class="row row-cols-2">

@@ -230,7 +230,7 @@ def signup(request):
                 radSekcija=Sekcija,
                 radKorisnik=NoviKorisnik
             )
-            if not models.Rad.objects.filter(naslov=title, radSekcija=Sekcija, radKorisnik=NoviKorisnik).exists():
+            if not models.Rad.objects.filter(naslov=title, radSekcija=Sekcija).exists():
                 noviRad.save()
             else:
                     messages.error(request, "Rad s tim naslovom u toj sekciji već postoji!")
@@ -408,6 +408,7 @@ def signin(request):
                 try: #Privremeni TRY da ne izbaci gresku ako netko slucajno krivo napise predsjedavajuci
                     if (models.Korisnik.objects.filter(korisnickoIme=Username).exists()):
                         LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username)
+                        print(LoggedInUser.lozinka)
                         if not LoggedInUser.lozinka==None:
                             salt=LoggedInUser.salt
                             correctHash=LoggedInUser.lozinka
@@ -429,7 +430,7 @@ def signin(request):
                                         messages.warning(request,"Vaš zahtjev za recenziranjem je odbijen!")
                                         return redirect('home')
                                 if LoggedInUser.potvrdenBool==False:
-                                    messages.warning(request,"Vaš račun još nije potvrđen, molimo pogledajte adresu e-pošte!")
+                                    messages.warning(request,"Vaš račun još nije aktiviran, molimo pogledajte adresu e-pošte!")
                                     print("flag")
                                     return redirect('signin')
                                 else:

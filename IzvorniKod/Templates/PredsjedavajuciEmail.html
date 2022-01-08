@@ -1,0 +1,16 @@
+{% autoescape off %}
+Poštovani {{ user.ime }} {{ user.prezime }},
+
+dodijeljena Vam je uloga predsjedavajućeg na Znanstvenoj konferenciji.
+
+Vaše korisničko ime je {{ user.korisnickoIme }},
+
+Vaša lozinka je {{ lozinka }},
+
+Molimo Vas da potvrdite svoj korisnički račun klikom na poveznicu: 
+
+{{protocol}}://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Srdačan pozdrav,
+Pametna Ekipa
+{% endautoescape %}

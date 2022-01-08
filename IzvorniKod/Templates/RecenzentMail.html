@@ -3,7 +3,11 @@ Poštovani,
 
 Primljena je Vaša prijava za sudjelovanje na konferenciji kao recenzent. Vaša prijava je: {%if user.odobrenBool == 1%}Prihvaćena {%else%}Odbijena {%endif%}
 
-{%if user.odobrenBool == 1%}Potvrdite svoj račun na: {{protocol}}://{{ domain }}{% url 'activate' uidb64=uid token=token %} te se prijavite lozinkom: {{lozinka}}{%endif%}
+{%if user.odobrenBool == 1%}Potvrdite svoj račun na: {{protocol}}://{{ domain }}{% url 'activate' uidb64=uid token=token %} 
+
+Vaše korisničko ime: {{ user.korisnickoIme }}
+
+Vaša lozinka: {{ lozinka }} {%endif%}
 
 Hvala Vam na prijavi i sretno.
 
