@@ -74,7 +74,7 @@
               </thead>
               <tbody>
                 {% for rad in Radovi %}
-                {%if rad.recenziranBool == 1 and rad.revizijaBool == 0%}
+                {%if rad.recenziranBool == 1 and rad.revizijaBool == 0 and javniBool%}
                   <tr class="text-center">
                     <th scope="row">{{rad.sifRad}}</th>
                     <td><a href="radovi/{{rad.sifRad}}"></a>{{rad.naslov}}</td>
