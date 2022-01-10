@@ -36,7 +36,7 @@
             <hr>
           </div>
 
-          <form action= "/pregled/radovi/{{rad.sifRad}}" method="post" id='updateInfo'>
+          <form action= "/pregled/radovi/{{rad.sifRad}}" method="post" id='updateInfo' enctype="multipart/form-data">
           
             <div class="container">
               {% csrf_token %}
@@ -67,10 +67,8 @@
                   </div>
                   <label for="" class="form-label fw-bold">Promjeni pdf.</label>
                   <div class="btn-group">
-                    <input class="form-control file1" type="file" name="newPdf"
-                      accept="application/pdf">
-                    <button type="submit" id="file1" class=" btn btn-outline-primary"
-                      name='newPdf' style="grid-column: 2;">Predaj</button>
+                    <input class="form-control file1" type="file" name="newPdf" accept="application/pdf">
+                    <button type="submit" id="file1" class=" btn btn-outline-primary" name='da' style="grid-column: 2;">Predaj</button>
                   </div>
 
 

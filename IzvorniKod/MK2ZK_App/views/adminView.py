@@ -660,9 +660,11 @@ def uredirad(request, sifrada):
         if request.method == "POST":
             title=request.POST["title"]
             rad.naslov=title
-            pdf=request.FILES["newPdf"]
-            if pdf:
+            try:
+                pdf=request.FILES["newPdf"]
                 rad.pdf=pdf
+            except:
+                pass
             rad.save()
             autorRadQuery = models.AutorRad.objects.filter(Rad = rad.sifRad)
             for autorRad in autorRadQuery:
