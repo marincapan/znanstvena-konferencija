@@ -434,7 +434,7 @@
 			\indent Zbog lakše organizacije, razredi su logički podijeljeni po pravu pristupa metodama određenih aktora. Iz naziva i tipova atributa u razredima može se zaključiti vrsta ovisnosti među različitim razredima.
 			\newline
 			\newline
-			\indent Na slici 4.5 prikazana je skica dijagrama razreda Views, koji će kasnije biti razrađen u detalje te će prikazivati stvarne, implementirane metode.
+			\indent Na slici 4.5 prikazan je dijagram razreda Views, u kojemu su vidljive sve implementirane metode. Postoji velik broj funkcionalnosti koje dijele, primjerice, i administrator i predsjedavajući konferencije (Poput slanja obavijesti, pregleda korisnika i radova i sl.) te su takve metode navedene samo u onom razredu (View) u kojemu su implementirane radi izbjegavanja pretjeranog ponavljanja. Primjerice, metoda CovidStats, koja omogućava praćenje aktualne situacije s pandemijom, navedena se samo u razredu AdminView, iako i Predsjedavajući konferencije (PredsjedavajuciView) ima pristup tim podacima te je u stvarnosti koristimo kod oba korisnika istu metodu.
 
 				\begin{figure}[H]
 					\includegraphics[width= 15 cm, keepaspectratio]{dijagrami/Modeli_UML.png} 
