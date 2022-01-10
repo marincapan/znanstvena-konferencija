@@ -653,12 +653,25 @@ def uredipodatke(request, korisnickoime):
 
 def uredirad(request, sifrada):
     context = {}
-    rad = models.Rad.objects.filter(sifRad = sifrada).first()
+    rad = models.Rad.objects.get(sifRad = sifrada)
 
     if rad:
 
         if request.method == "POST":
-            pass
+            title=request.POST["title"]
+            rad.naslov=title
+            pdf=request.FILES["newPdf"]
+            if pdf:
+                rad.pdf=pdf
+            rad.save()
+            autorRadQuery = models.AutorRad.objects.filter(Rad = rad.sifRad)
+            for autorRad in autorRadQuery:
+                promjenaAutora=models.Autor.objects.get(sifAutor=autorRad.Autor.sifAutor)
+                print(request.POST["newname"+str(autorRad.Autor.sifAutor)])
+                promjenaAutora.ime = request.POST["newname"+str(autorRad.Autor.sifAutor)]
+                promjenaAutora.prezime = request.POST["newsur"+str(autorRad.Autor.sifAutor)]
+                promjenaAutora.save()
+            return redirect('/pregled/radovi/'+sifrada)
 
         if "LoggedInUserId" in request.session:
             User = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])

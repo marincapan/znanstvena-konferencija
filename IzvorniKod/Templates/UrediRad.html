@@ -65,6 +65,13 @@
                     <label for="" class="form-label fw-bold">Je li rad recenziran?</label>
                     <div>{% if rad.recenziranBool %} Da {%else%} Ne {%endif%} </div>
                   </div>
+                  <label for="" class="form-label fw-bold">Promjeni pdf.</label>
+                  <div class="btn-group">
+                    <input class="form-control file1" type="file" name="newPdf"
+                      accept="application/pdf">
+                    <button type="submit" id="file1" class=" btn btn-outline-primary"
+                      name='newPdf' style="grid-column: 2;">Predaj</button>
+                  </div>
 
 
                 </div>
@@ -116,14 +123,14 @@
                     <div class="col-sm">
                         <div class="mb-3" id="">
                             <label for="" class="form-label fw-bold">Ime autora</label>
-                            <input type="text" class="form-control input-lg" id="" name="" value="{{autor.ime}}" disabled>
+                            <input type="text" class="form-control input-lg" id="" name="newname{{autor.sifAutor}}" value="{{autor.ime}}">
                           </div>
                     </div>
     
                     <div class="col-sm">
                         <div class="mb-3" id="">
                             <label for="" class="form-label fw-bold">Prezime autora</label>
-                            <input type="text" class="form-control input-lg" id="" name="" value="{{autor.prezime}}" disabled >
+                            <input type="text" class="form-control input-lg" id="" name="newsur{{autor.sifAutor}}" value="{{autor.prezime}}">
                         </div>
                     </div>
                 </div>
