@@ -4884,7 +4884,9 @@ textarea.form-control-lg {
 }
 
 .alert {
-  position: relative;
+  top: 0;
+  position: sticky;
+  z-index: 10;
   padding: 1rem 1rem;
   margin-bottom: 1rem;
   border: 1px solid transparent;

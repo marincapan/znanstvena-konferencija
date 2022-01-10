@@ -386,7 +386,14 @@ button.acc-btn {
 
 /* Fix the circle for containers on the right side */
 .timeline-right::after {
-  left: -16px;
+  left: -12px;
+  top: 20px;
+}
+
+/* Fix the circle for containers on the left side */
+.timeline-left::after {
+  right: -13px;
+  top: 19px;
 }
 
 /* The actual content */
@@ -398,7 +405,7 @@ button.acc-btn {
  }
 
 /* Media queries - Responsive timeline on screens less than 600px wide */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 992px) {
 /* Place the timelime to the left */
   .timeline::after {
     left: 31px;
@@ -421,7 +428,8 @@ button.acc-btn {
 
 /* Make sure all circles are at the same spot */
   .timeline-left::after, .timeline-right::after {
-    left: 15px;
+    left: 19px;
+    top: 20px;
   }
 
 /* Make all right containers behave like the left ones */
@@ -453,3 +461,127 @@ button.acc-btn {
 .btn-container {
   padding: 1rem;
 }
+
+.res-circle {
+  width: 20%;
+  border-radius: 50%;
+  line-height: 0;
+  position: relative;
+  color: white;
+}
+
+.res-circle::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.circle-txt {
+  position: absolute;
+  bottom: 50%;
+  width: 100%;
+  text-align: center;
+  font-weight: bold; 
+  font-size: x-large;
+}
+
+@media (max-width: 767.98px){
+  .circle-txt{
+    font-size: medium;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991.98px){
+  .circle-txt{
+    font-size: x-large;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199.98px){
+  .circle-txt{
+    font-size: medium;
+  }
+}
+
+.success {
+  background-color: rgb(74, 138, 74);
+  color: white;
+}
+
+.warning {
+  background-color: rgb(223, 223, 109);
+  color: white;
+}
+
+.error {
+  background-color: rgb(170, 46, 46);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: white;
+}
+
+.info {
+  background-color: #1c3a9c;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+/* transformacije slika za ekrane određene širine */
+
+.myimage {
+  width: 100vw;
+}
+
+@media screen and (min-width: 1161px) and (max-width: 1460px) {
+  .myimage {
+    width: calc(100vw * 1.25);
+  }
+}
+
+@media screen and (min-width: 1001px) and (max-width: 1160.99px) {
+  .myimage {
+    width: calc(100vw * 1.25 * 1.25);
+  }
+}
+
+@media screen and (min-width: 820px) and (max-width: 1000.99px) {
+  .myimage {
+    width: calc(100vw * 2.5);
+  }
+}
+
+@media screen and (min-width: 658px) and (max-width: 819.99px) {
+  .myimage {
+    width: calc(100vw * 2.5 * 1.25);
+  }
+}
+
+@media screen and (min-width: 540px) and (max-width: 657.99px) {
+  .myimage {
+    width: calc(100vw * 2.5 * 1.25 * 1.25);
+  }
+}
+
+@media screen and (max-width: 539.99px) {
+  .myimage {
+    width: calc(100vw * 5);
+  }
+}
+
+
+/* transformacije slika za ekrane određene širine */

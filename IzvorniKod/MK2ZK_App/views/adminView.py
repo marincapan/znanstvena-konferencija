@@ -15,6 +15,14 @@ from IzvorniKod.MK2ZK_App import models
 from django.db import IntegrityError 
 from django.core import serializers
 from django.utils import (dateformat, formats)
+from IzvorniKod.MK2ZK_App.tokens import account_activation_token
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from IzvorniKod.MK2ZK_App.tokens import account_activation_token
+from django.core.mail import EmailMessage
+from django.contrib.auth.password_validation import *
+import hashlib
 import zipfile
 import os
 import requests
@@ -46,7 +54,7 @@ def sloziobrazac(request):
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/') #redirect na homepage
 
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
@@ -90,6 +98,7 @@ def adminsucelje(request):
 
     #brojac predanih radova
     brojPredanihRadova = 0
+    dobriradovi = 0
 
     #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea
     for rad in radovi:
@@ -97,16 +106,18 @@ def adminsucelje(request):
         rad.radKorisnik_prezime = korisnici.get(id=rad.radKorisnik_id).prezime
         if(rad.pdf != ""):
             brojPredanihRadova += 1
+        if( rad.recenziranBool == 1 and rad.revizijaBool == 0):
+            dobriradovi +=1 
     context={}
     context["javniBool"] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
     context["brojPredanihRadova"] = brojPredanihRadova
+    context["brojDobrihRadova"] = dobriradovi
 
     fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
     fetchedClanci = models.Clanak.objects.filter().all()
 
-    info = models.Info.objects.get(id = 1)
+    info = models.Konferencija.objects.get(sifKonferencija = 1).opisKonferencije
     context['info'] = info
-    print("MOJ INFO:",info)
 
     for polje in fetchedPolja:
         print(polje.imePolja)
@@ -119,12 +130,31 @@ def adminsucelje(request):
 
             konferencija.nazivKonferencije = request.POST["nazivKonferencije"]
             konferencija.opisKonferencije = request.POST["opisKonferencije"]
-            konferencija.datumKonferencije = datetime.strptime(request.POST["datumKonferencije"], "%Y-%m-%d").date()
-            konferencija.rokPocPrijava = datetime.strptime(request.POST["pocetakPrijavaKonferencije"], "%Y-%m-%d").date()
-            konferencija.rokPrijave = datetime.strptime(request.POST["rokPrijava"], "%Y-%m-%d").date()
-            konferencija.rokPocRecenzija = datetime.strptime(request.POST["pocetakRecenzija"], "%Y-%m-%d").date()
-            konferencija.rokRecenzenti = datetime.strptime(request.POST["rokRecenzija"], "%Y-%m-%d").date()
-            konferencija.rokAdmin = datetime.strptime(request.POST["rokIzmjena"], "%Y-%m-%d").date()
+            datumKonferencije = datetime.strptime(request.POST["datumKonferencije"], "%Y-%m-%d").date()
+            pocetakPrijavaKonferencije = datetime.strptime(request.POST["pocetakPrijavaKonferencije"], "%Y-%m-%d").date()
+            rokPrijava = datetime.strptime(request.POST["rokPrijava"], "%Y-%m-%d").date()
+            pocetakRecenzija = datetime.strptime(request.POST["pocetakRecenzija"], "%Y-%m-%d").date()
+            rokRecenzija = datetime.strptime(request.POST["rokRecenzija"], "%Y-%m-%d").date()
+
+            if pocetakPrijavaKonferencije>rokPrijava:
+                messages.error(request,"Početak prijava/Rok za promjenu obrasca ne smije biti poslije roka za prijavu i predaju radova")
+                return redirect('/adminsucelje#podatciOKonferenciji')
+            if pocetakRecenzija>rokRecenzija:
+                messages.error(request,"Početak recenziranja ne smije biti poslije roka za recenziranje")
+                return redirect('/adminsucelje#podatciOKonferenciji')
+            if pocetakPrijavaKonferencije>pocetakRecenzija:
+                messages.error(request,"Početak prijava/Rok za promjenu obrasca ne smije biti poslije početaka recenziranja")
+                return redirect('/adminsucelje#podatciOKonferenciji')
+            if rokRecenzija>datumKonferencije:
+                messages.error(request,"Datum konferencije ne smije biti prije kraja recenziranja")
+                return redirect('/adminsucelje#podatciOKonferenciji')    
+
+            konferencija.datumKonferencije = datumKonferencije
+            konferencija.rokPocPrijava = pocetakPrijavaKonferencije
+            konferencija.rokPrijave = rokPrijava
+            konferencija.rokPocRecenzija = pocetakRecenzija
+            konferencija.rokRecenzenti = rokRecenzija
+            print
             konferencija.save()
 
             messages.success(request, "Podaci o konferenciji su uspješno ažurirani!")
@@ -152,10 +182,52 @@ def adminsucelje(request):
             predsjedavajuci.korisnickoIme = username
             predsjedavajuci.ime = ime
             predsjedavajuci.prezime = prezime
-            predsjedavajuci.email = email
+            trenutniemail = predsjedavajuci.email
+            if (trenutniemail != email): #promjena maila, šalji nove podatke na mail, inače samo mijenja ime/prezime/korisnickoime sadašnjeg predsjedavajuceg
+
+                predsjedavajuci.email = email
+
+                #Generiraj password za korisnika
+                randPassword=get_random_string(length=16)
+                salt=os.urandom(32)
+                key=hashlib.pbkdf2_hmac(
+                'sha256',
+                randPassword.encode('utf-8'),
+                salt,
+                100000
+                )
+                predsjedavajuci.salt = salt
+                predsjedavajuci.lozinka = key
+
+                try:
+                    predsjedavajuci.potvrdenBool = False #novi predsjedavajuci
+                    predsjedavajuci.save()
+                 #email
+                    poruka = render_to_string('PredsjedavajuciEmail.html', {
+                'user': predsjedavajuci,
+                'lozinka': randPassword,
+                'domain': '127.0.0.1:8000',
+                'uid':urlsafe_base64_encode(force_bytes(predsjedavajuci.id)),
+                'token':account_activation_token.make_token(predsjedavajuci),
+                'protocol':'http'
+                    })
+                    to_email = email
+                    email = EmailMessage(
+                '[ZK] Podatci za prijavu u sustav', poruka, 'Pametna ekipa', to=[to_email]
+                )
+                    email.send()
+                
+                    messages.success(request, "Podaci o predsjedavajućem su uspješno promijenjeni. Predsjedavajućem su na adresu e-pošte poslani podaci za prijavu.")
+                    return redirect('/adminsucelje')
+                except:
+                    messages.error(request,"Dogodila se pogreška. Pokušajte ponovno.")
+                    return redirect('/adminsucelje')
+                    
+
+
 
             predsjedavajuci.save()
-            messages.success(request, "Podaci o predsjedavajućem uspješno promijenjeni")
+            messages.success(request, "Podaci o predsjedavajućem su uspješno promijenjeni.")
             return redirect('/adminsucelje#upravljanjePredsjedavajućem')
             
         if "makePublic" in request.POST:
@@ -167,6 +239,7 @@ def adminsucelje(request):
                 konferencija.javniRadoviBool=True
                 konferencija.save()
             print(konferencija.javniRadoviBool)
+            messages.success(request, "Status javnih radova je uspješno promijenjen.")
 
         if 'AddNewField' in request.POST:
             print(request.POST)
@@ -220,8 +293,8 @@ def adminsucelje(request):
             AdminSurname = request.POST['adminprezime']
             AdminUsername = request.POST['adminusername']
             AdminEmail = request.POST['adminemail']
-            idKorisnika = increment_KorisnikID()
-            AdminPassword = request.POST['adminpassword']
+            #idKorisnika = increment_KorisnikID()
+            #AdminPassword = request.POST['adminpassword']
             
             
             #Provjeri jesu li sva polja u redu prije spremanja u bazu
@@ -236,20 +309,43 @@ def adminsucelje(request):
                 return redirect('adminsucelje')
 
             #Generiraj password za korisnika
-            #randPassword=get_random_string(length=16)
-            #request.session['randPassword'] = randPassword
-
-            
+            randPassword=get_random_string(length=16)
+            salt=os.urandom(32)
+            key=hashlib.pbkdf2_hmac(
+                'sha256',
+                randPassword.encode('utf-8'),
+                salt,
+                100000
+            )
 
             #Probaj spremiti novog korisnika
             try:
-                NoviKorisnik = models.Korisnik(korisnickoIme=AdminUsername,lozinka=AdminPassword,ime=AdminName,prezime=AdminSurname,email=AdminEmail,vrstaKorisnik=models.Uloga.objects.get(id=1), korisnikUstanova=models.Ustanova.objects.get(sifUstanova=1), korisnikSekcija=models.Sekcija.objects.get(sifSekcija=1))
+                NoviKorisnik = models.Korisnik(korisnickoIme=AdminUsername,lozinka=key, salt = salt, ime=AdminName,prezime=AdminSurname,email=AdminEmail,vrstaKorisnik=models.Uloga.objects.get(id=1))
                 NoviKorisnik.save()
-                messages.success(request, "Novi administrator uspjesno dodan u bazu")
-                return redirect('/adminsucelje#upravljanjeAdministratorima')
             except IntegrityError:
-                messages.error(request, "Korisnicko ime ili email je vec u uporabi")
+                messages.error(request, "Korisničko ime ili email je vec u uporabi.")
                 return redirect('/adminsucelje#upravljanjeAdministratorima')
+
+            
+            #email
+            poruka = render_to_string('AdministratorEmail.html', {
+                'user': NoviKorisnik,
+                'lozinka': randPassword,
+                'domain': '127.0.0.1:8000',
+                'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
+                'token':account_activation_token.make_token(NoviKorisnik),
+                'protocol':'http'
+                    })
+            to_email = AdminEmail
+            email = EmailMessage(
+            '[ZK] Tvoj administratorski račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
+            )
+            email.send()
+            
+            messages.success(request, "Novi administrator je uspješno dodan.\n Na adresu pošte poslan je aktivacijski link i podaci za prijavu.")
+            return redirect('/adminsucelje')
+
+            
 
         ### Dodavanje novog članka
         if "AddArticle" in request.POST:
@@ -263,7 +359,7 @@ def adminsucelje(request):
             newArticle = models.Clanak(naslov=ArticleTitle, tekst=ArticleText, autor=models.Korisnik.objects.get(id = request.session['LoggedInUserId']))
             newArticle.save()
             context['Clanci'] = fetchedClanci
-            messages.success(request, "Uspješno dodan novi članak")
+            messages.success(request, "Uspješno je dodan novi članak.")
             return redirect('/adminsucelje#uređivanjeNaslovne')
 
         ## Odabir aktivnih članaka
@@ -277,25 +373,6 @@ def adminsucelje(request):
                 clanak.active = checked
                 clanak.save()
             return redirect('/adminsucelje#prikazaniČlanci')
-
-        # ## Uređivanje info o konferenciji
-        # if "EditInfo" in request.POST:
-        #     InfoTitle = request.POST['infoTitle']
-        #     InfoText = request.POST['infoText']
-
-        #     infoObject = models.Info.objects.get(id = 1)
-        #     infoObject.naslov = InfoTitle
-        #     infoObject.tekst = InfoText
-        #     infoObject.autor = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])
-            
-        #     #HARDKODIRANO sifKonferencija = 1 jer se ne sprema kontekst konferencije u session (ako se ne varam)
-            
-        #     infoObject.save()
-        #     context['info'] = info
-        #     messages.success(request, "Uspješno ažurirane informacije o konferenciji")
-        #     return redirect('/adminsucelje#uređivanjeInfo')
-
-            
                 
         context['DodatnaPolja']=fetchedPolja
         context['Clanci'] = fetchedClanci
@@ -322,7 +399,7 @@ def adminsucelje(request):
         if request.session['LoggedInUserRole'] == "Admin":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
             Predsjedavajuci=models.Korisnik.objects.filter(id=4).first()
-            Administratori = models.Korisnik.objects.filter(vrstaKorisnik_id = 1) #znamo da je bar 1
+            Administratori = models.Korisnik.objects.filter(vrstaKorisnik_id = 1, potvrdenBool = True) #znamo da je bar 1
             context["AdministratoriPopis"] = Administratori
             
             print(context)
@@ -334,7 +411,7 @@ def adminsucelje(request):
                 context['uloga']=Predsjedavajuci.vrstaKorisnik.naziv
                 context['sekcija']=Predsjedavajuci.korisnikSekcija.naziv
         else: #nije admin
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/') #redirect na homepage
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -360,9 +437,9 @@ def adminsucelje(request):
         context['datum'] = dateformat.format(konferencija.datumKonferencije, formats.get_format('Y-m-d'))
         context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('Y-m-d'))
         context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('Y-m-d'))
-        context['rokAdmin']=dateformat.format(konferencija.rokAdmin, formats.get_format('Y-m-d'))
         context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('Y-m-d'))
         context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('Y-m-d'))
+        context["prosoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPocPrijava
 
     context["Radovi"] = radovi
     context["brojPredanihRadova"] = brojPredanihRadova
@@ -383,10 +460,10 @@ def covidstats(request):
         return redirect('signin')
     
     if "LoggedInUserRole" in request.session:
-        if request.session['LoggedInUserRole'] == "Admin":
+        if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci" :
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/') #redirect na homepage
 
             
@@ -419,7 +496,9 @@ def covidstats(request):
                 drzavaENG=drzaveEngList[indexHRV]
                 if drzavaENG in date:
                     if date[0]!="": #Kraj
-                        konfDrzave[str(ustanova.drzava)]=[date[0],date[4]] # Rijecnik s drzavom (Na engleskom zasad) i vrijednostima koje zelim prenijeti (zasad datum dohavacanja podataka i novih slucajeva)
+                        datum =  datetime.strptime(date[0], '%Y-%m-%d').date()
+                        konfDrzave[str(ustanova.drzava)]=[dateformat.format(datum, formats.get_format('d.m.Y.')),date[4]]
+                        print(date) # Rijecnik s drzavom (Na engleskom zasad) i vrijednostima koje zelim prenijeti (zasad datum dohavacanja podataka i novih slucajeva)
     context["konfDrzave"]=konfDrzave
     print(context)    
     return render(request, 'CovidStats.html', context)
@@ -499,7 +578,7 @@ def uredipodatke(request, korisnickoime):
                 korisnik.korisnikUstanova = novaUstanova
 
             korisnik.save()
-            messages.success(request, "Podaci uspješno promijenjeni")
+            messages.success(request, "Podaci su uspješno promijenjeni.")
             uloga = korisnik.vrstaKorisnik.naziv
             if (uloga == "Sudionik"):
                 url = "/pregled/sudionici/"+username
@@ -577,7 +656,7 @@ def uredipodatke(request, korisnickoime):
                     context['sekcije'] = sekcije
             
             else:
-                messages.info(request, "Nemate ovlasti za pristup toj stranici.")
+                messages.info(request, "Nemate ovlasti za pristup ovoj stranici!")
                 return redirect('home')
 
             
@@ -591,3 +670,66 @@ def uredipodatke(request, korisnickoime):
         return redirect('pregled')
     
     return render(request, 'UrediPodatke.html',context)
+
+def uredirad(request, sifrada):
+    context = {}
+    rad = models.Rad.objects.get(sifRad = sifrada)
+
+    if rad:
+
+        if request.method == "POST":
+            title=request.POST["title"]
+            rad.naslov=title
+            try:
+                pdf=request.FILES["newPdf"]
+                rad.pdf=pdf
+            except:
+                pass
+            rad.save()
+            autorRadQuery = models.AutorRad.objects.filter(Rad = rad.sifRad)
+            for autorRad in autorRadQuery:
+                promjenaAutora=models.Autor.objects.get(sifAutor=autorRad.Autor.sifAutor)
+                print(request.POST["newname"+str(autorRad.Autor.sifAutor)])
+                promjenaAutora.ime = request.POST["newname"+str(autorRad.Autor.sifAutor)]
+                promjenaAutora.prezime = request.POST["newsur"+str(autorRad.Autor.sifAutor)]
+                promjenaAutora.save()
+
+            messages.success(request, "Podaci o radu su uspješno promijenjeni.")
+            return redirect('/pregled/radovi/'+sifrada)
+
+        if "LoggedInUserId" in request.session:
+            User = models.Korisnik.objects.get(id = request.session['LoggedInUserId'])
+            User.lastActive = datetime.now()
+            User.save()
+
+            context={}
+            context["LoggedInUser"] = User.id
+            uloga = User.vrstaKorisnik.naziv
+
+            if (uloga == 'Admin' or uloga == 'Predsjedavajuci'): #samo admin i preds imaju pristup uredjivanju
+                context['LoggedInUser']=request.session['LoggedInUserId']
+                context['LoggedInUserRole']=request.session['LoggedInUserRole']
+                context["rad"] = rad
+
+                context["recenzije"] = models.Recenzija.objects.filter(rad = rad.sifRad)
+
+                autori = []
+                autorRadQuery = models.AutorRad.objects.filter(Rad = rad.sifRad)
+                for autorRad in autorRadQuery:
+                    autori.append(autorRad.Autor)
+                context["autori"] = autori
+
+
+            else: #samo admin i preds imaju pristup uredjivanju
+                messages.info(request, "Nemate ovlasti za pristup ovoj stranici!")
+                return redirect('home')
+
+        else: #potreban login za pristup
+            messages.info(request, "Trebate biti prijavljeni kako biste pristupili ovoj stranici.")
+            return redirect("signin")
+            
+    else:
+        messages.info(request, "Taj rad ne postoji u sustavu.")
+        return redirect("pregled")
+
+    return render(request, "UrediRad.html", context)

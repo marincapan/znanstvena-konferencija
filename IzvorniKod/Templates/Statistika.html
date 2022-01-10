@@ -13,8 +13,6 @@
   <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static '/css/headers.css' %}" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <!--nas css-->
-  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
 
   <!--tablice-->
   <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
@@ -24,44 +22,90 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
 
   <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+  
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
 
 </head>
 
-<body>
+<body style="min-width: 576px;">
     <!--HEADER-->
     {% include "./Header.html" %}
     <!--HEADER-->
 
     <div class="gradient-custom-3 " style="min-height: 100vh;">
         <div class="container pt-5 pb-5">
+
+          <!-- MESSAGES -->
+          {% include "./Messages.html" %}
+          <!-- MESSAGES -->
+
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
                 
                 <div class="text-uppercase text-center mb-5">
                     <div style="padding-bottom: 9px;" id="titleDiv">
-                      <div>
-                        <h2 style="display: inline;" id="myTitle">Upravljačko sučelje</h2>
+                      <div class="mb-2">
+                        <h2 style="display: inline;" id="myTitle">Statistika prijava</h2>
                       </div>
+                      {% if LoggedInUserRole == 'Admin'%}
+                      <a href="/adminsucelje" class="btn btn-outline-secondary">Vrati se na admin sučelje</a>
+                      {%else%}
+                      <a href="/predsjedavajuci" class="btn btn-outline-secondary">Vrati se na upravljačko sučelje</a>
+                      {%endif%}
                     </div>
                   <hr>
                 </div>
-
+                
                 <div class="container" >
-                    <div class="text-uppercase text-left mb-3">
-                      <div style="padding-bottom: 3px;" id="titleDiv">
-                        <div>
-                          <h4 style="display: inline;" id="myTitle">Statistika prijavljenih</h4>
-                        </div>
-                      </div>
-                      <hr>
-                    </div>
+                    <div class="container mt-100 mt-60 mb-5">
+                      {% if LoggedInUserRole == 'Admin'%}
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="section-title">
+                                    <h3 class="title" title="Broj trenutno aktivnih korisnika: {{brojAktivni}}">Aktivni korisnici</h3>
+                                    <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti trenutno prijavljene korisnike.</p>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                      
                     
-                    <h3>Aktivni Korisnici ({{brojAktivni}})</h3>
-                    <ul>
-                      {% for korisnik in aktivniKorisnici %} 
-                      <li>{{korisnik.korisnickoIme}}</li>
-                      {% endfor %}
-                    </ul>
+                        <div class="row">
+                            {%for korisnik in aktivniKorisnici %}
+                            <div class="col-lg-3 col-6 mt-4 pt-2">
+                                <div class="mt-4 pt-2">
+                                    <div class="team position-relative d-block text-center">
+                                        <div class="position-relative d-block">
+                                          {%if korisnik.vrstaKorisnik.naziv == "Admin" %}
+                                          <div class="res-circle content d-inline-block" style="background-color: #1c3a9c;">
+                                            <div class="circle-txt">A</div>
+                                          </div>
+                                          {%elif korisnik.vrstaKorisnik.naziv == "Recenzent" %}
+                                          <div class="res-circle content d-inline-block" style="background-color: #c1666b;">
+                                            <div class="circle-txt">R</div>
+                                          </div>
+                                          {%elif korisnik.vrstaKorisnik.naziv == "Sudionik" %} 
+                                          <div class="res-circle content d-inline-block" style="background-color: #8fb5cc;">
+                                            <div class="circle-txt">S</div>
+                                          </div>
+                                          {%else%}
+                                          <div class="res-circle content d-inline-block" style="background-color: yellowgreen;">
+                                            <div class="circle-txt">P</div>
+                                          </div>
+                                          {%endif%}
+
+                                        </div>
+                                        <div class="content py-2 bg-white border-bottom rounded d-inline-block" style="padding: 0.5rem;">
+                                            <h5 class="title mb-0">{{korisnik.korisnickoIme}}</h5>
+                                            <small class="text-muted">{{korisnik.vrstaKorisnik.naziv}}</small>
+                                        </div>
+                                        <!--end icon-->
+                                    </div>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div><!--end row-->
+                    </div>
 
                     <h3>Sudionici ({{sudionici_svi}})</h3>
                     <ul>
@@ -73,9 +117,6 @@
                     <ul>
                       <li>Registrirani: {{recenzenti_neaktivni}}</li>
                       <li>Potvrđeni: {{recenzenti_aktivni}}</li>
-                      <li>Čekaju odobrenje: {{recenzenti_wait}}</li>
-                      <li>Odobreni: {{recenzenti_potvrdeni}}</li>
-                      <li>Odbijeni: {{recenzenti_odbijeni}}</li>
                     </ul>
 
                     <h3>Radovi ({{radovi}})</h3>
@@ -108,22 +149,116 @@
                       {% endfor %}
                     </ul>
                     
-                    <h3>Države ({{broj_drzava}})</h3>
-                    <ul>
-                      {% for k,v in sudionici_po_drzavama.items %} 
-                      <li>{{k}}: {{v}}</li>
-                      {% endfor %}
-                    </ul>
+                    <div class="container">
+                      <div class="row row-cols-2">
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title" title="Ukupan broj sudionika: {{sudionici_svi}}">Sudionici</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj sudionika.</p>
+                          </div>
+                    
+                          <div class="container mb-2">
+                            <canvas id="myChartSudionici" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                        <!--end col-->
                     
                     
-
-                      <br><hr><br>
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title" title="Ukupan broj recenzenata: {{recenzenti_svi}}">Recenzenti</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj recenzenata te njihove trenutne
+                              statuse.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartRecenzenti" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                        <!--end col-->
+                      </div>
+                      <!--end row-->
+                    
+                      <div class="row row-cols-2">
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title" title="Ukupan broj radova: {{radovi}}">Radovi</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj radova te njihove statuse, kao i broj
+                              autora.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartRadovi" style="width:100%;"></canvas>
+                          </div>
+                          <!--end col-->
+                        </div>
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title" title="Broj različitih sekcija: {{sve_sekcije}}">Sekcije</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj radova po sekcijama.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartSekcije" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                        <!--end col-->
+                      </div>
+                      <!--end row-->
+                    
+                      <div class="row row-cols-2">
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title" title="Broj različitih država: {{broj_drzava}}">Države</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj korisnika koji dolaze iz pojedinih
+                              država.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartDrzave" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                    
+                        <!--end col-->
+                    
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="section-title">
+                            <h3 class="title" title="Ukupan broj korisnika: {{korisnici}}">Korisnici</h3>
+                            <p class="text-muted para-desc mx-auto mb-0">Ovdje možete vidjeti broj korisnika po ulogama.</p>
+                          </div>
+                          <div class="container mb-2">
+                            <canvas id="myChartKorisnici" style="width:100%;"></canvas>
+                          </div>
+                        </div>
+                        <!--end col-->
+                      </div>
+                      <!--end row-->
+                    
+                      <div class="row justify-content-center">
+                        <div class="col-12 col-lg-6 text-center">
+                          <div class="content py-2 bg-white border-bottom rounded d-inline-block" style="padding: 0.5rem;">
+                            <h3 class="title mb-2" title="Broj korisnika koji su prijavljeni u neku ustanovu: {{sve_ustanove}}">Ustanove</h3>
+                            <p class="mb-0">Ukupan broj različitih ustanova: </p>
+                            <h4><strong>{{ustanove}}</strong></h4>
+                          </div>
+                        </div>
+                        <!--end col-->
+                      </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
     </div>
+
+    <!--FOOTER-->
+    {% include "./Footer.html" %}
+    <!--FOOTER-->
 </body>
+ <!--za graf-->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+ <!--za graf-->
+
+ <!--nas js-->
+ <script src="{% static '/js/hamburgerActions.js' %}"></script>
+ <!--nas js-->
 
 <!--bitno za datatables-->
 <script>
@@ -159,6 +294,211 @@
       });
     } );
   </script>
+<!--bitno za datatables-->
 
+<!--za grafove-->
+<script>
+
+  var sekcije = {{radovi_po_sekcijama|safe}};
+  var xValues = [];
+  var yValues = [];
+  var brSekcija = {{sve_sekcije}};
+
+  for (key in sekcije) {
+    xValues.push(key);
+    yValues.push(sekcije[key]);
+  }
+
+  //za razlicite boje stupaca
+  var barColors = [];
+  for(var j = 0; j < brSekcija; j++) {
+    var letters = "0123456789ABCDEF";
+    var color = '#';
+    for (var i = 0; i < 6; i++)
+       color += letters[(Math.floor(Math.random() * 16))];
+    barColors.push(color);
+  }
+  //za razlicite boje stupaca
+
+  new Chart("myChartSekcije", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+              precision: 0,
+              beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+
+
+  var korisnici = {{korisnici_po_ulogama|safe}};
+  xValues = [];
+  yValues = [];
+
+  for (key in korisnici) {
+    xValues.push(key);
+    yValues.push(korisnici[key]);
+  }
+
+  new Chart("myChartKorisnici", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: ["darkblue", "yellowgreen","#c1666b", "#8fb5cc"],
+        data: yValues
+      }]
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+              precision: 0,
+              beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+
+  new Chart("myChartRadovi", {
+    type: "bar",
+    data: {
+      labels: ["Prijavljeni", "Predani","Recenzirani","Broj različitih autora"],
+      datasets: [{
+        backgroundColor: ["darkblue", "yellowgreen","green", "lightblue"],
+        data: [{{prijavljeni_radovi}}, {{predani_radovi}}, {{recenzirani_radovi}}, {{autori}}]
+      }]
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+              precision: 0,
+              beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+
+  new Chart("myChartRecenzenti", {
+    type: "bar",
+    data: {
+      labels: ["Nepotvrđeni", "Potvrđeni","Čekaju odobrenje","Odobreni","Odbijeni"],
+      datasets: [{
+        backgroundColor: ["darkblue", "yellowgreen", "orange", "green", "darkred"],
+        data: [{{recenzenti_neaktivni}}, {{recenzenti_aktivni}}, {{recenzenti_wait}}, {{recenzenti_potvrdeni}}, {{recenzenti_odbijeni}}]
+      }]
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+              precision: 0,
+              beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+
+  new Chart("myChartSudionici", {
+    type: "bar",
+    data: {
+      labels: ["Registrirani", "Potvrđeni"],
+      datasets: [{
+        backgroundColor: ["darkblue", "lightblue"],
+        data: [{{sudionici_svi}}, {{sudionici_aktivni}}]
+      }]
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+              precision: 0,
+              beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+  var drzave = {{sudionici_po_drzavama | safe}};
+  xValues = [];
+  yValues = [];
+  var brDrzava = {{broj_drzava}};
+
+  for (var key in drzave) {
+    xValues.push(key);
+    yValues.push(drzave[key]);
+  }
+
+  //za razlicite boje stupaca
+  var barColors = [];
+  for(var j = 0; j < brDrzava; j++) {
+    var letters = "0123456789ABCDEF";
+    var color = '#';
+    for (var i = 0; i < 6; i++)
+       color += letters[(Math.floor(Math.random() * 16))];
+    barColors.push(color);
+  }
+  //za razlicite boje stupaca
+
+  new Chart("myChartDrzave", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+              precision: 0,
+              beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+</script>
+<!--za grafove-->
 
 </html>

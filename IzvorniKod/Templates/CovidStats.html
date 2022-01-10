@@ -1,71 +1,138 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
-            <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>COVID-19 statistika</title>
-            <meta name="description" content="">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="icon" href="{% static '/vectors/icon.svg' %}">
-            <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
-            <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
-            <link href="{% static '/css/headers.css' %}" rel="stylesheet">
-            <!--nas css-->
-            <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
-            <!--nas css-->
-            <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
-  </head>
 
-        
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>COVID-19 statistika</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{% static '/vectors/icon.svg' %}">
+  <link href="{% static '/css/bootstrap-grid.css' %}" rel="stylesheet">
+  <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static '/css/headers.css' %}" rel="stylesheet">
+  <!--nas css-->
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <!--nas css-->
+  <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+</head>
 
-  <body>
-          <!--HEADER-->
-          {% include "./Header.html" %}
-          <!--HEADER-->
-          
-          <div class="gradient-custom-3 " style="min-height: 100vh;">
-            <div class="container pt-5 pb-5">
-        
-              <div class="card" style="border-radius: 15px;">
-                <div class="card-body p-5">
-        
-        
-                  <div class="text-uppercase text-center mb-2">
-                    <div style="padding-bottom: 9px;">
-                      <div>
-                        <h2 style="display: inline;">COVID-19 statistika</h2>
-                      </div>
-                    </div>
-                    <hr>
-                  </div>
-        
-                  <div class="container">
-                    {% for key,value in konfDrzave.items%}
-                      <h2>{{key}} {{value.0}} {{value.1}}</h2>
-                      <!--Key je drzava,value je lista 
-                      indeks 0 - datum dohvata podatka i indeks 1 - broj novih covid slucajeva tog datuma. 
-                      Pogledaj adminView covidstats() za koje se jos informacije mogu slati.
-                      Indeksiranje radi kao naznaceno-->
-                    {%endfor%}
-                  </div>
-        
-        
-                </div>
+
+
+<body style="min-width:576px">
+  <!--HEADER-->
+  {% include "./Header.html" %}
+  <!--HEADER-->
+
+  <div class="gradient-custom-3 " style="min-height: 100vh;">
+    <div class="container pt-5 pb-5">
+
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-5">
+
+
+          <div class="text-uppercase text-center mb-2">
+            <div style="padding-bottom: 9px;">
+              <div class="mb-2">
+                <h2 style="display: inline;">COVID-19 statistika</h2>
               </div>
-        
-        
-          </div>
+              {% if LoggedInUserRole == 'Admin'%}
+              <a href="/adminsucelje" class="btn btn-outline-secondary">Vrati se na admin sučelje</a>
+              {%else%}
+              <a href="/predsjedavajuci" class="btn btn-outline-secondary">Vrati se na upravljačko sučelje</a>
+              {%endif%}
+            </div>
+            <hr>
           </div>
 
-          <!--FOOTER-->
-          {% include "./Footer.html" %}
-          <!--FOOTER-->
+          <p class="text-left text-muted mb-2">Ovdje možete vidjeti broj novozaraženih s COVID-19 u državama iz kojih
+            dolaze sudionici i recenzenti.</p>
 
-  </body>
-        
-  <!--nas js-->
-  <script src="{% static '/js/hamburgerActions.js' %}"></script>
-  <script src="{% static '/js/newPassword.js' %}"></script>
-  <!--nas js-->
+          <div class="container">
+
+            <div><b>Zadnje ažuriranje podataka: {%for value in konfDrzave.values%}{%if forloop.first%} {{value.0}}
+                {%endif%}{%endfor%}</b></div>
+            <br>
+
+            <canvas id="myChart" style="width:100%;"></canvas>
+
+          </div>
+
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!--FOOTER-->
+  {% include "./Footer.html" %}
+  <!--FOOTER-->
+
+</body>
+
+<!--za graf-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<!--za graf-->
+
+<!--nas js-->
+<script src="{% static '/js/hamburgerActions.js' %}"></script>
+<script src="{% static '/js/newPassword.js' %}"></script>
+<!--nas js-->
+
+<script>
+  var drzave = {{ konfDrzave | safe}};
+  var xValues = [];
+  var yValues = [];
+  var brojac = 0;
+
+  for (var key in drzave) {
+    xValues.push(key);
+    yValues.push(drzave[key][1]);
+    brojac++;
+  }
+
+  //za razlicite boje stupaca
+  var barColors = [];
+  for (var j = 0; j < brojac; j++) {
+    var letters = "0123456789ABCDEF";
+    var color = '#';
+    for (var i = 0; i < 6; i++)
+      color += letters[(Math.floor(Math.random() * 16))];
+    barColors.push(color);
+  }
+  //za razlicite boje stupaca
+
+  new Chart("myChart", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: false
+      },
+    scales: {
+        yAxes: [{
+            ticks: {
+              precision: 0,
+              beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+</script>
+
 </html>

@@ -4,6 +4,7 @@ import hashlib
 from io import StringIO, BytesIO
 from typing import DefaultDict
 from django.core.checks.messages import Error
+from django.core.mail import message
 from django.db.models.fields import DateTimeCheckMixin, NullBooleanField
 from django.db.models.query import EmptyQuerySet
 from django.http.response import FileResponse, HttpResponse
@@ -35,7 +36,7 @@ def pregled(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -62,7 +63,7 @@ def recenzenti(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -91,7 +92,7 @@ def sudionici(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
 
     sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
@@ -186,7 +187,7 @@ def obavijest(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
     
     if request.method=="POST":
@@ -202,8 +203,10 @@ def obavijest(request):
                         naslov, tekst, 'Pametna ekipa', to=[to_email]
                     )
                     email.send()
+                    messages.success(request, "Obavijest je uspješno poslana.")
             except:
-                continue
+                messages.error(request, "Došlo je do pogreške. Molimo pokušajte ponovno.")
+                break
         return redirect('obavijest')
     sekcije = models.Sekcija.objects.all()
     ustanove = models.Ustanova.objects.all()
@@ -230,7 +233,7 @@ def uprsucelje(request):
         if request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
 
     recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
@@ -297,15 +300,18 @@ def uprsucelje(request):
     for recenzent in neodobreni:
         recenzent.korisnikSekcija_naziv = sekcije.get(sifSekcija=recenzent.korisnikSekcija_id).naziv
         recenzent.korisnikUstanova_naziv = ustanove.get(sifUstanova=recenzent.korisnikUstanova_id).naziv
-
-
+    
+    '''
     context["Neodobreni"] = neodobreni
     context["recenzenti_broj_odobrenih"] = recenzenti.filter(odobrenBool=True).count()
     context["recenzenti_broj_neodobrenih"] = recenzenti.filter(odobrenBool=None).count()
     context["sudionici_broj_odobrenih"] = sudionici.filter(odobrenBool=True).count()
     context["sudionici_broj_neodobrenih"] = sudionici.filter(odobrenBool=False).count()
     context["radovi_broj_recenziranih"] = radovi.filter(recenziranBool=True).count()
-    context["radovi_broj_nerecenziranih"] = radovi.filter(recenziranBool=False).count()
+    context["radovi_broj_nerecenziranih"] = radovi.filter(recenziranBool=False).count()'''
+
+    
+    context["javniBool"] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
 
     return render(request, 'Predsjedavajuci.html', context)
 
@@ -321,14 +327,14 @@ def statistika(request):
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci":
             context["LoggedInUserRole"]=request.session['LoggedInUserRole']
         else: #nije admin/predsjedavajuci
-            messages.error(request,"Nemaš prava za ovu stranicu!")
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/')
     
     sudionici_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=4).count()
     sudionici_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,potvrdenBool=True).count()
     sudionici_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=4,potvrdenBool=False).count()
 
-    recenzenti_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=True).count()
+    recenzenti_svi = models.Korisnik.objects.filter(vrstaKorisnik_id=3).count()
     recenzenti_aktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=True).count()
     recenzenti_neaktivni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,potvrdenBool=False).count()
     recenzenti_potvrdeni = models.Korisnik.objects.filter(vrstaKorisnik_id=3,odobrenBool=True).count()
@@ -373,9 +379,13 @@ def statistika(request):
     
     context["Drzave"] = drzaveHrvList[1:]
 
-    sudionici_po_drzavama = {}
+    broj_drzava = len(drzaveHrvList[1:])
 
-    #Sta sam ti rekao da napravis
+    sudionici_po_drzavama = {}
+    for jedna_drzava in drzaveHrvList[1:]:
+        if models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count() > 0:
+            sudionici_po_drzavama[jedna_drzava] = models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count()    
+
     sviKorisnici=models.Korisnik.objects.all()
     for korisnik in sviKorisnici:
         if not korisnik.korisnikUstanova==None:
@@ -383,7 +393,6 @@ def statistika(request):
                 sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]=1
             else:
                 sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]+=1
-    #Whatever the fuck this is
     #for jedna_drzava in drzaveHrvList[1:]:
         #if models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count() > 0:
             #sudionici_po_drzavama[jedna_drzava] = models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count()    
@@ -418,8 +427,5 @@ def statistika(request):
     context["radovi_po_sekcijama"] = radovi_po_sekcijama
     context["korisnici_po_ulogama"] = korisnici_po_ulogama
     context["sudionici_po_drzavama"] = sudionici_po_drzavama
-    context["recenzenti_potvrdeni"] = recenzenti_potvrdeni
-    context["recenzenti_odbijeni"] = recenzenti_odbijeni
-    context["recenzenti_wait"] = recenzenti_wait
 
     return render(request, 'Statistika.html', context)

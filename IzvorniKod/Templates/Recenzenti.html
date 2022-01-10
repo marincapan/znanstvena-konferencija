@@ -27,7 +27,7 @@
 
 </head>
 
-<body>
+<body style="min-width: 576px;">
 
   <!--HEADER-->
   {% include "./Header.html" %}
@@ -35,6 +35,11 @@
 
   <div class="gradient-custom-3 " style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
+
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
 
@@ -42,11 +47,7 @@
             <div style="padding-bottom: 9px;" id="titleDiv">
               <div>
                 <h2 style="display: block;" id="myTitle">Pregled recenzenata</h2>
-                {% if LoggedInUserRole == 'Admin'%}
                 <a href="/pregled" class="btn btn-outline-secondary">Vrati se na pregled</a>
-                {%else%}
-                <a href="/predsjedavajuci" class="btn btn-outline-secondary">Vrati se na upravljačko sučelje</a>
-                {%endif%}
               </div>
             </div>
             <hr>

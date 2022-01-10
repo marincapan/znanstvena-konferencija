@@ -19,13 +19,18 @@
 
 </head>
 
-<body>
+<body style="min-width:576px">
   <!--HEADER-->
   {% include "./Header.html" %}
   <!--HEADER-->
 
-  <div class="gradient-custom-3 " style="min-height: 100vh;">
+  <div class="gradient-custom-3" style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
+
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
 
@@ -39,12 +44,6 @@
           </div>
 
           <div>
-            <!--Klasika za error messages-->
-            {% if messages %}
-            {% for message in messages %}
-            <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
-              {% endfor %}
-              {% endif %}
           </div>
 
           <!-- OPĆENITO -->
@@ -68,7 +67,7 @@
                     {%if LoggedInUserRole == 'Admin'%}
                     <form action="adminsucelje" method="POST">
                       {% csrf_token %}
-                      {% if brojPredanihRadova != 0%}
+                      {% if brojDobrihRadova != 0%}
                       {% if javniBool == 0 %}
                       <div class="text-left text-muted mb-2">Trenutno nije omogućen javni pristup radovima.</div>
                       <button type="submit" class="btn btn-primary" name="makePublic"> Dodaj javni pristup svim
@@ -77,10 +76,10 @@
                       <div class="text-left text-muted mb-2">Javni pristup radovima je omogućen.</div>
                       <button type="submit" class="btn btn-primary" name="makePublic"> Ukloni javni pristup svim
                         radovima </button>
+                      <a href="/javniradovi" class="btn btn-secondary">Javni radovi</a>
                       {% endif %}
                       {% else %}
-                      <div class="text-left text-muted mb-2">Trenutno nema predanih radova kojima možete dati javni
-                        pristup.</div>
+                      <div class="text-left text-muted mb-2">Trenutno nema radova spremnih za javnu objavu.</div>
                       <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="Niti jedan rad nije predan" disabled>Nema predanih radova</button>
                       {% endif %}
@@ -118,7 +117,7 @@
                   </li> <!-- Slanje obavijesti korisnicima -->
                   <li> <!-- Otvaranje stranice statistike -->
                     <a href="/statistika">
-                      <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pogledaj statistiku prijava</div>
+                      <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pregled statistike prijava</div>
                     </a>
                     <br>
                   </li> <!-- Otvaranje stranice statistike -->
@@ -163,12 +162,12 @@
                 <div class="col-sm">
                   
                   <div class="mb-3" id="pocetakPrijavaWrapper">
-                    <label for="pocetakPrijavaKonferencije" class="form-label fw-bold">Početak prijava</label>
+                    <label for="pocetakPrijavaKonferencije" class="form-label fw-bold">Početak prijava/Rok za promjenu obrasca</label>
                     <input type="date" class="form-control input-md" id="pocetakPrijavaKonferencije"
                       name="pocetakPrijavaKonferencije" value="{{rokPocPrijava}}" required>
                   </div>
                   <div class="mb-3" id="rokPrijavaWrapper">
-                    <label for="rokPrijava" class="form-label fw-bold">Rok za prijavu</label>
+                    <label for="rokPrijava" class="form-label fw-bold">Rok za prijavu i predaju radova</label>
                     <input type="date" class="form-control input-md" id="rokPrijava" name="rokPrijava"
                       value="{{rokPrijave}}" required>
                   </div>
@@ -184,11 +183,6 @@
                     <label for="rokRecenzija" class="form-label fw-bold">Rok za recenziranje</label>
                     <input type="date" class="form-control input-md" id="rokRecenzija" name="rokRecenzija"
                       value="{{rokRecenzenti}}" required>
-                  </div>
-                  <div class="mb-3" id="rokIzmjenaWrapper">
-                    <label for="rokIzmjena" class="form-label fw-bold">Rok za izmjenu obrasca</label>
-                    <input type="date" class="form-control input-md" id="rokIzmjena" name="rokIzmjena"
-                      value="{{rokAdmin}}" >
                   </div>
                 </div>
               </div>
@@ -293,10 +287,10 @@
                     <input type="text" class="form-control input-lg" id="adminemail" name="adminemail" value="" required>
                   </div>
 
-                  <div class="mb-1" id="passwordWrapper">
+                  <!-- <div class="mb-1" id="passwordWrapper">
                     <label for="email" class="form-label">Lozinka</label>
                     <input type="text" class="form-control input-lg" id="adminpassword" name="adminpassword" value="" required>
-                  </div>
+                  </div> -->
 
                   <button type="submit" class="btn btn-primary btn-md" name="AddNewAdmin" value="Update">Dodaj administratora</button>
                 </form>
@@ -339,7 +333,8 @@
             </div>
             <hr>
           </div>
-
+          {%if prosoDatum == 0%}
+          
           <p class="left text-muted mt-3 mb-0">Ovdje možete definirati novo polje za registracijski obrazac. </p>
           <br>
 
@@ -443,6 +438,11 @@
             </form>
           </div>
           {%endif%}
+          {%else%}
+          <div class="form-outline mb-2">
+            <label class="fs-6 fw-bold for=">Počele su prijave!</label>
+          </div>
+          {%endif%}
         </div>
         <!-- OBRAZAC ZA REGISTRACIJU -->
 
@@ -486,7 +486,7 @@
                   {%endfor%}
                 </ul>
                 {% else %}
-                <div class="fs-6 fw-bold"> Još niste unijeli ni jednu sekciju na konferenciji.</div>
+                <div class="fs-6 fw-bold"> Još niste unijeli nijednu sekciju na konferenciji.</div>
                 {% endif %}
               </div>
 
@@ -600,56 +600,6 @@
         </div>
         <!-- UREĐIVANJE NASLOVNE -->
 
-       <!-- UREĐIVANJE INFO STRANICE -->
-        <!-- <div class="container mb-5">
-          <div class="text-uppercase text-left mb-1">
-            <div style="padding-bottom: 3px;" id="titleDiv">
-              <div>
-                <h4 style="display: inline;" id="uređivanjeInfo">Uređivanje info stranice</h4>
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <p class="left text-muted mt-3 mb-0">Ovdje možete uređivati naslov i sadržaj stranice <i>O konferenciji</i>.</p>
-          <br>
-
-          <div class="row">
-            <div class="col-sm">
-              <div style="padding-bottom: 5px;" id="">
-                <form action="/adminsucelje" method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-
-                  <div class="row">
-                    <div class="col-sm">
-                      <div class="mb-3" id="">
-                        <label for="clanakNaslov" class="form-label fw-bold">Naslov:</label>
-                        <input type="text" class="form-control" id="infoTitle" name="infoTitle"
-                          value="{{info.naslov}}" required>
-                      </div>
-                      <div class="mb-3" id="">
-                        <label for="clanakSadrzaj" class="form-label fw-bold">Sadržaj:</label>
-                        <textarea class="form-control" rows="3" id="infoText" name="infoText"
-                          required>{{info.tekst}}</textarea>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <br>
-
-                  <div class="row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; justify-items: center;">
-                    <button type="submit" class="btn btn-primary btn-md" name='EditInfo' value="Update"
-                      style="grid-column: 2;">Ažuriraj info stranicu</button>
-                  </div>
-                </form>
-
-              </div>
-            </div>
-          </div>
-
-
-        </div> -->
 
       </div>
     </div>

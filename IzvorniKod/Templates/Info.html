@@ -20,7 +20,7 @@
 </head>
 
 
-<body>
+<body style="min-width:576px">
 
   <!--HEADER-->
   {% include "./Header.html" %}
@@ -28,6 +28,10 @@
 
   <div class="gradient-custom-3 " style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
+      
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
 
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
@@ -42,7 +46,13 @@
             <hr>
           </div>
 
+          <div class="container text-center text-uppercase" style = "font-size:larger;">
+            {{naziv}}
+            <br>
+          </div>
           <div class="container text-center" style = "font-size:larger;">
+           
+            
             {{opis}}
           </div>
 

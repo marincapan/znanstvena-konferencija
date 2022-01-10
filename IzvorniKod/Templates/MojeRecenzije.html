@@ -18,25 +18,25 @@
   <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
 </head>
 
-<body>
+<body style="min-width: 576px;">
   <!--HEADER-->
   {% include "./Header.html" %}
   <!--HEADER-->
 
   <div class="gradient-custom-3 " style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
+      
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
           <div class="text-uppercase text-center mb-3">
             <h2>Moje recenzije</h2>
+            <a href="javniradovi" class=" btn btn-outline-secondary">Pogledaj javno dostupne znanstvene radove</a>
             <hr>
           </div>
-
-          {% if messages %}
-          {% for message in messages %}
-          <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
-          {% endfor %}
-          {% endif %}
 
           <div id="potrebnoRecenzirati">
             <div class="text-center mb-4">
@@ -49,7 +49,7 @@
             </div>
             {%elif prosoDatum == 1 %}
             <div class="text-center">
-              <h5>Prosao rok za recenziranje!!</h5>
+              <h5>Prošao rok za recenziranje!</h5>
             </div>
             {%elif fetchedRadovi.count == 0 %}
             <div class="text-center">
@@ -144,7 +144,7 @@
             </div>
             {%elif not fetchedMyRecenzije and prosoDatum == 1%}
             <div class="text-center">
-              <h5>Niste ocjenili niti jedan rad prije kraja roka.</h5>
+              <h5>Niste ocijenili niti jedan rad prije kraja roka.</h5>
             </div>
             {%elif not fetchedMyRecenzije%}
             <div class="text-center">

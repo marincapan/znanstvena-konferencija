@@ -20,7 +20,7 @@
 
 
 
-<body>
+<body style="min-width: 576px;">
   <!--HEADER-->
   {% include "./Header.html" %}
   <!--HEADER-->
@@ -42,6 +42,11 @@
 
   <div class="gradient-custom-3">
     <div class="mask">
+
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
       <div class="row d-flex justify-content-center align-items-center">
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
@@ -50,13 +55,6 @@
 
               <form action="/signin" method="post">
                 {% csrf_token %}
-                <div class="fs-6 fw-bold text-center" style="color:#ce171a" id='greska'>
-                  {% if messages %}
-                  {% for message in messages %}
-                  {{ message }}
-                  {% endfor %}
-                  {% endif %}
-                </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="">Korisničko ime</label>

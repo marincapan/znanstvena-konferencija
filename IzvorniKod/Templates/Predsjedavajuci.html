@@ -27,13 +27,18 @@
 
 </head>
 
-<body>
+<body style="min-width: 576px;">
     <!--HEADER-->
     {% include "./Header.html" %}
     <!--HEADER-->
 
     <div class="gradient-custom-3 " style="min-height: 100vh;">
         <div class="container pt-5 pb-5">
+          
+          <!-- MESSAGES -->
+          {% include "./Messages.html" %}
+          <!-- MESSAGES -->
+
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
                 
@@ -46,59 +51,7 @@
                   <hr>
                 </div>
 
-                <div class="container" >
-                    <div class="text-uppercase text-left mb-3">
-                      <div style="padding-bottom: 3px;" id="titleDiv">
-                        <div>
-                          <h4 style="display: inline;" id="myTitle">Odobravanje registracija recenzenata</h4>
-                        </div>
-                      </div>
-                      <hr>
-                    </div>
-
-                    
-                    <form action="/predsjedavajuci" method="POST">
-                      {% csrf_token %}
-                      <div class="table-responsive container">
-                          <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaNeodobreni">
-                            <thead style="border-bottom: 1px;">
-                              <tr class="text-center">
-                                <th scope="col">#</th>
-                                <th scope="col">Korisničko ime</th>
-                                <th scope="col">Ime</th>
-                                <th scope="col">Prezime</th>
-                                <th scope="col">E-pošta</th>
-                                <th scope="col">Sekcija</th>
-                                <th scope="col">Ustanova</th>
-                                <th scope="col">Prihvati/Odbij</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for recenzent in Neodobreni %}
-                                <tr class="text-center">
-                                  <th scope="row">{{recenzent.id}}</th>
-                                  <td>{{recenzent.korisnickoIme}}</td>
-                                  <td>{{recenzent.ime}}</td>
-                                  <td>{{recenzent.prezime}}</td>
-                                  <td>{{recenzent.email}}</td>
-                                  <td>{{recenzent.korisnikSekcija_naziv}}</td>
-                                  <td>{{recenzent.korisnikUstanova_naziv}}</td>
-                                  <td>
-                                      <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm" name="Prihvati{{recenzent.id}}">Prihvati</button>
-                                      <button type="submit" class="btn btn-danger btn-sm form-control form-control-sm" name="Odbij{{recenzent.id}}">Odbij</button>
-                                  </td>
-                                </tr>
-                              {% endfor %}
-                            </tbody>
-                          </table>
-              
-                        </div>
-                      </form>
-
-                      <br><hr><br>
-
-                </div>
-                <div class="container" >
+                <div class="container mb-5" >
                     <div class="text-uppercase text-left mb-3">
                       <div style="padding-bottom: 3px;" id="titleDiv">
                         <div>
@@ -108,59 +61,115 @@
                       <hr>
                     </div>
 
-                   <ul>
-                    <li> <!-- Otvaranje stranice statistike -->
-                      <a href="/statistika">
-                        <div class="text-left fw-bold mb-1 fs-5" id='Label'>Pogledaj statistiku prijava</div>
-                      </a>
-                      <br>
-                    </li> <!-- Otvaranje stranice statistike -->
-
-                    <li> <!-- Slanje obavijesti korisnicima -->
-                        <a href="/posaljiobavijest">
-                          <div class="text-left fw-bold mb-1 fs-5" id='Label'>Pošalji obavijest korisnicima</div>
-                        </a>
-                        <br>
-                      </li> <!-- Slanje obavijesti korisnicima -->
-
-                    <li>
-
-                    <div class="text-left fw-bold mb-1 fs-5" id='Label'>Pregled podataka o korisnicima i radovima</div>
-
-                    <div class="d-flex justify-content-end">
-                        <div>
-                          <small>Zeleni brojevi prikazuju broj odobrenih stavki, a crveni broj neodobrenih.</small>
-                        </div>
-                    </div>
-                    <div class="card" style="border-radius: 5px;">
-                        <ul class="list-group list-group-flush" style="border-radius: 5px;">
-                          <li class="list-group-item d-flex">
-                            <a href="pregled/recenzenti" class="stretched-link">Pregled recenzenata (odobrenih i neodobrenih) </a>
-                            <div class="d-flex align-self-center" style="margin-left: auto;"><span class="badge bg-success" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">{{recenzenti_broj_odobrenih}}</span>
-                                <span class="badge bg-danger" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">{{recenzenti_broj_neodobrenih}}</span>
-                            </div>
+                    <div class="row">
+                      <div class="col-sm">
+                        <ul>
+                          <!-- Javni pristup radovima -->
+                          <li>
+                            <div class="text-uppercase text-left fw-bold mb-1">Javni radovi</div>
+                            {% if javniBool %}
+                              <div class="text-left text-muted mb-2">Javni pristup radovima je omogućen.</div>
+                              <a href="/javniradovi" class="btn btn-primary">Javni radovi</a>
+                            {%else%}
+                              <div class="text-left text-muted mb-2">Trenutno nema radova spremnih za javnu objavu.</div>
+                              <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Niti jedan rad nije predan" disabled>Nema javnih radova</button>
+                            {%endif%}
                           </li>
-                          <li class="list-group-item d-flex">
-                            <a href="pregled/sudionici" class="stretched-link">Pregled sudionika</a>
-                            <div class="d-flex align-self-center" style="margin-left: auto;">
-                              <span class="badge bg-success" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">{{sudionici_broj_odobrenih}}</span>
-                              <span class="badge bg-danger" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">{{sudionici_broj_neodobrenih}}</span>
-                            </div>
+                          <!-- Javni pristup radovima -->
+        
+                          <br>
+                          <!-- COVID-19 statistika -->
+                          <li>
+                            <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pregled COVID-19 statistike</div>
+                            <a href="covidstats"><button class="btn btn-danger" name=""> COVID-19 statistika</button></a>
                           </li>
-                          <li class="list-group-item d-flex">
-                            <a href="pregled/radovi" class="stretched-link">Pregled radova</a> <br>
-                            <div class="d-flex align-self-center" style="margin-left: auto;">
-                              <span class="badge bg-success" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">{{radovi_broj_recenziranih}}</span>
-                              <span class="badge bg-danger" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">{{radovi_broj_nerecenziranih}}</span>
-                            </div>
-                          </li>
+                          <!-- COVID-19 statistika -->
                         </ul>
+                      </div>
+        
+                      <div class="col-sm">
+                        <ul>
+                          <li>
+                            <!-- Slanje obavijesti korisnicima -->
+                            <a href="/posaljiobavijest">
+                              <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pošalji obavijest putem e-pošte
+                              </div>
+                            </a>
+                            <br>
+                          </li> <!-- Slanje obavijesti korisnicima -->
+                          <li>
+                            <!-- Pregled korisnika i radova -->
+                            <a href="/pregled">
+                              <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pregled korisnika i radova</div>
+                            </a>
+                            <br>
+                          </li> <!-- Slanje obavijesti korisnicima -->
+                          <li> <!-- Otvaranje stranice statistike -->
+                            <a href="/statistika">
+                              <div class="text-uppercase text-left fw-bold mb-1" id='Label'>Pregled statistike prijava</div>
+                            </a>
+                            <br>
+                          </li> <!-- Otvaranje stranice statistike -->
+                        </ul>
+                      </div>
                     </div>
-                    </li>
-
-                   </ul>
-
+                   
+                <br><hr><br>
                 </div>
+
+                
+                <div class="container mb-5" >
+                  <div class="text-uppercase text-left mb-3">
+                    <div style="padding-bottom: 3px;" id="titleDiv">
+                      <div>
+                        <h4 style="display: inline;" id="myTitle">Odobravanje registracija recenzenata</h4>
+                      </div>
+                    </div>
+                    <hr>
+                  </div>
+
+                  
+                  <form action="/predsjedavajuci" method="POST">
+                    {% csrf_token %}
+                    <div class="table-responsive container">
+                        <table class="table table-hover table-bordered" style="background-color: white;" id="tablicaNeodobreni">
+                          <thead style="border-bottom: 1px;">
+                            <tr class="text-center">
+                              <th scope="col">#</th>
+                              <th scope="col">Korisničko ime</th>
+                              <th scope="col">Ime</th>
+                              <th scope="col">Prezime</th>
+                              <th scope="col">E-pošta</th>
+                              <th scope="col">Sekcija</th>
+                              <th scope="col">Ustanova</th>
+                              <th scope="col">Prihvati/Odbij</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for recenzent in Neodobreni %}
+                              <tr class="text-center">
+                                <th scope="row">{{recenzent.id}}</th>
+                                <td>{{recenzent.korisnickoIme}}</td>
+                                <td>{{recenzent.ime}}</td>
+                                <td>{{recenzent.prezime}}</td>
+                                <td>{{recenzent.email}}</td>
+                                <td>{{recenzent.korisnikSekcija_naziv}}</td>
+                                <td>{{recenzent.korisnikUstanova_naziv}}</td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm" name="Prihvati{{recenzent.id}}">Prihvati</button>
+                                    <button type="submit" class="btn btn-danger btn-sm form-control form-control-sm" name="Odbij{{recenzent.id}}">Odbij</button>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+            
+                      </div>
+                    </form>
+
+              </div>
+
             </div>
         </div>
     </div>

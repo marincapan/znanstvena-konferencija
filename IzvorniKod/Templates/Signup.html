@@ -27,17 +27,14 @@
             {% include "./Header.html" %}
             <!--HEADER-->
             
-            
-            <!--Ako npr nakon sign up treba displayat "Uspjesno registrirani!"-->
-            {% if messages %}
-                {% for message in messages %}
-                <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-                {% endfor %}
-            {% endif %} 
-            <!---->
 
             <div class="gradient-custom-3">
               <div class="mask">
+
+                <!-- MESSAGES -->
+                {% include "./Messages.html" %}
+                <!-- MESSAGES -->
+                
                   <div class="row d-flex justify-content-center align-items-center">
                     <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                       <div class="card" style="border-radius: 15px;">

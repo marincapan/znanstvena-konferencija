@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html style="height: 100vh">
+<html>
 
 <head>
   <meta charset="utf-8">
@@ -17,7 +17,7 @@
   <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
 </head>
 
-<body style="min-height: 100vh">
+<body style="min-width: 576px">
 
   <!--HEADER-->
   {% include "./Header.html" %}
@@ -25,25 +25,17 @@
 
   <div class="gradient-custom-3 " style="min-height: 100vh;">
     <div class="container pt-5 pb-5">
+
+      <!-- MESSAGES -->
+      {% include "./Messages.html" %}
+      <!-- MESSAGES -->
+
       <div class="card" style="border-radius: 15px;">
         <div class="card-body p-5">
           <div class="text-uppercase text-center mb-3">
             <h2>Osobni podaci</h2>
             <hr>
           </div>
-
-          <!--ZA FRONTEND - Vrlo je važno da id ovih elemenata ne mijenjate 
-                    jer se java script na dnu referira na njih-->
-
-          <!--Klasika za error messages-->
-          <div>
-            {% if messages %}
-            {% for message in messages %}
-            <h4{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
-              {% endfor %}
-              {% endif %}
-          </div>
-
 
           <!--Ako postoje informacije (Tj ako je ulogiran korisnik) prikazi ih-->
           <form action="/osobnipodaci" method="post" id='updateInfo'>

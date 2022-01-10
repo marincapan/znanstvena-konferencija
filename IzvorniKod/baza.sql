@@ -1,167 +1,147 @@
-CREATE TABLE Ustanova
-(
-  ID INT,
-  naziv VARCHAR,
-  grad VARCHAR,
-  drzava VARCHAR,
-  adresa VARCHAR,
-  PRIMARY KEY (ID)
+CREATE TABLE "Ustanova" (
+  "ID" INT PRIMARY KEY,
+  "naziv" VARCHAR,
+  "grad" VARCHAR,
+  "drzava" VARCHAR,
+  "adresa" VARCHAR
 );
 
-CREATE TABLE Konferencija
-(
-  ID INT,
-  naziv VARCHAR,
-  opis VARCHAR,
-  datum DATE,
-  rokPrijava TIMESTAMP,
-  pocetakPrijava TIMESTAMP,
-  rokAdmin TIMESTAMP,
-  pocetakRecenzent TIMESTAMP,
-  rokRecenzent TIMESTAMP,
-  
-  PRIMARY KEY (ID)
-  
+CREATE TABLE "Autor" (
+  "ID" INT PRIMARY KEY,
+  "ime" VARCHAR,
+  "prezime" VARCHAR,
+  "email" VARCHAR UNIQUE
 );
 
-CREATE TABLE Sekcija
-(
-  ID INT,
-  naziv VARCHAR,
-  sifKonferencija INT,
-  PRIMARY KEY (ID),
-  FOREIGN KEY (sifKonferencija) REFERENCES Konferencija(ID)
-);
-CREATE TABLE Autor
-(
-  ID INT,
-  ime VARCHAR,
-  prezime VARCHAR,
-  email VARCHAR,
-  PRIMARY KEY (ID),
-  UNIQUE (email)
-);
-CREATE TABLE TipPoljeObrasca
-(
-  ID INT,
-  naziv VARCHAR,
-  PRIMARY KEY (ID)
-);
-CREATE TABLE DodatnoPoljeObrasca
-(
-  ID INT,
-  ime VARCHAR,
-  tipPolja INT,
-  obavezno BOOLEAN,
-  prisutno BOOLEAN,
-  PRIMARY KEY (ID),
-  FOREIGN KEY (tipPolja) REFERENCES TipPoljeObrasca(ID)
+CREATE TABLE "TipPoljeObrasca" (
+  "ID" INT PRIMARY KEY,
+  "nazivTipa" VARCHAR
 );
 
-
-
-CREATE TABLE Uloga
-(
-  ID INT,
-  naziv VARCHAR,
-  PRIMARY KEY (ID)
-);
-CREATE TABLE Korisnik
-(
-  ID INT,
-  korisnickoIme VARCHAR,
-  lozinka VARCHAR,
-  ime VARCHAR,
-  prezime VARCHAR,
-  email VARCHAR,
-  idSudionik INT,
-  odobren BOOLEAN,
-  token VARCHAR,
-  potvrdioPrijava BOOLEAN,
-  sifUstanova INT,
-  sifSekcija INT,
-  ulogaKorisnik INT,
-  PRIMARY KEY (ID),
-  FOREIGN KEY (sifUstanova) REFERENCES Ustanova(ID),
-  FOREIGN KEY (sifSekcija) REFERENCES Sekcija(ID),
-  FOREIGN KEY (ulogaKorisnik) REFERENCES Uloga(ID),
-  UNIQUE (email),
-  UNIQUE (idSudionik),
-  UNIQUE (korisnickoIme)
-);
-CREATE TABLE Ocjena
-(
-  ID INT,
-  znacenje VARCHAR,
-  PRIMARY KEY (ID)
+CREATE TABLE "DodatnoPoljeObrasca" (
+  "ID" INT PRIMARY KEY,
+  "ime" VARCHAR,
+  "tipPolja" INT,
+  "obavezno" BOOLEAN,
+  "prisutno" BOOLEAN
 );
 
-
-CREATE TABLE Rad
-(
-  ID INT,
-  naslovRad VARCHAR,
-  pdf VARCHAR UNIQUE,
-  sifSekcija INT,
-  prijavioID INT,
-  recenziran BOOLEAN,
-  PRIMARY KEY (ID),
-  FOREIGN KEY (sifSekcija) REFERENCES Sekcija(ID),
-  FOREIGN KEY (prijavioID) REFERENCES Korisnik(ID)
+CREATE TABLE "Uloga" (
+  "ID" INT PRIMARY KEY,
+  "naziv" VARCHAR
 );
 
-
-
-
-CREATE TABLE AutorRad
-(
-  sifRad INT,
-  sifAutor INT,
-  naznakaOZK BOOLEAN,
-  PRIMARY KEY (sifRad, sifAutor),
-  FOREIGN KEY (sifRad) REFERENCES Rad(ID),
-  FOREIGN KEY (sifAutor) REFERENCES Autor(ID)
-  
-);
-CREATE TABLE DodatniPodatak
-(
-  korisnikID INT,
-  poljeObrascaID INT,
-  PRIMARY KEY (korisnikID, poljeObrascaID),
-  FOREIGN KEY (korisnikID) REFERENCES Korisnik(ID),
-  FOREIGN KEY (poljeObrascaID) REFERENCES DodatnoPoljeObrasca(ID)
-  
+CREATE TABLE "Korisnik" (
+  "ID" INT PRIMARY KEY,
+  "korisnickoIme" VARCHAR UNIQUE,
+  "lozinka" VARCHAR,
+  "ime" VARCHAR,
+  "prezime" VARCHAR,
+  "email" VARCHAR UNIQUE,
+  "sudionikID" INT UNIQUE,
+  "odobren" BOOLEAN,
+  "token" VARCHAR,
+  "potvrdioPrijava" BOOLEAN,
+  "salt" BYTEA,
+  "zadnjaaktivnost" TIMESTAMP,
+  "sifUstanova" INT,
+  "sifSekcija" INT,
+  "ulogaKorisnik" INT
 );
 
-CREATE TABLE Recenzija
-(
-  ID INT,
-  ocjena INT,
-  obrazlozenje VARCHAR,
-  sifRad INT,
-  recenzentID INT,
-  PRIMARY KEY (ID),
-  FOREIGN KEY (recenzentID) REFERENCES Korisnik(ID),
-  FOREIGN KEY (sifRad) REFERENCES Rad(ID)
+CREATE TABLE "Rad" (
+  "ID" INT PRIMARY KEY,
+  "naslov" VARCHAR,
+  "pdf" VARCHAR UNIQUE,
+  "recenziran" BOOLEAN,
+  "revizija" BOOLEAN,
+  "sifSekcija" INT,
+  "prijavioID" INT
 );
 
-CREATE TABLE Clanak
-(
-	ID INT,
-	naslov VARCHAR,
-	tekst VARCHAR,
-	autor INT,
-	prisutan BOOLEAN,
-	FOREIGN KEY (autor) REFERENCES Korisnik(ID)
+CREATE TABLE "Sekcija" (
+  "ID" INT PRIMARY KEY,
+  "naziv" VARCHAR,
+  "sifKonferencija" INT
 );
 
-CREATE TABLE Info
-(
-	ID INT, 
-	naslov VARCHAR,
-	tekst VARCHAR,
-	autor INT,
-	konferencija INT,
-	FOREIGN KEY (autor) REFERENCES Korisnik(ID),
-	FOREIGN KEY (konferencija) REFERENCES Konferencija(ID)
+CREATE TABLE "Konferencija" (
+  "ID" INT PRIMARY KEY,
+  "naziv" VARCHAR,
+  "opis" VARCHAR,
+  "javniradovi" BOOLEAN,
+  "datum" DATE,
+  "pocetakRecenzent" TIMESTAMP,
+  "pocetakPrijava" TIMESTAMP,
+  "rokPrijava" TIMESTAMP,
+  "rokAdmin" TIMESTAMP,
+  "rokRecenzent" TIMESTAMP
 );
+
+CREATE TABLE "AutorRad" (
+  "sifRad" INT,
+  "sifAutor" INT,
+  "naznakaOZK" BOOLEAN,
+  PRIMARY KEY ("sifRad", "sifAutor")
+);
+
+CREATE TABLE "Recenzija" (
+  "ID" INT PRIMARY KEY,
+  "ocjena" INT,
+  "obrazlozenje" VARCHAR,
+  "recenzentID" INT,
+  "sifRad" INT
+);
+
+CREATE TABLE "Ocjena" (
+  "ID" INT PRIMARY KEY,
+  "znacenje" VARCHAR
+);
+
+CREATE TABLE "DodatniPodatak" (
+  "korisnikID" INT,
+  "poljeObrascaID" INT,
+  "podatak" VARCHAR,
+  PRIMARY KEY ("korisnikID", "poljeObrascaID")
+);
+
+CREATE TABLE "Clanak" (
+  "ID" INT PRIMARY KEY,
+  "naslov" VARCHAR,
+  "tekst" VARCHAR,
+  "autorID" INT,
+  "sifKonferencija" INT
+);
+
+ALTER TABLE "Korisnik" ADD FOREIGN KEY ("sifUstanova") REFERENCES "Ustanova" ("ID");
+
+ALTER TABLE "Clanak" ADD FOREIGN KEY ("autorID") REFERENCES "Korisnik" ("ID");
+
+ALTER TABLE "Korisnik" ADD FOREIGN KEY ("sifSekcija") REFERENCES "Sekcija" ("ID");
+
+ALTER TABLE "Korisnik" ADD FOREIGN KEY ("ulogaKorisnik") REFERENCES "Uloga" ("ID");
+
+ALTER TABLE "Recenzija" ADD FOREIGN KEY ("sifRad") REFERENCES "Rad" ("ID");
+
+ALTER TABLE "Rad" ADD FOREIGN KEY ("sifSekcija") REFERENCES "Sekcija" ("ID");
+
+ALTER TABLE "Rad" ADD FOREIGN KEY ("prijavioID") REFERENCES "Korisnik" ("ID");
+
+ALTER TABLE "Sekcija" ADD FOREIGN KEY ("sifKonferencija") REFERENCES "Konferencija" ("ID");
+
+ALTER TABLE "Clanak" ADD FOREIGN KEY ("sifKonferencija") REFERENCES "Konferencija" ("ID");
+
+ALTER TABLE "AutorRad" ADD FOREIGN KEY ("sifRad") REFERENCES "Rad" ("ID");
+
+ALTER TABLE "AutorRad" ADD FOREIGN KEY ("sifAutor") REFERENCES "Autor" ("ID");
+
+ALTER TABLE "Recenzija" ADD FOREIGN KEY ("recenzentID") REFERENCES "Korisnik" ("ID");
+
+ALTER TABLE "Recenzija" ADD FOREIGN KEY ("ocjena") REFERENCES "Ocjena" ("ID");
+
+ALTER TABLE "DodatniPodatak" ADD FOREIGN KEY ("korisnikID") REFERENCES "Korisnik" ("ID");
+
+ALTER TABLE "DodatnoPoljeObrasca" ADD FOREIGN KEY ("tipPolja") REFERENCES "TipPoljeObrasca" ("ID");
+
+ALTER TABLE "DodatniPodatak" ADD FOREIGN KEY ("poljeObrascaID") REFERENCES "DodatnoPoljeObrasca" ("ID");
+
