@@ -198,7 +198,7 @@ def adminsucelje(request):
                 )
                     email.send()
                 
-                    messages.success(request, "Podaci o predsjedavajućem uspješno promijenjeni. Predsjedavajućem su na adresu e-pošte poslani podaci za prijavu.")
+                    messages.success(request, "Podaci o predsjedavajućem su uspješno promijenjeni. Predsjedavajućem su na adresu e-pošte poslani podaci za prijavu.")
                     return redirect('/adminsucelje')
                 except:
                     messages.error(request,"Dogodila se pogreška. Pokušajte ponovno.")
@@ -208,7 +208,7 @@ def adminsucelje(request):
 
 
             predsjedavajuci.save()
-            messages.success(request, "Podaci o predsjedavajućem uspješno promijenjeni")
+            messages.success(request, "Podaci o predsjedavajućem su uspješno promijenjeni.")
             return redirect('/adminsucelje#upravljanjePredsjedavajućem')
             
         if "makePublic" in request.POST:
@@ -220,6 +220,7 @@ def adminsucelje(request):
                 konferencija.javniRadoviBool=True
                 konferencija.save()
             print(konferencija.javniRadoviBool)
+            messages.success(request, "Status javnih radova je uspješno promijenjen.")
 
         if 'AddNewField' in request.POST:
             print(request.POST)
@@ -339,7 +340,7 @@ def adminsucelje(request):
             newArticle = models.Clanak(naslov=ArticleTitle, tekst=ArticleText, autor=models.Korisnik.objects.get(id = request.session['LoggedInUserId']))
             newArticle.save()
             context['Clanci'] = fetchedClanci
-            messages.success(request, "Uspješno dodan novi članak")
+            messages.success(request, "Uspješno je dodan novi članak.")
             return redirect('/adminsucelje#uređivanjeNaslovne')
 
         ## Odabir aktivnih članaka
@@ -558,7 +559,7 @@ def uredipodatke(request, korisnickoime):
                 korisnik.korisnikUstanova = novaUstanova
 
             korisnik.save()
-            messages.success(request, "Podaci uspješno promijenjeni.")
+            messages.success(request, "Podaci su uspješno promijenjeni.")
             uloga = korisnik.vrstaKorisnik.naziv
             if (uloga == "Sudionik"):
                 url = "/pregled/sudionici/"+username
@@ -673,6 +674,8 @@ def uredirad(request, sifrada):
                 promjenaAutora.ime = request.POST["newname"+str(autorRad.Autor.sifAutor)]
                 promjenaAutora.prezime = request.POST["newsur"+str(autorRad.Autor.sifAutor)]
                 promjenaAutora.save()
+
+            messages.success(request, "Podaci o radu su uspješno promijenjeni.")
             return redirect('/pregled/radovi/'+sifrada)
 
         if "LoggedInUserId" in request.session:

@@ -300,15 +300,18 @@ def uprsucelje(request):
     for recenzent in neodobreni:
         recenzent.korisnikSekcija_naziv = sekcije.get(sifSekcija=recenzent.korisnikSekcija_id).naziv
         recenzent.korisnikUstanova_naziv = ustanove.get(sifUstanova=recenzent.korisnikUstanova_id).naziv
-
-
+    
+    '''
     context["Neodobreni"] = neodobreni
     context["recenzenti_broj_odobrenih"] = recenzenti.filter(odobrenBool=True).count()
     context["recenzenti_broj_neodobrenih"] = recenzenti.filter(odobrenBool=None).count()
     context["sudionici_broj_odobrenih"] = sudionici.filter(odobrenBool=True).count()
     context["sudionici_broj_neodobrenih"] = sudionici.filter(odobrenBool=False).count()
     context["radovi_broj_recenziranih"] = radovi.filter(recenziranBool=True).count()
-    context["radovi_broj_nerecenziranih"] = radovi.filter(recenziranBool=False).count()
+    context["radovi_broj_nerecenziranih"] = radovi.filter(recenziranBool=False).count()'''
+
+    
+    context["javniBool"] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
 
     return render(request, 'Predsjedavajuci.html', context)
 

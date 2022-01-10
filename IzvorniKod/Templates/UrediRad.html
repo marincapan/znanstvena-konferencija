@@ -65,11 +65,15 @@
                     <label for="" class="form-label fw-bold">Je li rad recenziran?</label>
                     <div>{% if rad.recenziranBool %} Da {%else%} Ne {%endif%} </div>
                   </div>
-                  <label for="" class="form-label fw-bold">Promjeni pdf.</label>
-                  <div class="btn-group">
-                    <input class="form-control file1" type="file" name="newPdf" accept="application/pdf">
-                    <button type="submit" id="file1" class=" btn btn-outline-primary" name='da' style="grid-column: 2;">Predaj</button>
+                  <div class="mb-3">
+                    <label for="" class="form-label fw-bold">Promjena rada</label>
+                    <div class="btn-group">
+                      <div>
+                        <input class="form-control file1" type="file" name="newPdf" accept="application/pdf">
+                      </div>
+                    </div>
                   </div>
+                  
 
 
                 </div>
