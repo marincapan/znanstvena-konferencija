@@ -74,7 +74,6 @@ class Konferencija(models.Model):
     datumKonferencije = models.DateField()
     rokPrijave = models.DateField()
     rokRecenzenti = models.DateField()
-    rokAdmin = models.DateField()
     rokPocRecenzija = models.DateField()
     rokPocPrijava = models.DateField()
     javniRadoviBool= models.BooleanField(default=False)

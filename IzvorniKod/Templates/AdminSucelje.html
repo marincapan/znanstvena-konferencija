@@ -162,7 +162,7 @@
                 <div class="col-sm">
                   
                   <div class="mb-3" id="pocetakPrijavaWrapper">
-                    <label for="pocetakPrijavaKonferencije" class="form-label fw-bold">Početak prijava</label>
+                    <label for="pocetakPrijavaKonferencije" class="form-label fw-bold">Početak prijava/Rok za promjenu obrasca</label>
                     <input type="date" class="form-control input-md" id="pocetakPrijavaKonferencije"
                       name="pocetakPrijavaKonferencije" value="{{rokPocPrijava}}" required>
                   </div>
@@ -183,11 +183,6 @@
                     <label for="rokRecenzija" class="form-label fw-bold">Rok za recenziranje</label>
                     <input type="date" class="form-control input-md" id="rokRecenzija" name="rokRecenzija"
                       value="{{rokRecenzenti}}" required>
-                  </div>
-                  <div class="mb-3" id="rokIzmjenaWrapper">
-                    <label for="rokIzmjena" class="form-label fw-bold">Rok za izmjenu obrasca</label>
-                    <input type="date" class="form-control input-md" id="rokIzmjena" name="rokIzmjena"
-                      value="{{rokAdmin}}">
                   </div>
                 </div>
               </div>
@@ -338,6 +333,7 @@
             </div>
             <hr>
           </div>
+          {%if prosoDatum == 0%}
           
           <p class="left text-muted mt-3 mb-0">Ovdje možete definirati novo polje za registracijski obrazac. </p>
           <br>
@@ -440,6 +436,11 @@
                   style="grid-column: 2;">Ažuriraj obrazac</button>
               </div>
             </form>
+          </div>
+          {%endif%}
+          {%else%}
+          <div class="form-outline mb-2">
+            <label class="fs-6 fw-bold for=">Počele su prijave!</label>
           </div>
           {%endif%}
         </div>

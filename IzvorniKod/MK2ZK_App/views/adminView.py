@@ -130,12 +130,31 @@ def adminsucelje(request):
 
             konferencija.nazivKonferencije = request.POST["nazivKonferencije"]
             konferencija.opisKonferencije = request.POST["opisKonferencije"]
-            konferencija.datumKonferencije = datetime.strptime(request.POST["datumKonferencije"], "%Y-%m-%d").date()
-            konferencija.rokPocPrijava = datetime.strptime(request.POST["pocetakPrijavaKonferencije"], "%Y-%m-%d").date()
-            konferencija.rokPrijave = datetime.strptime(request.POST["rokPrijava"], "%Y-%m-%d").date()
-            konferencija.rokPocRecenzija = datetime.strptime(request.POST["pocetakRecenzija"], "%Y-%m-%d").date()
-            konferencija.rokRecenzenti = datetime.strptime(request.POST["rokRecenzija"], "%Y-%m-%d").date()
-            konferencija.rokAdmin = datetime.strptime(request.POST["rokIzmjena"], "%Y-%m-%d").date()
+            datumKonferencije = datetime.strptime(request.POST["datumKonferencije"], "%Y-%m-%d").date()
+            pocetakPrijavaKonferencije = datetime.strptime(request.POST["pocetakPrijavaKonferencije"], "%Y-%m-%d").date()
+            rokPrijava = datetime.strptime(request.POST["rokPrijava"], "%Y-%m-%d").date()
+            pocetakRecenzija = datetime.strptime(request.POST["pocetakRecenzija"], "%Y-%m-%d").date()
+            rokRecenzija = datetime.strptime(request.POST["rokRecenzija"], "%Y-%m-%d").date()
+
+            if pocetakPrijavaKonferencije>rokPrijava:
+                messages.error(request,"Početak prijava/Rok za promjenu obrasca ne smije biti poslije roka za prijavu i predaju radova")
+                return redirect('/adminsucelje#podatciOKonferenciji')
+            if pocetakRecenzija>rokRecenzija:
+                messages.error(request,"Početak recenziranja ne smije biti poslije roka za recenziranje")
+                return redirect('/adminsucelje#podatciOKonferenciji')
+            if pocetakPrijavaKonferencije>pocetakRecenzija:
+                messages.error(request,"Početak prijava/Rok za promjenu obrasca ne smije biti poslije početaka recenziranja")
+                return redirect('/adminsucelje#podatciOKonferenciji')
+            if rokRecenzija>datumKonferencije:
+                messages.error(request,"Datum konferencije ne smije biti prije kraja recenziranja")
+                return redirect('/adminsucelje#podatciOKonferenciji')    
+
+            konferencija.datumKonferencije = datumKonferencije
+            konferencija.rokPocPrijava = pocetakPrijavaKonferencije
+            konferencija.rokPrijave = rokPrijava
+            konferencija.rokPocRecenzija = pocetakRecenzija
+            konferencija.rokRecenzenti = rokRecenzija
+            print
             konferencija.save()
 
             messages.success(request, "Podaci o konferenciji su uspješno ažurirani!")
@@ -418,9 +437,9 @@ def adminsucelje(request):
         context['datum'] = dateformat.format(konferencija.datumKonferencije, formats.get_format('Y-m-d'))
         context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('Y-m-d'))
         context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('Y-m-d'))
-        context['rokAdmin']=dateformat.format(konferencija.rokAdmin, formats.get_format('Y-m-d'))
         context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('Y-m-d'))
         context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('Y-m-d'))
+        context["prosoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPocPrijava
 
     context["Radovi"] = radovi
     context["brojPredanihRadova"] = brojPredanihRadova

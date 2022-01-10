@@ -515,6 +515,9 @@ button.acc-btn {
 
 .error {
   background-color: rgb(170, 46, 46);
+  position: sticky;
+  top: 0;
+  z-index: 10;
   color: white;
 }
 
