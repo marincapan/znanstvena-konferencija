@@ -59,3 +59,24 @@ Datum: 15. studenog 2021.
 	Teme sastanka:
 		- kratki timski informativni sastanak, dogovor oko finalnih izmjena generičkih funkcionalnosti prije obaveznog termina laboratorijske vježbe
 
+
+8. sastanak
+Datum: 19. prosinca 2021.
+	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić, P.D.Grujić Ostojić, A.Sambolek, M.Capan
+	Teme sastanka:
+		- Dogovori vezani za demonstraciju alfa inačice
+		- Podjela poslova implementacije na poslužiteljskoj i klijentskoj strani
+
+9. sastanak
+Datum: 23. prosinca 2021.
+	Prisustvovali: J. Gavran, L.Mujagić, R.Pintar, F.Mesić, P.D.Grujić Ostojić, A.Sambolek, M.Capan
+	Teme sastanka:
+		- Daljnja podjela poslova implementacije funkcionalnosti aplikacije za naredno razdoblje
+		- Dogovori i podjela poslova vezanih za izradu dokumentacije
+
+
+. sastanak
+Datum: 5. siječnja 2022.
+	Prisustvovali: J. Gavran, L. Mujagić, R. Pintar, F. Mesić, P.D.Grujić Ostojić, A. Sambolek, M. Capan, asistent doc. dr. sc. Miljenko Krhen, demonstrator Vedran Kolka
+	Teme sastanka: Demonstracija alfa-inačine aplikacije
+
