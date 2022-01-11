@@ -207,17 +207,17 @@
               {% csrf_token %}
               <div class="row">
                 <div class="col-sm">
-                  {%if ime%}
+                  {%if predsjedavajuci.ime%}
                   <div class="mb-3" id="imeWrapper">
                     <label for="ime" class="form-label fw-bold">Ime</label>
-                    <input type="text" class="form-control input-md" id="ime" name="ime" value="{{ime}}" required>
+                    <input type="text" class="form-control input-md" id="ime" name="ime" value="{{predsjedavajuci.ime}}" required>
                   </div>
                   {%endif%}
 
-                  {%if prezime%}
+                  {%if predsjedavajuci.prezime%}
                   <div class="mb-3" id="prezimeWrapper">
                     <label for="prezime" class="form-label fw-bold">Prezime</label>
-                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="{{prezime}}"
+                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="{{predsjedavajuci.prezime}}"
                       required>
                   </div>
                   {%endif%}
@@ -225,19 +225,19 @@
 
                 <div class="col-sm">
 
-                  {%if korisnickoIme%}
+                  {%if predsjedavajuci.korisnickoIme%}
                   <div class="mb-3" id="usernameWrapper">
                     <label for="username" class="form-label fw-bold">Korisničko ime</label>
                     <input type="text" class="form-control input-md" id="username" name="username"
-                      value="{{korisnickoIme}}" required>
+                      value="{{predsjedavajuci.korisnickoIme}}" required>
                   </div>
                   {%endif%}
 
 
-                  {%if email%}
+                  {%if predsjedavajuci.email%}
                   <div class="mb-3" id="emailWrapper">
                     <label for="email" class="form-label fw-bold">E-mail</label>
-                    <input type="text" class="form-control input-lg" id="email" name="email" value="{{email}}" required>
+                    <input type="text" class="form-control input-lg" id="email" name="email" value="{{predsjedavajuci.email}}" required>
                   </div>
                   {%endif%}
                 </div>
