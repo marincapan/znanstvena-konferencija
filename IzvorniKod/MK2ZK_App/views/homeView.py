@@ -67,8 +67,6 @@ def home(request):
         context["infoKonferencija"] = konferencija #trebat ce mozda za countdown ili neke druge podatke stavit na naslovnicu
         
     sviKorisnici=models.Korisnik.objects.all()
-    for korisnik in sviKorisnici:
-        print(korisnik.korisnickoIme, korisnik.id in request.session)
 
 
 
@@ -77,7 +75,6 @@ def home(request):
     fetchedClanci = models.Clanak.objects.filter(active=True)
     context['Clanci'] = fetchedClanci
     
-    print(context)
     return render(request, 'Index.html',context)
 
 
@@ -127,10 +124,8 @@ def signup(request):
     context["Drzave"] = dropDownDrzave
     ######
 
-    #print(context)
 
-    if request.method == "POST":        
-        print(request.POST)
+    if request.method == "POST":
         username = request.POST['Username']
         fName = request.POST['Fname']
         lName = request.POST['Lname']
@@ -255,11 +250,9 @@ def signup(request):
                 noviRad.autori.add(noviAutor)
             noviRad.save()
 
-            print(OZKIndex)
             for index,autor in enumerate(autori):
                 if index==OZKIndex:
                     autorrad=models.AutorRad.objects.get(Rad=noviRad,Autor=models.Autor.objects.get(ime=autor.ime,prezime=autor.prezime,email=autor.email))
-                    print(autorrad.id)
                     autorrad.OZK=True
                     autorrad.save()
 
@@ -336,17 +329,12 @@ def signup(request):
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        print(token)
-        print(uid)
         postojeciKorisnik = models.Korisnik.objects.get(id=uid)
-        print(postojeciKorisnik.korisnickoIme)
-        print(account_activation_token.check_token(postojeciKorisnik, token))
     except(TypeError, ValueError, OverflowError, models.Korisnik.DoesNotExist):
         postojeciKorisnik = None
     if postojeciKorisnik is not None and account_activation_token.check_token(postojeciKorisnik, token):
         postojeciKorisnik.potvrdenBool = True
         postojeciKorisnik
-        #print(postojeciKorisnik)
         postojeciKorisnik.save()
         signin(request)
         messages.info(request,'Hvala na potvrdi! Sada se možete prijaviti!')
@@ -357,7 +345,6 @@ def activate(request, uidb64, token):
 
 def signin(request):
     context = {}
-    print(type(os.urandom(32)))
     if request.method == "POST":
         #zaboravljena lozinka
         if "email" in request.POST:
@@ -366,15 +353,6 @@ def signin(request):
             if (models.Korisnik.objects.filter(email = email).exists()):
                 korisnik = models.Korisnik.objects.get(email = email)
                 
-                #dodati enkripciju i slanje lozinke na mail
-                """
-                randPassword=get_random_string(length=16)
-                print(randPassword)
-                korisnik.lozinka = randPassword
-                korisnik.save()
-                messages.error(request, "Nova lozinka poslana je na adresu e-pošte.")
-                """
-
                 subject = "[ZK] Promjena lozinke"
                 email_template_name = "PromijeniLozinkuEmail.html"
                 c = {
@@ -408,7 +386,6 @@ def signin(request):
                 try: #Privremeni TRY da ne izbaci gresku ako netko slucajno krivo napise predsjedavajuci
                     if (models.Korisnik.objects.filter(korisnickoIme=Username).exists()):
                         LoggedInUser=models.Korisnik.objects.get(korisnickoIme=Username)
-                        print(LoggedInUser.lozinka)
                         if not LoggedInUser.lozinka==None:
                             salt=LoggedInUser.salt
                             correctHash=LoggedInUser.lozinka
@@ -419,7 +396,6 @@ def signin(request):
                                 salt,
                                 100000
                             )
-                            print("CORRECT HASH: ",correctHash,type(correctHash),"\n\n GIVEN HASH: ",givenHash,type(givenHash))
                             if correctHash==str(givenHash):
 
                                 if LoggedInUser.vrstaKorisnik.naziv=="Recenzent":
@@ -431,10 +407,8 @@ def signin(request):
                                         return redirect('home')
                                 if LoggedInUser.potvrdenBool==False:
                                     messages.warning(request,"Vaš račun još nije aktiviran, molimo pogledajte adresu e-pošte!")
-                                    print("flag")
                                     return redirect('signin')
                                 else:
-                                    print(LoggedInUser.vrstaKorisnik.naziv)
                                     request.session['LoggedInUserId']=LoggedInUser.id
                                     request.session['LoggedInUserRole']=LoggedInUser.vrstaKorisnik.naziv
                                     #odobren se odnosi na recenzente a dok nisu odobreni ni ne mogu dobiti pass
@@ -461,11 +435,7 @@ def new_password(request, uidb64, token):
     context={}
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        print(token)
-        print(uid)
         postojeciKorisnik = models.Korisnik.objects.get(id=uid)
-        print(postojeciKorisnik.korisnickoIme)
-        print(account_activation_token.check_token(postojeciKorisnik, token))
     except(TypeError, ValueError, OverflowError, models.Korisnik.DoesNotExist):
         postojeciKorisnik = None
     if postojeciKorisnik is not None and account_activation_token.check_token(postojeciKorisnik, token):
@@ -480,12 +450,10 @@ def reset_password(request):
         uid=request.POST["uid"]
         token=request.POST["token"]
         redirectString="reset/"+str(uid)+"/"+str(token)
-        print(redirectString)
         pass1=request.POST["pass1"]
         pass2=request.POST["pass2"]
         user=models.Korisnik.objects.get(email=email)
         validators = [MinimumLengthValidator,CommonPasswordValidator,NumericPasswordValidator]
-        print(user.ime + user.prezime)
         userAttributes = [user.korisnickoIme,user.ime,user.prezime,user.ime + user.prezime,user.ime + user.korisnickoIme,user.korisnickoIme + user.prezime]
         if not pass1==pass2: #Lozinke nisu iste
             messages.error(request,"Unesene se lozinke ne preklapaju!")
@@ -569,7 +537,6 @@ def info(request):
         context[predsjedavajuci] = predsjedavajuci
     
     
-    print(context)
     return render(request, 'Info.html', context)
 
 def javniradovi(request):
@@ -601,7 +568,6 @@ def javniradovi(request):
   context['javniBool'] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
  
   context['Radovi'] = radovi
-  print(context["Radovi"])
   context['brojPredanihRadova'] = brojPredanihRadova
 
   return render(request, 'JavniRadovi.html', context)

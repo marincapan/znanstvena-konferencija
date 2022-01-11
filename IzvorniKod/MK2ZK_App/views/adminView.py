@@ -550,7 +550,6 @@ def covidstats(request):
                     if date[0]!="": #Kraj
                         datum =  datetime.strptime(date[0], '%Y-%m-%d').date()
                         konfDrzave[str(ustanova.drzava)]=[dateformat.format(datum, formats.get_format('d.m.Y.')),date[4]]
-                        print(date) # Rijecnik s drzavom (Na engleskom zasad) i vrijednostima koje zelim prenijeti (zasad datum dohavacanja podataka i novih slucajeva)
     context["konfDrzave"]=konfDrzave
     #------------------------------------------------------------------------------------------------------------------------------
     
@@ -593,18 +592,15 @@ def uredipodatke(request, korisnickoime):
             provjera = models.DodatnaPoljaObrasca.objects.first()
             if (provjera): #ima dodatnih polja u obrascu
                 dodatno = models.DodatnaPoljaObrasca.objects.all()
-                print(len(dodatno))
             
                 for polje in dodatno:
                         dodatno = models.DodatniPodatci.objects.filter(korisnik = korisnik, poljeObrasca = polje).first()
                         
                         if dodatno:
-                            print(dodatno.podatak)
                             novo = request.POST["dodatni"+str(i)]
                             #validacija unosa?
 
                             i = i + 1
-                            print(novo)
                             dodatno.podatak = novo
                             dodatno.save()
 
@@ -619,7 +615,6 @@ def uredipodatke(request, korisnickoime):
                 if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = korisnik.korisnikUstanova.grad, drzava = korisnik.korisnikUstanova.drzava, adresa = korisnik.korisnikUstanova.adresa).exists():
                     novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = korisnik.korisnikUstanova.grad, drzava = korisnik.korisnikUstanova.drzava, adresa = korisnik.korisnikUstanova.adresa)
                 else:
-                    #print("Tu sam 1")
                     novaUstanova = models.Ustanova(
                     naziv = maticnaUstanova,
                     grad = korisnik.korisnikUstanova.grad,
@@ -639,7 +634,6 @@ def uredipodatke(request, korisnickoime):
                 return redirect(url)
             if (uloga == "Recenzent"):
                 url = "/pregled/recenzenti/"+username
-                print(url)
                 return redirect(url)
             else:
         
@@ -683,10 +677,8 @@ def uredipodatke(request, korisnickoime):
                     
                             if dodatno:
                                 podatak = dodatno.podatak
-                            #print(dodatno.podatak)
                                 if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
                                 #želimo naš format datuma
-                                #print("tu")
 
                                     try:
                                         date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date() #validacija datuma?
@@ -698,7 +690,6 @@ def uredipodatke(request, korisnickoime):
                   
 
                     context['dodatnipodatci'] = dodatnipodatci
-                #print(dodatnipodatci)
 
 
                 if context['uloga']=='Sudionik':
@@ -742,7 +733,6 @@ def uredirad(request, sifrada):
             autorRadQuery = models.AutorRad.objects.filter(Rad = rad.sifRad)
             for autorRad in autorRadQuery:
                 promjenaAutora=models.Autor.objects.get(sifAutor=autorRad.Autor.sifAutor)
-                print(request.POST["newname"+str(autorRad.Autor.sifAutor)])
                 promjenaAutora.ime = request.POST["newname"+str(autorRad.Autor.sifAutor)]
                 promjenaAutora.prezime = request.POST["newsur"+str(autorRad.Autor.sifAutor)]
                 promjenaAutora.save()

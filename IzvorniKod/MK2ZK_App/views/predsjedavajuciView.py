@@ -193,11 +193,9 @@ def obavijest(request):
     if request.method=="POST":
         naslov=request.POST["naslovObavijesti"]
         tekst=request.POST["tekstObavijesti"]
-        print(request.POST)
         for korisnik in korisnici:
             try:
                 if request.POST[str(korisnik.id)+"checked"]=='on':
-                    print("Poslao")
                     to_email = korisnik.email
                     email = EmailMessage(
                         naslov, tekst, 'Pametna ekipa', to=[to_email]
@@ -402,8 +400,7 @@ def statistika(request):
     for korisnik in sviKorisnici:
         if (datetime.now().replace(tzinfo=timezone.utc)- korisnik.lastActive ).total_seconds()<600:
             aktivniKorisnici.append(korisnik)
-            
-    print(aktivniKorisnici)
+    
     context["aktivniKorisnici"]=aktivniKorisnici
     context["brojAktivni"]=len(aktivniKorisnici)
     context["sudionici_svi"] = sudionici_svi
