@@ -379,9 +379,13 @@ def statistika(request):
     
     context["Drzave"] = drzaveHrvList[1:]
 
-    sudionici_po_drzavama = {}
+    broj_drzava = len(drzaveHrvList[1:])
 
-    #Sta sam ti rekao da napravis
+    sudionici_po_drzavama = {}
+    for jedna_drzava in drzaveHrvList[1:]:
+        if models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count() > 0:
+            sudionici_po_drzavama[jedna_drzava] = models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count()    
+
     sviKorisnici=models.Korisnik.objects.all()
     for korisnik in sviKorisnici:
         if not korisnik.korisnikUstanova==None:
@@ -389,7 +393,6 @@ def statistika(request):
                 sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]=1
             else:
                 sudionici_po_drzavama[str(korisnik.korisnikUstanova.drzava)]+=1
-    #Whatever the fuck this is
     #for jedna_drzava in drzaveHrvList[1:]:
         #if models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count() > 0:
             #sudionici_po_drzavama[jedna_drzava] = models.Korisnik.objects.filter(korisnikUstanova__in=models.Ustanova.objects.filter(drzava=jedna_drzava).values_list("sifUstanova")).count()    
@@ -424,8 +427,5 @@ def statistika(request):
     context["radovi_po_sekcijama"] = radovi_po_sekcijama
     context["korisnici_po_ulogama"] = korisnici_po_ulogama
     context["sudionici_po_drzavama"] = sudionici_po_drzavama
-    context["recenzenti_potvrdeni"] = recenzenti_potvrdeni
-    context["recenzenti_odbijeni"] = recenzenti_odbijeni
-    context["recenzenti_wait"] = recenzenti_wait
 
     return render(request, 'Statistika.html', context)
