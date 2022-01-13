@@ -214,11 +214,11 @@ def adminsucelje(request):
             #Validatori za korisničko ime i email
             #______________________________________________________________________________________________________________________
             
-            if models.Korisnik.objects.filter(korisnickoIme = username).exists():
+            if models.Korisnik.objects.filter(korisnickoIme = username).exclude(vrstaKorisnik=models.Uloga.objects.get(id=2)).exists():
                 messages.error(request, "Korisničko ime je zauzeto")
                 return redirect('/adminsucelje#upravljanjePredsjedavajućem')
             
-            if models.Korisnik.objects.filter(email = email).exists():
+            if models.Korisnik.objects.filter(email = email).exclude(vrstaKorisnik=models.Uloga.objects.get(id=2)).exists():
                 messages.error(request, "E-mail adresa je zauzeta")
                 return redirect('/adminsucelje#upravljanjePredsjedavajućem')
             
