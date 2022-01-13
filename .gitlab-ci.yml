@@ -1,9 +1,0 @@
-stages:
- - deploy
-
-deploy:
-  stage: deploy
-  script:
-   - docker-compose up -d -f --build --force-recreate
-  only:
-   - main
