@@ -440,7 +440,7 @@
           {%endif%}
           {%else%}
           <div class="form-outline mb-2">
-            <label class="fs-6 fw-bold for=">Počele su prijave!</label>
+            <label class="fs-6 fw-bold for=">Počele su prijave za konferenciju  - više ne možete mijenjati obrazac za registraciju!</label>
           </div>
           {%endif%}
         </div>
@@ -458,6 +458,8 @@
             </div>
             <hr>
           </div>
+
+          {%if prosoDatum == 0%}
 
           <div class="container">
             <div class="row justify-content-between">
@@ -492,6 +494,13 @@
 
             </div>
           </div>
+
+          {%else%}
+          <div class="form-outline mb-2">
+            <label class="fs-6 fw-bold for=">Počele su prijave za konferenciju - više ne možete mijenjati obrazac za registraciju!</label>
+          </div>
+          {%endif%}
+
         </div>
         <!-- SEKCIJE NA KONFERENCIJI -->
 
