@@ -25,7 +25,10 @@ def osobnipodaci(request):
         ime = request.POST["ime"]
         prezime = request.POST["prezime"]
         email = request.POST["email"]
-        maticnaUstanova = request.POST["ustanova"]
+        try:
+            maticnaUstanova = request.POST["ustanova"]
+        except:
+            pass
         
 
 
@@ -63,19 +66,22 @@ def osobnipodaci(request):
         LoggedInUser.email = email
         
         #ustanova (ako je isti naziv kao i do sad, nema smisla updateati)
-        if maticnaUstanova != LoggedInUser.korisnikUstanova.naziv:
-            if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa).exists():
-                novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa)
-            else:
-                novaUstanova = models.Ustanova(
-                    naziv = maticnaUstanova,
-                    grad = LoggedInUser.korisnikUstanova.grad,
-                    drzava = LoggedInUser.korisnikUstanova.drzava,
-                    adresa = LoggedInUser.korisnikUstanova.adresa
-                )
-                novaUstanova.save()
-                
-            LoggedInUser.korisnikUstanova = novaUstanova
+        try:
+            if maticnaUstanova != LoggedInUser.korisnikUstanova.naziv:
+                if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa).exists():
+                    novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa)
+                else:
+                    novaUstanova = models.Ustanova(
+                        naziv = maticnaUstanova,
+                        grad = LoggedInUser.korisnikUstanova.grad,
+                        drzava = LoggedInUser.korisnikUstanova.drzava,
+                        adresa = LoggedInUser.korisnikUstanova.adresa
+                    )
+                    novaUstanova.save()
+                    
+                LoggedInUser.korisnikUstanova = novaUstanova
+        except:
+            pass
 
         LoggedInUser.save()
         messages.success(request, "Podaci uspješno promijenjeni")
@@ -202,7 +208,8 @@ def mojiradovi(request):
         if 'PonovniUnosPdf' in request.POST:
             fileTitle = request.POST["fileTitle"]
             uploadedFile = request.FILES["uploadedFile"]
-            updateRad=models.Rad.objects.get(naslov=fileTitle, radKorisnik = LoggedInUser)
+            radsekcija = request.POST["radsekcija"]
+            updateRad=models.Rad.objects.get(naslov=fileTitle, radSekcija=models.Sekcija.objects.get(sifSekcija=radsekcija), radKorisnik = LoggedInUser)
             updateRad.pdf=uploadedFile
             #najnovija recenzija nam treba
             recenzija = models.Recenzija.objects.filter(rad = updateRad).order_by("-sifRecenzija").first()

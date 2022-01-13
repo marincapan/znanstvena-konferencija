@@ -359,9 +359,11 @@ def adminsucelje(request):
             if (not konferencija):
                 konferencija = models.Konferencija() #ako još nemamo podataka za konferenciju
 
-            if not models.Sekcija.objects.filter(naziv = SectionName).exists():
+            if not models.Sekcija.objects.filter(naziv__iexact = SectionName).exists():
                 newSection=models.Sekcija(naziv = SectionName, konferencijaSekcija=konferencija)
                 newSection.save()
+            else:
+                messages.error(request,"Ova sekcija već postoji")
             return redirect("/adminsucelje#upravljanjeSekcijama")
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         
@@ -574,18 +576,18 @@ def uredipodatke(request, korisnickoime):
                 messages.error(request, "Korisničko ime je zauzeto")
                 
                 if (uloga == "Sudionik"):
-                    return redirect('pregled/sudionici/'+username)
+                    return redirect('/pregled/sudionici/'+korisnickoime)
                 if (uloga == "Recenzent"):
-                    return redirect('pregled/recenzneti/'+username)
+                    return redirect('/pregled/recenzenti/'+korisnickoime)
         
             #email - pogledaj postoji li netko s istim emailom, a da nije trenutni korisnik
             if models.Korisnik.objects.filter(email = email).exclude(id = korisnik.id).exists():
                 messages.error(request, "E-mail adresa je zauzeta")
                 
                 if (uloga == "Sudionik"):
-                    return redirect('pregled/sudionici/'+username)
+                    return redirect('/pregled/sudionici/'+korisnickoime)
                 if (uloga == "Recenzent"):
-                    return redirect('pregled/recenzneti/'+username)
+                    return redirect('/pregled/recenzenti/'+korisnickoime)
             
             i = 1
 

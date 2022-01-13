@@ -55,22 +55,21 @@
                   {%if ime%}
                   <div class="mb-3" id="imeWrapper">
                     <label for="ime" class="form-label fw-bold">Ime</label>
-                    <input type="text" class="form-control input-md" id="ime" name="ime" value="{{ime}}" required>
+                    <input type="text" class="form-control input-md" id="ime" name="ime" value="{{ime}}" onkeypress="return /[a-z]/i.test(event.key)" required>
                   </div>
                   {%endif%}
 
                   {%if prezime%}
                   <div class="mb-3" id="prezimeWrapper">
                     <label for="prezime" class="form-label fw-bold">Prezime</label>
-                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="{{prezime}}"
-                      required>
+                    <input type="text" class="form-control input-md" id="prezime" name="prezime" value="{{prezime}}" onkeypress="return /[a-z]/i.test(event.key)" required>
                   </div>
                   {%endif%}
 
                   {%if email%}
                   <div class="mb-3" id="emailWrapper">
                     <label for="email" class="form-label fw-bold">E-mail</label>
-                    <input type="text" class="form-control input-lg" id="email" name="email" value="{{email}}" required>
+                    <input type="email" class="form-control input-lg" id="email" name="email" value="{{email}}" required>
                   </div>
                   {%endif%}
                 </div>

@@ -570,5 +570,32 @@ def javniradovi(request):
   context['Radovi'] = radovi
   context['brojPredanihRadova'] = brojPredanihRadova
 
+  if request.method == "POST":
+        if "downloadAll" in request.POST:
+            #Dohvacanje svih potrebnih podataka
+            korisnici = models.Korisnik.objects.all()
+            radovi = models.Rad.objects.all()
+
+            #Postavljanje zipa
+            zip_name = "radovi.zip"
+            s = BytesIO()
+            zip = zipfile.ZipFile(s, "w")
+
+            #Iteriranje kroz sve radove kako bi se mogla napraviti odgovarajuca struktura .zip datoteke
+            for rad in radovi:
+                if(rad.pdf.name == ''):
+                    continue
+                korisnik = korisnici.get(id=rad.radKorisnik_id)
+                pdf_dir, pdf_name = os.path.split(rad.pdf.name)
+                path = os.path.join(korisnik.prezime + korisnik.ime, rad.naslov, pdf_name)
+
+                zip.write("IzvorniKod/Radovi/" + rad.pdf.name, path)
+
+            zip.close()
+
+            resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+            resp["Content-Disposition"] = 'attachment; filename=%s' % zip_name
+            return resp
+
   return render(request, 'JavniRadovi.html', context)
 
