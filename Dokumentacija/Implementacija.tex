@@ -44,15 +44,74 @@
 			
 			\subsection{Ispitivanje sustava}
 			
-			 \textit{Potrebno je provesti i opisati ispitivanje sustava koristeći radni okvir Selenium\footnote{\url{https://www.seleniumhq.org/}}. Razraditi \textbf{minimalno 4 ispitna slučaja} u kojima će se ispitati redovni slučajevi, rubni uvjeti te poziv funkcionalnosti koja nije implementirana/izaziva pogrešku kako bi se vidjelo na koji način sustav reagira kada nešto nije u potpunosti ostvareno. Ispitni slučaj se treba sastojati od ulaza (npr. korisničko ime i lozinka), očekivanog izlaza ili rezultata, koraka ispitivanja i dobivenog izlaza ili rezultata.\\ }
+			Za testiranje sustava odabran je radni okvir Seleniu IDE\footnote{\url{https://www.selenium.dev/selenium-ide/}} Selenium IDE je odabran radi njegove jednostavnosti koristenja te njagove slicnosti ponašanju stvarnog korisnika. Odabrani testovi usredotočeni su na administrativne zadatke sustava i pokrivaju veliki broj obrazaca uporabe.\\ 
 			 
-			 \textit{Izradu ispitnih slučajeva pomoću radnog okvira Selenium moguće je provesti pomoću jednog od sljedeća dva alata:}
-			 \begin{itemize}
-			 	\item \textit{dodatak za preglednik \textbf{Selenium IDE} - snimanje korisnikovih akcija radi automatskog ponavljanja ispita	}
-			 	\item \textit{\textbf{Selenium WebDriver} - podrška za pisanje ispita u jezicima Java, C\#, PHP koristeći posebno programsko sučelje.}
-			 \end{itemize}
-		 	\textit{Detalji o korištenju alata Selenium bit će prikazani na posebnom predavanju tijekom semestra.}
+			 \textbf{Ispitni slučaj 1: Dodavanje administratora}\\
+			 \textbf{Ulaz:}
+			 \begin{packed_item}
+			 	\item {Prijava u sustav kao administrator}
+			 	\item {Ulaz u administrativno sučelje klikom na gumb u izbornoj traci}
+			 	\item {Unos neispravnih korisničkih podataka novog administratora}
+			 	\item {Unos ispravnih korisničkih podataka novog administratora}
+			 \end{packed_item}
+			 
+			 \textbf{Očekivani rezultat:}
+			 \begin{packed_item}
+			 	\item {Uspješna prijava u sustav}
+			 	\item {Otvaranje administrativnog sučelja}
+			 	\item {Dojava greške o neispravnoj e-mail adresi}
+			 	\item {Potvrda o dostavi korisnickih podataka novog administratora na e-mail adresu}
+			 \end{packed_item}
+			 \textbf{Rrezultat: }Prijava u postojeci administratorski račun je uspješna, unos neispravne e-mail adrese pri unosu podataka novog administratora ispravno dojavljuje grešku, a prilikom unosa ispravnih korisničkih podataka ispravno se prikazuje potvrda o dostavljenoj podatcima na e-mail. Aplikacija prolazi test.\\
 			
+			 \textbf{Ispitni slučaj 2: Dodavanje novih sekcija}\\
+			 \textbf{Ulaz:}
+			 \begin{packed_item}
+			 	\item {Prijava u sustav kao administrator}
+			 	\item {Ulaz u administrativno sučelje klikom na gumb u izbornoj traci}
+			 	\item {Unos več postoječe sekcije}
+			 	\item {Unos nove sekcije}
+			 \end{packed_item}
+			 \textbf{Očekivani rezultat:}
+			 \begin{packed_item}
+			 	\item {Uspješna prijava u sustav}
+			 	\item {Otvaranje administrativnog sučelja}
+			 	\item {Dojava greške o več postoječoj sekciji}
+			 	\item {Nova sekcija dodanu u listu sekcija}
+			 \end{packed_item}
+			 \textbf{Rrezultat: }Prijava u postojeci administratorski račun je uspješnai otvara se administratorsko sučelje. Pokušaj dodavanja sekcije koja več postoji ispravno javlja pogrešku o pokušaju unosa več postoječe sekcije. Unos nove sekcije je uspješan i ispravno se dodaje na listu sekcija. Aplikacija prolazi test.\\
+			
+			
+			 \textbf{Ispitni slučaj 3: Registracija kao recenzent}\\
+			 \textbf{Ulaz:}
+			 \begin{packed_item}
+			 	\item {Klik na gumb za registraciju u izbornoj traci}
+			 	\item {Unos podataka za registraciju}
+			 	\item {Odabir registracije kao recenzent}
+			 \end{packed_item}
+			 \textbf{Očekivani rezultat:}
+			 \begin{packed_item}
+			 	\item {Otvara se sučelje za registraciju}
+			 	\item {Odabirom registracije kao recenzent mijenjaju se polja obrasca prijave}
+			 	\item {Obavijest o potrebi potvrde registracije od strane predsjedavajučega}
+			 \end{packed_item}
+			 \textbf{Rrezultat: }Sučelje za registraciju otvara se nakon klika na gumb registracije. Nakon sto oznacimo da se prijavljujemo ko recenzent obrazac prijave se mijenja i traži se odabir sekcije za koju se registrira. Po završetku prijave ispravno se javlja obavijest o potrebi potvrde od strane predsjedavajučeg člana. Aplikacija prolazi test.\\
+			
+			
+			 \textbf{Ispitni slučaj 4: Potvrda prijave recenzenta od strane predsjedavajučega}\\
+			 \textbf{Ulaz:}
+			 \begin{packed_item}
+			 	\item {Prijava u sustav kao predsjedavajuči}
+			 	\item {Otvaranje korisničkog sučelja predsjedavajučeg člana}
+			 	\item {Klik na gumb potvrdi}
+			 \end{packed_item}
+			 \textbf{Očekivani rezultat:}
+			 \begin{packed_item}
+			 	\item {Izborna traka se mijenja i pojavljuje se gump za otvaranje korisničkog sučelja predsjedavajučega}
+			 	\item {Otvara se korisničko sučelje predsjedavajučega}
+			 	\item {Prijava se prihvača i šalje se mail s podacima za prijavu recenzentu}
+			 \end{packed_item}
+			 \textbf{Rrezultat: }Prijavom kao predsjedavajuči član mijenja se izborna traka i pojavljuje se gumb za otvaranje korisničkog sučelja predsjedavajučeg člana. Otvaranjem sučelja predsjedavajučeg člana vidljiv je popis recenzenata koji čekaju potvrdu registracije. Klikom na gumb potvrdi recenzentu se šalje e-mail s potrebnim podacima za prijavu. Aplikacija prolazi test.\\
 			\eject 
 		
 		
@@ -61,6 +120,14 @@
 			\textbf{\textit{dio 2. revizije}}
 			
 			 \textit{Potrebno je umetnuti \textbf{specifikacijski} dijagram razmještaja i opisati ga. Moguće je umjesto specifikacijskog dijagrama razmještaja umetnuti dijagram razmještaja instanci, pod uvjetom da taj dijagram bolje opisuje neki važniji dio sustava.}
+			 
+			 
+			\begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Diagram razmjestaja.png} 
+			 	\centering
+			 	\caption{Dijagram razmještaja - Znanstvena konferencija}
+			 	\label{fig:act5}
+			 \end{figure}
 			
 			\eject 
 		
