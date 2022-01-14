@@ -15,6 +15,6 @@ deploy_staging:
     name: production
     url: "$URL"
   script:
-    - ssh "$SERVER_USER"@"$URL"
+    - ssh "$SERVER_USER"@"$URL" "cd /home/docker/znanstvenakonferencija && git checkout main && git pull origin main && docker-compose up -d --build --force-recreate && exit"
   only:
     - main
