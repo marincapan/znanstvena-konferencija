@@ -1,19 +1,16 @@
 before_script:
-  - apt-get update -qq
-  - apt-get install -qq git
-  # Setup SSH deploy keys
-  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
-  - eval $(ssh-agent -s)
-  - ssh-add <(echo "$ID_RSA")
-  - mkdir -p ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    
-deploy_staging:
-  type: deploy
-  environment:
-    name: staging
-    url: $URL
-  script:
-    - ssh $SERVER_USER@$URL "cd /home/docker/znanstvenakonferencija/ && git checkout main && git pull origin main && docker-compose up -d --build --force-recreate"
-  only:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - 'which sshpass || ( apt-get update -y && apt-get install sshpass -y )'
+    - mkdir -p ~/.ssh
+    - echo "$ID_RSA" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh/id_rsa
+    - eval $(ssh-agent -s)
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
+    - ssh-keyscan gitlab.com | sort -u - ~/.ssh/known_hosts -o ~/.ssh/known_hosts
+    - rm -rf .git
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+script:
+    - sshpass -p "$USER_PASS" ssh  "$SERVER_USER"@"$SERVER_IP" "ls"
+only:
     - main
