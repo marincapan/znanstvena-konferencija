@@ -21,5 +21,12 @@ U nastavku možete pronaći upute kako pokrenuti aplikaciju u razvojnom ili prod
 3. Pozicionirajte se u mapu u koju želite klonirati repozitorij aplikacije naredbom: 
 `git clone https://gitlab.com/fotoModeli/znanstvenakonferencija.git`
 4. Pozicionirati se u radni direktorij repozitorija i pokrenuti naredbu `python -m venv venv` 
+5. Aktivirati virtualno okruženje naredbom: `venv\Scripts\activate` 
+6. Pozicionirati se u direktorij *IzvorniKod* i instalirati potrebne pakete naredbom: `pip install -r requirements.txt`
+7. Preimenovati *.env.example* u *.env* datoteku te popuniti navedene varijable 
+8. Ookrenuti lokalni server naredbom: `python manage.p< runerver`
 
 ## Produkcijsko pokretanje
+
+Koraci za produkcijsko pokretanje su jednaki koracima za lokalno pokretnaje s Docker alatom s time da se u varijablima okruženjatrebaju promijeniti podaci koji su odgovarajući produkcijskom okruženju.
+
