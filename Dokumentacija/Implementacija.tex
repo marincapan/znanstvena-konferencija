@@ -55,6 +55,7 @@
 			 	\item {Unos ispravnih korisničkih podataka novog administratora}
 			 \end{packed_enum}
 			 
+			 
 			 \textbf{Očekivani rezultat:}
 			 \begin{packed_enum}
 			 	\item {Uspješna prijava u sustav}
@@ -63,6 +64,13 @@
 			 	\item {Potvrda o dostavi korisničkih podataka novog administratora na adresu e-pošte}
 			 \end{packed_enum}
 			 \textbf{Rezultat: }Prijava u postojeći administratorski račun je uspješna, unos neispravne adrese e-pošte pri unosu podataka novog administratora ispravno dojavljuje grešku, a prilikom unosa ispravnih korisničkih podataka ispravno se prikazuje potvrda o dostavljenim podatcima na adresu e-pošte. {\color{green} Aplikacija prolazi test.}\\
+			 
+			  \begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{slike/test_dodavanje_administratora.png} 
+			 	\centering
+			 	\caption{Ispitni slučaj 1 - Dodavanje administratora}
+			 	\label{fig:act5}
+			 \end{figure}
 			
 			 \noindent \textbf{Ispitni slučaj 2: Dodavanje novih sekcija}\\
 			 \textbf{Ulaz:}
@@ -80,6 +88,13 @@
 			 	\item {Nova sekcija dodanu u listu sekcija}
 			 \end{packed_enum}
 			 \textbf{Rezultat: }Prijava u postojeći administratorski račun je uspješna i otvara se administracijsko sučelje. Pokušaj dodavanja sekcije koja već postoji ispravno javlja pogrešku o pokušaju unosa već postojeće sekcije. Unos nove sekcije je uspješan i ispravno se dodaje na listu sekcija. {\color{green} Aplikacija prolazi test.}\\
+			 
+			   \begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{slike/test_dodavanje_sekcija.png} 
+			 	\centering
+			 	\caption{Ispitni slučaj 2 - Dodavanje novih sekcija}
+			 	\label{fig:act5}
+			 \end{figure}
 			
 			
 			 \noindent \textbf{Ispitni slučaj 3: Registracija kao recenzent}\\
@@ -96,9 +111,16 @@
 			 	\item {Obavijest o potrebi da predsjedavajući potvrdi registraciju}
 			 \end{packed_enum}
 			  \textbf{Rezultat: }Sučelje za registraciju otvara se nakon klika na gumb registracije. Nakon sto se označi gumb da se korisnik prijavljuje kao recenzent, obrazac prijave se mijenja i traži se odabir sekcije za koju se korisnik registrira. Po završetku prijave ispravno se javlja obavijest kako je potrebno da predsjedavajući potvrdi registraciju prije mogućnosti recenziranja. {\color{green} Aplikacija prolazi test.}\\
+			  
+			    \begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{slike/test_registracija_kao_recenzent.png} 
+			 	\centering
+			 	\caption{Ispitni slučaj 3 - Registracija kao recenzent}
+			 	\label{fig:act5}
+			 \end{figure}
 			
 			
-			 \noindent \textbf{Ispitni slučaj 4: Potvrda prijave recenzenta od predsjedavajućeg}\\
+			 \noindent \textbf{Ispitni slučaj 4: Potvrda prijave recenzenta od strane predsjedavajućeg}\\
 			  \textbf{Ulaz:}
 			 \begin{packed_enum}
 			 	\item {Prijava u sustav kao predsjedavajući}
@@ -112,6 +134,14 @@
 			 	\item {Prijava se prihvaća i recenzentu šalje se e-pošta s podacima za prijavu}
 			 \end{packed_enum}
 			 \textbf{Rezultat: }Prijavom kao predsjedavajući mijenja se izborna traka i pojavljuje se gumb za otvaranje upravljačkog sučelja predsjedavajućeg konferencije. Otvaranjem sučelja vidljiv je popis recenzenata koji čekaju potvrdu registracije. Klikom na gumb "Potvrdi" recenzentu se šalje e-pošta s potrebnim podacima za prijavu. {\color{green} Aplikacija prolazi test.}\\
+			 
+			   \begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{slike/test_potvrda_prijave_recenzenta.png} 
+			 	\centering
+			 	\caption{Ispitni slučaj 4 - Potvrda prijave recenzenta od predsjedavajućeg}
+			 	\label{fig:act5}
+			 \end{figure}
+			 
 			\eject 
 		
 		
@@ -131,9 +161,9 @@
 		
 		\section{Upute za puštanje u pogon}
 		
-			\textbf{Instalacija poslužitelja baze podataka}\\
-
-			Potrebno je preuzeti PostgreSQL bazu podataka za operacijski sustav Windows te provesti standardnu instalaciju s postavljanjem korisnika.
+			\textbf{\textit{dio 2. revizije}}\\
+		
+			 \textit{U ovom poglavlju potrebno je dati upute za puštanje u pogon (engl. deployment) ostvarene aplikacije. Na primjer, za web aplikacije, opisati postupak kojim se od izvornog kôda dolazi do potpuno postavljene baze podataka i poslužitelja koji odgovara na upite korisnika. Za mobilnu aplikaciju, postupak kojim se aplikacija izgradi, te postavi na neku od trgovina. Za stolnu (engl. desktop) aplikaciju, postupak kojim se aplikacija instalira na računalo. Ukoliko mobilne i stolne aplikacije komuniciraju s poslužiteljem i/ili bazom podataka, opisati i postupak njihovog postavljanja. Pri izradi uputa preporučuje se \textbf{naglasiti korake instalacije uporabom natuknica} te koristiti što je više moguće \textbf{slike ekrana} (engl. screenshots) kako bi upute bile jasne i jednostavne za slijediti.}
 			
 			
 			 \textit{Dovršenu aplikaciju potrebno je pokrenuti na javno dostupnom poslužitelju. Studentima se preporuča korištenje neke od sljedećih besplatnih usluga: \href{https://aws.amazon.com/}{Amazon AWS}, \href{https://azure.microsoft.com/en-us/}{Microsoft Azure} ili \href{https://www.heroku.com/}{Heroku}. Mobilne aplikacije trebaju biti objavljene na F-Droid, Google Play ili Amazon App trgovini.}
