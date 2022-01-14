@@ -19,7 +19,7 @@ deploy_staging:
     url: "$URL"
   script:
     - ssh "$SERVER_USER"@"$URL"
-    - cd /home/docker/znanstvenakonferencija/
+    - ls
     - git pull origin main
     - docker-compose up -d --build --force-recreate
     - exit
