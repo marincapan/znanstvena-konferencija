@@ -11,9 +11,11 @@ before_script:
 deploy_staging:
   type: deploy
   environment:
-    name: staging
+    name: development
     url: "$URL"
   script:
-    - ssh "$SERVER_USER"@"$URL"
+    - sshpass -V
+    - export SSHPASS=$USER_PASS 
+    - sshpass -e scp -o stricthostkeychecking=no -r . "$SERVER_USER"@"$URL":/var/www/html
   only:
     - main
