@@ -550,7 +550,7 @@
 			\eject
 		\section{Dijagram komponenti}
 
-			Dijagram na slici 4.14 prikazuje i opisuje organizaciju komponenti te samu strukturu sustava. Sustavu se pristupa preko web preglednika.
+			Dijagram na slici 4.14 prikazuje i opisuje organizaciju komponenti te samu strukturu sustava. Sustavu se pristupa preko web preglednika. Kada korisnik unese link znanstvena-konferecija.tk u web preglednik, šalje se HTTP zahtjev koji se zatim šalje zahtjev na sigurnu domenu na port 8000 na koji je vezana aplikacija. Aplikacija funkcionira na način da dobiveni zahtjev obradi pomoću poznatih url-ova koji se nalaze u datoteci \textit{urls.py}, te se zatim unutar aplikacije zahtjev dalje prosljeđuje zahtjev na odgovarajući pogled, odnosno \textit{View}. \textit{Views} upravljaju svim metodama, kao i podacima koji se komuniciraju se komuniciraju s bazom putem modela (\textit{Models}). Uz HTTP odgovor web pregledniku se šalje i odgovarajući HTML predložak (\textit{Template}), koji korisniku prikazuje web preglednik.
 
 			\begin{figure}[H]
 			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Component_Diagram_Znanstvena_Konferencija.png} 
