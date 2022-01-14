@@ -32,16 +32,6 @@
 	
 		\section{Ispitivanje programskog rješenja}
 			
-			\textbf{\textit{dio 2. revizije}}\\
-			
-			 \textit{U ovom poglavlju je potrebno opisati provedbu ispitivanja implementiranih funkcionalnosti na razini komponenti i na razini cijelog sustava s prikazom odabranih ispitnih slučajeva. Studenti trebaju ispitati temeljnu funkcionalnost i rubne uvjete.}
-	
-			
-			\subsection{Ispitivanje komponenti}
-			\textit{Potrebno je provesti ispitivanje jedinica (engl. unit testing) nad razredima koji implementiraju temeljne funkcionalnosti. Razraditi \textbf{minimalno 6 ispitnih slučajeva} u kojima će se ispitati redovni slučajevi, rubni uvjeti te izazivanje pogreške (engl. exception throwing). Poželjno je stvoriti i ispitni slučaj koji koristi funkcionalnosti koje nisu implementirane. Potrebno je priložiti izvorni kôd svih ispitnih slučajeva te prikaz rezultata izvođenja ispita u razvojnom okruženju (prolaz/pad ispita). }
-			
-			 
-
 		\subsection{Ispitivanje sustava}
 			
 			Za testiranje sustava odabran je radni okvir Selenium IDE\footnote{\url{https://www.selenium.dev/selenium-ide/}} radi njegove jednostavnosti korištenja te sličnosti ponašanju stvarnog korisnika. Odabrani testovi usredotočeni su na administrativne zadatke sustava i pokrivaju velik broj obrazaca uporabe.\\ 
@@ -63,7 +53,7 @@
 			 	\item {Dojava greške o neispravnoj adresi e-pošte}
 			 	\item {Potvrda o dostavi korisničkih podataka novog administratora na adresu e-pošte}
 			 \end{packed_enum}
-			 \textbf{Rezultat: }Prijava u postojeći administratorski račun je uspješna, unos neispravne adrese e-pošte pri unosu podataka novog administratora ispravno dojavljuje grešku, a prilikom unosa ispravnih korisničkih podataka ispravno se prikazuje potvrda o dostavljenim podatcima na adresu e-pošte. {\color{green} Aplikacija prolazi test.}\\
+			 \textbf{Rezultat: }Prijava u postojeći administratorski račun je uspješna, unos neispravne adrese e-pošte pri unosu podataka novog administratora ispravno dojavljuje grešku, a prilikom unosa ispravnih korisničkih podataka ispravno se prikazuje potvrda o dostavljenim podatcima na adresu e-pošte. {\color{green} Aplikacija prolazi test.}
 			 
 			  \begin{figure}[H]
 			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{slike/test_dodavanje_administratora.png} 
@@ -74,20 +64,24 @@
 			
 			 \noindent \textbf{Ispitni slučaj 2: Dodavanje novih sekcija}\\
 			 \textbf{Ulaz:}
+
 			 \begin{packed_enum}
 			 	\item {Prijava u sustav kao administrator}
 			 	\item {Ulaz u administracijsko sučelje klikom na gumb u izbornoj traci}
 			 	\item {Unos već postojeće sekcije}
 			 	\item {Unos nove sekcije}
 			 \end{packed_enum}
+
 			 \textbf{Očekivani rezultat:}
+
 			 \begin{packed_enum}
 			 	\item {Uspješna prijava u sustav}
 			 	\item {Otvaranje administracijskog sučelja}
 			 	\item {Dojava greške o već postojećoj sekciji}
 			 	\item {Nova sekcija dodanu u listu sekcija}
 			 \end{packed_enum}
-			 \textbf{Rezultat: }Prijava u postojeći administratorski račun je uspješna i otvara se administracijsko sučelje. Pokušaj dodavanja sekcije koja već postoji ispravno javlja pogrešku o pokušaju unosa već postojeće sekcije. Unos nove sekcije je uspješan i ispravno se dodaje na listu sekcija. {\color{green} Aplikacija prolazi test.}\\
+
+			 \textbf{Rezultat: }Prijava u postojeći administratorski račun je uspješna i otvara se administracijsko sučelje. Pokušaj dodavanja sekcije koja već postoji ispravno javlja pogrešku o pokušaju unosa već postojeće sekcije. Unos nove sekcije je uspješan i ispravno se dodaje na listu sekcija. {\color{green} Aplikacija prolazi test.}
 			 
 			   \begin{figure}[H]
 			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{slike/test_dodavanje_sekcija.png} 
@@ -99,18 +93,22 @@
 			
 			 \noindent \textbf{Ispitni slučaj 3: Registracija kao recenzent}\\
 			  \textbf{Ulaz:}
+
 			 \begin{packed_enum}
 			 	\item {Klik na gumb za registraciju u izbornoj traci}
 			 	\item {Unos podataka za registraciju}
 			 	\item {Odabir registracije kao recenzent}
 			 \end{packed_enum}
+
 			 \textbf{Očekivani rezultat:}
+
 			 \begin{packed_enum}
 			 	\item {Otvara se sučelje za registraciju}
 			 	\item {Odabirom registracije kao recenzent mijenjaju se polja obrasca prijave}
 			 	\item {Obavijest o potrebi da predsjedavajući potvrdi registraciju}
 			 \end{packed_enum}
-			  \textbf{Rezultat: }Sučelje za registraciju otvara se nakon klika na gumb registracije. Nakon sto se označi gumb da se korisnik prijavljuje kao recenzent, obrazac prijave se mijenja i traži se odabir sekcije za koju se korisnik registrira. Po završetku prijave ispravno se javlja obavijest kako je potrebno da predsjedavajući potvrdi registraciju prije mogućnosti recenziranja. {\color{green} Aplikacija prolazi test.}\\
+
+			  \textbf{Rezultat: }Sučelje za registraciju otvara se nakon klika na gumb registracije. Nakon sto se označi gumb da se korisnik prijavljuje kao recenzent, obrazac prijave se mijenja i traži se odabir sekcije za koju se korisnik registrira. Po završetku prijave ispravno se javlja obavijest kako je potrebno da predsjedavajući potvrdi registraciju prije mogućnosti recenziranja. {\color{green} Aplikacija prolazi test.}
 			  
 			    \begin{figure}[H]
 			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{slike/test_registracija_kao_recenzent.png} 
@@ -121,19 +119,24 @@
 			
 			
 			 \noindent \textbf{Ispitni slučaj 4: Potvrda prijave recenzenta od strane predsjedavajućeg}\\
+
 			  \textbf{Ulaz:}
+
 			 \begin{packed_enum}
 			 	\item {Prijava u sustav kao predsjedavajući}
 			 	\item {Otvaranje upravljačkog sučelja}
 			 	\item {Klik na gumb "Potvrdi"}
 			 \end{packed_enum}
+
 			  \textbf{Očekivani rezultat:}
+
 			 \begin{packed_enum}
 			 	\item {Izborna traka se mijenja i pojavljuje se gumb za otvaranje upravljačkog sučelja predsjedavajućeg}
 			 	\item {Otvara se upravljačko sučelje predsjedavajućeg}
 			 	\item {Prijava se prihvaća i recenzentu šalje se e-pošta s podacima za prijavu}
 			 \end{packed_enum}
-			 \textbf{Rezultat: }Prijavom kao predsjedavajući mijenja se izborna traka i pojavljuje se gumb za otvaranje upravljačkog sučelja predsjedavajućeg konferencije. Otvaranjem sučelja vidljiv je popis recenzenata koji čekaju potvrdu registracije. Klikom na gumb "Potvrdi" recenzentu se šalje e-pošta s potrebnim podacima za prijavu. {\color{green} Aplikacija prolazi test.}\\
+
+			 \textbf{Rezultat: }Prijavom kao predsjedavajući mijenja se izborna traka i pojavljuje se gumb za otvaranje upravljačkog sučelja predsjedavajućeg konferencije. Otvaranjem sučelja vidljiv je popis recenzenata koji čekaju potvrdu registracije. Klikom na gumb "Potvrdi" recenzentu se šalje e-pošta s potrebnim podacima za prijavu. {\color{green} Aplikacija prolazi test.}
 			 
 			   \begin{figure}[H]
 			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{slike/test_potvrda_prijave_recenzenta.png} 
@@ -141,13 +144,13 @@
 			 	\caption{Ispitni slučaj 4 - Potvrda prijave recenzenta od predsjedavajućeg}
 			 	\label{fig:act5}
 			 \end{figure}
-			 
-			\eject 
 		
+		
+
 		
 		\section{Dijagram razmještaja}
 		
-		Diagram razmještaja opisuje fizičku organizaciju sustavu i programsku potporu koja se koristi na pojedinim dijelovima sustava. Klijent se sa svojeg računala spaja ne računalo poslužitelja uporabom proizvoljnog web preglednika, a sama komunikacija odvija se preko HTTP protokola. Računalo poslužitelja osim sa korisnikom komunicira i sa bazom podataka Svjetske zdravstvene organizacije od kuda dohvaća podatke o incidenciji Covid-19 virusa.
+		Dijagram razmještaja opisuje fizičku organizaciju sustavu i programsku potporu koja se koristi na pojedinim dijelovima sustava. Klijent se sa svojeg računala spaja ne računalo poslužitelja uporabom proizvoljnog web preglednika, a sama komunikacija odvija se preko HTTP protokola. Računalo poslužitelja osim sa korisnikom komunicira i sa bazom podataka Svjetske zdravstvene organizacije od kuda dohvaća podatke o incidenciji Covid-19 virusa.
 			 
 			 
 			\begin{figure}[H]
@@ -156,8 +159,7 @@
 			 	\caption{Dijagram razmještaja - Znanstvena konferencija}
 			 	\label{fig:act5}
 			 \end{figure}
-			
-			\eject 
+
 		
 		\section{Upute za puštanje u pogon}
 
@@ -173,16 +175,12 @@
 
 			Za instalaciju alata Django prvo je potrebno preuzeti i instalirati Python. Pod pretpostavkom da je izvršen prethodni korak i time kloniran sadržaj aplikacije lokalno (naredbom \verb|git clone|), sljedeće što je potrebno je pozicionirati se u radni direktorij repozitorija i pokrenuti naredbu python -m venv venv. Nakon toga aktivacija virtualnog okruženja vrši se naredbom \verb|venv \textbackslash Scripts \textbackslash activate|.
 
-			Nakon navedenog, potrebno je pozicionirati se u mapu \textit{IzvorniKod} i instalirati potrebne pakete naredbom \verb|pip install -r requirements.txt| te nakon toga, server je moguće lokalno pokrenuti naredbom \verb|python manage.py runserver| 
+			Nakon navedenog, potrebno je pozicionirati se u mapu \textit{IzvorniKod} i instalirati potrebne pakete naredbom \verb|pip install -r requirements.txt| te nakon toga, server je moguće lokalno (ili produkcijski) pokrenuti naredbom \verb|python manage.py runserver| 
 		\eject
 		
-			\textbf{Konfiguracija web poslužitelja, baze podataka i poslužitelja baze podataka}
+			\textbf{Konfiguracija web poslužitelja, baze podataka i poslužitelja baze podataka}\\
 
 			Prethodni odsječci opisuju pokretanje servera s alatom Docker, koji znatno olakšava lokalno (i produkcijsko) pokretanje aplikacije. To je primjetljivo jer je za pokretanje servera potrebno samo klonirati git repozitorij te u komandnu liniju unijeti samo nekoliko naredbi.
-
-			
-			
-			 \textit{Dovršenu aplikaciju potrebno je pokrenuti na javno dostupnom poslužitelju. Studentima se preporuča korištenje neke od sljedećih besplatnih usluga: \href{https://aws.amazon.com/}{Amazon AWS}, \href{https://azure.microsoft.com/en-us/}{Microsoft Azure} ili \href{https://www.heroku.com/}{Heroku}. Mobilne aplikacije trebaju biti objavljene na F-Droid, Google Play ili Amazon App trgovini.}
 			
 			
 			\eject 
