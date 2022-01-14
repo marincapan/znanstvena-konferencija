@@ -192,7 +192,6 @@ def obavijest(request):
             return redirect('/')
     
     if request.method=="POST":
-        print(request.POST)
         naslov=request.POST["naslovObavijesti"]
         tekst=request.POST["tekstObavijesti"]
         for korisnik in korisnici:

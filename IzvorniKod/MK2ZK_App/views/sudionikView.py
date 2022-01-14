@@ -213,6 +213,10 @@ def mojiradovi(request):
             updateRad.pdf=uploadedFile
             #najnovija recenzija nam treba
             recenzija = models.Recenzija.objects.filter(rad = updateRad).order_by("-sifRecenzija").first()
+
+            if (recenzija.ocjena.id == 2):
+                recenzija.ocjena = models.Ocjena.objects.get(id=1)
+                recenzija.save()
             
             if (recenzija.ocjena.id == 3): #samo tada treba recenzent ponovno recenzirati
                 updateRad.revizijaBool=True
