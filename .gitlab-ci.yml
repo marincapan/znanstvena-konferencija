@@ -10,7 +10,8 @@ before_script:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
-    
+  - git config --global user.email "marin.capan@fer.hr"
+  - git config --global user.name "Marin Capan"
 deploy_staging:
   type: deploy
   environment:
