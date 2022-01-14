@@ -41,6 +41,11 @@
 			\textit{Potrebno je provesti ispitivanje jedinica (engl. unit testing) nad razredima koji implementiraju temeljne funkcionalnosti. Razraditi \textbf{minimalno 6 ispitnih slučajeva} u kojima će se ispitati redovni slučajevi, rubni uvjeti te izazivanje pogreške (engl. exception throwing). Poželjno je stvoriti i ispitni slučaj koji koristi funkcionalnosti koje nisu implementirane. Potrebno je priložiti izvorni kôd svih ispitnih slučajeva te prikaz rezultata izvođenja ispita u razvojnom okruženju (prolaz/pad ispita). }
 			
 			 
+
+		\subsection{Ispitivanje sustava}
+			
+			Za testiranje sustava odabran je radni okvir Selenium IDE\footnote{\url{https://www.selenium.dev/selenium-ide/}} radi njegove jednostavnosti korištenja te sličnosti ponašanju stvarnog korisnika. Odabrani testovi usredotočeni su na administrativne zadatke sustava i pokrivaju velik broj obrazaca uporabe.\\ 
+			
 			\noindent  \textbf{Ispitni slučaj 1: Dodavanje administratora}\\
 			 \textbf{Ulaz:}
 			 \begin{packed_enum}
@@ -108,13 +113,11 @@
 			 \end{packed_enum}
 			 \textbf{Rezultat: }Prijavom kao predsjedavajući mijenja se izborna traka i pojavljuje se gumb za otvaranje upravljačkog sučelja predsjedavajućeg konferencije. Otvaranjem sučelja vidljiv je popis recenzenata koji čekaju potvrdu registracije. Klikom na gumb "Potvrdi" recenzentu se šalje e-pošta s potrebnim podacima za prijavu. {\color{green} Aplikacija prolazi test.}\\
 			\eject 
-
-		\subsection{Ispitivanje sustava}
-			
-			Za testiranje sustava odabran je radni okvir Selenium IDE\footnote{\url{https://www.selenium.dev/selenium-ide/}} radi njegove jednostavnosti korištenja te sličnosti ponašanju stvarnog korisnika. Odabrani testovi usredotočeni su na administrativne zadatke sustava i pokrivaju velik broj obrazaca uporabe.\\ 
 		
 		
 		\section{Dijagram razmještaja}
+		
+		Diagram razmještaja opisuje fizičku organizaciju sustavu i programsku potporu koja se koristi na pojedinim dijelovima sustava. Klijent se sa svojeg računala spaja ne računalo poslužitelja uporabom proizvoljnog web preglednika, a sama komunikacija odvija se preko HTTP protokola. Računalo poslužitelja osim sa korisnikom komunicira i sa bazom podataka Svjetske zdravstvene organizacije od kuda dohvaća podatke o incidenciji Covid-19 virusa.
 			 
 			 
 			\begin{figure}[H]
