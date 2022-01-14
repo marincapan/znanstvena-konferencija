@@ -8,6 +8,10 @@ before_script:
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  - git config --global user.email "marin.capan@fer.hr"
+  - git config --global user.name "Marin Capan"
     
 deploy_staging:
   type: deploy
@@ -15,6 +19,7 @@ deploy_staging:
     name: production
     url: "$URL"
   script:
-    - ssh mcapan@znanstvena-konferencija.tk "cd /home/docker/znanstvenakonferencija && git config user.email 'marin.capan@fer.hr' && git config user.name "Marin Capan" && git pull origin main && docker-compose up -d --build --force-recreate && exit"
+    - ssh mcapan@znanstvena-konferencija.tk
+    - ls
   only:
     - main
