@@ -54,7 +54,7 @@
               <div class="text-center fw-bold">
                 Prijave još nisu počele!
               </div>
-              {%elif prosoDatum == 0 %}
+              {%elif poceoDatum == 1 %}
               <div class="accordion" id="accordionRadovi">
                 {%for rad in fetchedRadovi%}
                 <div class="accordion-item">
@@ -77,7 +77,7 @@
                           {%elif recenzija.ocjena_id == 3 %}
                           <span class="badge bg-danger d-flex">Rad zahtijeva promjene!</span>
                           {%elif recenzija.ocjena_id == 2 %}
-                          <span class="badge bg-warning d-flex">Rad zahtijeva manje promjene</span>
+                          <span class="badge bg-warning d-flex">Rad prihvaćen, zahtijeva manje promjene</span>
                           {%elif recenzija.ocjena_id == 1 %}
                           <span class="badge bg-success d-flex">Rad je recenziran</span>
                           {%endif%}
@@ -184,6 +184,7 @@
                                 <div class="btn-group">
                                   <input class="form-control file1" type="file" name="uploadedFile"
                                     accept="application/pdf" required>
+                                  <input type="text" name="radsekcija" value={{rad.radSekcija.sifSekcija}} hidden>
                                   <button type="submit" id="file1" class=" btn btn-outline-primary"
                                     name='PonovniUnosPdf' style="grid-column: 2;">Predaj</button>
                                 </div>

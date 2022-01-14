@@ -105,49 +105,8 @@
                             </div>
                             {%endfor%}
                         </div><!--end row-->
+                      {%endif%}
                     </div>
-
-                    <h3>Sudionici ({{sudionici_svi}})</h3>
-                    <ul>
-                      <li>Registrirani: {{sudionici_neaktivni}}</li>
-                      <li>Potvrđeni: {{sudionici_aktivni}}</li>
-                    </ul>
-
-                    <h3>Recenzenti ({{recenzenti_svi}})</h3>
-                    <ul>
-                      <li>Registrirani: {{recenzenti_neaktivni}}</li>
-                      <li>Potvrđeni: {{recenzenti_aktivni}}</li>
-                    </ul>
-
-                    <h3>Radovi ({{radovi}})</h3>
-                    <ul>
-                      <li>Prijavljeni: {{prijavljeni_radovi}}</li>
-                      <li>Predani: {{predani_radovi}} </li>
-                      <li>Recenzirani: {{recenzirani_radovi}}</li>
-                      <li>Broj autora: {{autori}}</li>
-                      <!-- radovi po ocjenama/recenzijama -->
-                      <!-- radovi po državama -->
-                    </ul>
-
-                    <h3>Ustanove ({{sve_ustanove}}) </h3>
-                    <ul>
-                      <li>Ukupno različitih: {{ustanove}} </li>
-                      <!--broj ustanova po državama-->
-                    </ul>
-
-                    <h3>Sekcije ({{sve_sekcije}})</h3>
-                    <ul>
-                      {% for k,v in radovi_po_sekcijama.items %}
-                      <li>{{k}}: {{v}}</li>
-                      {% endfor %}
-                    </ul>
-
-                    <h3>Korisnici ({{korisnici}})</h3>
-                    <ul>
-                      {% for k,v in korisnici_po_ulogama.items %}
-                      <li>{{k}}: {{v}}</li>
-                      {% endfor %}
-                    </ul>
                     
                     <div class="container">
                       <div class="row row-cols-2">

@@ -25,7 +25,10 @@ def osobnipodaci(request):
         ime = request.POST["ime"]
         prezime = request.POST["prezime"]
         email = request.POST["email"]
-        maticnaUstanova = request.POST["ustanova"]
+        try:
+            maticnaUstanova = request.POST["ustanova"]
+        except:
+            pass
         
 
 
@@ -44,18 +47,15 @@ def osobnipodaci(request):
         provjera = models.DodatnaPoljaObrasca.objects.first()
         if (provjera): #ima dodatnih polja u obrascu
             dodatno = models.DodatnaPoljaObrasca.objects.all()
-            print(len(dodatno))
             
             for polje in dodatno:
                     dodatno = models.DodatniPodatci.objects.filter(korisnik = LoggedInUser, poljeObrasca = polje).first()
                     
                     if dodatno:
-                        print(dodatno.podatak)
                         novo = request.POST["dodatni"+str(i)]
                         #validacija unosa?
 
                         i = i + 1
-                        print(novo)
                         dodatno.podatak = novo
                         dodatno.save()
 
@@ -66,20 +66,22 @@ def osobnipodaci(request):
         LoggedInUser.email = email
         
         #ustanova (ako je isti naziv kao i do sad, nema smisla updateati)
-        if maticnaUstanova != LoggedInUser.korisnikUstanova.naziv:
-            if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa).exists():
-                novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa)
-            else:
-                print("Tu sam 1")
-                novaUstanova = models.Ustanova(
-                    naziv = maticnaUstanova,
-                    grad = LoggedInUser.korisnikUstanova.grad,
-                    drzava = LoggedInUser.korisnikUstanova.drzava,
-                    adresa = LoggedInUser.korisnikUstanova.adresa
-                )
-                novaUstanova.save()
-                
-            LoggedInUser.korisnikUstanova = novaUstanova
+        try:
+            if maticnaUstanova != LoggedInUser.korisnikUstanova.naziv:
+                if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa).exists():
+                    novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = LoggedInUser.korisnikUstanova.grad, drzava = LoggedInUser.korisnikUstanova.drzava, adresa = LoggedInUser.korisnikUstanova.adresa)
+                else:
+                    novaUstanova = models.Ustanova(
+                        naziv = maticnaUstanova,
+                        grad = LoggedInUser.korisnikUstanova.grad,
+                        drzava = LoggedInUser.korisnikUstanova.drzava,
+                        adresa = LoggedInUser.korisnikUstanova.adresa
+                    )
+                    novaUstanova.save()
+                    
+                LoggedInUser.korisnikUstanova = novaUstanova
+        except:
+            pass
 
         LoggedInUser.save()
         messages.success(request, "Podaci uspješno promijenjeni")
@@ -114,10 +116,8 @@ def osobnipodaci(request):
                     
                     if dodatno:
                         podatak = dodatno.podatak
-                        print(dodatno.podatak)
                         if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
                             #želimo naš format datuma
-                            #print("tu")
                             try:
                                 date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date() #tako su spremljeni pri registraciji kasnije je vjerojatno drugi format pa nek ispisuje taj
                                 podatak = dateformat.format(date_object, formats.get_format('d.m.Y.'))
@@ -128,7 +128,6 @@ def osobnipodaci(request):
                   
 
             context['dodatnipodatci'] = dodatnipodatci
-            print(dodatnipodatci)
 
 
         if context['LoggedInUserRole']=='Sudionik':
@@ -188,7 +187,6 @@ def mojiradovi(request):
     recenzije = recenzije.filter(sifRecenzija__in = (x.sifRecenzija for x in najnovijeRecenzije))
 
     context['fetchedRecenzije']=recenzije
-    print(context)
     for rad in fetchedRadovi:
         context['pdf']=rad.pdf
 
@@ -210,11 +208,15 @@ def mojiradovi(request):
         if 'PonovniUnosPdf' in request.POST:
             fileTitle = request.POST["fileTitle"]
             uploadedFile = request.FILES["uploadedFile"]
-            updateRad=models.Rad.objects.get(naslov=fileTitle, radKorisnik = LoggedInUser)
+            radsekcija = request.POST["radsekcija"]
+            updateRad=models.Rad.objects.get(naslov=fileTitle, radSekcija=models.Sekcija.objects.get(sifSekcija=radsekcija), radKorisnik = LoggedInUser)
             updateRad.pdf=uploadedFile
             #najnovija recenzija nam treba
             recenzija = models.Recenzija.objects.filter(rad = updateRad).order_by("-sifRecenzija").first()
-            print(recenzija.obrazlozenje)
+
+            if (recenzija.ocjena.id == 2):
+                recenzija.ocjena = models.Ocjena.objects.get(id=1)
+                recenzija.save()
             
             if (recenzija.ocjena.id == 3): #samo tada treba recenzent ponovno recenzirati
                 updateRad.revizijaBool=True
@@ -222,7 +224,6 @@ def mojiradovi(request):
             
             return redirect('mojiradovi')
         if 'UploadFile' in request.POST:
-            print(request.POST)
             fileTitle = request.POST["fileTitle"]
             uploadedFile = request.FILES["uploadedFile"]
             section = request.POST['section']
@@ -264,12 +265,6 @@ def mojiradovi(request):
             else:
                 messages.error(request, "Rad je ranije predan! Nisu učinjene nikakve promjene.")
                 return redirect('mojiradovi')
-            print("----------")
-            print(fileTitle)
-            print(uploadedFile)
-            print(LoggedInUser.korisnikSekcija)
-            print(LoggedInUser)
-            print("----------")
             noviRad=models.Rad.objects.get(naslov = fileTitle,radSekcija = Sekcija,radKorisnik = LoggedInUser)
             
             #

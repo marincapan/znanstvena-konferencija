@@ -37,7 +37,7 @@ def mojerecenzije(request):
         messages.error(request,"Još nisi odobren kao recenzent!")
         return redirect('home')
     elif LoggedInUser.vrstaKorisnik_id==3 and LoggedInUser.odobrenBool==False:
-        messages.error(request,"Tvoj zahtjev za recenzenstvom je odbijen. Nije ti dopusteno recenzirati")
+        messages.error(request,"Vaš zahtjev recenzenstvom je odbijen. Ne možete recenzirati radove.")
         return redirect('home')
     elif LoggedInUser.vrstaKorisnik_id > 3: #1-admin 2-predsjedavajuci 3-recenzent 4-sudionik
         messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")

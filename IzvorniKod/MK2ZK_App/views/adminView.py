@@ -1,193 +1,245 @@
-from collections import defaultdict
-from datetime import date, datetime, tzinfo
-from enum import auto
-from io import StringIO, BytesIO
-from typing import DefaultDict
-from django.core.checks.messages import Error
-from django.db.models.fields import DateField, DateTimeCheckMixin, NullBooleanField
-from django.db.models.query import EmptyQuerySet
-from django.http.response import FileResponse, HttpResponse
+from datetime import date, datetime
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib import messages
 from django.utils.crypto import get_random_string
 from IzvorniKod.MK2ZK_App import models
-from django.db import IntegrityError 
-from django.core import serializers
+from django.db import IntegrityError
 from django.utils import (dateformat, formats)
 from IzvorniKod.MK2ZK_App.tokens import account_activation_token
-from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 from IzvorniKod.MK2ZK_App.tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib.auth.password_validation import *
 import hashlib
-import zipfile
 import os
 import requests
-import time
-import csv
-from datetime import datetime, timezone
-
-def increment_KorisnikID():
-  last_korisnik = models.Korisnik.objects.filter(vrstaKorisnik=4).order_by('id').last()
-  if not last_korisnik:
-    return '0001'
-  korisnik_id = last_korisnik.idSudionik
-  korisnik_int = int(korisnik_id)
-  new_korisnik_int = korisnik_int + 1
-  new_korisnik_id =str(new_korisnik_int).zfill(4)
-  return new_korisnik_id
-
-def sloziobrazac(request):
-    context={}
-    if "LoggedInUserId" in request.session:
-        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-        korisnik.lastActive=datetime.now()
-        korisnik.save()
-        context["LoggedInUser"]=korisnik.id
-    else: #nismo ulogirani
-        return redirect('signin')
-    
-    if "LoggedInUserRole" in request.session:
-        if request.session['LoggedInUserRole'] == "Admin":
-            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
-        else: #nije admin
-            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
-            return redirect('/') #redirect na homepage
-
-    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
-
-    for polje in fetchedPolja:
-        print(polje.imePolja)        
-
-    if request.method == "POST":            
-        if 'AddNewField' in request.POST:
-            print(request.POST)
-            fieldName = request.POST["fieldName"]
-            fieldType = request.POST["fieldType"]
-            newfield=models.TipPoljaObrasca.objects.get(naziv=fieldType)
-            if not models.DodatnaPoljaObrasca.objects.filter(imePolja=fieldName,tipPolja=newfield).exists():
-                newField=models.DodatnaPoljaObrasca(
-                    imePolja=fieldName,
-                    tipPolja=newfield
-                )
-                newField.save()
-            context['DodatnaPolja']=fetchedPolja
-            return redirect('sloziobrazac')
-        if 'ActiveFields' in request.POST:
-            for polje in fetchedPolja:
-                try:
-                    checked = request.POST[polje.imePolja]
-                    checked = True 
-                except:
-                    checked = False
-                polje.active = checked
-                polje.save()
-                
-        context['DodatnaPolja']=fetchedPolja
-        return redirect('sloziobrazac')
-    context['DodatnaPolja']=fetchedPolja
-    return render(request, 'SloziObrazac.html', context)
+from datetime import datetime
 
 def adminsucelje(request):
-    radovi = models.Rad.objects.all()
-    sekcije = models.Sekcija.objects.all()
-    korisnici = models.Korisnik.objects.all()
-
-    #brojac predanih radova
-    brojPredanihRadova = 0
-    dobriradovi = 0
-
-    #Shvatio sam da je puno lakse napravit ovo nego stavljat naziv unutar templatea
-    for rad in radovi:
-        rad.radSekcija_naziv = sekcije.get(sifSekcija=rad.radSekcija_id).naziv
-        rad.radKorisnik_prezime = korisnici.get(id=rad.radKorisnik_id).prezime
-        if(rad.pdf != ""):
-            brojPredanihRadova += 1
-        if( rad.recenziranBool == 1 and rad.revizijaBool == 0):
-            dobriradovi +=1 
+    #Incijalizacija kontexta
+    #------------------------------------------------------------------------------------------------------------------------------
+    
     context={}
-    context["javniBool"] = models.Konferencija.objects.get(sifKonferencija=1).javniRadoviBool
-    context["brojPredanihRadova"] = brojPredanihRadova
-    context["brojDobrihRadova"] = dobriradovi
-
-    fetchedPolja=models.DodatnaPoljaObrasca.objects.filter().all()
-    fetchedClanci = models.Clanak.objects.filter().all()
-
-    info = models.Konferencija.objects.get(sifKonferencija = 1).opisKonferencije
-    context['info'] = info
-
-    for polje in fetchedPolja:
-        print(polje.imePolja)
+    
+    #------------------------------------------------------------------------------------------------------------------------------
 
     
+    #Provjera dali postoji ulogirani korisnik
+    #------------------------------------------------------------------------------------------------------------------------------
     
+    if "LoggedInUserId" in request.session: #Ako postoji
+        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId']) #Dohvati ga
+        korisnik.lastActive=datetime.now() #Ažuriraj zadnju aktivnost
+        korisnik.save() #Spremi
+        context["LoggedInUser"]=korisnik.id #U kontekst spremi njegov ID
+    else: #Ako ne - nismo ulogirani
+        return redirect('signin') #Pošalji na stranicu za prijavu
+    
+    #------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    #Provjera ovlasti
+    #------------------------------------------------------------------------------------------------------------------------------
+    if "LoggedInUserRole" in request.session: #Ako postoji korisnik:
+        if request.session['LoggedInUserRole'] == "Admin": #Ako taj korisnik ima ulogu Admina:
+            context["LoggedInUserRole"]=request.session['LoggedInUserRole'] #Spremi njegovu ulogu u context
+        else: #Ako nije admin:
+            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!") #Pošalji poruku korisniku
+            return redirect('/') #redirect na homepage
+    #------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    #Dohvat varijabli iz baze podataka
+    #------------------------------------------------------------------------------------------------------------------------------
+    predsjedavajuci=models.Korisnik.objects.filter(vrstaKorisnik=2).first() #Dohvati Predsjedavajuceg
+    
+    Administratori = models.Korisnik.objects.filter(vrstaKorisnik_id = 1, potvrdenBool = True) #Dohvati sve Administratore s aktivnim računom
+    
+    radovi = models.Rad.objects.all() #Dohvati sve radove
+    
+    sekcije = models.Sekcija.objects.all() #Dohvati sve sekcije
+    
+    korisnici = models.Korisnik.objects.all() #Dohvati sve korisnike
+    
+    fetchedPolja=models.DodatnaPoljaObrasca.objects.all() #Dohvati sva dodatna polja
+    
+    fetchedClanci = models.Clanak.objects.all() #Dohvati sve članke
+    
+    fetchedSekcije=models.Sekcija.objects.all() #Dohvati sve sekcije
+    
+    konferencija=models.Konferencija.objects.first() #Dohvati konferenciju
+    #------------------------------------------------------------------------------------------------------------------------------
+     
+    
+    #Punjenje contexta
+    #------------------------------------------------------------------------------------------------------------------------------
+    context["AdministratoriPopis"] = Administratori #Spremi sve Administratore
+    
+    if (predsjedavajuci): #Ako postoji predsjedavajuci
+        context["predsjedavajuci"]=predsjedavajuci #Spremi Predsjedavajuceg
+    
+    if konferencija:
+        context['konferencijaNaziv']=konferencija.nazivKonferencije #Spremi naziv konferencije
+
+        context['opis']=konferencija.opisKonferencije #Spremi opis konferencije
+
+        #Spremi sve važne datume
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+        context['datum'] = dateformat.format(konferencija.datumKonferencije, formats.get_format('Y-m-d'))
+        
+        context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('Y-m-d'))
+        
+        context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('Y-m-d'))
+        
+        context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('Y-m-d'))
+        
+        context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('Y-m-d'))
+        
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        context["prosoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPocPrijava #Provjeri jesu li prijave počele
+        
+        context["javniBool"] = konferencija.javniRadoviBool #Spremi status javnih radova
+    
+    dobriradovi = 0 #brojac prihvaćenih radova
+    for rad in radovi: #Za svaki rad:
+        if( rad.recenziranBool == 1 and rad.revizijaBool == 0): #Ako je prihvaćen
+            dobriradovi +=1 #Povećaj brojac prihvaćenih radova
+    context["brojDobrihRadova"] = dobriradovi #Spremi broj prihvaćenih radova
+    
+    context['DodatnaPolja']=fetchedPolja #Spremi sva dodatna polja
+
+    context['Clanci'] = fetchedClanci #Spremi sve članke
+
+    if (fetchedSekcije): #Ako postoje sekcije
+        context['sekcije'] = fetchedSekcije #Spremi sve sekcije
+    #------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    #POST metode
+    #------------------------------------------------------------------------------------------------------------------------------
     if request.method == "POST":
-        if 'nazivKonferencije' in request.POST: #podaci o konferenciji
-            konferencija=models.Konferencija.objects.get(sifKonferencija=1)
 
-            konferencija.nazivKonferencije = request.POST["nazivKonferencije"]
-            konferencija.opisKonferencije = request.POST["opisKonferencije"]
+        # Mijenjaje podataka o konferenciji
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        if 'nazivKonferencije' in request.POST: 
+            
+            #Dohvati unesene podatke
+            #______________________________________________________________________________________________________________________
+            
+            nazivKonferencije = request.POST["nazivKonferencije"]
+
+            opisKonferencije = request.POST["opisKonferencije"]
+
             datumKonferencije = datetime.strptime(request.POST["datumKonferencije"], "%Y-%m-%d").date()
+            
             pocetakPrijavaKonferencije = datetime.strptime(request.POST["pocetakPrijavaKonferencije"], "%Y-%m-%d").date()
+            
             rokPrijava = datetime.strptime(request.POST["rokPrijava"], "%Y-%m-%d").date()
+            
             pocetakRecenzija = datetime.strptime(request.POST["pocetakRecenzija"], "%Y-%m-%d").date()
+            
             rokRecenzija = datetime.strptime(request.POST["rokRecenzija"], "%Y-%m-%d").date()
 
+            #______________________________________________________________________________________________________________________
+
+            #Validatori za datume
+            #______________________________________________________________________________________________________________________
+            
             if pocetakPrijavaKonferencije>rokPrijava:
                 messages.error(request,"Početak prijava/Rok za promjenu obrasca ne smije biti poslije roka za prijavu i predaju radova")
                 return redirect('/adminsucelje#podatciOKonferenciji')
+
             if pocetakRecenzija>rokRecenzija:
                 messages.error(request,"Početak recenziranja ne smije biti poslije roka za recenziranje")
                 return redirect('/adminsucelje#podatciOKonferenciji')
+
             if pocetakPrijavaKonferencije>pocetakRecenzija:
                 messages.error(request,"Početak prijava/Rok za promjenu obrasca ne smije biti poslije početaka recenziranja")
                 return redirect('/adminsucelje#podatciOKonferenciji')
+
             if rokRecenzija>datumKonferencije:
                 messages.error(request,"Datum konferencije ne smije biti prije kraja recenziranja")
-                return redirect('/adminsucelje#podatciOKonferenciji')    
+                return redirect('/adminsucelje#podatciOKonferenciji')  
+
+            #______________________________________________________________________________________________________________________
+
+            #Spremi promjene
+            #______________________________________________________________________________________________________________________
+            
+            konferencija.nazivKonferencije = nazivKonferencije
+
+            konferencija.opisKonferencije = opisKonferencije
 
             konferencija.datumKonferencije = datumKonferencije
+
             konferencija.rokPocPrijava = pocetakPrijavaKonferencije
+
             konferencija.rokPrijave = rokPrijava
+
             konferencija.rokPocRecenzija = pocetakRecenzija
+
             konferencija.rokRecenzenti = rokRecenzija
-            print
+
             konferencija.save()
 
+            #______________________________________________________________________________________________________________________
+
             messages.success(request, "Podaci o konferenciji su uspješno ažurirani!")
-            return redirect('/adminsucelje#podatciOKonferenciji')
+            return redirect('/adminsucelje#podatciOKonferenciji') #Uspješno! Vrati na stranicu
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
       
-        if 'username' in request.POST: #podaci o predsjedavajucem
-            predsjedavajuci = models.Korisnik.objects.get(id = 4) #HARDKODIRAN PREDSJEDAVAJUCI ID
+        # Mijenjaje podataka o predsjedavajucem
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
+        if 'username' in request.POST: 
+
+            #Dohvati unesene podatke
+            #______________________________________________________________________________________________________________________
+            
             username = request.POST["username"]
+
             ime = request.POST["ime"]
+
             prezime = request.POST["prezime"]
+
             email = request.POST["email"]
 
-            #Provjeri jesu li sva polja u redu prije spremanja u bazu
-            #username - pogledaj postoji li netko s istim usernameom, a da nije trenutni predsjedavajuci
-            if models.Korisnik.objects.filter(korisnickoIme = username).exclude(id = 4).exists(): #HARDKODIRAN PREDSJEDAVAJUCI ID
-                messages.error(request, "Korisničko ime je zauzeto")
-                return redirect('adminsucelje')
+            #______________________________________________________________________________________________________________________
             
-            #email - pogledaj postoji li netko s istim emailom, a da nije trenutni predsjedavajuci
-            if models.Korisnik.objects.filter(email = email).exclude(id = 4).exists(): #HARDKODIRAN PREDSJEDAVAJUCI ID
+            #Validatori za korisničko ime i email
+            #______________________________________________________________________________________________________________________
+            
+            if models.Korisnik.objects.filter(korisnickoIme = username).exclude(vrstaKorisnik=models.Uloga.objects.get(id=2)).exists():
+                messages.error(request, "Korisničko ime je zauzeto")
+                return redirect('/adminsucelje#upravljanjePredsjedavajućem')
+            
+            if models.Korisnik.objects.filter(email = email).exclude(vrstaKorisnik=models.Uloga.objects.get(id=2)).exists():
                 messages.error(request, "E-mail adresa je zauzeta")
-                return redirect('adminsucelje')
-
-            #ako smo prosli gornje provjere onda je sve ok, idemo dalje (VALIDACIJA UNOSA?)
+                return redirect('/adminsucelje#upravljanjePredsjedavajućem')
+            
+            #______________________________________________________________________________________________________________________
+            
+            #Spremanje podataka
+            #______________________________________________________________________________________________________________________
+            
             predsjedavajuci.korisnickoIme = username
             predsjedavajuci.ime = ime
             predsjedavajuci.prezime = prezime
+
+            #Provjera i rad za novog predsjedavajuceg
+            #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            
             trenutniemail = predsjedavajuci.email
-            if (trenutniemail != email): #promjena maila, šalji nove podatke na mail, inače samo mijenja ime/prezime/korisnickoime sadašnjeg predsjedavajuceg
+            if (trenutniemail != email): #Ako je novi predsjedavajuci
 
                 predsjedavajuci.email = email
 
-                #Generiraj password za korisnika
+                #Generiraj i hashiraj password za novog predsjedavajuceg
                 randPassword=get_random_string(length=16)
                 salt=os.urandom(32)
                 key=hashlib.pbkdf2_hmac(
@@ -198,11 +250,11 @@ def adminsucelje(request):
                 )
                 predsjedavajuci.salt = salt
                 predsjedavajuci.lozinka = key
-
+                
+                #Pošalji podatke i aktivacijski link na mail
                 try:
                     predsjedavajuci.potvrdenBool = False #novi predsjedavajuci
                     predsjedavajuci.save()
-                 #email
                     poruka = render_to_string('PredsjedavajuciEmail.html', {
                 'user': predsjedavajuci,
                 'lozinka': randPassword,
@@ -218,17 +270,25 @@ def adminsucelje(request):
                     email.send()
                 
                     messages.success(request, "Podaci o predsjedavajućem su uspješno promijenjeni. Predsjedavajućem su na adresu e-pošte poslani podaci za prijavu.")
-                    return redirect('/adminsucelje')
+                    return redirect('/adminsucelje#upravljanjePredsjedavajućem')
                 except:
                     messages.error(request,"Dogodila se pogreška. Pokušajte ponovno.")
-                    return redirect('/adminsucelje')
-                    
-
-
-
+                    return redirect('/adminsucelje#upravljanjePredsjedavajućem')
+            
+            #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            
             predsjedavajuci.save()
+            
+            #______________________________________________________________________________________________________________________
+            
             messages.success(request, "Podaci o predsjedavajućem su uspješno promijenjeni.")
-            return redirect('/adminsucelje#upravljanjePredsjedavajućem')
+            return redirect('/adminsucelje#upravljanjePredsjedavajućem') #Uspjesno! Vrati na stranicu
+
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+
+        
+        #Promjena statusa javnih radova
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
             
         if "makePublic" in request.POST:
             konferencija=models.Konferencija.objects.get(sifKonferencija=1)
@@ -238,11 +298,16 @@ def adminsucelje(request):
             else:
                 konferencija.javniRadoviBool=True
                 konferencija.save()
-            print(konferencija.javniRadoviBool)
             messages.success(request, "Status javnih radova je uspješno promijenjen.")
+            return redirect('adminsucelje')
 
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
+        
+        #Dodavanje novih dodatnih polja
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
         if 'AddNewField' in request.POST:
-            print(request.POST)
             fieldName = request.POST["fieldName"]
             fieldType = request.POST["fieldType"]
             newfield=models.TipPoljaObrasca.objects.get(naziv=fieldType)
@@ -254,6 +319,13 @@ def adminsucelje(request):
                 newField.save()
             context['DodatnaPolja']=fetchedPolja
             return redirect('/adminsucelje#upravljanjeObrascem')
+
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
+        
+        #Aktiviranje dodatnih polja
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
         if 'ActiveFields' in request.POST:
 
             for polje in fetchedPolja:
@@ -266,7 +338,6 @@ def adminsucelje(request):
                     except:
                         obavezan = False
                 except:
-                    #ako polje nije u obrascu ne može biti obavezno, mozda neki error message ako tako označi korisnik
                     checked = False
                     obavezan = False
                 polje.active = checked
@@ -274,6 +345,12 @@ def adminsucelje(request):
                 polje.save()
             return redirect('/adminsucelje#aktivnaPolja')
 
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
+        
+        #Dodavanje Sekcija
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
         if 'AddNewSection' in request.POST:
            
             SectionName = request.POST["SectionName"]
@@ -282,33 +359,50 @@ def adminsucelje(request):
             if (not konferencija):
                 konferencija = models.Konferencija() #ako još nemamo podataka za konferenciju
 
-            if not models.Sekcija.objects.filter(naziv = SectionName).exists():
+            if not models.Sekcija.objects.filter(naziv__iexact = SectionName).exists():
                 newSection=models.Sekcija(naziv = SectionName, konferencijaSekcija=konferencija)
                 newSection.save()
+            else:
+                messages.error(request,"Ova sekcija već postoji")
             return redirect("/adminsucelje#upravljanjeSekcijama")
-
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
+        
+        #Dodavanje novog admina
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
         if 'AddNewAdmin' in request.POST:
 
+            #Dohvati unesene podatke
+            #______________________________________________________________________________________________________________________
+            
             AdminName = request.POST['adminime']
+
             AdminSurname = request.POST['adminprezime']
+
             AdminUsername = request.POST['adminusername']
+
             AdminEmail = request.POST['adminemail']
-            #idKorisnika = increment_KorisnikID()
-            #AdminPassword = request.POST['adminpassword']
+
+            #______________________________________________________________________________________________________________________
             
+            #Validatori za korisničko ime i email
+            #______________________________________________________________________________________________________________________
             
-            #Provjeri jesu li sva polja u redu prije spremanja u bazu
-            #username - pogledaj postoji li netko s istim usernameom
             if models.Korisnik.objects.filter(korisnickoIme = AdminUsername).exists():
                 messages.error(request, "Korisničko ime je zauzeto")
                 return redirect('adminsucelje')
             
-            #email - pogledaj postoji li netko s istim emailom
             if models.Korisnik.objects.filter(email = AdminEmail).exists():
                 messages.error(request, "E-mail adresa je zauzeta")
                 return redirect('adminsucelje')
 
-            #Generiraj password za korisnika
+            #______________________________________________________________________________________________________________________
+            
+
+            #Generiranje i hasiranje lozinke, slanje aktivacijskog maila te spremanje korisnika
+            #______________________________________________________________________________________________________________________
+            
             randPassword=get_random_string(length=16)
             salt=os.urandom(32)
             key=hashlib.pbkdf2_hmac(
@@ -318,7 +412,6 @@ def adminsucelje(request):
                 100000
             )
 
-            #Probaj spremiti novog korisnika
             try:
                 NoviKorisnik = models.Korisnik(korisnickoIme=AdminUsername,lozinka=key, salt = salt, ime=AdminName,prezime=AdminSurname,email=AdminEmail,vrstaKorisnik=models.Uloga.objects.get(id=1))
                 NoviKorisnik.save()
@@ -326,8 +419,6 @@ def adminsucelje(request):
                 messages.error(request, "Korisničko ime ili email je vec u uporabi.")
                 return redirect('/adminsucelje#upravljanjeAdministratorima')
 
-            
-            #email
             poruka = render_to_string('AdministratorEmail.html', {
                 'user': NoviKorisnik,
                 'lozinka': randPassword,
@@ -341,13 +432,19 @@ def adminsucelje(request):
             '[ZK] Tvoj administratorski račun je stvoren!', poruka, 'Pametna ekipa', to=[to_email]
             )
             email.send()
+
+            #______________________________________________________________________________________________________________________
+            
             
             messages.success(request, "Novi administrator je uspješno dodan.\n Na adresu pošte poslan je aktivacijski link i podaci za prijavu.")
-            return redirect('/adminsucelje')
+            return redirect('/adminsucelje') #Uspjeh! Vrati na stranicu
 
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
             
-
-        ### Dodavanje novog članka
+        # Dodavanje novog članka
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
         if "AddArticle" in request.POST:
             ArticleTitle = request.POST['clanakTitle']
             ArticleText = request.POST['clanakText']
@@ -362,7 +459,12 @@ def adminsucelje(request):
             messages.success(request, "Uspješno je dodan novi članak.")
             return redirect('/adminsucelje#uređivanjeNaslovne')
 
-        ## Odabir aktivnih članaka
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
+
+        # Odabir aktivnih članaka
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+        
         if "ActiveArticles" in request.POST:
             for clanak in fetchedClanci:
                 try:
@@ -373,84 +475,25 @@ def adminsucelje(request):
                 clanak.active = checked
                 clanak.save()
             return redirect('/adminsucelje#prikazaniČlanci')
-                
-        context['DodatnaPolja']=fetchedPolja
-        context['Clanci'] = fetchedClanci
+
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
              
-        return redirect('adminsucelje')
+        return redirect('adminsucelje') #Glavni redirect ako se slucajno pokreno POST bez unosa
 
-
-    context['DodatnaPolja']=fetchedPolja
-    context['Clanci'] = fetchedClanci
-    
-    if "LoggedInUserId" in request.session:
-        korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
-        korisnik.lastActive=datetime.now()
-        korisnik.save()
-        context["LoggedInUser"]=korisnik.id
-    else: #nismo ulogirani
-        return redirect('signin')
-
-    fetchedSekcije=models.Sekcija.objects.filter().all()
-    if (fetchedSekcije.first()):
-        context['sekcije'] = fetchedSekcije
-    
-    if "LoggedInUserRole" in request.session:
-        if request.session['LoggedInUserRole'] == "Admin":
-            context["LoggedInUserRole"]=request.session['LoggedInUserRole']
-            Predsjedavajuci=models.Korisnik.objects.filter(id=4).first()
-            Administratori = models.Korisnik.objects.filter(vrstaKorisnik_id = 1, potvrdenBool = True) #znamo da je bar 1
-            context["AdministratoriPopis"] = Administratori
-            
-            print(context)
-            if (Predsjedavajuci):
-                context['korisnickoIme']=Predsjedavajuci.korisnickoIme
-                context['ime']=Predsjedavajuci.ime
-                context['prezime']=Predsjedavajuci.prezime
-                context['email']=Predsjedavajuci.email
-                context['uloga']=Predsjedavajuci.vrstaKorisnik.naziv
-                context['sekcija']=Predsjedavajuci.korisnikSekcija.naziv
-        else: #nije admin
-            messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
-            return redirect('/') #redirect na homepage
-
-    recenzenti = models.Korisnik.objects.filter(vrstaKorisnik_id=3)
-    sudionici = models.Korisnik.objects.filter(vrstaKorisnik_id=4)
-    radovi = models.Rad.objects.all()
-    sekcije = models.Sekcija.objects.all()
-    korisnici = models.Korisnik.objects.all()
-
-    #brojac predanih radova
-    brojPredanihRadova = 0
-
-    for rad in radovi:
-        rad.radSekcija_naziv = sekcije.get(sifSekcija=rad.radSekcija_id).naziv
-        rad.radKorisnik_prezime = korisnici.get(id=rad.radKorisnik_id).prezime
-        if(rad.pdf != ""):
-            brojPredanihRadova += 1
-
-    #konferencija je u bazi
-    konferencija=models.Konferencija.objects.first()
-    if konferencija:
-        context['konferencijaNaziv']=konferencija.nazivKonferencije
-        context['opis']=konferencija.opisKonferencije
-        context['datum'] = dateformat.format(konferencija.datumKonferencije, formats.get_format('Y-m-d'))
-        context['rokPrijave']= dateformat.format(konferencija.rokPrijave, formats.get_format('Y-m-d'))
-        context['rokRecenzenti']=dateformat.format(konferencija.rokRecenzenti, formats.get_format('Y-m-d'))
-        context['rokPocRecenzija']=dateformat.format(konferencija.rokPocRecenzija, formats.get_format('Y-m-d'))
-        context['rokPocPrijava']=dateformat.format(konferencija.rokPocPrijava, formats.get_format('Y-m-d'))
-        context["prosoDatum"]=date.today()>=models.Konferencija.objects.get(sifKonferencija=1).rokPocPrijava
-
-    context["Radovi"] = radovi
-    context["brojPredanihRadova"] = brojPredanihRadova
-    if "jumpto" in request.session:
-        context["jumpto"]=request.session["jumpto"]
-
-    return render(request, 'AdminSucelje.html', context)
+    return render(request, 'AdminSucelje.html', context) #Učitaj HTML s contextom
 
 def covidstats(request):
-    context = {}
+    #Incijalizacija kontexta
+    #------------------------------------------------------------------------------------------------------------------------------
+    
+    context={}
+    
+    #------------------------------------------------------------------------------------------------------------------------------
 
+    
+    #Provjera dali postoji ulogirani korisnik
+    #------------------------------------------------------------------------------------------------------------------------------
+    
     if "LoggedInUserId" in request.session:
         korisnik=models.Korisnik.objects.get(id=request.session['LoggedInUserId'])
         korisnik.lastActive=datetime.now()
@@ -458,6 +501,12 @@ def covidstats(request):
         context["LoggedInUser"]=korisnik.id
     else: #nismo ulogirani
         return redirect('signin')
+    
+    #------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    #Provjera ovlasti
+    #------------------------------------------------------------------------------------------------------------------------------
     
     if "LoggedInUserRole" in request.session:
         if request.session['LoggedInUserRole'] == "Admin" or request.session['LoggedInUserRole'] == "Predsjedavajuci" :
@@ -466,7 +515,12 @@ def covidstats(request):
             messages.error(request,"Nemate ovlasti za pristup ovoj stranici!")
             return redirect('/') #redirect na homepage
 
-            
+    #------------------------------------------------------------------------------------------------------------------------------
+    
+
+    #Dohvat i obrada podataka o COVID-19       
+    #------------------------------------------------------------------------------------------------------------------------------
+    
     url = "https://covid19.who.int/WHO-COVID-19-global-data.csv"
     response = requests.get(url)
     bytes=response.content
@@ -498,9 +552,9 @@ def covidstats(request):
                     if date[0]!="": #Kraj
                         datum =  datetime.strptime(date[0], '%Y-%m-%d').date()
                         konfDrzave[str(ustanova.drzava)]=[dateformat.format(datum, formats.get_format('d.m.Y.')),date[4]]
-                        print(date) # Rijecnik s drzavom (Na engleskom zasad) i vrijednostima koje zelim prenijeti (zasad datum dohavacanja podataka i novih slucajeva)
     context["konfDrzave"]=konfDrzave
-    print(context)    
+    #------------------------------------------------------------------------------------------------------------------------------
+    
     return render(request, 'CovidStats.html', context)
 
 def uredipodatke(request, korisnickoime):
@@ -522,36 +576,33 @@ def uredipodatke(request, korisnickoime):
                 messages.error(request, "Korisničko ime je zauzeto")
                 
                 if (uloga == "Sudionik"):
-                    return redirect('pregled/sudionici/'+username)
+                    return redirect('/pregled/sudionici/'+korisnickoime)
                 if (uloga == "Recenzent"):
-                    return redirect('pregled/recenzneti/'+username)
+                    return redirect('/pregled/recenzenti/'+korisnickoime)
         
             #email - pogledaj postoji li netko s istim emailom, a da nije trenutni korisnik
             if models.Korisnik.objects.filter(email = email).exclude(id = korisnik.id).exists():
                 messages.error(request, "E-mail adresa je zauzeta")
                 
                 if (uloga == "Sudionik"):
-                    return redirect('pregled/sudionici/'+username)
+                    return redirect('/pregled/sudionici/'+korisnickoime)
                 if (uloga == "Recenzent"):
-                    return redirect('pregled/recenzneti/'+username)
+                    return redirect('/pregled/recenzenti/'+korisnickoime)
             
             i = 1
 
             provjera = models.DodatnaPoljaObrasca.objects.first()
             if (provjera): #ima dodatnih polja u obrascu
                 dodatno = models.DodatnaPoljaObrasca.objects.all()
-                print(len(dodatno))
             
                 for polje in dodatno:
                         dodatno = models.DodatniPodatci.objects.filter(korisnik = korisnik, poljeObrasca = polje).first()
                         
                         if dodatno:
-                            print(dodatno.podatak)
                             novo = request.POST["dodatni"+str(i)]
                             #validacija unosa?
 
                             i = i + 1
-                            print(novo)
                             dodatno.podatak = novo
                             dodatno.save()
 
@@ -566,7 +617,6 @@ def uredipodatke(request, korisnickoime):
                 if models.Ustanova.objects.filter(naziv = maticnaUstanova, grad = korisnik.korisnikUstanova.grad, drzava = korisnik.korisnikUstanova.drzava, adresa = korisnik.korisnikUstanova.adresa).exists():
                     novaUstanova = models.Ustanova.objects.get(naziv = maticnaUstanova, grad = korisnik.korisnikUstanova.grad, drzava = korisnik.korisnikUstanova.drzava, adresa = korisnik.korisnikUstanova.adresa)
                 else:
-                    #print("Tu sam 1")
                     novaUstanova = models.Ustanova(
                     naziv = maticnaUstanova,
                     grad = korisnik.korisnikUstanova.grad,
@@ -586,7 +636,6 @@ def uredipodatke(request, korisnickoime):
                 return redirect(url)
             if (uloga == "Recenzent"):
                 url = "/pregled/recenzenti/"+username
-                print(url)
                 return redirect(url)
             else:
         
@@ -630,10 +679,8 @@ def uredipodatke(request, korisnickoime):
                     
                             if dodatno:
                                 podatak = dodatno.podatak
-                            #print(dodatno.podatak)
                                 if (dodatno.poljeObrasca.tipPolja.naziv == "date"):
                                 #želimo naš format datuma
-                                #print("tu")
 
                                     try:
                                         date_object = datetime.strptime(dodatno.podatak, '%Y-%m-%d').date() #validacija datuma?
@@ -645,7 +692,6 @@ def uredipodatke(request, korisnickoime):
                   
 
                     context['dodatnipodatci'] = dodatnipodatci
-                #print(dodatnipodatci)
 
 
                 if context['uloga']=='Sudionik':
@@ -689,7 +735,6 @@ def uredirad(request, sifrada):
             autorRadQuery = models.AutorRad.objects.filter(Rad = rad.sifRad)
             for autorRad in autorRadQuery:
                 promjenaAutora=models.Autor.objects.get(sifAutor=autorRad.Autor.sifAutor)
-                print(request.POST["newname"+str(autorRad.Autor.sifAutor)])
                 promjenaAutora.ime = request.POST["newname"+str(autorRad.Autor.sifAutor)]
                 promjenaAutora.prezime = request.POST["newsur"+str(autorRad.Autor.sifAutor)]
                 promjenaAutora.save()
