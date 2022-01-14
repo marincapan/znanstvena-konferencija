@@ -258,10 +258,10 @@ def adminsucelje(request):
                     poruka = render_to_string('PredsjedavajuciEmail.html', {
                 'user': predsjedavajuci,
                 'lozinka': randPassword,
-                'domain': '127.0.0.1:8000',
+                'domain': os.getenv("DOMAIN"),
                 'uid':urlsafe_base64_encode(force_bytes(predsjedavajuci.id)),
                 'token':account_activation_token.make_token(predsjedavajuci),
-                'protocol':'http'
+                'protocol':os.getenv("PROTOCOL")
                     })
                     to_email = email
                     email = EmailMessage(
@@ -422,10 +422,10 @@ def adminsucelje(request):
             poruka = render_to_string('AdministratorEmail.html', {
                 'user': NoviKorisnik,
                 'lozinka': randPassword,
-                'domain': '127.0.0.1:8000',
+                'domain': os.getenv("DOMAIN"),
                 'uid':urlsafe_base64_encode(force_bytes(NoviKorisnik.id)),
                 'token':account_activation_token.make_token(NoviKorisnik),
-                'protocol':'http'
+                'protocol':os.getenv("PROTOCOL")
                     })
             to_email = AdminEmail
             email = EmailMessage(
