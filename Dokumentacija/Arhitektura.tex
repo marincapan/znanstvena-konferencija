@@ -25,7 +25,7 @@
 	\end{itemize}
 
 		\begin{figure}[H]
-						\includegraphics[scale=0.9]{dijagrami/django_mvt.png} 
+						\includegraphics[width= 16 cm, height= 25 cm, keepaspectratio]{dijagrami/django_mvt.png} 
 						\centering
 						\caption{Dijagram principa rada MVT}
 						\label{fig:dijagramRadaMVT}
@@ -57,19 +57,23 @@
 			\item Poljeobrasca
 			\item Recenzija
 			\item Ustanova
+			\item Članak
 		\end{packed_item}
 		
 			\subsection{Opis tablica}
 			
 				\textbf{Korisnik}
 				\newline
-				\indent Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, adresu e-pošte, lozinku, ime, prezime te ulogu korisnika u sustavu. Atributi token i potvrdioPrijava služe kako bi se za sudionike i recenzente provjerilo jesu li potvrdili prijavu (nakon čega se mogu prijaviti u sustav). Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
+				\indent Ovaj entitet sadržava sve važne informacije (atribute) o svim korisnicima aplikacije: korisničko ime, adresu e-pošte, lozinku, ime, prezime te ulogu korisnika u sustavu. Atributi token i potvrdioPrijava služe kako bi se za korisnike provjerilo jesu li potvrdili prijavu (nakon čega se mogu prijaviti u sustav). Atribut salt se koristi pri hashiranju lozinki, a za zadnjaaktivnost označava datum i vrijeme zadnjeg pristupa aplikaciji. Atribut sudionikID je svojstven korisnicima koji su sudionici, a atribut odobren i sifSekcija je svojstven recenzentima. Ovaj entitet je u vezi \begin{packed_item} 
 					\item Many-to-One s entitetom Ustanova preko atributa ID
 					\item Many-to-One s entitetom Sekcija preko atributa ID
 					\item Many-to-One s entitetom Uloga preko atributa ID
 					\item One-to-Many s entitetom Recenzija preko atributa ID (Recenzija.recezentID)
 					\item Many-to-Many s entitetom DodatnoPoljeObrasca preko atributa ID (DodatniPodatak.korisnikID; ta je veza na ER dijagramu imenovana kao DodatniPodatak pa se može reći da je entitet Korisnik u vezi One-to-Many s entitetom DodatniPodatak preko atributa ID)
 					\item One-to-Many s entitetom Rad preko atributa ID (Rad.prijavioID)
+					
+					\item One-to-Many s entitetom Clanak preko atributa ID (Clanak.autorID)
+					
 				\end{packed_item}
 				\begin{longtblr}[
 					label=none,
@@ -84,8 +88,10 @@
 					korisnickoIme	& VARCHAR & korisnički identifikator  kojeg korisnik koristi pri prijavi u sustav	\\ \hline 
 					email & VARCHAR & adresa e-pošte korisnika  \\ \hline 
 					lozinka & VARCHAR & hash lozinke  \\ \hline 
+					salt & BYTEA & dodatak lozinci pri hashiranju  \\ \hline
 					ime & VARCHAR	&  	ime korisnika	\\ \hline 
 					prezime & VARCHAR & prezime korisnika  \\ \hline 
+					zadnjaaktivnost & TIMESTAMP & trenutak posljednje aktivnosti na aplikaciji  \\ \hline 
 					sudionikID & INT & jedinstvena oznaka sudionika (ID\_XXXX, 
 					pri čemu je XXXX redni broj prijave)\\ \hline 
 					odobren & BOOLEAN & oznaka je li predsjedavajući konferencije odobrio recenzenta\\ \hline 
@@ -182,11 +188,36 @@
 					
 				\end{longtblr}
 			
+					\textbf{Članak}
+				\newline
+				\indent Ovaj entitet predstavlja članke na naslovnici. Članke postavlja (jedan) administrator i na jednoj konferenciji ih može biti više. Identifikator entiteta je atribut ID. Entitet sadrži informaciju o naslovu članka, tekst članka i u vezi je
+				\begin{packed_item}
+					\item Many-to-One s entitetom Konferencija preko atributa ID
+					\item Many-to-One s entitetom Korisnik preko atributa ID
+				\end{packed_item} 
+				\begin{longtblr}[
+					label=none,
+					entry=none
+					]{
+						width = \textwidth,
+						colspec={|X[7,l]|X[6, l]|X[20, l]|}, 
+						rowhead = 1,
+					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+					\hline \multicolumn{3}{|c|}{\textbf{Clanak}}	 \\ \hline[3pt]
+					\SetCell{LightGreen}ID & INT	&  	jedinstveni brojčani identifikator	\\ \hline
+					naslov	& VARCHAR &   naslov članka	\\ \hline
+					tekst	& VARCHAR &   tekst članka	\\ \hline 
+					\SetCell{LightBlue} sifKonferencija	& INT &   jedinstveni brojčani identifikator konferencije (Konferencija.ID)	\\ \hline
+					\SetCell{LightBlue} autorID	& INT &   jedinstveni brojčani identifikator autora članka (Korisnik.ID)	\\ \hline
+					
+				\end{longtblr}
+			
 				\textbf{Konferencija}
 				\newline
-				\indent Ovaj entitet sadrži važne informacije o znanstvenoj konferenciji koju modeliramo. Atributi su: identifikator konferencije (ID), naziv konferencije, opis, datum održavanja, rok za prijave, rok za administracijske promjene, rok za recenzente. Entitet je u vezi
+				\indent Ovaj entitet sadrži važne informacije o znanstvenoj konferenciji koju modeliramo. Atributi su: identifikator konferencije (ID), naziv konferencije, opis, datum održavanja, informacija jesu li radovi javno dostupni, rok za pocetak prijava, rok za pocetak recenziranja, rok za prijave, rok za administracijske promjene, rok za recenzente. Entitet je u vezi
 				\begin{packed_item}
 					\item One-to-Many s entitetom Sekcija preko atributa ID (Sekcija.sifKonferencija)
+					\item One-to-Many s entitetom Clanak preko atributa ID (Clanak.sifKonferencija)
 					
 				\end{packed_item}
 				\begin{longtblr}[
@@ -201,6 +232,7 @@
 					\SetCell{LightGreen}ID & INT	& jedinstveni brojčani identifikator	\\ \hline
 					naziv	& VARHCAR & naziv konferencije  	\\ \hline 
 					opis & VARCHAR &  opis konferencije \\ \hline
+					javniradovi & BOOLEAN &  informacija o javnoj dostupnosti radova na aplikaciji  \\ \hline
 					datum & DATE &  datum održavanja konferencije \\ \hline 
 					rokPrijava & TIMESTAMP &  rok za prijavu na konferenciju i učitanje rada u sustav \\ \hline 
 					rokAdmin & TIMESTAMP &  rok do kojeg administrator može mijenjati obrazac za prijavu \\ \hline 
@@ -284,7 +316,7 @@
 			
 				\textbf{Rad}
 				\newline
-				\indent Ovaj entitet sadrži informacije o prijavljenim radovima: ID rada, naslov, poveznicu s pdf dokumentom, je li rad recenziran, u koju je sekciju prijavljen i koji korisnik ga je prijavio. Entitet je u vezi:
+				\indent Ovaj entitet sadrži informacije o prijavljenim radovima: ID rada, naslov, poveznicu s pdf dokumentom, je li rad recenziran, treba li rad reviziju, u koju je sekciju prijavljen i koji korisnik ga je prijavio. Entitet je u vezi:
 				\begin{packed_item}
 					\item One-to-One s entitetom Recenzija preko atributa ID (Recenzija.sifRad)
 					\item Many-to-One s entitetom Sekcija preko atributa ID
@@ -304,6 +336,7 @@
 					naslov	& VARCHAR &   naslov rada	\\ \hline 
 					pdf & VARCHAR &  poveznica s pdf dokumentom rada \\ \hline 
 					recenziran & BOOLEAN	& oznaka je li rad recenziran 		\\ \hline 
+					revizija & BOOLEAN	& oznaka treba li rad revidirati 		\\ \hline 
 					\SetCell{LightBlue} sifSekcija	& INT & jedinstveni brojčani identifikator sekcije u koju je rad prijavljen(Sekcija.ID)   	\\ \hline 
 					\SetCell{LightBlue} prijavioID	& INT & jedinstveni brojčani identifikator sudionika koji je prijavio rad (Korisnik.ID) \\\hline 
 				\end{longtblr}
@@ -401,7 +434,7 @@
 			\indent Zbog lakše organizacije, razredi su logički podijeljeni po pravu pristupa metodama određenih aktora. Iz naziva i tipova atributa u razredima može se zaključiti vrsta ovisnosti među različitim razredima.
 			\newline
 			\newline
-			\indent Na slici 4.5 prikazana je skica dijagrama razreda Views, koji će kasnije biti razrađen u detalje te će prikazivati stvarne, implementirane metode.
+			\indent Na slici 4.5 prikazan je dijagram razreda Views, u kojemu su vidljive sve implementirane metode. Postoji velik broj funkcionalnosti koje dijele, primjerice, i administrator i predsjedavajući konferencije (Poput slanja obavijesti, pregleda korisnika i radova i sl.) te su takve metode navedene samo u onom razredu (View) u kojemu su implementirane radi izbjegavanja pretjeranog ponavljanja. Primjerice, metoda CovidStats, koja omogućava praćenje aktualne situacije s pandemijom, navedena se samo u razredu AdminView, iako i Predsjedavajući konferencije (PredsjedavajuciView) ima pristup tim podacima te je u stvarnosti koristimo kod oba korisnika istu metodu.
 
 				\begin{figure}[H]
 					\includegraphics[width= 15 cm, keepaspectratio]{dijagrami/Modeli_UML.png} 
@@ -418,35 +451,110 @@
 					\caption{Dijagram razreda \textit{Views} }
 					\label{fig:DijagramViews}
 				\end{figure}
-				
-			
-			\textbf{\textit{dio 2. revizije}}\\			
-			
-			\textit{Prilikom druge predaje projekta dijagram razreda i opisi moraju odgovarati stvarnom stanju implementacije}
-			
-			
 			
 			\eject
 		
 		\section{Dijagram stanja}
 			
 			
-			\textbf{\textit{dio 2. revizije}}\\
+			Dijagram stanja opisuje dinamičko ponašanje (dijela) sustava. Prikazuje stanja objekata te prijelaze iz jednog stanja u drugo temeljeno na događajima (ako su ispunjeni uvjeti prijelaza).
+			Radi preglednosti prikazat će se dijagram stanja za svaku vrstu korisnika zasebno.
 			
-			\textit{Potrebno je priložiti dijagram stanja i opisati ga. Dovoljan je jedan dijagram stanja koji prikazuje \textbf{značajan dio funkcionalnosti} sustava. Na primjer, stanja korisničkog sučelja i tijek korištenja neke ključne funkcionalnosti jesu značajan dio sustava, a registracija i prijava nisu. }
+			Na slici 4.6 prikazan je dijagram stanja za prijavljenog sudionika konferencije. On ima pristup naslovnici, vlastitim radovima, informacijama o konferenciji i osobnim podatcima. Sudionik također može pristupiti stranici s javnim radovima (ako su dostupni), koje može pregledati i/ili preuzeti. Ako želi može uređivati osobne podatke, predati prijavljeni rad, predati dodatni rad (nakon predaje prvog i u skladu s rokovima). Po potrebi može revidirati rad.
+			
+			Na slici 4.7 prikazan je dijagram stanja za prijavljenog recenzenta. On ima pristup naslovnici,
+			javnim radovima, informacijama o konferenciji, vlastitim recenzijama i osobnim podatcima. Može urediti osobne podatke, recenzirati radove iz sekcije u kojoj se prijavio (u skladu s rokovima).
+			
+			Na slici 4.8 prikazan je dijagram stanja za administratora. On, kao i prethodno navedeni, ima pristup naslovnici, dostupnim javnim radovima, informacijama o konferenciji, osobnim podatcima. Ta su stanja izostavljena radi preglednosti. Za početno stanje je uzeto stanje "Administrator" (administratorsko sučelje )kojem može pristupiti iz svih ostalih. U tom stanju može: mijenjati informacije o konferenciji, učiniti radove javno dostupnima (ili ukloniti pristup), uređivati podatke o predsjedavajućem, uređivati obrazac za registraciju, dodati sekcije, dodati novog administratora, napisati članak za naslovnicu. S administratorskog sučelja može pristupiti stranicama za pregled COVID-19 statistike, statistike prijavljenih, pregledu podataka (o radovima, sudionicima i recenzentima) i slanju obavijesti korisnicima.
+			
+			Na slici 4.9 prikazan je dijagram stanja za predsjedavajućeg konferencije. Kao i prethodno navedeni korisnici ima pristup naslovnici, dostupnim javnim radovima, informacijama o konferenciji, osobnim podatcima. Može pristupiti upravljačkom sučelju klikom na "Predsjedavajući" i tamo obavljati neku od svojih dužnosti: odobravati/odbijati registrirane recenzente, pregledati statistiku prijavljenih, COVID-19 statistiku, pregledati podatke (o radovima, sudionicima i recenzentima) i pristupiti dijelu aplikacije za slanje obavijesti.
+			
+			\begin{figure}[H]
+				\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Dijagram stanja - Sudionik.png} 
+				\centering
+				\caption{Dijagram stanja, Sudionik}
+				\label{fig:stanje1}
+			\end{figure}
+		
+			\begin{figure}[H]
+				\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Dijagram stanja - Recenzent.png} 
+				\centering
+				\caption{Dijagram stanja, Recenzent}
+				\label{fig:stanje2}
+			\end{figure}
+		
+		\begin{figure}[H]
+			\includegraphics[height= 15 cm, width=15 cm]{dijagrami/Dijagram stanja - Administrator2.png} 
+			\centering
+			\caption{Dijagram stanja, Administrator}
+			\label{fig:stanje3}
+		\end{figure}
+	
+			\begin{figure}[H]
+				\includegraphics[height= 15 cm, width=15 cm]{dijagrami/Dijagram stanja - Predsjedavajuci.png} 
+				\centering
+				\caption{Dijagram stanja, Predsjedavajući konferencije}
+				\label{fig:stanje4}
+			\end{figure}
+		
+			
+			
+			
+			
+			
 			
 			
 			\eject 
 		
 		\section{Dijagram aktivnosti}
 			
-			\textbf{\textit{dio 2. revizije}}\\
-			
-			 \textit{Potrebno je priložiti dijagram aktivnosti s pripadajućim opisom. Dijagram aktivnosti treba prikazivati značajan dio sustava.}
+			 Dijagramom aktivnosti možemo modelirati tijek obrasca uporabe i tijek između različitih obrazaca uporabe. Ponašanje se modelira nizom akcija, a aktivnost obuhvaća više čvorova i veza koji predstavljaju odgovarajući slijed zadataka.
+			 
+			 Budući da su u sustavu 4 vrste korisnika (administrator, predsjedavajući konferencije, sudionik, recenzent) prikazat će se za svakog 1 dijagram aktivnosti vezan uz njegovu značajnu aktivnost.
+			 
+			 Dijagram 4.10 opisuje značajnu recenzentovu aktivnost: recenziranje radova. Korisnik se prvo treba prijaviti u sustav, zatim pristupiti dijelu aplikacije za recenziranje "Moje Recenzije". Sustav provjerava je li istekao rok za recenziranje i ukoliko je o tome obavještava recenzenta. Ukoliko nije, recenzent može recenzirati: po želji otvoriti ili preuzeti rad ili odmah odabrati ocjenu. Ovisno o ocjeni unosi obrazloženje i predaje recenziju koja se pohranjuje u bazu te se šalje obavijest elektroničkom poštom onom korisniku čiji je rad recenziran.
+			 
+			 Dijagram 4.11 opisuje značajnu aktivnost sudionika: predaja rada. Radi se o predaji rada kojeg je sudionik prijavio pri registraciji. Prvo se treba prijaviti u sustav te u dijelu aplikacije "Moji radovi" može vidjeti podatke koje je unio za taj rad i učitati dokument u pdf formatu (ukoliko nije istekao rok za predaju radova). Dokument se zatim pohranjuje u bazu podataka.
+			 
+			 Dijagram 4.12 opisuje značajnu administratorovu aktivnost: uređivanje informacija (podataka) o konferenciji. Korisnik se treba prijaviti, pristupiti administratorskom sučelju te mijenjati podatke po želji. Može odustati od unosa ili ažurirati podatke. Po ažuriranju dobiva obavijest da su ažurirani, a nakon odustajanja se može predomisliti i ipak nešto urediti. Podatci se unose u bazu podataka tek kad se provjeri semantika datuma, primjerice da rok za početak prijava nije nakon roka za kraj prijava. Ukoliko je logika datuma narušena administratora se o tome obavještava.
+			 
+			 Dijagram 4.13 opisuje značajnu aktivnost predsjedjedavajućeg konferencije: slanje obavijesti odabranim korisnicima. Da bi poslao obavijest mora se prijaviti te na upravljačkom sučelju odabrati "Pošalji obavijest korisnicima". Zatim (ukoliko postoje potvrđeni korisnici u sustavu) može unijeti tekst i naslov obavijesti te odabrati 1, nekoliko ili sve korisnike. Obavijest se šalje elektroničkom poštom, a predsjedavajući prima obavijest da je poruka poslana.
+			 
+			 \begin{figure}[H]
+			 	\includegraphics[width = 15cm, keepaspectratio]{dijagrami/Dijagram aktivnosti - Recenziranje rada.png} 
+			 	\centering
+			 	\caption{Dijagram aktivnosti, Recenziranje rada}
+			 	\label{fig:act1}
+			 \end{figure}
+			 \begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Dijagram aktivnosti - Predaja rada.png} 
+			 	\centering
+			 	\caption{Dijagram aktivnosti, Predaja rada}
+			 	\label{fig:act2}
+			 \end{figure}
+			 \begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Dijagram aktivnosti - Upravljanje informacijama o konferenciji.png} 
+			 	\centering
+			 	\caption{Dijagram aktivnosti, Upravljanje informacijama o konferenciji}
+			 	\label{fig:act3}
+			 \end{figure}
+			 \begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Dijagram aktivnosti - Slanje obavijesti korisnicima.png} 
+			 	\centering
+			 	\caption{Dijagram aktivnosti - Slanje obavijesti korisnicima}
+			 	\label{fig:act4}
+			 \end{figure}
+			 
+			 \eject
 			
 			\eject
 		\section{Dijagram komponenti}
-		
-			\textbf{\textit{dio 2. revizije}}\\
-		
-			 \textit{Potrebno je priložiti dijagram komponenti s pripadajućim opisom. Dijagram komponenti treba prikazivati strukturu cijele aplikacije.}
+
+			Dijagram na slici 4.14 prikazuje i opisuje organizaciju komponenti te samu strukturu sustava. Sustavu se pristupa preko web preglednika.
+
+			\begin{figure}[H]
+			 	\includegraphics[width= 15 cm, height= 25 cm, keepaspectratio]{dijagrami/Component_Diagram_Znanstvena_Konferencija.png} 
+			 	\centering
+			 	\caption{Dijagram komponenti - Znanstvena konferencija}
+			 	\label{fig:act4}
+			 \end{figure}

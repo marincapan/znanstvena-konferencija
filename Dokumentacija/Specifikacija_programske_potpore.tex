@@ -1,10 +1,7 @@
 \chapter{Specifikacija programske potpore}
 		
 	\section{Funkcionalni zahtjevi}
-			
-			\textbf{\textit{dio 1. revizije}}\\
-			
-			
+						
 			\noindent \textbf{Dionici:}
 			
 			\begin{packed_enum}
@@ -117,8 +114,6 @@
 			
 				
 			\subsection{Obrasci uporabe}
-				
-				\textbf{\textit{dio 1. revizije}}
 				
 				\subsubsection{Opis obrazaca uporabe}
 					
@@ -462,10 +457,10 @@
 					
 
 				
-					\noindent \underbar{\textbf{UC9 - Pregled recenzenata koji čekaju na odobrenje}}
+					\noindent \underbar{\textbf{UC9 - Pregled svih recenzenata}}
 					\begin{packed_item}
 						
-						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije
+						\item \textbf{Glavni sudionik: } Predsjedavajući konferencije, administrator
 						\item  \textbf{Cilj:} Odobriti registraciju recenzenta i poslati mu podatke za prijavu
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -475,10 +470,9 @@
 							
 							\item Korisnik odabire gumb "Administrator" iz izbornika, te pod odjeljkom \textit{Općenito} odabire opciju "Pregled korisnika i radova"
 							\item Nakon što mu se učita stranica odabire "Popis recenzenata (odobrenih i neodobrenih)" te mu se učita stranica s popisom svih recenzenata
-							\item Korisnik u filtar unosi ključnu riječ \textit{NE}
 							\item Korisnik odabire recenzenta s popisa
-							\item Korisniku se prikazuju podaci koje je recenzent unio pri registraciji
-							\item Korisnik može ili odobriti(UC9.1) ili odbiti registraciju recenzenta (UC9.2)
+							\item Korisniku se prikazuju podaci koje je recenzent unio pri registraciji, administrator ima mogućnost mijenjanja podataka o odabranom recenzentu (UC10.1)
+							\item Predsjedavajući konferencije može ili odobriti(UC9.1) ili odbiti registraciju recenzenta (UC9.2) ukoliko taj recenzent još nije potvrđen
 
 							\item Ažurira se baza podataka
 							
@@ -552,7 +546,7 @@
 							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po državi, po sekciji) te mu se sukladno prikazuje popis sudionika koji odgovaraju rezultatima filtra
 							\item Korisnik odabire sudionika s popisa
 							\item Korisniku se prikazuju informacije o odabranom sudioniku
-							\item Korisnik po potrebi može urediti podatke sudionika (UC10.1)
+							\item Administrator po potrebi može urediti podatke sudionika (UC10.1)
 
 							
 							
@@ -560,9 +554,9 @@
 						
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC10.1 - Uređivanje podataka o sudioniku}}
+					\noindent \underbar{\textbf{UC10.1 - Uređivanje podataka o korisniku}}
 					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator, Predsjedavajući konferencije
+						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Uređivanje osobnih podataka o sudioniku, ispravljanje grešaka
 						\item \textbf{Sudionici:} Baza podataka
 						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav i odabrao je sudionika s popisa registriranih sudionika
@@ -570,71 +564,23 @@
 						\item \textbf{Opis osnovnog tijeka:} 
 						\item[] \begin{packed_enum}
 							
-							\item Korisnik je odabrao željenog sudionika te bira opciju "Uredi podatke o sudioniku"
+							\item Korisnik je odabrao željenog korisnika s popisa te ga sustav odvede na stranicu s podacima o odabranom korisniku koje tada može mijenjati
 							\item Korisnik mijenja željene podatke
-							\item Korisnik bira opciju "Spremi promjene"
+							\item Korisnik bira opciju "Ažuriraj podatke"
+							\item Baza podataka se ažurira
 						\end{packed_enum}
 						
 						\item \textbf{Opis mogućih odstupanja:}
 						\item[] \begin{packed_enum}
 							
-							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
+							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Ažuriraj podatke"
 							\item[] \begin{packed_enum}
 								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
 							\end{packed_enum}
 						\end{packed_enum}
 					\end{packed_item}
 					
-					
-					\noindent \underbar{\textbf{UC11 - Pregled odobrenih recenzenata}}
-					\begin{packed_item}
-						
-						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
-						\item  \textbf{Cilj:} Pregledati popis registriranih i odobrenih recezenata
-						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
-						\item  \textbf{Opis osnovnog tijeka:}
-						
-						\item[] \begin{packed_enum}
-							
-							\item Korisnik odabire gumb "Administrator" iz izbornika, te pod odjeljkom \textit{Općenito} odabire opciju "Pregled korisnika i radova"
-							\item Nakon što mu se učita stranica odabire "Popis recenzenata (odobrenih i neodobrenih)" te mu se učita stranica s popisom svih recenzenata
-							\item Korisnik u filtar unosi ključnu riječ \textit{DA}
-							\item Korisnik odabire recenzenta s popisa
-							\item Korisniku se prikazuju informacije o odabranom recenzentu
-							\item Korisnik po potrebi može promijeniti podatke recenzenta (UC11.1)
-
-							
-							
-						\end{packed_enum}
-						
-					\end{packed_item}
-					
-					\noindent \underbar{\textbf{UC11.1 - Uređivanje podataka o recenzentu}}
-					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator, Predsjedavajući konferencije
-						\item \textbf{Cilj:} Uređivanje osobnih podataka o recenzentu, ispravljanje grešaka
-						\item \textbf{Sudionici:} Baza podataka
-						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav i odabrao je recenzenta s popisa odobrenih recenzenata
-						
-						\item \textbf{Opis osnovnog tijeka:} 
-						\item[] \begin{packed_enum}
-							\item Korisnik je odabrao željenog recenzenta te bira opciju "Uredi podatke o recenzentu"
-							\item Korisnik mijenja željene podatke
-							\item Korisnik bira opciju "Spremi promjene"
-						\end{packed_enum}
-						
-						\item \textbf{Opis mogućih odstupanja:}
-						\item[] \begin{packed_enum}
-							
-							\item[3.a] Korisnik unese promjene, ali ne odabere opciju "Spremi promjene"
-							\item[] \begin{packed_enum}
-								\item[1.] Sustav javlja korisniku kako promjene nisu spremljene prije izlaska iz prozora
-							\end{packed_enum}
-						\end{packed_enum}
-					\end{packed_item}
-					
-					\noindent \underbar{\textbf{UC12 - Dodavanje novog administratora}}
+					\noindent \underbar{\textbf{UC11 - Dodavanje novog administratora}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Administrator
@@ -682,7 +628,7 @@
 					\end{packed_item}
 				
 				
-					\noindent \underbar{\textbf{UC13 - Recenziranje rada}}
+					\noindent \underbar{\textbf{UC12 - Recenziranje rada}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik:} Recenzent
@@ -698,7 +644,7 @@
 							\item  Korisnik na stranici vidi prikaz odabranog dokumenta (uz opciju "Preuzmi rad" koja pohranjuje .pdf lokalno)
 							\item Korisnik bira jednu od 4 moguće ocjene te ovisno o odabranoj ocjeni u polje za obrazloženje navodi razlog svog odabira
 
-							\item Ažurira se baza podataka te se recenzija šalje autoru rada putem e-pošte (onom koji je označen kao osoba za kontakt) (UC13.1)
+							\item Ažurira se baza podataka te se recenzija šalje autoru rada putem e-pošte (onom koji je označen kao osoba za kontakt) (UC12.1)
 							
 							
 						\end{packed_enum}
@@ -723,7 +669,7 @@
 						
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC13.1 - Poslati recenziju sudioniku}}
+					\noindent \underbar{\textbf{UC12.1 - Poslati recenziju sudioniku}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Recenzent
 						\item \textbf{Cilj:} Poslati recenziju (obrazloženje i ocjenu) sudioniku putem e-pošte
@@ -753,7 +699,7 @@
 					\end{packed_item}
 					
 
-					\noindent \underbar{\textbf{UC14 - Pregled vlastitih recenzija}}
+					\noindent \underbar{\textbf{UC13 - Pregled vlastitih recenzija}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Recenzent
@@ -774,7 +720,7 @@
 					\end{packed_item}
 					
 					
-					\noindent \underbar{\textbf{UC15 - Pregled radova}}
+					\noindent \underbar{\textbf{UC14 - Pregled radova}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
@@ -785,13 +731,12 @@
 						
 						\item[] \begin{packed_enum}
 
-							\item Korisnik odabire gumb "Administrator" iz izbornika, te pod odjeljkom \textit{Općenito} odabire opciju "Pregled korisnika i radova"
-							\item Nakon što mu se učita stranica odabire "Predani radovi" te mu se učita stranica s popisom svih predanih radova
-							\item Korisniku je učitana stranica s popisom svih radova
-							\item Korisnik (ukoliko želi) unosi ograničenja u filtar (po sekciji, po državi) te mu se sukladno prikazuje popis radova koji odgovaraju rezultatima filtra
+							\item Korisnik odabire gumb "Administrator" iz izbornika (ili "Predsjedavajući" ukoliko je predsjedavajući prijavljen), te pod odjeljkom \textit{Općenito} odabire opciju "Pregled korisnika i radova" (Predsjedavajućem se ti popisi odmah prikazuju u njegovom upravljačkom sučelju)
+							\item Nakon što mu se učita stranica odabire "Pregled radova" te mu se učita stranica s popisom svih radova
+							\item Korisnik (ukoliko želi) unosi ograničenja u filtar te mu se sukladno prikazuje popis radova koji odgovaraju rezultatima filtra
 							\item Korisnik odabire rad s popisa
 							\item Korisnik, ukoliko to želi, preuzima rad lokalno na računalo klikom na gumb "Preuzmi rad"
-							\item Korisniku se prikazuju podatci o odabranom radu
+							\item Korisniku se prikazuju podatci o odabranom radu, administator (ukoliko želi) mijenja podatke o radu (UC19)
 							
 							
 							
@@ -799,7 +744,7 @@
 						
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC16 - Preuzimanje svih predanih radova}}
+					\noindent \underbar{\textbf{UC15 - Preuzimanje svih predanih radova}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator, predsjedavajući konferencije
 						\item \textbf{Cilj:} Preuzimanje svih predanih radova
@@ -820,7 +765,7 @@
 					\end{packed_item}
 
 
-					\noindent \underbar{\textbf{UC17 - Učini radove javno dostupnima}}
+					\noindent \underbar{\textbf{UC16 - Učini radove javno dostupnima}}
 					
 					\begin{packed_item}
 						
@@ -850,7 +795,7 @@
 						
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC18 - Ukloni javni pristup svim radovima}}
+					\noindent \underbar{\textbf{UC17 - Ukloni javni pristup svim radovima}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Ukloniti javni pristup radovima
@@ -877,10 +822,10 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC19 - Pregled javno dostupnih radova}}
+					\noindent \underbar{\textbf{UC18 - Pregled javno dostupnih radova}}
 					\begin{packed_item}
 						
-						\item \textbf{Glavni sudionik: } Sudionik, recenzent
+						\item \textbf{Glavni sudionik: } Registrirani korisnik
 						\item  \textbf{Cilj:} Pregledati popis javno dostupnih predanih radova u slučaju da su svi radovi objavljeni 
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Korisnik je prijavljen u sustav
@@ -907,9 +852,9 @@
 					\end{packed_item}              
 				
 				                                                            
-					\noindent \underbar{\textbf{UC20 - Uređivanje podataka o radu}}
+					\noindent \underbar{\textbf{UC19 - Uređivanje podataka o radu}}
 					\begin{packed_item}
-						\item \textbf{Glavni sudionik:} Administrator, predsjedavajući konferencije
+						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Uređivanje podataka o predanom radu
 						\item \textbf{Sudionici:} Baza podataka
 						\item \textbf{Preduvjet:} Korisnik je prijavljen u sustav 
@@ -918,12 +863,11 @@
 						\item[] \begin{packed_enum}
 							
 							\item Korisnik odabire gumb "Administrator" iz izbornika, te pod odjeljkom \textit{Općenito} odabire opciju "Pregled korisnika i radova"
-							\item Nakon što mu se učita stranica odabire "Predani radovi" te mu se učita stranica s popisom svih predanih radova
+							\item Nakon što mu se učita stranica odabire "Pregled radova" te mu se učita stranica s popisom svih predanih radova
 							\item Korisnik odabire rad čije podatke želi mijenjati
 							\item Korisniku je prikazana stranica s podatcima o odabranom radu s popisa predanih radova
-							\item Korisnik bira opciju "Unesi promjene"
 							\item Korisnik mijenja podatke o radu i/ili ažurira .pdf dokument
-							\item Korisnik bira opciju "Spremi promjene"
+							\item Korisnik bira opciju "Ažuriraj podatke"
 						\end{packed_enum}
 						
 						\item \textbf{Opis mogućih odstupanja:}
@@ -943,7 +887,7 @@
 					                                     
 				
 
-					\noindent \underbar{\textbf{UC21 - Slanje obavijesti odabranim korisnicima}}
+					\noindent \underbar{\textbf{UC20 - Slanje obavijesti odabranim korisnicima}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Predsjedavajući konferencije, administrator
 						\item \textbf{Cilj:} Obavijestiti  sudionike i recenzente o promjeni ili novosti vezanoj za konferenciju
@@ -981,7 +925,7 @@
 
 
 
-					\noindent \underbar{\textbf{UC22 - Definiranje upitnika za registraciju}}
+					\noindent \underbar{\textbf{UC21 - Definiranje upitnika za registraciju}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Urediti upitnik za registraciju
@@ -1016,7 +960,7 @@
 					\end{packed_item}
 
 
-					\noindent \underbar{\textbf{UC23 - Upravljanje sadržajem naslovnice}}
+					\noindent \underbar{\textbf{UC22 - Upravljanje sadržajem naslovnice}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Ažurirati naslovnicu
@@ -1042,7 +986,7 @@
 
 					
 
-					\noindent \underbar{\textbf{UC24 - Pregled statistike prijava}}
+					\noindent \underbar{\textbf{UC23 - Pregled statistike prijava}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
@@ -1060,7 +1004,7 @@
 			
 					\end{packed_item}
 				
-					\noindent \underbar{\textbf{UC25 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
+					\noindent \underbar{\textbf{UC24 - Praćenje podataka vezanih uz epidemiološku situaciju s COVID-19}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator, predsjedavajući konferencije
@@ -1082,7 +1026,7 @@
 					
 					
 					
-					\noindent \underbar{\textbf{UC26 - Pregled trenutno aktivnih registriranih korisnika}}
+					\noindent \underbar{\textbf{UC25 - Pregled trenutno aktivnih registriranih korisnika}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Administrator
@@ -1101,7 +1045,7 @@
 					\end{packed_item}
 
 
-					\noindent \underbar{\textbf{UC27 - Odjava iz sustava}}
+					\noindent \underbar{\textbf{UC26 - Odjava iz sustava}}
 					\begin{packed_item}
 						
 						\item \textbf{Glavni sudionik: } Registrirani korisnik
@@ -1130,7 +1074,7 @@
 						
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC28 - Upravljanje informacijama o konferenciji}}
+					\noindent \underbar{\textbf{UC27 - Upravljanje informacijama o konferenciji}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Ažurirati podatke o konferenciji i stranicu s informacijama
@@ -1156,7 +1100,7 @@
 						\end{packed_enum}
 					\end{packed_item}
 
-					\noindent \underbar{\textbf{UC29 - Uređivanje podataka o predsjedavajućem konferencije}}
+					\noindent \underbar{\textbf{UC28 - Uređivanje podataka o predsjedavajućem konferencije}}
 					\begin{packed_item}
 						\item \textbf{Glavni sudionik:} Administrator
 						\item \textbf{Cilj:} Unijeti podatke o predsjedavajućem konferencije
@@ -1190,7 +1134,7 @@
 				\pagebreak
 
 				
-				\noindent \underbar{\textbf{UC30 - Potvrda registracije putem e-pošte}}
+				\noindent \underbar{\textbf{UC29 - Potvrda registracije putem e-pošte}}
 				\begin{packed_item}
 					\item \textbf{Glavni sudionik:} Recenzent, Sudionik
 					\item \textbf{Cilj:} Potvrđivanje svoje registracije putem e-pošte
@@ -1250,7 +1194,7 @@
 
 				\textbf{Obrazac uporabe UC9 - Pregled recenzenata koji čekaju na odobrenje}\\
 				
-				\indent Jedna od dužnosti predsjedavajućeg konferencije je odobriti registracije recenzenata. Kako bi odobrio ili odbio pojedinu registraciju, potrebno je otvoriti stranicu "Pregled korisnika i radova" te na njoj odabrati opciju "Popis recenzenata(odobrenih i neodobrenih)", gdje u filtar unosi ključu riječ "NE" kako bi se prikazao popis neodobrenih recenzenata. Ondje predsjedavajući može pregledavati registracije, odnosno podatke koje su pojedini recenzenti unijeli pri registraciji te na temelju toga odlučiti hoće li im odobriti ili odbiti prijavu. Ukoliko odluči odbiti prijavu, potrebno je navesti razlog zašto je prijava odbijena, te će se navedeni razlog poslati u "odbijenici" korisniku putem e-pošte klikom na gumb "Odbij prijavu", nakon čega registracija ujedno biva trajno izbrisana iz baze podataka. Ukoliko predsjedavajući odluči potvrditi registraciju, klikom na gumb "Potvrdi registraciju" podaci iz registracije se koriste za kreiranje novog korisnika, tj. recenzenta u bazi, a recenzentu se na adresu e-pošte šalje automatizirana poruka o prijavi registracije.
+				\indent Jedna od dužnosti predsjedavajućeg konferencije je odobriti registracije recenzenata. Kako bi odobrio ili odbio pojedinu registraciju, potrebno je otvoriti stranicu "Pregled korisnika i radova" te na njoj odabrati opciju "Popis recenzenata(odobrenih i neodobrenih)", gdje vidi popis svih recenzenata. Kraj neodobrenih recenzenata stoje opcije "Odobri" i "Odbij". Ondje predsjedavajući može pregledavati registracije, odnosno podatke koje su pojedini recenzenti unijeli pri registraciji te na temelju toga odlučiti hoće li im odobriti ili odbiti prijavu. Ukoliko odluči odbiti prijavu, potrebno je navesti razlog zašto je prijava odbijena, te će se navedeni razlog poslati u "odbijenici" korisniku putem e-pošte klikom na gumb "Odbij prijavu", nakon čega registracija ujedno biva trajno izbrisana iz baze podataka. Ukoliko predsjedavajući odluči potvrditi registraciju, klikom na gumb "Potvrdi registraciju" podaci iz registracije se koriste za kreiranje novog korisnika, tj. recenzenta u bazi, a recenzentu se na adresu e-pošte šalje automatizirana poruka o prijavi registracije.
 
 				\eject
 
@@ -1265,7 +1209,7 @@
 				\eject
 
 				
-				\textbf{Obrazac uporabe UC13 - Recenziranje rada}\\
+				\textbf{Obrazac uporabe UC12 - Recenziranje rada}\\
 				
 				\indent Recenzent na stranici radova može koliko želi odabirati radove, čitati ih i pregledavati. Kada odabere i pročita rad koji namjerava recenzirati, a rad prethodno nije recenziran, kreće se prema dnu stranice gdje se nalazi odabir ocjene te mora odabrati jednu od četiri ocjene koje su definirane u opisu zadatka te je svakoj dodijeljen simboličan broj (u bazi podataka i u dokumentaciji). Bira jednu od 4 ocjene, te ovisno o tome koju ocjenu je odabrao (ukoliko su to ocjene 2., 3. ili 4.) pojavljuje se polje za upis obrazloženja ocjene. Korisnik može mijenjati ocjenu klikom sve dok se ne odluči za svoju konačnu ocjenu (i po potrebi unese obrazloženje ocjene), nakon čega korisnik bira opciju "Recenziraj ovaj rad". Klikom na navedenu opciju, recenzija se pohranjuje u bazi podataka (te je sukladno dostupna na stranici "Moje recenzije").
 				\eject
@@ -1273,7 +1217,7 @@
 				\begin{figure}[H]
 					\includegraphics[scale=0.58]{dijagrami/UC13-RecenziranjeRada.png} 
 					\centering
-					\caption{Sekvencijski dijagram za UC13 - Recenziranje rada}
+					\caption{Sekvencijski dijagram za UC12 - Recenziranje rada}
 					\label{fig:sekvencijski2}
 				\end{figure}
 
@@ -1281,32 +1225,32 @@
 				\eject
 
 
-				\textbf{Obrazac uporabe UC21 - Slanje obavijesti određenim korisnicima}\\
+				\textbf{Obrazac uporabe UC20 - Slanje obavijesti određenim korisnicima}\\
 				
-				\indent Predsjedavajući konferencije ima mogućnost, ukoliko se ukaže potreba, poslati obavijest sudionicima i recenzentima (o bilokakvoj promjeni vezanoj za konferenciju i sl.). Isto čini tako da pristupi stranici "Administracijsko sučelje" te odabere opciju na vrhu stranice "Pošalji obavijest" pri čemu se otvara stranica za odabir korisnika kojima korisnik želi poslati obavijest (te stoji opcija "Odaberi sve" ukoliko želi svima poslati obavijest). Kad korinsik odabere minimalno jednu osobu s popisa, otvara se prozor za unos teksta obavijesti (a korisnik nastavlja birati korisnike kojima želi poslati obavijest) . Korisnik unosi tekst obavijesti, a kad je siguran da želi poslati obavijest bira opciju "Pošalji". Iz baze podataka dohvaćaju se adrese e-pošte odabranih sudionika i recenzenata te se putem Web-aplikacije šalje e-poštu na sve adrese povučene iz baze podataka. Korisnik prima obavijest o uspješnom slanju obavijesti.
+				\indent Predsjedavajući konferencije (i administrator) ima mogućnost, ukoliko se ukaže potreba, poslati obavijest sudionicima i recenzentima (o bilokakvoj promjeni vezanoj za konferenciju i sl.). Isto čini tako da pristupi stranici "Upravljačko sučelje" (kod admina - "Administracijsko sučelje") te odabere opciju na vrhu stranice "Pošalji obavijest putem e-pošte" pri čemu se otvara stranicas okvirom za unos teksta te prozor za odabir korisnika kojima korisnik želi poslati obavijest (te stoji opcija "Odaberi sve" ukoliko želi svima poslati obavijest). Korisnik unosi tekst obavijesti, a kad je siguran da želi poslati obavijest bira opciju "Pošalji". Iz baze podataka dohvaćaju se adrese e-pošte odabranih sudionika i recenzenata te se putem Web-aplikacije šalje e-poštu na sve adrese povučene iz baze podataka. Korisnik prima obavijest o uspješnom slanju obavijesti.
 				\eject
 
 				\begin{figure}[H]
 					\includegraphics[scale=0.45]{dijagrami/UC21-SlanjeMaila.png} 
 					\centering
-					\caption{Sekvencijski dijagram za UC21 - Slanje obavijesti određenim korisnicima}
+					\caption{Sekvencijski dijagram za UC20 - Slanje obavijesti određenim korisnicima}
 
 					\label{fig:sekvencijski3}
 				\end{figure}
 
 				\eject
 
-				\textbf{Obrazac uporabe UC28 - Upravljanje informacijama o konferenciji}\\
+				\textbf{Obrazac uporabe UC27 - Upravljanje informacijama o konferenciji}\\
 
 				
-				\indent Administrator je dužan ažurirati informacije o konferenciji, što čini preko stranice "informacije o konferenciji". Tamo može, između ostaloga, prvi puta odabrati predsjedavajućeg konferencije, a kasnije može i mijenjati podatke o njemu (promijeniti osobne podatke, unijeti novu adresu e-pošte i sl.). Ukoliko administrator promijeni adresu e-pošte predsjedavajućeg, na novu adresu dolazi poruka s lozinkom za prijavu u sustav. Nadalje, na navedenoj stranici može odabrati odsječak po svojoj želji, kliknuti gumb "Uredi", izmijeniti podatke te na kraju odabrati "Ažuriraj podatke". Pri tome se baza podataka ažurira, kao i stranica koju sudionici i recenzenti vide.
+				\indent Administrator je dužan ažurirati informacije o konferenciji, što čini putem stranice "Administracijsko sučelje". Tamo može, između ostaloga, prvi puta odabrati predsjedavajućeg konferencije (UC28 - također uključen u ovaj dijagram), a kasnije može i mijenjati podatke o njemu (promijeniti osobne podatke, unijeti novu adresu e-pošte i sl.). Ukoliko administrator promijeni adresu e-pošte predsjedavajućeg, na novu adresu dolazi poruka s lozinkom za prijavu u sustav. Nadalje, na navedenoj stranici može odabrati odsječak po svojoj želji, izmijeniti podatke te na kraju odabrati "Ažuriraj podatke". Pri tome se baza podataka ažurira, kao i stranica koju sudionici i recenzenti vide. Pod "mijenjanjem podataka" podrazumijeva se promjena rokova za registraciju/predaju radova, kao i opis i naziv konferencije.
 
 				\eject
 
 				\begin{figure}[H]
 					\includegraphics[scale=0.50]{dijagrami/UC28-UprInfoAdmin.png} 
 					\centering
-					\caption{Sekvencijski dijagram za UC28 - Upravljanje informacijama o konferenciji}
+					\caption{Sekvencijski dijagram za UC27 - Upravljanje informacijama o konferenciji (uz UC28)}
 					\label{fig:sekvencijski4}
 				\end{figure}
 
