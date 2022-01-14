@@ -1,16 +1,19 @@
-stages:
-  - build
-  - deploy
-
-build-job:       
-  stage: build
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git
+  # Setup SSH deploy keys
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$ID_RSA")
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    
+deploy_staging:
+  type: deploy
+  environment:
+    name: staging
+    url: $URL
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
-
-deploy-job:     
-  stage: deploy  
-  script:
-    - echo "Deploying application..."
-    - docker-compose up -d --build --force-recreate
-    - echo "Application successfully deployed."
+    - ssh $SERVER_USER@$URL "cd /home/docker/znanstvenakonferencija/ && git checkout main && git pull origin main && docker-compose up -d --build --force-recreate"
+  only:
+    - main
