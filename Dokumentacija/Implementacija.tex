@@ -44,13 +44,13 @@
 			
 			\subsection{Ispitivanje sustava}
 			
-			Za testiranje sustava odabran je radni okvir Seleniu IDE\footnote{\url{https://www.selenium.dev/selenium-ide/}} Selenium IDE je odabran radi njegove jednostavnosti koristenja te njagove slicnosti ponašanju stvarnog korisnika. Odabrani testovi usredotočeni su na administrativne zadatke sustava i pokrivaju veliki broj obrazaca uporabe.\\ 
+			Za testiranje sustava odabran je radni okvir Selenium IDE\footnote{\url{https://www.selenium.dev/selenium-ide/}} radi njegove jednostavnosti korištenja te sličnosti ponašanju stvarnog korisnika. Odabrani testovi usredotočeni su na administrativne zadatke sustava i pokrivaju velik broj obrazaca uporabe.\\ 
 			 
 			 \textbf{Ispitni slučaj 1: Dodavanje administratora}\\
 			 \textbf{Ulaz:}
 			 \begin{packed_item}
 			 	\item {Prijava u sustav kao administrator}
-			 	\item {Ulaz u administrativno sučelje klikom na gumb u izbornoj traci}
+			 	\item {Ulaz u administracijsko sučelje klikom na gumb u izbornoj traci}
 			 	\item {Unos neispravnih korisničkih podataka novog administratora}
 			 	\item {Unos ispravnih korisničkih podataka novog administratora}
 			 \end{packed_item}
@@ -58,28 +58,28 @@
 			 \textbf{Očekivani rezultat:}
 			 \begin{packed_item}
 			 	\item {Uspješna prijava u sustav}
-			 	\item {Otvaranje administrativnog sučelja}
-			 	\item {Dojava greške o neispravnoj e-mail adresi}
-			 	\item {Potvrda o dostavi korisnickih podataka novog administratora na e-mail adresu}
+			 	\item {Otvaranje administracijskog sučelja}
+			 	\item {Dojava greške o neispravnoj adresi e-pošte}
+			 	\item {Potvrda o dostavi korisničkih podataka novog administratora na adresu e-pošte}
 			 \end{packed_item}
-			 \textbf{Rrezultat: }Prijava u postojeci administratorski račun je uspješna, unos neispravne e-mail adrese pri unosu podataka novog administratora ispravno dojavljuje grešku, a prilikom unosa ispravnih korisničkih podataka ispravno se prikazuje potvrda o dostavljenoj podatcima na e-mail. Aplikacija prolazi test.\\
+			 \textbf{Rezultat: }Prijava u postojeći administratorski račun je uspješna, unos neispravne adrese e-pošte pri unosu podataka novog administratora ispravno dojavljuje grešku, a prilikom unosa ispravnih korisničkih podataka ispravno se prikazuje potvrda o dostavljenim podatcima na adresu e-pošte. Aplikacija prolazi test.\\
 			
 			 \textbf{Ispitni slučaj 2: Dodavanje novih sekcija}\\
 			 \textbf{Ulaz:}
 			 \begin{packed_item}
 			 	\item {Prijava u sustav kao administrator}
-			 	\item {Ulaz u administrativno sučelje klikom na gumb u izbornoj traci}
-			 	\item {Unos več postoječe sekcije}
+			 	\item {Ulaz u administracijsko sučelje klikom na gumb u izbornoj traci}
+			 	\item {Unos već postojeće sekcije}
 			 	\item {Unos nove sekcije}
 			 \end{packed_item}
 			 \textbf{Očekivani rezultat:}
 			 \begin{packed_item}
 			 	\item {Uspješna prijava u sustav}
-			 	\item {Otvaranje administrativnog sučelja}
-			 	\item {Dojava greške o več postoječoj sekciji}
+			 	\item {Otvaranje administracijskog sučelja}
+			 	\item {Dojava greške o već postojećoj sekciji}
 			 	\item {Nova sekcija dodanu u listu sekcija}
 			 \end{packed_item}
-			 \textbf{Rrezultat: }Prijava u postojeci administratorski račun je uspješnai otvara se administratorsko sučelje. Pokušaj dodavanja sekcije koja več postoji ispravno javlja pogrešku o pokušaju unosa več postoječe sekcije. Unos nove sekcije je uspješan i ispravno se dodaje na listu sekcija. Aplikacija prolazi test.\\
+			 \textbf{Rezultat: }Prijava u postojeći administratorski račun je uspješna i otvara se administracijsko sučelje. Pokušaj dodavanja sekcije koja već postoji ispravno javlja pogrešku o pokušaju unosa već postojeće sekcije. Unos nove sekcije je uspješan i ispravno se dodaje na listu sekcija. Aplikacija prolazi test.\\
 			
 			
 			 \textbf{Ispitni slučaj 3: Registracija kao recenzent}\\
@@ -93,25 +93,25 @@
 			 \begin{packed_item}
 			 	\item {Otvara se sučelje za registraciju}
 			 	\item {Odabirom registracije kao recenzent mijenjaju se polja obrasca prijave}
-			 	\item {Obavijest o potrebi potvrde registracije od strane predsjedavajučega}
+			 	\item {Obavijest o potrebi da predsjedavajući potvrdi registraciju}
 			 \end{packed_item}
-			 \textbf{Rrezultat: }Sučelje za registraciju otvara se nakon klika na gumb registracije. Nakon sto oznacimo da se prijavljujemo ko recenzent obrazac prijave se mijenja i traži se odabir sekcije za koju se registrira. Po završetku prijave ispravno se javlja obavijest o potrebi potvrde od strane predsjedavajučeg člana. Aplikacija prolazi test.\\
+			 \textbf{Rezultat: }Sučelje za registraciju otvara se nakon klika na gumb registracije. Nakon sto se označi gumb da se korisnik prijavljuje kao recenzent, obrazac prijave se mijenja i traži se odabir sekcije za koju se korisnik registrira. Po završetku prijave ispravno se javlja obavijest kako je potrebno da predsjedavajući potvrdi registraciju prije mogućnosti recenziranja. Aplikacija prolazi test.\\
 			
 			
-			 \textbf{Ispitni slučaj 4: Potvrda prijave recenzenta od strane predsjedavajučega}\\
+			 \textbf{Ispitni slučaj 4: Potvrda prijave recenzenta od predsjedavajućeg\\
 			 \textbf{Ulaz:}
 			 \begin{packed_item}
-			 	\item {Prijava u sustav kao predsjedavajuči}
-			 	\item {Otvaranje korisničkog sučelja predsjedavajučeg člana}
-			 	\item {Klik na gumb potvrdi}
+			 	\item {Prijava u sustav kao predsjedavajući}
+			 	\item {Otvaranje upravljačkog sučelja}
+			 	\item {Klik na gumb "Potvrdi"}
 			 \end{packed_item}
 			 \textbf{Očekivani rezultat:}
 			 \begin{packed_item}
-			 	\item {Izborna traka se mijenja i pojavljuje se gump za otvaranje korisničkog sučelja predsjedavajučega}
-			 	\item {Otvara se korisničko sučelje predsjedavajučega}
-			 	\item {Prijava se prihvača i šalje se mail s podacima za prijavu recenzentu}
+			 	\item {Izborna traka se mijenja i pojavljuje se gumb za otvaranje upravljačkog sučelja predsjedavajućeg}
+			 	\item {Otvara se upravljačko sučelje predsjedavajućeg}
+			 	\item {Prijava se prihvaća i recenzentu šalje se e-pošta s podacima za prijavu}
 			 \end{packed_item}
-			 \textbf{Rrezultat: }Prijavom kao predsjedavajuči član mijenja se izborna traka i pojavljuje se gumb za otvaranje korisničkog sučelja predsjedavajučeg člana. Otvaranjem sučelja predsjedavajučeg člana vidljiv je popis recenzenata koji čekaju potvrdu registracije. Klikom na gumb potvrdi recenzentu se šalje e-mail s potrebnim podacima za prijavu. Aplikacija prolazi test.\\
+			 \textbf{Rezultat: }Prijavom kao predsjedavajući mijenja se izborna traka i pojavljuje se gumb za otvaranje upravljačkog sučelja predsjedavajućeg konferencije. Otvaranjem sučelja vidljiv je popis recenzenata koji čekaju potvrdu registracije. Klikom na gumb "Potvrdi" recenzentu se šalje e-pošta s potrebnim podacima za prijavu. Aplikacija prolazi test.\\
 			\eject 
 		
 		

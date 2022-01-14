@@ -75,8 +75,17 @@ Datum: 23. prosinca 2021.
 		- Dogovori i podjela poslova vezanih za izradu dokumentacije
 
 
-. sastanak
+10. sastanak
 Datum: 5. siječnja 2022.
 	Prisustvovali: J. Gavran, L. Mujagić, R. Pintar, F. Mesić, P.D.Grujić Ostojić, A. Sambolek, M. Capan, asistent doc. dr. sc. Miljenko Krhen, demonstrator Vedran Kolka
-	Teme sastanka: Demonstracija alfa-inačine aplikacije
+	Teme sastanka:
+		- Demonstracija alfa-inačice aplikacije
 
+
+11. sastanak
+Datum: 10. siječnja 2022.
+	Prisustvovali: J. Gavran, L. Mujagić, R. Pintar, F. Mesić, P.D.Grujić Ostojić, A. Sambolek, M. Capan
+	Teme sastanka:
+		- Dogovor oko posljednjih preinaka i ispravljanja greška u programskom kodu
+		- Odabran način testiranja aplikacije
+		- Dogovor i podjela posla u izradi finalne dokumentacije projekta
