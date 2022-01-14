@@ -12,5 +12,5 @@ deploy-job:
   stage: deploy  
   script:
     - echo "Deploying application..."
-    - sudo docker-compose up -d --build --force-recreate
+    - docker-compose up -d --build --force-recreate
     - echo "Application successfully deployed."
