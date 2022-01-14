@@ -2,6 +2,8 @@ from collections import defaultdict
 from datetime import datetime
 from difflib import SequenceMatcher
 from io import StringIO, BytesIO
+from operator import mod
+from pyexpat import model
 from typing import DefaultDict
 from django.core.checks.messages import Error
 from django.core.exceptions import ValidationError
@@ -44,6 +46,22 @@ def increment_KorisnikID():
   return new_korisnik_id
 
 def home(request):
+    admin=models.Korisnik.objects.get(vrstaKorisnik=models.Uloga.objects.get(id=1))
+    if admin.salt==None:
+        adminmail=os.getenv("ADMIN_EMAIL")
+        adminloz=os.getenv("ADMIN_PASS")
+        salt=os.urandom(32)
+        key=hashlib.pbkdf2_hmac(
+            'sha256',
+            adminloz.encode('utf-8'),
+            salt,
+            100000
+        )
+        admin.lozinka=key
+        admin.email=adminmail
+        admin.salt=salt
+        admin.save()
+
     if 'randPassword' in request.session:
         del request.session['randPassword']
     #Password se pokazuje jedanput i vise nikad.
