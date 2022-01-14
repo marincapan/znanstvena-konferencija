@@ -160,10 +160,26 @@
 			\eject 
 		
 		\section{Upute za puštanje u pogon}
+
+			\textbf{Instalacija alata Dockera i git-a}
+
+			Potrebno je preuzeti alat Docker (za Windows i Mac sustave) i instalirati ga. Za Linux sustave isto je moguće napraviti pomoću naredbe \verb|sudo apt-get install docker-ce docker-ce-cli containerd.io| Također je potrebno preuzeti i instalirati Git.
+
+			Potrebno je pozicionirati se u mapu u koju želimo klonirati repozitorij aplikacije naredbom \verb|git clone https://gitlab.com/fotoModeli/znanstvenakonferencija.git|. Nakon toga potrebno je preimenovati datoteku \textit{.env.example} u \textit{.env} datoteku te popuniti navedene varijable. Napokon, potrebno je pozicionirati se u mapu \textit{znanstvenakonferencija} i pokrenuti naredbu \verb|docker-compose up -d --build|.
+
+			Također je vrlo bitno da u datoteci docker-entrypoint.sh, koja se nalazi u mapi \textit{IzvorniKod} način čitanja datoteke promijenimo iz CRLF u LF (Unix). Ukoliko je datoteka već postavljena na LF, isto nije potrebno mijenjati.
+
+			\textbf{Instalacija Django-a}
+
+			Za instalaciju alata Django prvo je potrebno preuzeti i instalirati Python. Pod pretpostavkom da je izvršen prethodni korak i time kloniran sadržaj aplikacije lokalno (naredbom \verb|git clone|), sljedeće što je potrebno je pozicionirati se u radni direktorij repozitorija i pokrenuti naredbu python -m venv venv. Nakon toga aktivacija virtualnog okruženja vrši se naredbom \verb|venv \textbackslash Scripts \textbackslash activate|.
+
+			Nakon navedenog, potrebno je pozicionirati se u mapu \textit{IzvorniKod} i instalirati potrebne pakete naredbom \verb|pip install -r requirements.txt| te nakon toga, server je moguće lokalno pokrenuti naredbom \verb|python manage.py runserver| 
+		\eject
 		
-			\textbf{\textit{dio 2. revizije}}\\
-		
-			 \textit{U ovom poglavlju potrebno je dati upute za puštanje u pogon (engl. deployment) ostvarene aplikacije. Na primjer, za web aplikacije, opisati postupak kojim se od izvornog kôda dolazi do potpuno postavljene baze podataka i poslužitelja koji odgovara na upite korisnika. Za mobilnu aplikaciju, postupak kojim se aplikacija izgradi, te postavi na neku od trgovina. Za stolnu (engl. desktop) aplikaciju, postupak kojim se aplikacija instalira na računalo. Ukoliko mobilne i stolne aplikacije komuniciraju s poslužiteljem i/ili bazom podataka, opisati i postupak njihovog postavljanja. Pri izradi uputa preporučuje se \textbf{naglasiti korake instalacije uporabom natuknica} te koristiti što je više moguće \textbf{slike ekrana} (engl. screenshots) kako bi upute bile jasne i jednostavne za slijediti.}
+			\textbf{Konfiguracija web poslužitelja, baze podataka i poslužitelja baze podataka}
+
+			Prethodni odsječci opisuju pokretanje servera s alatom Docker, koji znatno olakšava lokalno (i produkcijsko) pokretanje aplikacije. To je primjetljivo jer je za pokretanje servera potrebno samo klonirati git repozitorij te u komandnu liniju unijeti samo nekoliko naredbi.
+
 			
 			
 			 \textit{Dovršenu aplikaciju potrebno je pokrenuti na javno dostupnom poslužitelju. Studentima se preporuča korištenje neke od sljedećih besplatnih usluga: \href{https://aws.amazon.com/}{Amazon AWS}, \href{https://azure.microsoft.com/en-us/}{Microsoft Azure} ili \href{https://www.heroku.com/}{Heroku}. Mobilne aplikacije trebaju biti objavljene na F-Droid, Google Play ili Amazon App trgovini.}
